@@ -66,20 +66,11 @@ public class SpriteCreator_v3 : MonoBehaviour
     public List<SpriteObjJSON> spriteListJSON = new List<SpriteObjJSON>();
     public Texture2D BaseImg = null;
 
-
+    //the image can not contain pure black !
     private void Awake()
     {
-        BaseImg = Resources.Load<Texture2D>("Province_Map"); //aller la rechercher automatiquement grâce à son nom et la set comme readeable
-    }
-
-    //the image can not contain black !
-
-    // Start is called before the first frame update
-    void Start()
-    {         
         //supprimer toutes les img présente dans le dossier
         pathSave += "/sprites_terrain/provinces_split";
-
         if (MainMenuControler.recalculateMapChoice == true)
         {
 
@@ -91,15 +82,19 @@ public class SpriteCreator_v3 : MonoBehaviour
             SaveSprites(spriteList);
 
             ChangeImageTypes();
-            
 
         }
         else
         {
             Debug.Log("the map have not been recalculated");
         }
-        
+        BaseImg = Resources.Load<Texture2D>("Province_Map"); //aller la rechercher automatiquement grâce à son nom et la set comme readeable
     }
+
+   
+
+
+    
 
 
     private void DeleteOldSprite()
@@ -267,7 +262,7 @@ public class SpriteCreator_v3 : MonoBehaviour
                 int y = spriteList[i].spritePixels[j].y - spriteList[i].lowerY;
                 int index = x + y * sizeX;
 
-                colorArray[index] = Color.red;
+                colorArray[index] = Color.cyan;
             }
 
             tex.SetPixels(colorArray);
@@ -313,8 +308,9 @@ public class SpriteCreator_v3 : MonoBehaviour
                     textureImporter.textureType = TextureImporterType.Sprite;
                 }
 
-                // Change the sprite mode to Single (for individual sprites)
+                // Change the sprite mode to Single
                 textureImporter.spriteImportMode = SpriteImportMode.Single;
+                textureImporter.filterMode = FilterMode.Point;
 
                 // Re-import the texture to apply changes
                 AssetDatabase.ImportAsset(texturePath, ImportAssetOptions.ForceUpdate);
