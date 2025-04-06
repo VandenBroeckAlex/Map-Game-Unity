@@ -42,7 +42,8 @@ public class RaycastScript : MonoBehaviour
         if (Physics.Raycast(ray, out hit, 100, mask))
         {
 
-            // GetPixelColor(hit);
+            GetPixelColor(hit);
+            
             return GetGameObject(hit);
 
         }
