@@ -1,11 +1,12 @@
 
 using System;
 using UnityEngine;
+using static Tick_script;
 
 public class DateHandeler : MonoBehaviour
 {
-    Tick_script test;
-
+    public delegate void OnMonth();
+    public static OnMonth onMonth;
 
     private string[] strWeekDayList = { "Monday", "Tuesday", "Wednesday", "Thursday","Friday", "Saturday", "Sunday" };
     private string[] strMonthsList = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
@@ -50,6 +51,12 @@ public class DateHandeler : MonoBehaviour
     private void HandleMonthDayChange()
     {
         monthDay++;
+
+        if (monthDay == 2)
+        {
+            DateHandeler.onMonth?.Invoke();
+        }
+
 
         switch (month)
         {

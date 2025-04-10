@@ -14,9 +14,10 @@ public class Tick_script : MonoBehaviour
     public delegate void OnTick();
     public static OnTick onTick;
 
-   
     
-     void Start()
+
+
+    void Start()
 
     {
 
