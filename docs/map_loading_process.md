@@ -1,11 +1,10 @@
 #  Map Loading Process
-
- The process is divided into several stages, each aimed at improving the visual fidelity and functionality of the map.
-
+Back to [Main read me](../README.md)
+ The devloppement process is divided into several stages.
 ## Iteration Overview
 
 ### Todo: Iteration 01
-The first iteration focuses on setting up basic UI components and displaying provinces on the map.
+The first iteration focuses on setting up basic UI components and displaying provinces on the map on loading.
 
 - [ ] **Create Adequate Canvas**
   - Set up a Unity Canvas that will serve as the base for UI components.
@@ -32,6 +31,8 @@ The third iteration will include an editor tool for managing provinces, as well 
 
 ## Explanation
 
-The canvas is created based on the size of each province's image.
-
+The canvas is created based on the size of the `Province_Map.png` image.
 Each province is positioned on the canvas using the `lowerX` and `higherY` values, which represent the top-left corner of the sprite. These values are extracted from the map position JSON file (`.Assets/Resources`), which is generated during the map creation phase.
+
+The terrain is created based on `.Assets/Resources/height_map.png` wich is used as a displacement map.
+[What is displacement mapping ?](https://www.creativebloq.com/features/a-beginners-guide-to-displacement-and-bump-maps)

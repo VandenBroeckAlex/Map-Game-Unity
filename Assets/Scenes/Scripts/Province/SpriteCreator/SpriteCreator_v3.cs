@@ -14,7 +14,6 @@ using Newtonsoft.Json;
 public class SpriteCreator_v3 : MonoBehaviour
 {   
     string pathSave = Application.dataPath;
-    float[] colorToGet = { 52, 255, 68 }; // to divide by 255
     int givenId = 0;
     public class SpriteObj
     {
