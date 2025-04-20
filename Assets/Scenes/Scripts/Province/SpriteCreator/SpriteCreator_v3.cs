@@ -2,15 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
-using System;
-using System.Data;
 using UnityEditor;
-using static UnityEditor.Experimental.GraphView.GraphView;
-using System.Numerics;
 using Newtonsoft.Json;
 
 
 
+
+// Vector2 cause problem when serialize to JSON
 
 
 public class SpriteCreator_v3 : MonoBehaviour
@@ -65,16 +63,30 @@ public class SpriteCreator_v3 : MonoBehaviour
     public List<SpriteObj> spriteList = new List<SpriteObj>();
     public List<SpriteObjJSON> spriteListJSON = new List<SpriteObjJSON>();
     public Texture2D BaseImg = null;
+    public class CombinedJSON
+    {
+        public int canvaWidth;
+        public int canvaHeight;
+        public List<SpriteObjJSON> spriteListJSON;        
+        public CombinedJSON(int canvaWidth, int canvaHeight,List<SpriteObjJSON>  spriteListJSON)
+        {
+            this.canvaWidth = canvaWidth;
+            this.canvaHeight = canvaHeight;
+            this.spriteListJSON = spriteListJSON;
+        }
+    }
+
+
 
     //the image can not contain pure black !
     private void Awake()
     {
-        //supprimer toutes les img présente dans le dossier
+        BaseImg = Resources.Load<Texture2D>("Province_Map"); //aller la rechercher automatiquement grâce à son nom et la set comme readeable
+        
         pathSave += "/sprites_terrain/provinces_split";
         if (MainMenuControler.recalculateMapChoice == true)
         {
 
-            //GenerateColorFormat(colorToGet);
             DeleteOldSprite();
 
             GenerateMapSprite();
@@ -83,20 +95,18 @@ public class SpriteCreator_v3 : MonoBehaviour
 
             ChangeImageTypes();
 
+            CreateJSON();
+
+            AssetDatabase.Refresh();
+
         }
         else
         {
             Debug.Log("the map have not been recalculated");
         }
-        BaseImg = Resources.Load<Texture2D>("Province_Map"); //aller la rechercher automatiquement grâce à son nom et la set comme readeable
     }
 
-   
-
-
-    
-
-
+    //Delete all sprite in the file
     private void DeleteOldSprite()
     {
 
@@ -233,14 +243,11 @@ public class SpriteCreator_v3 : MonoBehaviour
  
 
 
-
+    // save all sprite 
     private void SaveSprites(List<SpriteObj> spriteList)
     {
         byte[] bytes;
 
-
-        
-        
         for (int i = 0; i < spriteList.Count; i++)
         {
             int sizeX = spriteList[i].higherX - spriteList[i].lowerX + 1;
@@ -273,15 +280,33 @@ public class SpriteCreator_v3 : MonoBehaviour
                 File.WriteAllBytes(pathSave + "/img_" + i + ".png", bytes);
             }
         }
-        AssetDatabase.Refresh();
 
-        //write the JSON file
-        string output = JsonConvert.SerializeObject(spriteListJSON, Formatting.Indented);
-        File.WriteAllText(Application.dataPath + "/Resources/map_position.json", output);
-        Debug.Log(output);
 
+       
+    
+
+        
     }
 
+    //create JSON holding sprite color and positions
+    private void CreateJSON() {
+        // Create a dictionary with width and height as separate integers
+        Dictionary<string, int[]> canvaSize = new Dictionary<string, int[]>
+        {
+            { "canvaSize", new int[] { BaseImg.width, BaseImg.height } }
+        };
+
+
+        int canvaWidth = BaseImg.width;
+        int canvaHeight = BaseImg.height;
+
+        CombinedJSON combinedData = new CombinedJSON(canvaWidth, canvaHeight,spriteListJSON);
+
+        string output = JsonConvert.SerializeObject(combinedData, Formatting.Indented);
+        File.WriteAllText(Application.dataPath + "/Resources/map_position.json", output);
+
+
+    }
 
     // change texture type from Default to Sprite
     //change sprite mode from multiple to single
@@ -326,6 +351,3 @@ public class SpriteCreator_v3 : MonoBehaviour
         AssetDatabase.Refresh();
     }
 }
-    
-
-
