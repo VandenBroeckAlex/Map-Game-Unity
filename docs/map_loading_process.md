@@ -6,9 +6,9 @@ Back to [Main read me](../README.md)
 ### Todo: Iteration 01
 The first iteration focuses on setting up basic UI components and displaying provinces on the map on loading.
 
-- [ ] **Create Adequate Canvas**
+- [x] **Create Adequate Canvas**
   - Set up a Unity Canvas that will serve as the base for UI components.
-- [ ] **Display Provinces**
+- [x] **Display Provinces**
   - Implement a system to visualize the different provinces on the map.
 
 ### Todo: Iteration 02

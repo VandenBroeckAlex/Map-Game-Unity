@@ -75,14 +75,14 @@ public class SpriteCreator_v3 : MonoBehaviour
         }
     }
 
-
+    string folderPath = "Assets/Resources/provinces_split";
 
     //the image can not contain pure black !
     private void Awake()
     {
         BaseImg = Resources.Load<Texture2D>("Province_Map"); //aller la rechercher automatiquement grâce à son nom et la set comme readeable
         
-        pathSave += "/sprites_terrain/provinces_split";
+        pathSave += "/Resources/provinces_split";
         if (MainMenuControler.recalculateMapChoice == true)
         {
 
@@ -110,7 +110,7 @@ public class SpriteCreator_v3 : MonoBehaviour
     {
 
 
-        string folderPath = "Assets/sprites_terrain/provinces_split";
+        
 
         // Check if the directory exists
         if (Directory.Exists(folderPath))
@@ -195,7 +195,6 @@ public class SpriteCreator_v3 : MonoBehaviour
                 //no ?  create it
                 if (ColorHaveBeenFound == false)
                 {
-                    Debug.Log("new color found !");
                     Vector2Int pxCoord = new Vector2Int(x, y);
                     SpriteObj newSpriteObj = GenerateSpriteObj(pixelColor, pxCoord);
                     spriteList.Add(newSpriteObj);
@@ -279,12 +278,7 @@ public class SpriteCreator_v3 : MonoBehaviour
                 File.WriteAllBytes(pathSave + "/img_" + i + ".png", bytes);
             }
         }
-
-
-       
-    
-
-        
+        AssetDatabase.Refresh();
     }
 
     //create JSON holding sprite color and positions
@@ -311,13 +305,14 @@ public class SpriteCreator_v3 : MonoBehaviour
     //change sprite mode from multiple to single
     private void ChangeImageTypes()
     {
-        string folderPath = "Assets/sprites_terrain/provinces_split";
+       
 
         string[] texturePaths = AssetDatabase.FindAssets("t:texture2D", new[] { folderPath });
 
+        Debug.Log("the length is" + texturePaths.Length);
+        
         foreach (string texturePathGUID in texturePaths)
         {
-            
             string texturePath = AssetDatabase.GUIDToAssetPath(texturePathGUID);
 
             // Get the texture importer for the texture asset
