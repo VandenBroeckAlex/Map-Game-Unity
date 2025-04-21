@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
@@ -17,10 +18,11 @@ public class RaycastScript : MonoBehaviour
         MouseClickHandeler.onRightClick += CallRaycast;
     }
 
-    // Update is called once per frame
+ 
   
 
     private void CallRaycast()
+
     {
         GetRayCast();
 
@@ -34,14 +36,14 @@ public class RaycastScript : MonoBehaviour
         Vector3 mousPos = Input.mousePosition;
         mousPos.z = 100f;
 
-        //Debug.DrawRay(transform.position, mousPos-transform.position,Color.blue);
+        Debug.DrawRay(transform.position, mousPos-transform.position,UnityEngine.Color.blue);
 
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, 100, mask))
+        if (Physics.Raycast(ray, out hit, 10000, mask))
         {
-
+            Debug.Log("hit");
             GetPixelColor(hit);
             
             return GetGameObject(hit);
