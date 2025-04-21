@@ -78,3 +78,6 @@ crashlytics-build.properties
 *.meta
 *.asset
 *.shader
+
+# Don't ignore PNG files in the docs/img directory
+!docs/img/*.png
