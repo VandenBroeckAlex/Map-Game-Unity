@@ -31,26 +31,9 @@ public class mapLoader : MonoBehaviour
 
 
     void Start()
-    {
-        // 1) creat adequate canvas
-        GameObject canvasObj = new GameObject("MapCanvas");
-        canvas = canvasObj.AddComponent<Canvas>();
-        canvas.renderMode = RenderMode.WorldSpace;
-        canvas.pixelPerfect = true;
-        canvas.transform.position = new Vector3(0, 0, 0);
-        canvas.transform.rotation = Quaternion.Euler(90, 0, 0);
-        RectTransform rt = canvas.GetComponent<RectTransform>();
-        rt.pivot = new Vector2(0, 1);
-
-
-        LoadJsonData();
-
-        // Set canva size
-        if(spriteData != null )
-        {
-            canvas.GetComponent<RectTransform>().sizeDelta = new Vector2(spriteData.canvaWidth, spriteData.canvaHeight);
-        }
-        
+    {        
+        LoadJsonData();              
+        CreateCanva();
         LoadSprites(spriteData);      
     }
 
@@ -105,5 +88,22 @@ public class mapLoader : MonoBehaviour
         rt.sizeDelta = new Vector2(sprite.rect.width, sprite.rect.height); // Adjust size based on the sprite
     }
 
+    void CreateCanva() {
 
+        // 1) creat adequate canvas
+        GameObject canvasObj = new GameObject("MapCanvas");
+        canvas = canvasObj.AddComponent<Canvas>();
+        canvas.renderMode = RenderMode.WorldSpace;
+        canvas.pixelPerfect = true;
+        canvas.transform.position = new Vector3(0, 0, 0);
+        canvas.transform.rotation = Quaternion.Euler(90, 0, 0);
+        RectTransform rt = canvas.GetComponent<RectTransform>();
+        rt.pivot = new Vector2(0, 1);
+
+        // set canvas size
+        if (spriteData != null)
+        {
+            canvas.GetComponent<RectTransform>().sizeDelta = new Vector2(spriteData.canvaWidth, spriteData.canvaHeight);
+        }
+    }
 }

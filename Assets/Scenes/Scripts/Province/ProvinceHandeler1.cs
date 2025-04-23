@@ -34,6 +34,7 @@ public class ProvinceHandeler1 : MonoBehaviour
             this.description = description;
             this.owner = owner;
             this.neighbors = neighbors;
+
         }
 
         public Province(int givenID, string givenName, string givenDescription, int givenType, int givenOwner, int[] givenneighbors) { 
