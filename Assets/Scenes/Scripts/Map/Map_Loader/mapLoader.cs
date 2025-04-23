@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Newtonsoft.Json;
+using UnityEditor.U2D.Sprites;
 
 public class mapLoader : MonoBehaviour
 {
@@ -26,6 +27,8 @@ public class mapLoader : MonoBehaviour
 
     JSONData spriteData;
     Canvas canvas;
+    public Material outlineMat;
+
 
     void Start()
     {
@@ -88,7 +91,7 @@ public class mapLoader : MonoBehaviour
        
         Image image = spriteObj.AddComponent<Image>();
         image.sprite = sprite;
-
+        image.material =  outlineMat;
 
         Color spriteColor = new Color(spriteEntry.spriteColor[0], spriteEntry.spriteColor[1], spriteEntry.spriteColor[2]);
         image.color = spriteColor;

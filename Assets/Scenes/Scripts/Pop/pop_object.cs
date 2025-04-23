@@ -26,7 +26,7 @@ public class PopList : MonoBehaviour
     private void Start()
     {
         pops.Clear();
-        for (int i = 0; i < 1000; i++)
+        for (int i = 0; i < 1; i++)
         {
             pops.Add(new Pop(1, 1000, 1, Type.Farmer, Culture.French, Religion.Catholic, 1, new int[] { 1, 2, 1 }, new int[] { 10, 10, 10 }));
             pops.Add(new Pop(1, 1000, 1, Type.Miner, Culture.German, Religion.Protestant, 1, new int[] { 1, 2, 1 }, new int[] { 10, 10, 10 }));

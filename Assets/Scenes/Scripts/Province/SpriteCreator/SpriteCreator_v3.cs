@@ -12,7 +12,7 @@ using Newtonsoft.Json;
 
 
 public class SpriteCreator_v3 : MonoBehaviour
-{   
+{
     string pathSave = Application.dataPath;
     int givenId = 0;
     public class SpriteObj
@@ -27,17 +27,17 @@ public class SpriteCreator_v3 : MonoBehaviour
 
         public SpriteObj(Color SPRITECOLOR, Vector2Int pixelCoord)
         {
-            spriteColor = SPRITECOLOR; 
+            spriteColor = SPRITECOLOR;
             spritePixels = new List<Vector2Int>();
             spritePixels.Add(pixelCoord);
-            higherX = pixelCoord.x; 
+            higherX = pixelCoord.x;
             higherY = pixelCoord.y;
-            lowerX = pixelCoord.x; 
-            lowerY = pixelCoord.y; 
+            lowerX = pixelCoord.x;
+            lowerY = pixelCoord.y;
         }
         public void SetId(int GivenId)
         {
-            id = GivenId; 
+            id = GivenId;
         }
     }
 
@@ -47,16 +47,20 @@ public class SpriteCreator_v3 : MonoBehaviour
         public float[] spriteColor;
         public int lowerX;
         public int higherY;
-        
-     
-        
+        public string name;
+        public string description;
+        public int Type;
+        public int owner;
+        public int[] neighbors;
+
+         
 
         public SpriteObjJSON(float[] SPRITECOLOR, Vector2Int pixelCoord, int givenId)
         {
             id = givenId;
-            spriteColor = SPRITECOLOR; 
-            lowerX = pixelCoord.x; 
-            higherY = pixelCoord.y; 
+            spriteColor = SPRITECOLOR;
+            lowerX = pixelCoord.x;
+            higherY = pixelCoord.y;
         }
     }
     public List<SpriteObj> spriteList = new List<SpriteObj>();
@@ -66,8 +70,8 @@ public class SpriteCreator_v3 : MonoBehaviour
     {
         public int canvaWidth;
         public int canvaHeight;
-        public List<SpriteObjJSON> spriteListJSON;        
-        public CombinedJSON(int canvaWidth, int canvaHeight,List<SpriteObjJSON>  spriteListJSON)
+        public List<SpriteObjJSON> spriteListJSON;
+        public CombinedJSON(int canvaWidth, int canvaHeight, List<SpriteObjJSON> spriteListJSON)
         {
             this.canvaWidth = canvaWidth;
             this.canvaHeight = canvaHeight;
@@ -81,9 +85,14 @@ public class SpriteCreator_v3 : MonoBehaviour
     private void Awake()
     {
         BaseImg = Resources.Load<Texture2D>("Province_Map"); //aller la rechercher automatiquement grâce à son nom et la set comme readeable
-        
+
         pathSave += "/Resources/provinces_split";
-        if (MainMenuControler.recalculateMapChoice == true)
+        TextAsset mapPositionData = Resources.Load<TextAsset>("map_position");
+
+
+        
+
+        if (MainMenuControler.recalculateMapChoice == true || mapPositionData == null || IsFolderEmpty("Assets/Resources/provinces_split") == true)
         {
 
             DeleteOldSprite();
@@ -110,7 +119,7 @@ public class SpriteCreator_v3 : MonoBehaviour
     {
 
 
-        
+
 
         // Check if the directory exists
         if (Directory.Exists(folderPath))
@@ -158,9 +167,11 @@ public class SpriteCreator_v3 : MonoBehaviour
 
 
                 // check if obj color already exist
-                for (int j = 0; j < spriteList.Count; j++) {
+                for (int j = 0; j < spriteList.Count; j++)
+                {
 
-                    if (spriteList[j].spriteColor == pixelColor) {
+                    if (spriteList[j].spriteColor == pixelColor)
+                    {
 
                         Vector2Int PxCoord = new Vector2Int(x, y);
                         spriteList[j].spritePixels.Add(PxCoord);
@@ -215,14 +226,14 @@ public class SpriteCreator_v3 : MonoBehaviour
     public float[] GenerateColorFormat(Color col)
     {
         float[] color = { col.r, col.g, col.b };
-        
 
-        return color; 
+
+        return color;
     }
 
     private int GenerateID()
     {
-        
+
         int id = givenId;
         givenId++;
         return (id);
@@ -238,7 +249,7 @@ public class SpriteCreator_v3 : MonoBehaviour
     }
 
 
- 
+
 
 
     // save all sprite 
@@ -249,11 +260,11 @@ public class SpriteCreator_v3 : MonoBehaviour
         for (int i = 0; i < spriteList.Count; i++)
         {
             int sizeX = spriteList[i].higherX - spriteList[i].lowerX + 1;
-            int sizeY = spriteList[i].higherY - spriteList[i].lowerY + 1;    
-            
+            int sizeY = spriteList[i].higherY - spriteList[i].lowerY + 1;
+
 
             // add sprite obj to JSON
-            Color col = spriteList[i].spriteColor;           
+            Color col = spriteList[i].spriteColor;
             SpriteObjJSON JsonObj = new SpriteObjJSON(GenerateColorFormat(spriteList[i].spriteColor), new Vector2Int(spriteList[i].lowerX, spriteList[i].higherY), spriteList[i].id);
             spriteListJSON.Add(JsonObj);
 
@@ -282,7 +293,8 @@ public class SpriteCreator_v3 : MonoBehaviour
     }
 
     //create JSON holding sprite color and positions
-    private void CreateJSON() {
+    private void CreateJSON()
+    {
         // Create a dictionary with width and height as separate integers
         Dictionary<string, int[]> canvaSize = new Dictionary<string, int[]>
         {
@@ -293,7 +305,7 @@ public class SpriteCreator_v3 : MonoBehaviour
         int canvaWidth = BaseImg.width;
         int canvaHeight = BaseImg.height;
 
-        CombinedJSON combinedData = new CombinedJSON(canvaWidth, canvaHeight,spriteListJSON);
+        CombinedJSON combinedData = new CombinedJSON(canvaWidth, canvaHeight, spriteListJSON);
 
         string output = JsonConvert.SerializeObject(combinedData, Formatting.Indented);
         File.WriteAllText(Application.dataPath + "/Resources/map_position.json", output);
@@ -305,12 +317,12 @@ public class SpriteCreator_v3 : MonoBehaviour
     //change sprite mode from multiple to single
     private void ChangeImageTypes()
     {
-       
+
 
         string[] texturePaths = AssetDatabase.FindAssets("t:texture2D", new[] { folderPath });
 
         Debug.Log("the length is" + texturePaths.Length);
-        
+
         foreach (string texturePathGUID in texturePaths)
         {
             string texturePath = AssetDatabase.GUIDToAssetPath(texturePathGUID);
@@ -329,7 +341,7 @@ public class SpriteCreator_v3 : MonoBehaviour
 
                 // Change the sprite mode to Single
                 textureImporter.spriteImportMode = SpriteImportMode.Single;
-                textureImporter.filterMode = FilterMode.Point;
+                //textureImporter.filterMode = FilterMode.Point;
 
                 // Re-import the texture to apply changes
                 AssetDatabase.ImportAsset(texturePath, ImportAssetOptions.ForceUpdate);
@@ -343,5 +355,20 @@ public class SpriteCreator_v3 : MonoBehaviour
 
         // Refresh the AssetDatabase to reflect changes
         AssetDatabase.Refresh();
+    }
+
+    bool IsFolderEmpty(string folderPath)
+    {
+        // Check if directory exists
+        if (Directory.Exists(folderPath))
+        {
+            // Get all files and subdirectories inside the folder
+            string[] files = Directory.GetFiles(folderPath);
+            string[] subdirectories = Directory.GetDirectories(folderPath);
+
+            // If both files and subdirectories are empty, the folder is empty
+            return files.Length == 0 && subdirectories.Length == 0;
+        }
+        return false;
     }
 }
