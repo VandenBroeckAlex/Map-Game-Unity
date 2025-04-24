@@ -39,7 +39,7 @@ public class mapLoader : MonoBehaviour
 
     void LoadJsonData()
     {
-        TextAsset jsonFile = Resources.Load<TextAsset>("map_position");
+        TextAsset jsonFile = Resources.Load<TextAsset>("map_info");
         spriteData = JsonConvert.DeserializeObject<JSONData>(jsonFile.text);
     }
 

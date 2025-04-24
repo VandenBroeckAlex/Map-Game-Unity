@@ -45,7 +45,7 @@ public class MainMenuControler : MonoBehaviour
     public void OnMapEditorButtonClicked()
     {
         recalculateMapChoice = recalculateMap.value;
-        SceneManager.LoadScene("MapEditor", LoadSceneMode.Single);
+        Loader.Load(Loader.Scene.MapEditor);
 
     }
 

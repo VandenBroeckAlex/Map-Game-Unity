@@ -23,9 +23,11 @@ public class ProvinceHandeler1 : MonoBehaviour
         public string description;
         public int id;
         public int type;
+        public bool isLand;
         public int ownerId;
         public int[] neighbors;
-        private int owner;
+        public int owner;    
+        public int occupierID;
 
         public Province(int id, string name, string description, int owner, int[] neighbors)
         {
@@ -76,7 +78,7 @@ public class ProvinceHandeler1 : MonoBehaviour
 
     void LoadJsonDataMapPosition()
     {
-        TextAsset jsonFile = Resources.Load<TextAsset>("map_position");
+        TextAsset jsonFile = Resources.Load<TextAsset>("map_info");
         provincePosition = JsonConvert.DeserializeObject<JSONData>(jsonFile.text);
     }
 

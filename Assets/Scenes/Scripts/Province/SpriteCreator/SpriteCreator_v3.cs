@@ -87,7 +87,7 @@ public class SpriteCreator_v3 : MonoBehaviour
         BaseImg = Resources.Load<Texture2D>("Province_Map"); //aller la rechercher automatiquement grâce à son nom et la set comme readeable
 
         pathSave += "/Resources/provinces_split";
-        TextAsset mapPositionData = Resources.Load<TextAsset>("map_position");
+        TextAsset mapPositionData = Resources.Load<TextAsset>("map_info");
 
 
         
@@ -308,7 +308,7 @@ public class SpriteCreator_v3 : MonoBehaviour
         CombinedJSON combinedData = new CombinedJSON(canvaWidth, canvaHeight, spriteListJSON);
 
         string output = JsonConvert.SerializeObject(combinedData, Formatting.Indented);
-        File.WriteAllText(Application.dataPath + "/Resources/map_position.json", output);
+        File.WriteAllText(Application.dataPath + "/Resources/map_info.json", output);
 
 
     }

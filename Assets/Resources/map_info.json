@@ -455,21 +455,6 @@
     {
       "id": 30,
       "spriteColor": [
-        0.784313738,
-        0.258823544,
-        0.607843161
-      ],
-      "lowerX": 720,
-      "higherY": 264,
-      "name": null,
-      "description": null,
-      "Type": 0,
-      "owner": 0,
-      "neighbors": null
-    },
-    {
-      "id": 31,
-      "spriteColor": [
         0.9490196,
         0.784313738,
         0.596078455
@@ -483,7 +468,7 @@
       "neighbors": null
     },
     {
-      "id": 32,
+      "id": 31,
       "spriteColor": [
         0.9098039,
         0.7490196,
@@ -498,7 +483,7 @@
       "neighbors": null
     },
     {
-      "id": 33,
+      "id": 32,
       "spriteColor": [
         0.980392158,
         0.6862745,
@@ -513,7 +498,7 @@
       "neighbors": null
     },
     {
-      "id": 34,
+      "id": 33,
       "spriteColor": [
         0.733333349,
         0.137254909,
@@ -528,7 +513,7 @@
       "neighbors": null
     },
     {
-      "id": 35,
+      "id": 34,
       "spriteColor": [
         0.929411769,
         0.7176471,
@@ -543,7 +528,7 @@
       "neighbors": null
     },
     {
-      "id": 36,
+      "id": 35,
       "spriteColor": [
         0.796078444,
         0.321568638,
@@ -558,7 +543,7 @@
       "neighbors": null
     },
     {
-      "id": 37,
+      "id": 36,
       "spriteColor": [
         0.7764706,
         0.321568638,
@@ -573,7 +558,7 @@
       "neighbors": null
     },
     {
-      "id": 38,
+      "id": 37,
       "spriteColor": [
         0.5921569,
         0.9137255,
@@ -588,7 +573,7 @@
       "neighbors": null
     },
     {
-      "id": 39,
+      "id": 38,
       "spriteColor": [
         0.745098054,
         0.490196079,
@@ -603,7 +588,7 @@
       "neighbors": null
     },
     {
-      "id": 40,
+      "id": 39,
       "spriteColor": [
         0.4745098,
         0.2,
@@ -618,7 +603,7 @@
       "neighbors": null
     },
     {
-      "id": 41,
+      "id": 40,
       "spriteColor": [
         0.494117647,
         0.196078435,
@@ -633,7 +618,7 @@
       "neighbors": null
     },
     {
-      "id": 42,
+      "id": 41,
       "spriteColor": [
         0.5921569,
         0.9098039,
@@ -648,7 +633,7 @@
       "neighbors": null
     },
     {
-      "id": 43,
+      "id": 42,
       "spriteColor": [
         0.7294118,
         0.141176477,
@@ -663,7 +648,7 @@
       "neighbors": null
     },
     {
-      "id": 44,
+      "id": 43,
       "spriteColor": [
         0.58431375,
         0.870588243,
@@ -678,7 +663,7 @@
       "neighbors": null
     },
     {
-      "id": 45,
+      "id": 44,
       "spriteColor": [
         0.545098066,
         0.894117653,
@@ -693,7 +678,7 @@
       "neighbors": null
     },
     {
-      "id": 46,
+      "id": 45,
       "spriteColor": [
         0.56078434,
         0.9098039,
@@ -708,7 +693,7 @@
       "neighbors": null
     },
     {
-      "id": 47,
+      "id": 46,
       "spriteColor": [
         0.58431375,
         0.819607854,
@@ -723,7 +708,7 @@
       "neighbors": null
     },
     {
-      "id": 48,
+      "id": 47,
       "spriteColor": [
         0.6862745,
         0.8117647,
@@ -738,7 +723,7 @@
       "neighbors": null
     },
     {
-      "id": 49,
+      "id": 48,
       "spriteColor": [
         0.6862745,
         0.827451,
@@ -753,7 +738,7 @@
       "neighbors": null
     },
     {
-      "id": 50,
+      "id": 49,
       "spriteColor": [
         0.56078434,
         0.8509804,
@@ -768,7 +753,7 @@
       "neighbors": null
     },
     {
-      "id": 51,
+      "id": 50,
       "spriteColor": [
         0.549019635,
         0.905882359,
@@ -783,7 +768,7 @@
       "neighbors": null
     },
     {
-      "id": 52,
+      "id": 51,
       "spriteColor": [
         0.9529412,
         0.466666669,
@@ -798,7 +783,7 @@
       "neighbors": null
     },
     {
-      "id": 53,
+      "id": 52,
       "spriteColor": [
         0.5686275,
         0.8392157,
@@ -813,7 +798,7 @@
       "neighbors": null
     },
     {
-      "id": 54,
+      "id": 53,
       "spriteColor": [
         0.733333349,
         0.5137255,
@@ -828,7 +813,7 @@
       "neighbors": null
     },
     {
-      "id": 55,
+      "id": 54,
       "spriteColor": [
         0.5764706,
         0.827451,
@@ -843,7 +828,7 @@
       "neighbors": null
     },
     {
-      "id": 56,
+      "id": 55,
       "spriteColor": [
         0.68235296,
         0.807843149,
@@ -858,7 +843,7 @@
       "neighbors": null
     },
     {
-      "id": 57,
+      "id": 56,
       "spriteColor": [
         0.6627451,
         0.8039216,
@@ -873,7 +858,7 @@
       "neighbors": null
     },
     {
-      "id": 58,
+      "id": 57,
       "spriteColor": [
         0.670588255,
         0.8039216,
@@ -888,7 +873,7 @@
       "neighbors": null
     },
     {
-      "id": 59,
+      "id": 58,
       "spriteColor": [
         0.6862745,
         0.8117647,
@@ -903,7 +888,7 @@
       "neighbors": null
     },
     {
-      "id": 60,
+      "id": 59,
       "spriteColor": [
         0.0,
         0.0,
@@ -918,7 +903,7 @@
       "neighbors": null
     },
     {
-      "id": 61,
+      "id": 60,
       "spriteColor": [
         0.105882354,
         0.4392157,
@@ -933,7 +918,7 @@
       "neighbors": null
     },
     {
-      "id": 62,
+      "id": 61,
       "spriteColor": [
         0.466666669,
         0.905882359,
@@ -948,7 +933,7 @@
       "neighbors": null
     },
     {
-      "id": 63,
+      "id": 62,
       "spriteColor": [
         0.996078432,
         0.109803922,
@@ -963,7 +948,7 @@
       "neighbors": null
     },
     {
-      "id": 64,
+      "id": 63,
       "spriteColor": [
         0.996078432,
         0.113725491,
@@ -978,7 +963,7 @@
       "neighbors": null
     },
     {
-      "id": 65,
+      "id": 64,
       "spriteColor": [
         1.0,
         0.101960786,
@@ -993,7 +978,7 @@
       "neighbors": null
     },
     {
-      "id": 66,
+      "id": 65,
       "spriteColor": [
         1.0,
         0.09803922,
@@ -1008,7 +993,7 @@
       "neighbors": null
     },
     {
-      "id": 67,
+      "id": 66,
       "spriteColor": [
         0.5568628,
         0.9098039,
@@ -1023,7 +1008,7 @@
       "neighbors": null
     },
     {
-      "id": 68,
+      "id": 67,
       "spriteColor": [
         0.5764706,
         0.831372559,
@@ -1038,7 +1023,7 @@
       "neighbors": null
     },
     {
-      "id": 69,
+      "id": 68,
       "spriteColor": [
         1.0,
         0.196078435,
@@ -1053,7 +1038,7 @@
       "neighbors": null
     },
     {
-      "id": 70,
+      "id": 69,
       "spriteColor": [
         0.5529412,
         0.905882359,
@@ -1068,7 +1053,7 @@
       "neighbors": null
     },
     {
-      "id": 71,
+      "id": 70,
       "spriteColor": [
         0.6745098,
         0.8666667,
@@ -1083,7 +1068,7 @@
       "neighbors": null
     },
     {
-      "id": 72,
+      "id": 71,
       "spriteColor": [
         0.6862745,
         0.819607854,
@@ -1098,7 +1083,7 @@
       "neighbors": null
     },
     {
-      "id": 73,
+      "id": 72,
       "spriteColor": [
         0.6862745,
         0.819607854,
@@ -1113,7 +1098,7 @@
       "neighbors": null
     },
     {
-      "id": 74,
+      "id": 73,
       "spriteColor": [
         0.549019635,
         0.9019608,
@@ -1128,7 +1113,7 @@
       "neighbors": null
     },
     {
-      "id": 75,
+      "id": 74,
       "spriteColor": [
         0.6431373,
         0.9019608,
@@ -1143,7 +1128,7 @@
       "neighbors": null
     },
     {
-      "id": 76,
+      "id": 75,
       "spriteColor": [
         0.905882359,
         0.494117647,
@@ -1158,7 +1143,7 @@
       "neighbors": null
     },
     {
-      "id": 77,
+      "id": 76,
       "spriteColor": [
         1.0,
         0.08235294,
@@ -1173,7 +1158,7 @@
       "neighbors": null
     },
     {
-      "id": 78,
+      "id": 77,
       "spriteColor": [
         0.6745098,
         0.8039216,
@@ -1188,7 +1173,7 @@
       "neighbors": null
     },
     {
-      "id": 79,
+      "id": 78,
       "spriteColor": [
         0.596078455,
         0.8039216,
@@ -1203,7 +1188,7 @@
       "neighbors": null
     },
     {
-      "id": 80,
+      "id": 79,
       "spriteColor": [
         0.65882355,
         0.8862745,
@@ -1218,7 +1203,7 @@
       "neighbors": null
     },
     {
-      "id": 81,
+      "id": 80,
       "spriteColor": [
         0.8745098,
         0.219607845,
@@ -1233,7 +1218,7 @@
       "neighbors": null
     },
     {
-      "id": 82,
+      "id": 81,
       "spriteColor": [
         0.670588255,
         0.8666667,
@@ -1248,7 +1233,7 @@
       "neighbors": null
     },
     {
-      "id": 83,
+      "id": 82,
       "spriteColor": [
         0.572549045,
         0.831372559,
@@ -1263,7 +1248,7 @@
       "neighbors": null
     },
     {
-      "id": 84,
+      "id": 83,
       "spriteColor": [
         0.596078455,
         0.9137255,
@@ -1278,7 +1263,7 @@
       "neighbors": null
     },
     {
-      "id": 85,
+      "id": 84,
       "spriteColor": [
         0.6509804,
         0.8,
@@ -1293,7 +1278,7 @@
       "neighbors": null
     },
     {
-      "id": 86,
+      "id": 85,
       "spriteColor": [
         0.572549045,
         0.9137255,
@@ -1308,7 +1293,7 @@
       "neighbors": null
     },
     {
-      "id": 87,
+      "id": 86,
       "spriteColor": [
         0.5803922,
         0.9137255,
@@ -1323,7 +1308,7 @@
       "neighbors": null
     },
     {
-      "id": 88,
+      "id": 87,
       "spriteColor": [
         0.572549045,
         0.9098039,
@@ -1338,7 +1323,7 @@
       "neighbors": null
     },
     {
-      "id": 89,
+      "id": 88,
       "spriteColor": [
         0.6784314,
         0.8039216,
@@ -1353,7 +1338,7 @@
       "neighbors": null
     },
     {
-      "id": 90,
+      "id": 89,
       "spriteColor": [
         0.654902,
         0.8,
@@ -1368,7 +1353,7 @@
       "neighbors": null
     },
     {
-      "id": 91,
+      "id": 90,
       "spriteColor": [
         1.0,
         0.08235294,
