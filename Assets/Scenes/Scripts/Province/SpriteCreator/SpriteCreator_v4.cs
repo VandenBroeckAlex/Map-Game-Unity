@@ -3,6 +3,8 @@ using UnityEngine;
 using System.IO;
 using Newtonsoft.Json;
 using System.Linq;
+using static UnityEngine.RuleTile.TilingRuleOutput;
+
 
 public class SpriteCreator_v4 : MonoBehaviour
 {
@@ -12,7 +14,7 @@ public class SpriteCreator_v4 : MonoBehaviour
     public Texture2D BaseImg = null;
 
     public List<SpriteObj> spriteObjList = new List<SpriteObj>();
-    public List<ObjJSON> ListObjJSON = new List<ObjJSON>();
+    public List<ObjJSONTemp> ListObjJSONTemp = new List<ObjJSONTemp>();
 
     string baseImagePath;
     string jsonSavePath;
@@ -98,7 +100,6 @@ public class SpriteCreator_v4 : MonoBehaviour
                                 sprite.neighboreColor.Add(lastColor);
                             }
                         }
-
                         colorFoundInList = true;
                         break;
                     }
@@ -110,7 +111,6 @@ public class SpriteCreator_v4 : MonoBehaviour
                     SpriteObj newSpriteObj = GenerateSpriteObj(pixelColor, pxCoord, GenerateColorFormat(lastPxColor));
                     spriteObjList.Add(newSpriteObj);
                 }
-
                 lastPxColor = pixelColor;
             }
         }
@@ -160,23 +160,17 @@ public class SpriteCreator_v4 : MonoBehaviour
                 File.WriteAllBytes(filePath, bytes);
             }
 
-            ObjJSON jsonObj = new ObjJSON(
+            ObjJSONTemp jsonObj = new ObjJSONTemp(
                 GenerateColorFormat(sprite.spriteColor),
                 new Vector2Int(sprite.lowerX, sprite.higherY),
                 sprite.id,
                 sprite.neighboreColor
             );
 
-            ListObjJSON.Add(jsonObj);
+            ListObjJSONTemp.Add(jsonObj);
         }
     }
 
-    private void CreateJSON()
-    {
-        CombinedJSON combinedData = new CombinedJSON(BaseImg.width, BaseImg.height, ListObjJSON);
-        string output = JsonConvert.SerializeObject(combinedData, Formatting.Indented);
-        File.WriteAllText(jsonSavePath, output);
-    }
 
     private bool IsFolderEmpty(string folderPath)
     {
@@ -210,7 +204,7 @@ public class SpriteCreator_v4 : MonoBehaviour
         public void SetId(int id) => this.id = id;
     }
 
-    public class ObjJSON
+    public class ObjJSONTemp
     {
         public int id;
         public float[] spriteColor;
@@ -222,7 +216,7 @@ public class SpriteCreator_v4 : MonoBehaviour
         public int owner = 0;
         public List<float[]> neighbors;
 
-        public ObjJSON(float[] color, Vector2Int coord, int id, List<float[]> neighbors)
+        public ObjJSONTemp(float[] color, Vector2Int coord, int id, List<float[]> neighbors)
         {
             this.id = id;
             this.spriteColor = color;
@@ -232,11 +226,37 @@ public class SpriteCreator_v4 : MonoBehaviour
         }
     }
 
+
+    public class ObjJSON
+    {
+        public int id;
+        public float[] spriteColor;
+        public int lowerX;
+        public int higherY;
+        public string name = "";
+        public string description = "";
+        public int Type = 0;
+        public int owner = 0;
+        public List<int> neighbors;
+
+        public ObjJSON(float[] color, int x, int y, int id, List<int> neighbors)
+        {
+            this.id = id;
+            this.spriteColor = color;
+            this.lowerX = x;
+            this.higherY = y;
+            this.neighbors = neighbors;
+        }
+    }
+
     public class CombinedJSON
     {
         public int canvaWidth;
         public int canvaHeight;
+
         public List<ObjJSON> spriteListJSON;
+
+
 
         public CombinedJSON(int width, int height, List<ObjJSON> list)
         {
@@ -245,4 +265,30 @@ public class SpriteCreator_v4 : MonoBehaviour
             spriteListJSON = list;
         }
     }
+
+    private void CreateJSON()
+    {
+        List<ObjJSON> ListObjJSON = new List<ObjJSON>();
+        var colorToId = ListObjJSONTemp.ToDictionary(o => o.spriteColor, o => o.id);
+
+        foreach (var objTemp in ListObjJSONTemp)
+        {
+            var neighborIDs = new List<int>();
+
+            foreach (var color in objTemp.neighbors)
+            {
+                if (colorToId.TryGetValue(color, out int id))
+                {
+                    neighborIDs.Add(id);
+                }
+            }
+
+            ListObjJSON.Add(new ObjJSON(objTemp.spriteColor, objTemp.id, objTemp.lowerX, objTemp.higherY, neighborIDs));
+        }
+
+        CombinedJSON combinedData = new CombinedJSON(BaseImg.width, BaseImg.height, ListObjJSON);
+        string output = JsonConvert.SerializeObject(combinedData, Formatting.Indented);
+        File.WriteAllText(jsonSavePath, output);
+    }
+
 }
