@@ -92,7 +92,7 @@ public class SpriteCreator_v3 : MonoBehaviour
 
         //MainMenuControler.recalculateMapChoice == true || mapPositionData == null || IsFolderEmpty("Assets/Resources/provinces_split") == true
 
-        if ( true == true )
+        if (MainMenuControler.recalculateMapChoice == true || mapPositionData == null || IsFolderEmpty("Assets/Resources/provinces_split") == true)
         {
 
             DeleteOldSprite();
