@@ -3,7 +3,7 @@ using UnityEngine;
 using System.IO;
 using Newtonsoft.Json;
 using System.Linq;
-using static UnityEngine.RuleTile.TilingRuleOutput;
+
 
 
 public class SpriteCreator_v4 : MonoBehaviour
@@ -171,7 +171,7 @@ public class SpriteCreator_v4 : MonoBehaviour
         }
     }
 
-
+   
     private bool IsFolderEmpty(string folderPath)
     {
         if (Directory.Exists(folderPath))
@@ -253,8 +253,8 @@ public class SpriteCreator_v4 : MonoBehaviour
     {
         public int canvaWidth;
         public int canvaHeight;
-
-        public List<ObjJSON> spriteListJSON;
+        
+        public List <ObjJSON> spriteListJSON;
 
 
 
@@ -269,21 +269,26 @@ public class SpriteCreator_v4 : MonoBehaviour
     private void CreateJSON()
     {
         List<ObjJSON> ListObjJSON = new List<ObjJSON>();
-        var colorToId = ListObjJSONTemp.ToDictionary(o => o.spriteColor, o => o.id);
-
-        foreach (var objTemp in ListObjJSONTemp)
+        for (int i = 0; i < ListObjJSONTemp.Count; i++)
         {
-            var neighborIDs = new List<int>();
+            List<int> neighboreID = new List<int>();
 
-            foreach (var color in objTemp.neighbors)
+            // check for all neighbore id
+            for (int y = 0; y < ListObjJSONTemp[i].neighbors.Count; y++)
             {
-                if (colorToId.TryGetValue(color, out int id))
+
+                for (int x = 0; x < ListObjJSONTemp.Count; x++)
                 {
-                    neighborIDs.Add(id);
+                    if (Enumerable.SequenceEqual(ListObjJSONTemp[i].neighbors[y], ListObjJSONTemp[x].spriteColor))
+                    {
+                        neighboreID.Add(ListObjJSONTemp[x].id);
+                        continue;
+                    }
                 }
             }
 
-            ListObjJSON.Add(new ObjJSON(objTemp.spriteColor, objTemp.id, objTemp.lowerX, objTemp.higherY, neighborIDs));
+            ObjJSON obj = new ObjJSON(ListObjJSONTemp[i].spriteColor, ListObjJSONTemp[i].lowerX, ListObjJSONTemp[i].higherY, ListObjJSONTemp[i].id, neighboreID);
+            ListObjJSON.Add(obj);
         }
 
         CombinedJSON combinedData = new CombinedJSON(BaseImg.width, BaseImg.height, ListObjJSON);
