@@ -1,14 +1,13 @@
-using System;
+﻿using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using Newtonsoft.Json;
-using UnityEditor.U2D.Sprites;
 
 public class mapLoader : MonoBehaviour
 {
-    // Start is called before the first frame update
     public class SpritePositionData
     {
         public int id;
@@ -29,81 +28,115 @@ public class mapLoader : MonoBehaviour
     Canvas canvas;
     public Material outlineMat;
 
-
     void Start()
-    {        
-        LoadJsonData();              
+    {
+        LoadJsonData();
         CreateCanva();
-        LoadSprites(spriteData);      
+        StartCoroutine(LoadSpritesAsync(spriteData));
     }
 
     void LoadJsonData()
     {
-        TextAsset jsonFile = Resources.Load<TextAsset>("map_info");
-        spriteData = JsonConvert.DeserializeObject<JSONData>(jsonFile.text);
+        string jsonPath = Path.Combine(Application.persistentDataPath, "map_info.json");
+
+        if (File.Exists(jsonPath))
+        {
+            string jsonText = File.ReadAllText(jsonPath);
+            spriteData = JsonConvert.DeserializeObject<JSONData>(jsonText);
+        }
+        else
+        {
+            Debug.LogError("map_info.json not found at " + jsonPath);
+        }
     }
 
-    void LoadSprites(JSONData spriteData)
+    IEnumerator LoadSpritesAsync(JSONData spriteData)
     {
-        Debug.Log(spriteData.spriteListJSON);
+        string folderPath = Path.Combine(Application.persistentDataPath, "provinces_split");
+
+        int loadedCount = 0;
 
         foreach (var spriteEntry in spriteData.spriteListJSON)
         {
-            string spritePath = $"provinces_split/img_{spriteEntry.id}"; 
-            Sprite sprite = Resources.Load<Sprite>(spritePath);
+            try
+            {
+                string filePath = Path.Combine(folderPath, $"img_{spriteEntry.id}.png");
 
-            if (sprite != null)
-            {
-                CreateSpriteImage(sprite, spriteEntry);
+                if (File.Exists(filePath))
+                {
+                    byte[] fileData = File.ReadAllBytes(filePath);
+
+                    Texture2D tex = new Texture2D(2, 2);
+                    if (tex.LoadImage(fileData))
+                    {
+                        tex.filterMode = FilterMode.Point;
+                        Sprite sprite = Sprite.Create(tex, new Rect(0, 0, tex.width, tex.height), new Vector2(0, 1));
+                        CreateSpriteImage(sprite, spriteEntry);
+                        loadedCount++;
+                    }
+                    else
+                    {
+                        Debug.LogError($"Failed to load texture from {filePath}");
+                    }
+                }
+                else
+                {
+                    Debug.LogWarning($"Image not found: {filePath}");
+                }
             }
-            else
+            catch (System.Exception ex)
             {
-                Debug.LogError($"Sprite with name provinces_split/img_{spriteEntry.id} not found.");
+                Debug.LogError($"Exception loading sprite ID {spriteEntry.id}: {ex}");
             }
+
+            // This must be outside the try-catch
+            yield return null;
         }
+
+        Debug.Log($"Finished loading {loadedCount}/{spriteData.spriteListJSON.Length} sprites.");
     }
 
 
     void CreateSpriteImage(Sprite sprite, SpritePositionData spriteEntry)
     {
-        // Create a new GameObject to hold the Image
         GameObject spriteObj = new GameObject("Sprite_" + spriteEntry.id);
-        spriteObj.transform.SetParent(canvas.transform); // Set the parent to the Canva
-
+        spriteObj.transform.SetParent(canvas.transform);
         spriteObj.transform.rotation = Quaternion.Euler(90, 0, 0);
-       
+
         Image image = spriteObj.AddComponent<Image>();
         image.sprite = sprite;
-        image.material =  outlineMat;
+        image.material = outlineMat;
 
-        Color spriteColor = new Color(spriteEntry.spriteColor[0], spriteEntry.spriteColor[1], spriteEntry.spriteColor[2]);
+        Color spriteColor = new Color(
+            spriteEntry.spriteColor[0],
+            spriteEntry.spriteColor[1],
+            spriteEntry.spriteColor[2]
+        );
         image.color = spriteColor;
 
-        // Set the position based on the `lowerX` and `higherY` values
         RectTransform rt = spriteObj.GetComponent<RectTransform>();
-        rt.anchorMin = new Vector2(0, 0);   // Min anchor at top-left
-        rt.anchorMax = new Vector2(0, 0);
-        rt.pivot = new  Vector2 (0,1);
-        rt.anchoredPosition = new Vector2(spriteEntry.lowerX , spriteEntry.higherY + 1); // 1 is added to Y because the map is 1px out of the canvas without it, for some reason.
-        rt.sizeDelta = new Vector2(sprite.rect.width, sprite.rect.height); // Adjust size based on the sprite
+        rt.anchorMin = Vector2.zero;
+        rt.anchorMax = Vector2.zero;
+        rt.pivot = new Vector2(0, 1);
+        rt.anchoredPosition = new Vector2(spriteEntry.lowerX, spriteEntry.higherY + 1);
+        rt.sizeDelta = new Vector2(sprite.rect.width, sprite.rect.height);
     }
 
-    void CreateCanva() {
-
-        // 1) creat adequate canvas
+    void CreateCanva()
+    {
         GameObject canvasObj = new GameObject("MapCanvas");
         canvas = canvasObj.AddComponent<Canvas>();
         canvas.renderMode = RenderMode.WorldSpace;
         canvas.pixelPerfect = true;
-        canvas.transform.position = new Vector3(0, 0, 0);
+        canvas.transform.position = Vector3.zero;
         canvas.transform.rotation = Quaternion.Euler(90, 0, 0);
+
         RectTransform rt = canvas.GetComponent<RectTransform>();
         rt.pivot = new Vector2(0, 1);
 
-        // set canvas size
         if (spriteData != null)
         {
-            canvas.GetComponent<RectTransform>().sizeDelta = new Vector2(spriteData.canvaWidth, spriteData.canvaHeight);
+            rt.sizeDelta = new Vector2(spriteData.canvaWidth, spriteData.canvaHeight);
         }
     }
 }

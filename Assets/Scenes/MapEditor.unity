@@ -372,7 +372,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 652475200}
-  - component: {fileID: 652475197}
+  - component: {fileID: 652475201}
   m_Layer: 0
   m_Name: MapCreator
   m_TagString: Untagged
@@ -380,19 +380,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &652475197
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 652475196}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6c3ee2017c14c3d46b50678b36042382, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  BaseImg: {fileID: 0}
 --- !u!4 &652475200
 Transform:
   m_ObjectHideFlags: 0
@@ -408,6 +395,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &652475201
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 652475196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b492dfa36342cf49848740af56b9d67, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  BaseImg: {fileID: 0}
 --- !u!1 &852875661
 GameObject:
   m_ObjectHideFlags: 0
@@ -616,7 +616,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49271683fb270bd478ecdb5458d3cd5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMat: {fileID: 2100000, guid: 989edeec971fa9b41be75761760b0187, type: 2}
+  outlineMat: {fileID: 2100000, guid: 92dc20b4970df354a84061088b0dfc42, type: 2}
 --- !u!114 &1401406616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -629,7 +629,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 71f53150bee42e04dbd17388c53d7dda, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  resourcePath: Province_Map_height
+  fileName: Province_Map_height.png
   terrainMaxHeight: 5
   waterMaterial: {fileID: 2100000, guid: 141d9d6ca43b6c843965491604c6deff, type: 2}
   provinceIdMat: {fileID: 2100000, guid: aa60ab8e189bc594f85e2775eea2c0e6, type: 2}

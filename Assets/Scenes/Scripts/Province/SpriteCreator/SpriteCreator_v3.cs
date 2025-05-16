@@ -1,4 +1,4 @@
-
+ï»¿
 using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
@@ -53,7 +53,7 @@ public class SpriteCreator_v3 : MonoBehaviour
         public int owner;
         public int[] neighbors;
 
-         
+
 
         public SpriteObjJSON(float[] SPRITECOLOR, Vector2Int pixelCoord, int givenId)
         {
@@ -84,15 +84,15 @@ public class SpriteCreator_v3 : MonoBehaviour
     //the image can not contain pure black !
     private void Awake()
     {
-        BaseImg = Resources.Load<Texture2D>("Province_Map"); //aller la rechercher automatiquement grâce à son nom et la set comme readeable
+        BaseImg = Resources.Load<Texture2D>("Province_Map"); //aller la rechercher automatiquement grï¿½ce ï¿½ son nom et la set comme readeable
 
         pathSave += "/Resources/provinces_split";
         TextAsset mapPositionData = Resources.Load<TextAsset>("map_info");
 
 
-        
+        //MainMenuControler.recalculateMapChoice == true || mapPositionData == null || IsFolderEmpty("Assets/Resources/provinces_split") == true
 
-        if (MainMenuControler.recalculateMapChoice == true || mapPositionData == null || IsFolderEmpty("Assets/Resources/provinces_split") == true)
+        if ( true == true )
         {
 
             DeleteOldSprite();

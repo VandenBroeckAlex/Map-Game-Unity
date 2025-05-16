@@ -14,11 +14,11 @@ The first iteration focuses on setting up basic UI components and displaying pro
 ### Todo: Iteration 02
 In the second iteration, the goal is to add a 3D terrain, create a sea feature, and overlay the canvas UI on top of a 3D terrain.
 
-- [ ] **Create 3D Terrain**
+- [X] **Create 3D Terrain**
   - Load 3D terrain to serve as the foundation for the map.
-- [ ] **Create Sea**
+- [X] **Create Sea**
   - Add an ocean or sea layer to represent water bodies on the map.
-- [ ] **Superimpose Canvas and Terrain**
+- [X] **Superimpose Canvas and Terrain**
   - Ensure that the UI elements (like province names or info) are correctly overlaid on the 3D terrain.
 
 ### Todo: Iteration 03
