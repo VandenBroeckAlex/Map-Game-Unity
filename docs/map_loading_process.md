@@ -24,10 +24,19 @@ In the second iteration, the goal is to add a 3D terrain, create a sea feature, 
 ### Todo: Iteration 03
 The third iteration will include an editor tool for managing provinces, as well as visual features for linking province selection to specific colors.
 
+- [X] **Link Provinces Data**
+  - retrive  province data from the json.
+
+- [X] **Auto neighbore system**
+  - Make an automated way to logically connect provinces that are next to each others.
+- [ ] **Link Province Selection to Color**
+  - Implement functionality that allows users to select a province, which will then be highlighted. using the color map and not hit box for every tile(province)
+
 - [ ] **Province Editor Tool**
   - Develop a tool that allows users to create, edit, and manage provinces on the map.
-- [ ] **Link Province Selection to Color**
-  - Implement functionality that allows users to select a province, which will then be highlighted or assigned a specific color.
+
+- [ ] **Save provinces data**
+
 
 ## Explanation
 

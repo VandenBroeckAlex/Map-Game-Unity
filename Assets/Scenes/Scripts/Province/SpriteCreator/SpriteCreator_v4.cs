@@ -150,7 +150,7 @@ public class SpriteCreator_v4 : MonoBehaviour
                 colorArray[x + y * width] = Color.cyan;
             }
 
-            tex.SetPixels(colorArray);
+            tex.SetPixels(colorArray); 
             tex.Apply();
 
             byte[] bytes = tex.EncodeToPNG();
@@ -238,6 +238,8 @@ public class SpriteCreator_v4 : MonoBehaviour
         public int Type = 0;
         public int owner = 0;
         public List<int> neighbors;
+
+
 
         public ObjJSON(float[] color, int x, int y, int id, List<int> neighbors)
         {

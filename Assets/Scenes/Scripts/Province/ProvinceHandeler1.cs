@@ -1,8 +1,8 @@
-using JetBrains.Annotations;
 using Newtonsoft.Json;
 using System;
-using System.Collections;
+using System.IO;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static SpriteCreator_v3;
 
@@ -49,6 +49,20 @@ public class ProvinceHandeler1 : MonoBehaviour
 
         }
     }
+
+    [Serializable]
+    public class SpriteObjJSON
+    {
+        public int id;
+        public string name;
+        public string description;
+        public int Type;
+        public int owner;
+        public int[] neighbors;
+        public int lowerX;
+        public int higherY;
+    }
+
     public class JSONData
     {
        
@@ -71,15 +85,23 @@ public class ProvinceHandeler1 : MonoBehaviour
 
         foreach (var provinceEntry in provincePosition.spriteListJSON)
         {
-            allProvinces.Add(new Province(provinceEntry.id, provinceEntry.name, provinceEntry.description, provinceEntry.owner, provinceEntry.neighbors));
-  
+            Debug.Log(provinceEntry.neighbors.ToString());
+            allProvinces.Add(new Province(
+                                         provinceEntry.id,
+                                         provinceEntry.name,
+                                         provinceEntry.description,
+                                         provinceEntry.owner,
+                                         provinceEntry.neighbors
+                                         ));
+
         }
     }
 
     void LoadJsonDataMapPosition()
     {
-        TextAsset jsonFile = Resources.Load<TextAsset>("map_info");
-        provincePosition = JsonConvert.DeserializeObject<JSONData>(jsonFile.text);
+        string fullPath = Path.Combine(Application.persistentDataPath, "map_info.json");
+        string jsonFile = File.ReadAllText(fullPath);
+        provincePosition = JsonConvert.DeserializeObject<JSONData>(jsonFile);
     }
 
 }
