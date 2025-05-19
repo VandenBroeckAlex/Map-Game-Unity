@@ -35,13 +35,27 @@ The third iteration will include an editor tool for managing provinces, as well 
 - [ ] **Province Editor Tool**
   - Develop a tool that allows users to create, edit, and manage provinces on the map.
 
+- [ ] **Graph for displacement and distance between provinces**
+      -keep track of neighbore
+      -add distance
 - [ ] **Save provinces data**
 
+- [ ] **prevent camera passing through terrain**
 
+- [ ] **restrict camera to terrain size**
+
+- [ ] **center camera on terrain on game enter**
 ## Explanation
 
 The canvas is created based on the size of the `Province_Map.png` image.
 Each province is positioned on the canvas using the `lowerX` and `higherY` values, which represent the top-left corner of the sprite. These values are extracted from the map position JSON file (`.Assets/Resources`), which is generated during the map creation phase.
+
+### Todo: Iteration 04
+- [ ] **load data correctly**
+
+- [ ] **test projector for provinces**
+
+- [ ] **terrain height addapting to terrain type**
 
 The terrain is created based on `.Assets/Resources/height_map.png` wich is used as a displacement map.
 [What is displacement mapping ?](https://www.creativebloq.com/features/a-beginners-guide-to-displacement-and-bump-maps)
