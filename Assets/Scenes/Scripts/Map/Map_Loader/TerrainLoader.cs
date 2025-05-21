@@ -1,5 +1,6 @@
 using System.IO;
 using UnityEngine;
+using UnityEngine.Rendering;
 
 public class TerrainFromExactImageSize : MonoBehaviour
 {
@@ -82,7 +83,17 @@ public class TerrainFromExactImageSize : MonoBehaviour
         provinceIDPlane.transform.position = new Vector3(imgWidth / 2, 0, -imgHeight / 2);
         provinceIDPlane.transform.rotation = Quaternion.Euler(0, 180, 0);
         provinceIDPlane.layer = LayerMask.NameToLayer("Raycast");
-        provinceIDPlane.GetComponent<Renderer>().material = provinceIdMat;
+        //create the province id mat 
+
+        // load id map
+        string baseImagePath = Path.Combine(Application.persistentDataPath, "Province_Map.png");
+        byte[] imageData = File.ReadAllBytes(baseImagePath);
+        Texture2D BaseImg = new Texture2D(2, 2);
+        BaseImg.LoadImage(imageData);
+        provinceIdMat.SetTexture("_BaseMap", BaseImg);
+
+        //create mesh
+        provinceIDPlane.GetComponent<Renderer>().material = provinceIdMat; //load it 
 
         var renderer = provinceIDPlane.GetComponent<Renderer>();
         renderer.shadowCastingMode = UnityEngine.Rendering.ShadowCastingMode.Off;
@@ -90,3 +101,28 @@ public class TerrainFromExactImageSize : MonoBehaviour
         renderer.lightProbeUsage = UnityEngine.Rendering.LightProbeUsage.Off;
     }
 }
+
+/*
+ float GetHeightFromTerrainType(TerrainType type, Vector2 position) {
+    switch (type) {
+        case TerrainType.Water:
+            return 0f;
+        case TerrainType.Plains:
+            return 0.2f + Mathf.PerlinNoise(position.x * 0.01f, position.y * 0.01f) * 0.05f;
+        case TerrainType.Hills:
+            return 0.4f + Mathf.PerlinNoise(position.x * 0.02f, position.y * 0.02f) * 0.1f;
+        case TerrainType.Mountains:
+            return 0.6f + Mathf.PerlinNoise(position.x * 0.03f, position.y * 0.03f) * 0.3f;
+        default:
+            return 0f;
+    }
+}
+for (int x = 0; x < terrainWidth; x++) {
+    for (int y = 0; y < terrainHeight; y++) {
+        Vector2 pos = new Vector2(x, y);
+        Province province = GetProvinceAtPosition(pos); // Determine based on your map data
+        float height = GetHeightFromTerrainType(province.terrainType, pos);
+        heightMap[x, y] = height;
+    }
+}
+ */

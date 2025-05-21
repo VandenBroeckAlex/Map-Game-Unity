@@ -1,0 +1,19 @@
+<engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <engine:VisualElement name="edit_province_view" style="flex-grow: 1; bottom: 0; right: 0; width: auto; height: 500px; max-width: 400px; max-height: 600px; position: absolute; padding-left: 0; padding-right: 10px; background-color: rgb(185, 185, 185);">
+        <engine:TabView>
+            <engine:Tab label="Province infos">
+                <engine:TextField placeholder-text="Name" />
+                <engine:Toggle label="Is land" />
+                <engine:EnumField label="Type" value="Left" type="UnityEngine.TextAlignment, UnityEngine.TextRenderingModule" include-obsolete-values="false" />
+                <engine:EnumField label="Owner" value="Center" type="UnityEngine.TextAlignment, UnityEngine.TextRenderingModule" />
+                <engine:EnumField label="Rgo" value="Center" type="UnityEngine.TextAlignment, UnityEngine.TextRenderingModule" />
+                <engine:VisualElement name="neighbors" style="flex-grow: 1; flex-direction: row; padding-bottom: 20px;" />
+                <engine:Label text="neighbors" style="width: 156px;" />
+                <engine:Foldout text="Foldout" />
+            </engine:Tab>
+            <engine:Tab label="pop" name="Tab">
+                <engine:Label text="will display pop info" />
+            </engine:Tab>
+        </engine:TabView>
+    </engine:VisualElement>
+</engine:UXML>

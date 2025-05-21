@@ -1,64 +1,37 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public class ProvinceClass : MonoBehaviour
+[CreateAssetMenu(fileName = "Pop", menuName = "BasePop")]
+public class Province :  ScriptableObject
 {
-    
-    public Renderer  rend; 
-    public Province worldProvince = new Province();    
-    Material base_mat;    
-    public Material highlight;
-    Material[] baseMaterials = new Material [2];
-    readonly Material[] highlightMaterials = new Material[2];
-    [SerializeField] Vector3 cubePosition;
+    public string ProvinceName;
+    public string description;
+    public int id;
+    public int type;
+    public bool isLand;
+    public int ownerId;
+    public int[] neighbors;
+    public int owner;
+    public int occupierID;
+    public int rgo;
+    public Province(int id, string name, string description, int owner, int[] neighbors)
+    {
+        this.id = id;
+        this.name = name;
+        this.description = description;
+        this.owner = owner;
+        this.neighbors = neighbors;
 
-    [SerializeField] bool isProvince = true;
-
-
-
-    private void Awake()
-    {        
-        base_mat = GetComponent<Renderer>().material;
-        rend = GetComponent<Renderer>();
-        cubePosition = rend.bounds.center;
     }
 
-
-    void Start()
+    public Province(int givenID, string givenName, string givenDescription, int givenType, int givenOwner, int[] givenneighbors)
     {
-        highlight= GameObject.Find("ProvinceHandeler").GetComponent<ProvinceHandeler>().MatTileHiglight;
-        baseMaterials[0] = base_mat;
-        baseMaterials[1] = base_mat;        
-        highlightMaterials[0] = base_mat;
-        highlightMaterials[1] = highlight;
+        id = givenID;
+        description = givenDescription;
+        name = givenName;
+        type = givenType;
+        ownerId = givenOwner;
+        neighbors = givenneighbors;
+
     }
-
-    void OnMouseUpAsButton()
-    {
-            Debug.Log(name);
-    }
-
-    void OnMouseEnter()
-    {
-            //add higlight Mat to material list
-            GetComponent<Renderer>().materials = highlightMaterials;           
-    }
-    void OnMouseExit()
-    {
-            //remove higlight Mat to material list
-            GetComponent<Renderer>().materials = baseMaterials;
-    }}
-
-    [System.Serializable]
-    public class Province
-    {
-        public string name;
-        public string description;
-        public int id;
-        public int Type;
-        public int owner;
-    }
-
+}

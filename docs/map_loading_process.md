@@ -29,15 +29,17 @@ The third iteration will include an editor tool for managing provinces, as well 
 
 - [X] **Auto neighbore system**
   - Make an automated way to logically connect provinces that are next to each others.
-- [ ] **Link Province Selection to Color**
-  - Implement functionality that allows users to select a province, which will then be highlighted. using the color map and not hit box for every tile(province)
+- [X] **Link Province Selection to Color**
+  - Implement functionality that link color to a province id
 
 - [ ] **Province Editor Tool**
   - Develop a tool that allows users to create, edit, and manage provinces on the map.
 
+- [ ] **Change provice id plane mat on load**
+
 - [ ] **Graph for displacement and distance between provinces**
-      -keep track of neighbore
-      -add distance
+  - keep track of neighboring provinces
+  - add distance
 - [ ] **Save provinces data**
 
 - [ ] **prevent camera passing through terrain**
@@ -53,9 +55,14 @@ Each province is positioned on the canvas using the `lowerX` and `higherY` value
 ### Todo: Iteration 04
 - [ ] **load data correctly**
 
+- [ ] **province highlight on hover**
+
 - [ ] **test projector for provinces**
 
 - [ ] **terrain height addapting to terrain type**
 
 The terrain is created based on `.Assets/Resources/height_map.png` wich is used as a displacement map.
+
+In a futur iteration terrain will be generated from province type
+
 [What is displacement mapping ?](https://www.creativebloq.com/features/a-beginners-guide-to-displacement-and-bump-maps)

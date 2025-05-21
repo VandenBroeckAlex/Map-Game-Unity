@@ -1,8 +1,11 @@
+using Newtonsoft.Json;
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
+using System.IO;
+
 using UnityEngine;
+
 
 public class RaycastScript : MonoBehaviour
 {
@@ -10,16 +13,29 @@ public class RaycastScript : MonoBehaviour
     public delegate GameObject OnRightClick();
     public delegate GameObject OnLeftClick();
     Camera cam;
+    Dictionary<int, float[]> jsonData;
+
+   
+
 
     void Start()
     {
         cam = Camera.main;
         MouseClickHandeler.onLeftClick += CallRaycast;
         MouseClickHandeler.onRightClick += CallRaycast;
+        LoadJsonDataMapPosition();
     }
 
- 
-  
+    void LoadJsonDataMapPosition()
+    {
+        string fullPath = Path.Combine(Application.persistentDataPath, "ColorId.json");
+        string jsonFile = File.ReadAllText(fullPath);
+
+        jsonData = JsonConvert.DeserializeObject<Dictionary<int, float[]>>(jsonFile);
+
+    }
+
+
 
     private void CallRaycast()
 
@@ -64,7 +80,9 @@ public class RaycastScript : MonoBehaviour
         pixelUV.x *= imageTexture.width;
         pixelUV.y *= imageTexture.height;
         Vector2 tiling = renderer.material.mainTextureScale;
-        Debug.Log(imageTexture.GetPixel(Mathf.FloorToInt(pixelUV.x * tiling.x), Mathf.FloorToInt(pixelUV.y * tiling.y)));
+        Color color = imageTexture.GetPixel(Mathf.FloorToInt(pixelUV.x * tiling.x), Mathf.FloorToInt(pixelUV.y * tiling.y));
+        GetID(color);
+
 
     }
 
@@ -73,5 +91,29 @@ public class RaycastScript : MonoBehaviour
         
         Debug.Log(hit.transform.position);
         return hit.transform.gameObject;
+    }
+
+    // get it in the province handler
+    public int GetID(Color color)
+    {
+        GameObject g = GameObject.Find("ProvinceHandeler");
+        ProvinceHandeler1 bScript = g.GetComponent<ProvinceHandeler1>();
+        List<ProvinceHandeler1.Province> allProvinces = bScript.allProvinces;
+
+        foreach (var kvp in jsonData)
+        {
+            float[] stored = kvp.Value;
+
+            // Compare exact color values (no tolerance)
+            if (color.r == stored[0] && color.g == stored[1] && color.b == stored[2])
+            {
+                Debug.Log(kvp.Key);
+                return kvp.Key; // Found a match
+            }
+        }
+
+        // No match found
+        Debug.Log("No match found");
+        return -1; 
     }
 }

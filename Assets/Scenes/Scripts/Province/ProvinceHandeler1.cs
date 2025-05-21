@@ -85,7 +85,6 @@ public class ProvinceHandeler1 : MonoBehaviour
 
         foreach (var provinceEntry in provincePosition.spriteListJSON)
         {
-            Debug.Log(provinceEntry.neighbors.ToString());
             allProvinces.Add(new Province(
                                          provinceEntry.id,
                                          provinceEntry.name,

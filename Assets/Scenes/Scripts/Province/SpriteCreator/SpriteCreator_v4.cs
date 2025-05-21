@@ -17,17 +17,18 @@ public class SpriteCreator_v4 : MonoBehaviour
     public List<ObjJSONTemp> ListObjJSONTemp = new List<ObjJSONTemp>();
 
     string baseImagePath;
-    string jsonSavePath;
+    string jsonSavePathMapInfo;
+    string jsonSavePathColorId;
 
     private void Awake()
     {
         pathSave = Path.Combine(Application.persistentDataPath, "provinces_split");
         baseImagePath = Path.Combine(Application.persistentDataPath, "Province_Map.png");
-        jsonSavePath = Path.Combine(Application.persistentDataPath, "map_info.json");
-
+        jsonSavePathMapInfo = Path.Combine(Application.persistentDataPath, "map_info.json");
+        jsonSavePathColorId = Path.Combine(Application.persistentDataPath, "ColorId.json");
         Directory.CreateDirectory(pathSave);
 
-        if (MainMenuControler.recalculateMapChoice || !File.Exists(jsonSavePath) || IsFolderEmpty(pathSave))
+        if (MainMenuControler.recalculateMapChoice || !File.Exists(jsonSavePathMapInfo) || IsFolderEmpty(pathSave))
         {
             LoadBaseImage();
 
@@ -271,9 +272,13 @@ public class SpriteCreator_v4 : MonoBehaviour
     private void CreateJSON()
     {
         List<ObjJSON> ListObjJSON = new List<ObjJSON>();
+        Dictionary<int, float[]> idColor = new Dictionary<int, float[]>();
+
         for (int i = 0; i < ListObjJSONTemp.Count; i++)
         {
             List<int> neighboreID = new List<int>();
+            
+            idColor[ListObjJSONTemp[i].id] = ListObjJSONTemp[i].spriteColor;
 
             // check for all neighbore id
             for (int y = 0; y < ListObjJSONTemp[i].neighbors.Count; y++)
@@ -295,7 +300,10 @@ public class SpriteCreator_v4 : MonoBehaviour
 
         CombinedJSON combinedData = new CombinedJSON(BaseImg.width, BaseImg.height, ListObjJSON);
         string output = JsonConvert.SerializeObject(combinedData, Formatting.Indented);
-        File.WriteAllText(jsonSavePath, output);
+        File.WriteAllText(jsonSavePathMapInfo, output);
+
+        output = JsonConvert.SerializeObject(idColor, Formatting.Indented);
+        File.WriteAllText(jsonSavePathColorId, output);
     }
 
 }
