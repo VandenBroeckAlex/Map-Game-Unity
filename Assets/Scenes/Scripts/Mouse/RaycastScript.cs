@@ -3,7 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
-
+using MyGame.Data;
 using UnityEngine;
 
 
@@ -98,7 +98,7 @@ public class RaycastScript : MonoBehaviour
     {
         GameObject g = GameObject.Find("ProvinceHandeler");
         ProvinceHandeler1 bScript = g.GetComponent<ProvinceHandeler1>();
-        List<ProvinceHandeler1.Province> allProvinces = bScript.allProvinces;
+        List<Province> allProvinces = bScript.allProvinces;
 
         foreach (var kvp in jsonData)
         {

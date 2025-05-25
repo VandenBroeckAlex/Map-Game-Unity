@@ -3,7 +3,7 @@ using UnityEngine;
 using System.IO;
 using Newtonsoft.Json;
 using System.Linq;
-
+using MyGame.Data;
 
 
 public class SpriteCreator_v4 : MonoBehaviour
