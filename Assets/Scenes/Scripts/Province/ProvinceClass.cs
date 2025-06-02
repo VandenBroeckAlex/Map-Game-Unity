@@ -4,7 +4,7 @@ using UnityEngine;
 namespace MyGame.Data
 {
     [Serializable]
-    public class Province
+    public class Province 
     {
         public string name;
         public string description;
