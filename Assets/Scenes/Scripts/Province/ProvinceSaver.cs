@@ -56,11 +56,13 @@ public class ProvinceSaver : MonoBehaviour
     {
         LoadJsonDataMapPosition();
         var provinceHandler = GameObject.Find("/ProvinceHandeler").GetComponent<ProvinceHandeler1>();
-        List<Province> allProvinces = provinceHandler.allProvinces;
+        Dictionary<int, Province> allProvinces = provinceHandler.allProvinces;
         //replace spriteListJSON with allProvinces from province handeler
         //provincePosition.spriteListJSON = newList
-        foreach (var province in allProvinces)
+        foreach (var kvp in allProvinces)
         {
+            Province province = kvp.Value; // get the actual Province object
+
             Province jsonObj = new Province
             {
                 id = province.id,
@@ -68,16 +70,18 @@ public class ProvinceSaver : MonoBehaviour
                 description = province.description,
                 type = province.type,
                 isLand = province.isLand,
+                isPassable = province.isPassable,
                 ownerId = province.ownerId,
                 neighbors = province.neighbors,
                 owner = province.owner,
                 occupierID = province.occupierID,
                 rgo = province.rgo,
-             };
+            };
 
             ListObjJSON.Add(jsonObj);
         }
-     CombinedJSON combinedData = new CombinedJSON(provincePosition.canvaWidth, provincePosition.canvaHeight, ListObjJSON);
+
+        CombinedJSON combinedData = new CombinedJSON(provincePosition.canvaWidth, provincePosition.canvaHeight, ListObjJSON);
         string output = JsonConvert.SerializeObject(combinedData, Formatting.Indented);
         File.WriteAllText(fullPath, output);
         Debug.Log("Province data saved!");

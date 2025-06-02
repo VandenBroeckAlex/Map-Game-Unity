@@ -4,7 +4,7 @@ using System.IO;
 using Newtonsoft.Json;
 using System.Linq;
 using MyGame.Data;
-
+using System;
 
 public class SpriteCreator_v4 : MonoBehaviour
 {
@@ -20,9 +20,13 @@ public class SpriteCreator_v4 : MonoBehaviour
     string jsonSavePathMapInfo;
     string jsonSavePathColorId;
 
+    bool autoNeighbore = true;
+    bool TopAndBottomNeighbore = false;
+    bool LeftAndRightNeighbore = true;
+
     private void Awake()
     {
-        pathSave = Path.Combine(Application.persistentDataPath, "provinces_split");
+        pathSave = Path.Combine(Application.persistentDataPath, "Provinces_split");
         baseImagePath = Path.Combine(Application.persistentDataPath, "Province_Map.png");
         jsonSavePathMapInfo = Path.Combine(Application.persistentDataPath, "map_info.json");
         jsonSavePathColorId = Path.Combine(Application.persistentDataPath, "ColorId.json");
@@ -96,10 +100,23 @@ public class SpriteCreator_v4 : MonoBehaviour
                         if (pixelColor != lastPxColor)
                         {
                             float[] lastColor = GenerateColorFormat(lastPxColor);
-                            if (!sprite.neighboreColor.Any(c => c.SequenceEqual(lastColor)))
+                            if(autoNeighbore == true)
                             {
-                                sprite.neighboreColor.Add(lastColor);
-                            }
+                                if (y == 0 && TopAndBottomNeighbore == true)
+                                {
+                                    sprite.neighboreColor.Add(lastColor);
+                                    continue;
+                                }
+
+                                if (y != 0 )
+                                {
+                                    if (!sprite.neighboreColor.Any(c => c.SequenceEqual(lastColor)))
+                                    {
+                                        sprite.neighboreColor.Add(lastColor);
+                                    }
+                                }
+                                
+                            }  
                         }
                         colorFoundInList = true;
                         break;
@@ -161,11 +178,15 @@ public class SpriteCreator_v4 : MonoBehaviour
                 File.WriteAllBytes(filePath, bytes);
             }
 
+            
+
+           
             ObjJSONTemp jsonObj = new ObjJSONTemp(
                 GenerateColorFormat(sprite.spriteColor),
                 new Vector2Int(sprite.lowerX, sprite.higherY),
                 sprite.id,
-                sprite.neighboreColor
+                sprite.neighboreColor,
+                new float[] { ((sprite.higherX - sprite.lowerX)/2) + sprite.lowerX, ((sprite.higherY - sprite.lowerY)/2) + sprite.lowerY } // ((higher - lower)/2) + lower
             );
 
             ListObjJSONTemp.Add(jsonObj);
@@ -211,19 +232,21 @@ public class SpriteCreator_v4 : MonoBehaviour
         public float[] spriteColor;
         public int lowerX;
         public int higherY;
+        public float[] center;
         public string name = "";
         public string description = "";
         public int Type = 0;
         public int owner = 0;
         public List<float[]> neighbors;
 
-        public ObjJSONTemp(float[] color, Vector2Int coord, int id, List<float[]> neighbors)
+        public ObjJSONTemp(float[] color, Vector2Int coord, int id, List<float[]> neighbors, float[] center)
         {
             this.id = id;
             this.spriteColor = color;
             this.lowerX = coord.x;
             this.higherY = coord.y;
             this.neighbors = neighbors;
+            this.center = center;
         }
     }
 
@@ -234,6 +257,7 @@ public class SpriteCreator_v4 : MonoBehaviour
         public float[] spriteColor;
         public int lowerX;
         public int higherY;
+        public float[] center;
         public string name = "";
         public string description = "";
         public int Type = 0;
@@ -242,13 +266,14 @@ public class SpriteCreator_v4 : MonoBehaviour
 
 
 
-        public ObjJSON(float[] color, int x, int y, int id, List<int> neighbors)
+        public ObjJSON(float[] color, int x, int y, int id, List<int> neighbors, float[] center)
         {
             this.id = id;
             this.spriteColor = color;
             this.lowerX = x;
             this.higherY = y;
             this.neighbors = neighbors;
+            this.center = center;
         }
     }
 
@@ -280,24 +305,49 @@ public class SpriteCreator_v4 : MonoBehaviour
             
             idColor[ListObjJSONTemp[i].id] = ListObjJSONTemp[i].spriteColor;
 
-            // check for all neighbore id
-            for (int y = 0; y < ListObjJSONTemp[i].neighbors.Count; y++)
+            // convert neighbore color to id
+            if(autoNeighbore == true)
             {
-
-                for (int x = 0; x < ListObjJSONTemp.Count; x++)
+                for (int y = 0; y < ListObjJSONTemp[i].neighbors.Count; y++)
                 {
-                    if (Enumerable.SequenceEqual(ListObjJSONTemp[i].neighbors[y], ListObjJSONTemp[x].spriteColor))
+
+                    for (int x = 0; x < ListObjJSONTemp.Count; x++)
                     {
-                        neighboreID.Add(ListObjJSONTemp[x].id);
-                        continue;
+                        if (Enumerable.SequenceEqual(ListObjJSONTemp[i].neighbors[y], ListObjJSONTemp[x].spriteColor))
+                        {
+                            neighboreID.Add(ListObjJSONTemp[x].id);
+                            continue;
+                        }
                     }
                 }
-            }
-
-            ObjJSON obj = new ObjJSON(ListObjJSONTemp[i].spriteColor, ListObjJSONTemp[i].lowerX, ListObjJSONTemp[i].higherY, ListObjJSONTemp[i].id, neighboreID);
+            }          
+            ObjJSON obj = new ObjJSON(ListObjJSONTemp[i].spriteColor, ListObjJSONTemp[i].lowerX, ListObjJSONTemp[i].higherY, ListObjJSONTemp[i].id, neighboreID, ListObjJSONTemp[i].center);
             ListObjJSON.Add(obj);
         }
 
+        // check in other province if this province id appear
+        //Because the image is read from bottom to top, the top province will never encounter the bottom province
+        // this is a horrible way to do it :(
+        //maybe merge this loop with the top one
+        if (autoNeighbore == true)
+        {
+            for (int i = 0; i < ListObjJSON.Count; i++)
+            {
+                for (int x = 0; x < ListObjJSON.Count; x++)
+                {
+                    for (int y = 0; y < ListObjJSON[x].neighbors.Count; y++)
+                    {
+                        if (ListObjJSON[x].neighbors[y] == ListObjJSON[i].id)
+                        {
+                            ListObjJSON[i].neighbors.Add(ListObjJSON[x].id);
+                        }
+                    }
+                }
+                //check if neighbore id does not repeat
+                ListObjJSON[i].neighbors = RemoveDuplicate(ListObjJSON[i].neighbors);
+            }
+        }
+        
         CombinedJSON combinedData = new CombinedJSON(BaseImg.width, BaseImg.height, ListObjJSON);
         string output = JsonConvert.SerializeObject(combinedData, Formatting.Indented);
         File.WriteAllText(jsonSavePathMapInfo, output);
@@ -305,5 +355,8 @@ public class SpriteCreator_v4 : MonoBehaviour
         output = JsonConvert.SerializeObject(idColor, Formatting.Indented);
         File.WriteAllText(jsonSavePathColorId, output);
     }
-
+    List<int> RemoveDuplicate(List<int> givenList)
+    {
+        return givenList.Distinct().OrderBy(n => n).ToList();
+    }
 }

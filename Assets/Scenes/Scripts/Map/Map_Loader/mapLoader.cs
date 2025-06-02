@@ -52,7 +52,7 @@ public class mapLoader : MonoBehaviour
 
     IEnumerator LoadSpritesAsync(JSONData spriteData)
     {
-        string folderPath = Path.Combine(Application.persistentDataPath, "provinces_split");
+        string folderPath = Path.Combine(Application.persistentDataPath, "Provinces_split");
 
         int loadedCount = 0;
 

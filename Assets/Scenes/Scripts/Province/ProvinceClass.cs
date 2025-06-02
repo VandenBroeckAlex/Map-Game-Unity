@@ -11,6 +11,7 @@ namespace MyGame.Data
         public int id;
         public int type;
         public bool isLand;
+        public bool isPassable;
         public int ownerId;
         public int[] neighbors;
         public int owner;
@@ -35,7 +36,6 @@ namespace MyGame.Data
             type = givenType;
             ownerId = givenOwner;
             neighbors = givenneighbors;
-
         }
     }
 }

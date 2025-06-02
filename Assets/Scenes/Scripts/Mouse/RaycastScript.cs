@@ -13,32 +13,24 @@ public class RaycastScript : MonoBehaviour
     public delegate GameObject OnRightClick();
     public delegate GameObject OnLeftClick();
     Camera cam;
-    Dictionary<int, float[]> jsonData;
 
-   
+    public delegate void OnRayCast(Color color);
+    public static OnRayCast onProvincePlaneHit;
 
+    
 
     void Start()
     {
         cam = Camera.main;
         MouseClickHandeler.onLeftClick += CallRaycast;
-        MouseClickHandeler.onRightClick += CallRaycast;
-        LoadJsonDataMapPosition();
+        MouseClickHandeler.onRightClick += CallRaycast; 
     }
 
-    void LoadJsonDataMapPosition()
-    {
-        string fullPath = Path.Combine(Application.persistentDataPath, "ColorId.json");
-        string jsonFile = File.ReadAllText(fullPath);
 
-        jsonData = JsonConvert.DeserializeObject<Dictionary<int, float[]>>(jsonFile);
-
-    }
-
+ 
 
 
     private void CallRaycast()
-
     {
         GetRayCast();
 
@@ -57,12 +49,16 @@ public class RaycastScript : MonoBehaviour
         Ray ray = cam.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
+        // if ui class hit => call ui handler
+        // if province plane hit => get province color => call province handler
+        // if unit class hit => call ui handler
+
         if (Physics.Raycast(ray, out hit, 10000, mask))
         {
             Debug.Log("hit");
             GetPixelColor(hit);
             
-            return GetGameObject(hit);
+            return GetTransformHit(hit);
 
         }
         else
@@ -81,39 +77,13 @@ public class RaycastScript : MonoBehaviour
         pixelUV.y *= imageTexture.height;
         Vector2 tiling = renderer.material.mainTextureScale;
         Color color = imageTexture.GetPixel(Mathf.FloorToInt(pixelUV.x * tiling.x), Mathf.FloorToInt(pixelUV.y * tiling.y));
-        GetID(color);
-
-
+        onProvincePlaneHit?.Invoke(color);
     }
 
-    public GameObject GetGameObject(RaycastHit hit)
+    public GameObject GetTransformHit(RaycastHit hit)
     {
-        
         Debug.Log(hit.transform.position);
         return hit.transform.gameObject;
     }
-
-    // get it in the province handler
-    public int GetID(Color color)
-    {
-        GameObject g = GameObject.Find("ProvinceHandeler");
-        ProvinceHandeler1 bScript = g.GetComponent<ProvinceHandeler1>();
-        List<Province> allProvinces = bScript.allProvinces;
-
-        foreach (var kvp in jsonData)
-        {
-            float[] stored = kvp.Value;
-
-            // Compare exact color values (no tolerance)
-            if (color.r == stored[0] && color.g == stored[1] && color.b == stored[2])
-            {
-                Debug.Log(kvp.Key);
-                return kvp.Key; // Found a match
-            }
-        }
-
-        // No match found
-        Debug.Log("No match found");
-        return -1; 
-    }
+    
 }
