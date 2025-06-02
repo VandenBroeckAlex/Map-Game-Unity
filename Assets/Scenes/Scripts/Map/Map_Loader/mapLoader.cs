@@ -37,7 +37,7 @@ public class mapLoader : MonoBehaviour
 
     void LoadJsonData()
     {
-        string jsonPath = Path.Combine(Application.persistentDataPath, "map_info.json");
+        string jsonPath = FilePath.MapInfo;
 
         if (File.Exists(jsonPath))
         {
@@ -52,7 +52,7 @@ public class mapLoader : MonoBehaviour
 
     IEnumerator LoadSpritesAsync(JSONData spriteData)
     {
-        string folderPath = Path.Combine(Application.persistentDataPath, "Provinces_split");
+        string folderPath = FilePath.ProvincesSplit;
 
         int loadedCount = 0;
 

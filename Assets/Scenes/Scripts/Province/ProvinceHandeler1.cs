@@ -69,13 +69,13 @@ public class ProvinceHandeler1 : MonoBehaviour
          
     void LoadJsonDataMapPosition()
     {
-        string fullPath = Path.Combine(Application.persistentDataPath, "ColorId.json");
+        string fullPath = FilePath.ColorId;
         string jsonFile = File.ReadAllText(fullPath);
 
         jsonData = JsonConvert.DeserializeObject<Dictionary<int, float[]>>(jsonFile);
 
       
-        string provincePath = Path.Combine(Application.persistentDataPath, "map_info.json");
+        string provincePath = FilePath.MapInfo;
         string provinceJson = File.ReadAllText(provincePath);
         provincePosition = JsonConvert.DeserializeObject<JSONData>(provinceJson);
     }

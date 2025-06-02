@@ -9,7 +9,7 @@ using UnityEngine.UIElements;
 public class ProvinceSaver : MonoBehaviour
 {
   
-    string fullPath = Path.Combine(Application.persistentDataPath, "map_info.json");
+    string fullPath = FilePath.MapInfo;
     public class SpriteObjJSON
     {
         public int id;

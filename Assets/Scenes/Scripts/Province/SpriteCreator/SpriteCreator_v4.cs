@@ -27,10 +27,10 @@ public class SpriteCreator_v4 : MonoBehaviour
 
     private void Awake()
     {
-        pathSave = Path.Combine(Application.persistentDataPath, "Provinces_split");
-        baseImagePath = Path.Combine(Application.persistentDataPath, "Province_Map.png");
-        jsonSavePathMapInfo = Path.Combine(Application.persistentDataPath, "map_info.json");
-        jsonSavePathColorId = Path.Combine(Application.persistentDataPath, "ColorId.json");
+        pathSave = FilePath.ProvincesSplit;
+        baseImagePath = FilePath.ProvinceMapImg;
+        jsonSavePathMapInfo = FilePath.MapInfo;
+        jsonSavePathColorId = FilePath.ColorId;
         Directory.CreateDirectory(pathSave);
 
         if (MainMenuControler.recalculateMapChoice || !File.Exists(jsonSavePathMapInfo) || IsFolderEmpty(pathSave))
