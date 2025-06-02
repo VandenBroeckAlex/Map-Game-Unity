@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System.Linq;
 using MyGame.Data;
 using System;
+using UnityEngine.U2D;
 
 public class SpriteCreator_v4 : MonoBehaviour
 {
@@ -77,7 +78,7 @@ public class SpriteCreator_v4 : MonoBehaviour
     private void GenerateMap()
     {
         Color lastPxColor = Color.black;
-
+        //read the whole image
         for (int x = 0; x < BaseImg.width; x++)
         {
             for (int y = 0; y < BaseImg.height; y++)
@@ -131,6 +132,34 @@ public class SpriteCreator_v4 : MonoBehaviour
                 }
                 lastPxColor = pixelColor;
             }
+        }
+
+        if(LeftAndRightNeighbore == true)
+        {
+            //  read base image width 0 and base image maxwidth
+            //color list of float
+            //  check the id of the color in spriteObjList and maxwidth color in neighbore
+            for (int y = 0; y < BaseImg.height; y++)
+            {
+                Color leftPixelColor = BaseImg.GetPixel(0, y);
+                Color rightPixelColor = BaseImg.GetPixel(BaseImg.width-1, y);
+
+                // get leftPixelColorObj add right
+                for (int x = 0; x < spriteObjList.Count; x++)
+                {
+                    if(leftPixelColor == spriteObjList[x].spriteColor)
+                    {
+                        if (!spriteObjList[x].neighboreColor.Any(c => c.SequenceEqual(GenerateColorFormat(rightPixelColor))))
+                        {
+                            spriteObjList[x].neighboreColor.Add(GenerateColorFormat(rightPixelColor));
+                        }
+                        break;
+                    }
+
+                }
+            }
+
+
         }
     }
 
