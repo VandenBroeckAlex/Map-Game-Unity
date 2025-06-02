@@ -3,9 +3,9 @@
     <ui:VisualElement name="Pannel" class="panel" style="flex-grow: 1; align-items: center; justify-content: flex-start;">
         <ui:VisualElement name="Buttons" style="flex-grow: 1; background-color: rgba(176, 0, 0, 0); width: 50%; justify-content: center; align-self: center; align-items: center;">
             <ui:Button text="Play" name="PlayButton" style="justify-content: flex-start; width: 50%;" />
-            <ui:Button text="Map editor" name="MapEditorButton" selectable="true" style="width: 478px;" />
+            <ui:Button text="Map editor" name="MapEditorButton" selectable="true" style="width: 50%;" />
             <ui:Toggle label="ReCalculate  map ?" name="ReCalculateMap" style="justify-content: flex-start; width: 50%; align-items: flex-start;" />
-            <ui:Button text="Quit game" name="QuitButton" />
+            <ui:Button text="Quit game" name="QuitButton" style="width: 50%;" />
         </ui:VisualElement>
     </ui:VisualElement>
 </ui:UXML>
