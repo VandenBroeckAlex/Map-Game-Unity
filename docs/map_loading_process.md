@@ -29,11 +29,13 @@ The third iteration will include an editor tool for managing provinces, as well 
 
 - [X] **Auto neighbore system**
   - Make an automated way to logically connect provinces that are next to each others.
+  - [X] -Auto province top end of image linked to those at bottom end of image
+  - [X] -Auto province left end of image linked to those at right end of image
 - [X] **Link Province Selection to Color**
   - Implement functionality that link color to a province id
 
 - [ ] **Province Editor Tool**
-  - Develop a tool that allows users to create, edit, and manage provinces on the map.
+  - Develop a tool that allows users to crate, edit, and manage provinces in game.
 
 - [ ] **Change provice id plane mat on load**
 

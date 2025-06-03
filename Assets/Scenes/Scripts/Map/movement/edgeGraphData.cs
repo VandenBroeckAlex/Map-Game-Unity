@@ -1,8 +1,12 @@
 using Newtonsoft.Json;
 using System.Collections;
 using System.Collections.Generic;
-using System.IO;
+using System;
 using UnityEngine;
+using System.IO;
+using Unity.VisualScripting;
+using static edgeGraphData;
+using static UnityEngine.Rendering.DebugUI;
 
 public class edgeGraphData : MonoBehaviour
 {
@@ -11,7 +15,8 @@ public class edgeGraphData : MonoBehaviour
     [SerializeField]
     enum TerrainType {plaine, forest, mountain, marsh, desert, jungle }
 
-    
+    private List<EdgeObj> JSONObj = new List<EdgeObj>();
+
     public class SpriteObjJSON
     {
         public int id;
@@ -22,10 +27,19 @@ public class edgeGraphData : MonoBehaviour
         public int[] neighbors;
         public int lowerX;
         public int higherY;
+        public float[] center;
     }
     public class JSONData
     {
         public SpriteObjJSON[] spriteListJSON;
+    }
+
+    public class EdgeObj
+    {
+        public int from;
+        public int to;
+        public float baseDistance;
+
     }
 
     JSONData provincePosition;
@@ -40,17 +54,57 @@ public class edgeGraphData : MonoBehaviour
         DeserializeJSON();
         foreach (var provinceEntry in provincePosition.spriteListJSON)
         {
-            //get id get neighbore
+            foreach(var neighbore in  provinceEntry.neighbors)
+            {
+               
+                EdgeObj edgeObj = new EdgeObj();
+                edgeObj.from = provinceEntry.id;
+                edgeObj.to = neighbore;
 
+                //loop to  neighbore id
+                float[] neighboreCenter = new float[2];
+                bool found = false;
 
+                foreach (var province in provincePosition.spriteListJSON)
+                {
+                    if (province.id == neighbore)
+                    {
+                        neighboreCenter = province.center;
+                        found = true;
+                        break;
+                    }
+                }
+
+                if (found)
+                {
+                    double distance = Math.Sqrt(
+                        Math.Pow(provinceEntry.center[0] - neighboreCenter[0], 2) +
+                        Math.Pow(provinceEntry.center[1] - neighboreCenter[1], 2)
+                    );
+                   
+                    edgeObj.baseDistance = (float)System.Math.Round(distance, 2); ; // Cast double to float and Leave only two decimal places after the dot
+                }
+                else
+                {
+                    Console.WriteLine($"Warning: Neighbor with ID {neighbore} not found.");
+                }
+
+                JSONObj.Add(edgeObj);
+            }            
         }
-
+        createJSON(JSONObj);
     }
     void DeserializeJSON()
     {
-        string provincePath = Path.Combine(Application.persistentDataPath, "map_info.json");
+        string provincePath = FilePath.MapInfo;
         string provinceJson = File.ReadAllText(provincePath);
         provincePosition = JsonConvert.DeserializeObject<JSONData>(provinceJson);
+    }
+
+    void createJSON(List <EdgeObj> Data) 
+    {
+        string output = JsonConvert.SerializeObject(Data, Formatting.Indented);
+        File.WriteAllText(FilePath.MapEdge, output);
     }
 }
 

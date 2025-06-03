@@ -384,6 +384,7 @@ GameObject:
   m_Component:
   - component: {fileID: 652475200}
   - component: {fileID: 652475201}
+  - component: {fileID: 652475202}
   m_Layer: 0
   m_Name: MapCreator
   m_TagString: Untagged
@@ -419,6 +420,18 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   BaseImg: {fileID: 0}
+--- !u!114 &652475202
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 652475196}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3076e927f1797d24a9f39d4e3f123907, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &852875661
 GameObject:
   m_ObjectHideFlags: 0

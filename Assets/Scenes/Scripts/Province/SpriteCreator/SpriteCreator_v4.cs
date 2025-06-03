@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using System.Linq;
 using MyGame.Data;
 using System;
-using UnityEngine.U2D;
+
 
 public class SpriteCreator_v4 : MonoBehaviour
 {
@@ -328,13 +328,14 @@ public class SpriteCreator_v4 : MonoBehaviour
         List<ObjJSON> ListObjJSON = new List<ObjJSON>();
         Dictionary<int, float[]> idColor = new Dictionary<int, float[]>();
 
+        // convert neighbore color to id
         for (int i = 0; i < ListObjJSONTemp.Count; i++)
         {
             List<int> neighboreID = new List<int>();
             
             idColor[ListObjJSONTemp[i].id] = ListObjJSONTemp[i].spriteColor;
 
-            // convert neighbore color to id
+          
             if(autoNeighbore == true)
             {
                 for (int y = 0; y < ListObjJSONTemp[i].neighbors.Count; y++)
