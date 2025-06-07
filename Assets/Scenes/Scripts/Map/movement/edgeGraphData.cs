@@ -49,6 +49,8 @@ public class edgeGraphData : MonoBehaviour
         calculateEdge();
     }
 
+    // next step remove both edges  x -> y  y -> x
+    // bidirectional will always be true
     void calculateEdge()
     {
         DeserializeJSON();
@@ -61,7 +63,7 @@ public class edgeGraphData : MonoBehaviour
                 edgeObj.from = provinceEntry.id;
                 edgeObj.to = neighbore;
 
-                //loop to  neighbore id
+              
                 float[] neighboreCenter = new float[2];
                 bool found = false;
 
@@ -110,23 +112,3 @@ public class edgeGraphData : MonoBehaviour
 
 
 
-/* This is the wanted result
-"edges": [
-    {
-      "from": 0,
-      "to": 3,
-      "baseDistance": 5.6,
-      "terrain": "plains",
-      "hasRoad": true,
-      "roadModifier": 0.8
-    },
-    {
-    "from": 0,
-      "to": 4,
-      "baseDistance": 8.2,
-      "terrain": "forest",
-      "hasRoad": false,
-      "roadModifier": 1.0
-    }
-  ]
-*/

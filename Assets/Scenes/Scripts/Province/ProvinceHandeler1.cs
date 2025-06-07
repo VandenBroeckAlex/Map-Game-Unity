@@ -43,7 +43,7 @@ public class ProvinceHandeler1 : MonoBehaviour
     }
 
     public Province selectedProvince;
-  
+    
 
     private void Start()
     {
@@ -63,6 +63,7 @@ public class ProvinceHandeler1 : MonoBehaviour
 
         }
         Debug.Log("number of province loaded :" + allProvinces.Count);
+        selectedProvince.name = "test name";
     }
 
 

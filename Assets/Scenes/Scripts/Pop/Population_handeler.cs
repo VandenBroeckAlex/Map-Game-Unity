@@ -1,16 +1,19 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
 
-public class PopList : MonoBehaviour
+public class Population_handeler: MonoBehaviour
 {
     
-    [SerializeField] public List<Pop> pops = new();
+    [SerializeField] public List<Pop> populationList = new();
     [SerializeField] private string test;
-
+    public float base_growth_rate = 0.004f;
+    public float base_consumption = 1f;
+    public float base_production = 1.1f;
     private void OnEnable()
     {
 
@@ -25,23 +28,40 @@ public class PopList : MonoBehaviour
 
     private void Start()
     {
-        pops.Clear();
+        populationList.Clear();
         for (int i = 0; i < 1; i++)
         {
-            pops.Add(new Pop(1, 1000, 1, Type.Farmer, Culture.French, Religion.Catholic, 1, new int[] { 1, 2, 1 }, new int[] { 10, 10, 10 }));
-            pops.Add(new Pop(1, 1000, 1, Type.Miner, Culture.German, Religion.Protestant, 1, new int[] { 1, 2, 1 }, new int[] { 10, 10, 10 }));
+            populationList.Add(new Pop(1, 1000, 1, Type.Farmer, Culture.French, Religion.Catholic, 1, new int[] { 1, 2, 1 }, new int[] { 10, 10, 10 }));
+            populationList.Add(new Pop(1, 1000, 1, Type.Miner, Culture.German, Religion.Protestant, 1, new int[] { 1, 2, 1 }, new int[] { 10, 10, 10 }));
         }        
         //get save or initial to create pop
     }
 
-   
+   /*
+    public Pop[] SelectPopulationByCountry(int countryId)
+    {
+        
+    }
+   */
+    public List<Pop> SelectPopulationByProvince(int provinceID)
+    {
+        List <Pop> selectedPops = new ();
+        for (int i = 0; i < populationList.Count; i++)
+        {
+            if (populationList[i].provinceId == provinceID) 
+            {
+                selectedPops.Add(populationList[i]);
+            }
+        }
+        return selectedPops;
+    }
 
 
     private void PopGrowth()
     {
-        for (int i = 0; i < pops.Count; i++)
+        for (int i = 0; i < populationList.Count; i++)
         {
-            pops[i].size += (int)Math.Round(pops[i].size * 0.004); //Base Growth Rate × Pop Size × Modifiers every years
+            populationList[i].size += (int)Math.Round(populationList[i].size * base_growth_rate); //Base Growth Rate × Pop Size × Modifiers every years
             //Debug.Log(pops[i].size);
         }
         Debug.Log("the pop have grow !");

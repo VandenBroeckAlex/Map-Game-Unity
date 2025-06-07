@@ -1,21 +1,20 @@
-using MyGame.Data;
-using System.Collections;
-using System.Collections.Generic;
+
+using System;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-/*
-public class province_edit_ui : MonoBehaviour
-{
-    public VisualElement ui;
-    public Province SelectedProv;
-    public ProvinceHandeler1 ProvinceHandeler;
 
-   
-    private void OnEnable()
+namespace provinceEditUi
+{
+    public class Province_edit_ui : VisualElement
     {
-        VisualElement root = gameObject.GetComponent<UIDocument>().rootVisualElement;
-        root.Q<ProvinceNameField>.dataSource = ProvinceHandeler;
+        [UnityEngine.Scripting.Preserve]
+
+        public new class UxmlFactory : UxmlFactory<Province_edit_ui> { }
+        public Province_edit_ui()
+        {
+            VisualElement window = new VisualElement();
+            hierarchy.Add(window);
+        }
     }
 }
-*/
