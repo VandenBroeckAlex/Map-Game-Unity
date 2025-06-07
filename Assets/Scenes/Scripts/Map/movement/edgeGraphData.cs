@@ -94,7 +94,8 @@ public class edgeGraphData : MonoBehaviour
                 JSONObj.Add(edgeObj);
             }            
         }
-        createJSON(JSONObj);
+        RemoveDuplicate();
+        CreateJSON(JSONObj);
     }
     void DeserializeJSON()
     {
@@ -103,10 +104,36 @@ public class edgeGraphData : MonoBehaviour
         provincePosition = JsonConvert.DeserializeObject<JSONData>(provinceJson);
     }
 
-    void createJSON(List <EdgeObj> Data) 
+    void CreateJSON(List <EdgeObj> Data) 
     {
         string output = JsonConvert.SerializeObject(Data, Formatting.Indented);
         File.WriteAllText(FilePath.MapEdge, output);
+    }
+
+    void RemoveDuplicate()
+    {
+        HashSet<string> seenEdges = new();
+
+        
+        for (int i = JSONObj.Count - 1; i >= 0; i--)
+        {
+            int a = JSONObj[i].from;
+            int b = JSONObj[i].to;
+
+            
+            int min = Math.Min(a, b);
+            int max = Math.Max(a, b);
+            string key = $"{min}-{max}";
+
+            if (seenEdges.Contains(key))
+            {
+                JSONObj.RemoveAt(i);
+            }
+            else
+            {
+                seenEdges.Add(key);
+            }
+        }
     }
 }
 
