@@ -10,7 +10,7 @@ public class DateHandeler : MonoBehaviour
 
     private string[] strWeekDayList = { "Monday", "Tuesday", "Wednesday", "Thursday","Friday", "Saturday", "Sunday" };
     private string[] strMonthsList = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
-    private byte monthDay;
+    public byte monthDay;
     private int month = 1;
     private int year = 1;
     private byte weekDay = 0;
@@ -54,9 +54,11 @@ public class DateHandeler : MonoBehaviour
 
         if (monthDay == 2)
         {
-            DateHandeler.onMonth?.Invoke();
+            onMonth?.Invoke();
+            Debug.Log("cc !");
         }
-
+        Debug.Log(monthDay);
+        Debug.Log(monthDay == 2);
 
         switch (month)
         {
@@ -107,7 +109,7 @@ public class DateHandeler : MonoBehaviour
     }
     private void TwentyNineDaysMonth()
     {
-        if (monthDay == 29)
+        if (monthDay > 29)
         {
             monthDay = 1;
             month++;
@@ -116,7 +118,7 @@ public class DateHandeler : MonoBehaviour
     }
     private void ThirtyDaysMonth()
     {
-        if (monthDay == 31)
+        if (monthDay > 30)
         {
             monthDay = 1;
             month++;
