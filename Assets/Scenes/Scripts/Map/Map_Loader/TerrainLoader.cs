@@ -5,7 +5,9 @@ using UnityEngine.Rendering;
 public class TerrainFromExactImageSize : MonoBehaviour
 {
     public string fileName = "Province_Map_height.png";  // Include the extension
-    public float terrainMaxHeight = 4.9f;                  // Vertical scale
+    public float terrainMaxHeight = 4.9f;                // Vertical scale
+    public int tileCountX = 2;                           // Number of terrain tiles in X direction
+    public int tileCountZ = 2;
     public Material waterMaterial;
     public Material provinceIdMat;
 
@@ -16,12 +18,12 @@ public class TerrainFromExactImageSize : MonoBehaviour
 
         if (!File.Exists(fullPath))
         {
-            Debug.LogError("Heightmap image not found at: " + fullPath);
+            Debug.LogError("Failed to load heightmap image from: " + fullPath);
             return;
         }
 
         byte[] fileData = File.ReadAllBytes(fullPath);
-        Texture2D heightMap = new Texture2D(2, 2); // Size doesn't matter, LoadImage will replace it
+        Texture2D heightMap = new Texture2D(2, 2); 
         if (!heightMap.LoadImage(fileData))
         {
             Debug.LogError("Failed to load heightmap image from: " + fullPath);
@@ -31,40 +33,57 @@ public class TerrainFromExactImageSize : MonoBehaviour
         int imgWidth = heightMap.width;
         int imgHeight = heightMap.height;
 
-        // Pick the nearest valid resolution (power of two + 1)
         int heightmapRes = Mathf.NextPowerOfTwo(Mathf.Max(imgWidth, imgHeight)) + 1;
+        int tileRes = (heightmapRes - 1) / tileCountX + 1;
 
-        TerrainData terrainData = new TerrainData();
-        terrainData.heightmapResolution = heightmapRes;
-        terrainData.size = new Vector3(imgWidth, terrainMaxHeight, imgHeight);
-
-        float[,] heights = new float[heightmapRes, heightmapRes];
-
-        for (int y = 0; y < heightmapRes; y++)
+        for (int tz = 0; tz < tileCountZ; tz++)
         {
-            for (int x = 0; x < heightmapRes; x++)
+            for (int tx = 0; tx < tileCountX; tx++)
             {
-                float u = x / (float)(heightmapRes - 1);
-                float v = y / (float)(heightmapRes - 1);
+                TerrainData terrainData = new TerrainData();
+                terrainData.heightmapResolution = tileRes;
+                terrainData.size = new Vector3(imgWidth / tileCountX, terrainMaxHeight, imgHeight / tileCountZ);
 
-                int px = Mathf.Clamp(Mathf.RoundToInt(u * (imgWidth - 1)), 0, imgWidth - 1);
-                int py = Mathf.Clamp(Mathf.RoundToInt(v * (imgHeight - 1)), 0, imgHeight - 1);
+                float[,] heights = new float[tileRes, tileRes];
 
-                float grayscale = heightMap.GetPixel(px, py).grayscale;
-                heights[y, x] = grayscale;
+                for (int y = 0; y < tileRes; y++)
+                {
+                    for (int x = 0; x < tileRes; x++)
+                    {
+                        // Global heightmap coordinates
+                        int gx = tx * (tileRes - 1) + x;
+                        int gy = (tileCountZ - 1 - tz) * (tileRes - 1) + y;
+
+                        float u = gx / (float)(heightmapRes - 1);
+                        float v = gy / (float)(heightmapRes - 1);
+
+                        int px = Mathf.Clamp(Mathf.RoundToInt(u * (imgWidth - 1)), 0, imgWidth - 1);
+                        int py = Mathf.Clamp(Mathf.RoundToInt(v * (imgHeight - 1)), 0, imgHeight - 1);
+
+                        float grayscale = heightMap.GetPixel(px, py).grayscale;
+                        heights[y, x] = grayscale;
+                    }
+                }
+
+                terrainData.SetHeights(0, 0, heights);
+
+                GameObject terrainGO = Terrain.CreateTerrainGameObject(terrainData);
+                terrainGO.transform.position = new Vector3(
+                tx * terrainData.size.x,
+                -5.01f,
+                -(tz + 1) * terrainData.size.z 
+                 );
+
+                terrainGO.GetComponent<Terrain>().heightmapPixelError = 5f;
+                terrainGO.name = $"Terrain_{tx}_{tz}";
             }
         }
 
-        terrainData.SetHeights(0, 0, heights);
+        Debug.Log($"Tiled terrain created: {tileCountX}x{tileCountZ} tiles");
+    
 
-        GameObject terrainGO = Terrain.CreateTerrainGameObject(terrainData);
-        terrainGO.transform.position = new Vector3(0, -5.01f, -imgHeight);
-        terrainGO.GetComponent<Terrain>().heightmapPixelError = 5f;
-
-        Debug.Log($"Terrain created: {imgWidth}x{imgHeight} units with height resolution {heightmapRes}x{heightmapRes}");
-
-        CreateWaterPlane(imgWidth, imgHeight);
-        CreateProvinceIdMap(imgWidth, imgHeight);
+      CreateWaterPlane(imgWidth, imgHeight);
+      CreateProvinceIdMap(imgWidth, imgHeight);
     }
 
     void CreateWaterPlane(int imgWidth, int imgHeight)
