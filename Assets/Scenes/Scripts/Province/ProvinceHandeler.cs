@@ -1,29 +1,136 @@
-using JetBrains.Annotations;
+using MyGame.Data;
+using Newtonsoft.Json;
 using System;
-using System.Collections;
 using System.Collections.Generic;
+using System.IO;
 using UnityEngine;
+using static RaycastScript;
+
+
 
 public class ProvinceHandeler : MonoBehaviour
 {
 
 
-    public GameObject[] allProvinces;
+    [SerializeField] public Dictionary<int, Province>  allProvinces = new Dictionary<int, Province>();
     //ux
     public Material MatTileHiglight;
-
-
-
-    
-
-    void Awake()
+   
+    public class SpriteObjJSON
     {
-        foreach (Transform t in transform)
+        public int id;
+        public string name;
+        public string description;
+        public int Type;
+        public int owner;
+        public int[] neighbors;
+        public int lowerX;
+        public int higherY;
+    }
+    public class JSONData
+    {
+       
+        public SpriteObjJSON[] spriteListJSON;
+     
+    }
+
+    JSONData provincePosition;
+    Dictionary<int, float[]> jsonData;
+
+    public class ProvinceListData
+    {
+        public List<Province> ProvinceList;
+    }
+
+    public Province selectedProvince;
+
+    public delegate void OnProvinceUpdated();
+    public static OnProvinceUpdated onProvinceUpdated;
+
+
+    private void Start()
+    {
+        // initialization should be change later being in Start will cause problem sooner or later
+        InitializeHandeler();
+        
+    }
+
+
+
+    void InitializeHandeler()
+    {
+        RaycastScript.onProvincePlaneHit += GetProvinceId;
+        LoadJsonDataMapPosition();
+        //faire une fonction du serializing values in handler
+        foreach (var provinceEntry in provincePosition.spriteListJSON)
         {
-            t.gameObject.tag = "Province";
-            t.gameObject.layer = 6;
+            allProvinces.Add(provinceEntry.id, new Province(
+                                         provinceEntry.id,
+                                         provinceEntry.name,
+                                         provinceEntry.description,
+                                         provinceEntry.owner,
+                                         provinceEntry.neighbors
+                                         ));
+
         }
-        allProvinces = GameObject.FindGameObjectsWithTag("Province");
+        Debug.Log("number of province loaded :" + allProvinces.Count);
+        selectedProvince = allProvinces[0];
+    }
+    void LoadJsonDataMapPosition()
+    {
+        string fullPath = FilePath.ColorId;
+        string jsonFile = File.ReadAllText(fullPath);
+
+        jsonData = JsonConvert.DeserializeObject<Dictionary<int, float[]>>(jsonFile);
+
+      
+        string provincePath = FilePath.MapInfo;
+        string provinceJson = File.ReadAllText(provincePath);
+        provincePosition = JsonConvert.DeserializeObject<JSONData>(provinceJson);
+    }
+
+
+    public int GetProvinceIdByColor(Color color)
+    {
+        GameObject g = GameObject.Find("ProvinceHandeler");
+        ProvinceHandeler bScript = g.GetComponent<ProvinceHandeler>();
+        Dictionary<int, Province> allProvinces = bScript.allProvinces;
+
+        foreach (var kvp in jsonData)
+        {
+            float[] stored = kvp.Value;
+
+            // Compare exact color values (no tolerance)
+            if (color.r == stored[0] && color.g == stored[1] && color.b == stored[2])
+            {
+                Debug.Log(kvp.Key);
+                return kvp.Key; // Found a match
+            }
+        }
+
+        // No match found
+        Debug.Log("No match found");
+        return -1;
+    }
+
+    Province GetProvinceInfoById(int id)
+    {
+        return allProvinces[id];
+    }
+
+    public void GetProvinceId(Color color)
+    {
+        int  id = GetProvinceIdByColor((Color)color);
+        Province recivedProvince = GetProvinceInfoById(id);
+        selectedProvince = recivedProvince;
+    }
+
+    public Province SelectedProvince(int id)
+    {
+        return allProvinces[1];
+    }
+    public void UpdateProvince(Province province)
+    {
 
     }
 }

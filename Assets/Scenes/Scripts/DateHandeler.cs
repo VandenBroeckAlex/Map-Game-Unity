@@ -1,4 +1,5 @@
 
+using MyGame.Data;
 using System;
 using UnityEngine;
 using static Tick_script;
@@ -144,8 +145,6 @@ public class DateHandeler : MonoBehaviour
         }
 
     }
-
-    
 }
   
 
