@@ -3,10 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class CountryHandeler : MonoBehaviour
+public class CountryHandler : MonoBehaviour
 {
     [SerializeField] public List<Country> CountryList = new();
-
+    public static CountryHandler Instance;
 
     [System.Serializable]
     public class Country
@@ -36,5 +36,16 @@ public class CountryHandeler : MonoBehaviour
         CountryList.Add(new Country());
     }
 
+   
+
+    public List<Country> countries;
+
+    void Awake()
+    {
+        if (Instance == null) Instance = this;
+        else Destroy(gameObject);
+    }
+
+    //public Country GetCountryByTag(string tag);
 
 }

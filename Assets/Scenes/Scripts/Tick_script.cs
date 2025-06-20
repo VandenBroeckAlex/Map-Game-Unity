@@ -18,9 +18,7 @@ public class Tick_script : MonoBehaviour
 
 
     void Start()
-
     {
-
         StartCoroutine(TickTime());       
     }
 
@@ -33,11 +31,10 @@ public class Tick_script : MonoBehaviour
             onTick?.Invoke(); // ? check if is null and if not invoke
             curentTick++;            
             print("Tick: " + curentTick);
-            //Event on tick
             yield return new WaitForSeconds(gameSpeed);
         }
     }       
 
 
-    //Event on tick
+  
 }

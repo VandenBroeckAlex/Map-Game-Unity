@@ -1,20 +1,16 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <!-- Define the namespace for your custom UI element -->
-    <engine:VisualElement name="provincePage" style="flex-grow: 1; max-width: 400px; max-height: 600px; bottom: 0; right: 0; left: auto; top: auto; position: absolute; width: 100%; height: 100%;">
-        <!-- Add your custom ProvinceEditUi -->
-        <myNamespace:ProvinceEditUi />  <!-- Replace `myNamespace` with your actual namespace -->
-        
+    <engine:VisualElement name="provincePage" style="flex-grow: 1; max-width: 400px; max-height: 600px; bottom: 0; right: 0; left: auto; top: auto; position: absolute; width: 40%; height: 50%;">
         <engine:VisualElement name="edit_province_view" data-source="project://database/Assets/Scenes/Scripts/Pop/BaseProvince.asset?fileID=11400000&amp;guid=23e35099945f5b94e9e31551984fc226&amp;type=2#BaseProvince" picking-mode="Ignore" style="flex-grow: 1; bottom: 0; right: 0; width: 100%; height: 100%; max-width: 400px; max-height: 600px; position: absolute; padding-left: 0; padding-right: 10px; background-color: rgb(185, 185, 185);">
             <engine:TabView>
                 <engine:Tab label="Province infos" name="province_infos">
-                    <engine:TextField select-all-on-focus="false" hide-placeholder-on-focus="true" name="ProvinceNameField" data-source-type="ProvinceHandeler1, Assembly-CSharp" data-source-path="selectedProvince.name">
+                    <engine:TextField select-all-on-focus="false" hide-placeholder-on-focus="true" name="ProvinceNameField" data-source-type="ProvinceHandeler, Assembly-CSharp" data-source-path="selectedProvince.name">
                         <Bindings>
-                            <engine:DataBinding property="value" binding-mode="ToSource" data-source-type="ProvinceHandeler1, Assembly-CSharp" data-source-path="selectedProvince.name" />
+                            <engine:DataBinding property="value" binding-mode="ToSource" data-source-type="ProvinceHandeler, Assembly-CSharp" data-source-path="selectedProvince.name" />
                         </Bindings>
                     </engine:TextField>
                     <engine:Toggle label="Is land" name="isLand" />
                     <engine:EnumField label="Type" value="Left" type="UnityEngine.TextAlignment, UnityEngine.TextRenderingModule" include-obsolete-values="false" />
-                    <engine:IntegerField  label="Owner" value="Center" type="UnityEngine.TextAlignment, UnityEngine.TextRenderingModule" />
+                    <engine:IntegerField label="Owner" value="Center" type="UnityEngine.TextAlignment, UnityEngine.TextRenderingModule" />
                     <engine:EnumField label="Rgo" value="Center" type="UnityEngine.TextAlignment, UnityEngine.TextRenderingModule" />
                     <engine:VisualElement name="neighbors" style="flex-grow: 1; flex-direction: row; padding-bottom: 20px;">
                         <engine:Label text="neighbors" style="width: 156px;" />
@@ -26,8 +22,6 @@
                 </engine:Tab>
             </engine:TabView>
         </engine:VisualElement>
-
-        <!-- Close Button -->
         <engine:Button text="X" name="Close" style="width: 40px; height: 36px; border-top-left-radius: 15px; border-top-right-radius: 15px; border-bottom-right-radius: 15px; border-bottom-left-radius: 15px; position: relative; top: 0; left: -15%; bottom: auto; right: auto; align-items: flex-start; align-self: auto;" />
     </engine:VisualElement>
 </engine:UXML>

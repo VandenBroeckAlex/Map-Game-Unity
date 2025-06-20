@@ -42,11 +42,11 @@ public class ProvinceHandeler : MonoBehaviour
         public List<Province> ProvinceList;
     }
 
-    public Province selectedProvince;
-
     public delegate void OnProvinceUpdated();
     public static OnProvinceUpdated onProvinceUpdated;
 
+
+    public ProvinceUIController uiController;
 
     private void Start()
     {
@@ -55,8 +55,7 @@ public class ProvinceHandeler : MonoBehaviour
         
     }
 
-
-
+    [Obsolete]
     void InitializeHandeler()
     {
         RaycastScript.onProvincePlaneHit += GetProvinceId;
@@ -74,7 +73,9 @@ public class ProvinceHandeler : MonoBehaviour
 
         }
         Debug.Log("number of province loaded :" + allProvinces.Count);
-        selectedProvince = allProvinces[0];
+
+        if (uiController == null)
+            uiController = FindObjectOfType<ProvinceUIController>();
     }
     void LoadJsonDataMapPosition()
     {
@@ -89,6 +90,11 @@ public class ProvinceHandeler : MonoBehaviour
         provincePosition = JsonConvert.DeserializeObject<JSONData>(provinceJson);
     }
 
+    public void OnProvinceClicked(int id)
+    {
+      
+        uiController.ShowProvinceInfo(allProvinces[id]);
+    }
 
     public int GetProvinceIdByColor(Color color)
     {
@@ -122,13 +128,10 @@ public class ProvinceHandeler : MonoBehaviour
     {
         int  id = GetProvinceIdByColor((Color)color);
         Province recivedProvince = GetProvinceInfoById(id);
-        selectedProvince = recivedProvince;
+        OnProvinceClicked(id);
     }
 
-    public Province SelectedProvince(int id)
-    {
-        return allProvinces[1];
-    }
+
     public void UpdateProvince(Province province)
     {
 
