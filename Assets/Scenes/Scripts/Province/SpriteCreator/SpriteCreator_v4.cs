@@ -5,6 +5,7 @@ using Newtonsoft.Json;
 using System.Linq;
 using MyGame.Data;
 using System;
+using UnityEngine.Rendering;
 
 
 public class SpriteCreator_v4 : MonoBehaviour
@@ -100,7 +101,7 @@ public class SpriteCreator_v4 : MonoBehaviour
 
                         if (pixelColor != lastPxColor)
                         {
-                            float[] lastColor = GenerateColorFormat(lastPxColor);
+                            float[] lastColor =  ColorUtils.GenerateColorFormat(lastPxColor);
                             if(autoNeighbore == true)
                             {
                                 if (y == 0 && TopAndBottomNeighbore == true)
@@ -127,7 +128,7 @@ public class SpriteCreator_v4 : MonoBehaviour
                 if (!colorFoundInList)
                 {
                     Vector2Int pxCoord = new Vector2Int(x, y);
-                    SpriteObj newSpriteObj = GenerateSpriteObj(pixelColor, pxCoord, GenerateColorFormat(lastPxColor));
+                    SpriteObj newSpriteObj = GenerateSpriteObj(pixelColor, pxCoord, ColorUtils.GenerateColorFormat(lastPxColor));
                     spriteObjList.Add(newSpriteObj);
                 }
                 lastPxColor = pixelColor;
@@ -149,9 +150,9 @@ public class SpriteCreator_v4 : MonoBehaviour
                 {
                     if(leftPixelColor == spriteObjList[x].spriteColor)
                     {
-                        if (!spriteObjList[x].neighboreColor.Any(c => c.SequenceEqual(GenerateColorFormat(rightPixelColor))))
+                        if (!spriteObjList[x].neighboreColor.Any(c => c.SequenceEqual(ColorUtils.GenerateColorFormat(rightPixelColor))))
                         {
-                            spriteObjList[x].neighboreColor.Add(GenerateColorFormat(rightPixelColor));
+                            spriteObjList[x].neighboreColor.Add(ColorUtils.GenerateColorFormat(rightPixelColor));
                         }
                         break;
                     }
@@ -175,10 +176,7 @@ public class SpriteCreator_v4 : MonoBehaviour
         return givenId++;
     }
 
-    private float[] GenerateColorFormat(Color col)
-    {
-        return new float[] { col.r, col.g, col.b };
-    }
+
 
     private void SaveSprites(List<SpriteObj> spriteList)
     {
@@ -211,7 +209,7 @@ public class SpriteCreator_v4 : MonoBehaviour
 
            
             ObjJSONTemp jsonObj = new ObjJSONTemp(
-                GenerateColorFormat(sprite.spriteColor),
+                ColorUtils.GenerateColorFormat(sprite.spriteColor),
                 new Vector2Int(sprite.lowerX, sprite.higherY),
                 sprite.id,
                 sprite.neighboreColor,

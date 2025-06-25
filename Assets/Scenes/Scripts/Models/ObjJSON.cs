@@ -5,10 +5,7 @@ using UnityEngine;
 
 public class ObjJSON 
 {
-  
 
-   
-    
         public int id;
         public float[] spriteColor;
         public int lowerX;
