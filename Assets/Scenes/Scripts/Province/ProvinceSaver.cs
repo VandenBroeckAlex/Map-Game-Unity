@@ -55,13 +55,14 @@ public class ProvinceSaver : MonoBehaviour
     public void SaveProvinceData()
     {
         LoadJsonDataMapPosition();
-        var provinceHandler = GameObject.Find("/ProvinceHandeler").GetComponent<ProvincesManager>();
+        var provinceHandler = GameObject.Find("/ProvincesManager").GetComponent<ProvincesManager>();
         Dictionary<int, Province> allProvinces = provinceHandler.allProvinces;
         //replace spriteListJSON with allProvinces from province handeler
         //provincePosition.spriteListJSON = newList
         foreach (var kvp in allProvinces)
         {
             Province province = kvp.Value; // get the actual Province object
+            
 
             Province jsonObj = new Province
             {
