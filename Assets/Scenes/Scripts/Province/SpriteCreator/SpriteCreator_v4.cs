@@ -44,7 +44,7 @@ public class SpriteCreator_v4 : MonoBehaviour
             }
 
             DeleteOldSpriteFiles();
-            GenerateMap();
+            GenerateSprites();
             SaveSprites(spriteObjList);
             CreateJSON();
         }
@@ -75,7 +75,7 @@ public class SpriteCreator_v4 : MonoBehaviour
         }
     }
 
-    private void GenerateMap()
+    private void GenerateSprites()
     {
         Color lastPxColor = Color.black;
         //read the whole image
@@ -215,8 +215,9 @@ public class SpriteCreator_v4 : MonoBehaviour
                 new Vector2Int(sprite.lowerX, sprite.higherY),
                 sprite.id,
                 sprite.neighboreColor,
-                new float[] { ((sprite.higherX - sprite.lowerX)/2) + sprite.lowerX, ((sprite.higherY - sprite.lowerY)/2) + sprite.lowerY } // ((higher - lower)/2) + lower
-            );
+                new float[] { ((sprite.higherX - sprite.lowerX)/2) + sprite.lowerX, ((sprite.higherY - sprite.lowerY)/2) + sprite.lowerY }, // ((higher - lower)/2) + lower
+                sprite.spritePixels.Count
+                );
 
             ListObjJSONTemp.Add(jsonObj);
         }
@@ -263,12 +264,12 @@ public class SpriteCreator_v4 : MonoBehaviour
         public int higherY;
         public float[] center;
         public string name = "";
-        public string description = "";
+        public int superficy;
         public int Type = 0;
         public int owner = 0;
         public List<float[]> neighbors;
 
-        public ObjJSONTemp(float[] color, Vector2Int coord, int id, List<float[]> neighbors, float[] center)
+        public ObjJSONTemp(float[] color, Vector2Int coord, int id, List<float[]> neighbors, float[] center, int superficy)
         {
             this.id = id;
             this.spriteColor = color;
@@ -276,6 +277,7 @@ public class SpriteCreator_v4 : MonoBehaviour
             this.higherY = coord.y;
             this.neighbors = neighbors;
             this.center = center;
+            this.superficy = superficy;
         }
     }
 
@@ -288,14 +290,14 @@ public class SpriteCreator_v4 : MonoBehaviour
         public int higherY;
         public float[] center;
         public string name = "";
-        public string description = "";
+        public int superficy;
         public int Type = 0;
         public int owner = 0;
         public List<int> neighbors;
 
 
 
-        public ObjJSON(float[] color, int x, int y, int id, List<int> neighbors, float[] center)
+        public ObjJSON(float[] color, int x, int y, int id, List<int> neighbors, float[] center, int superficy)
         {
             this.id = id;
             this.spriteColor = color;
@@ -303,6 +305,7 @@ public class SpriteCreator_v4 : MonoBehaviour
             this.higherY = y;
             this.neighbors = neighbors;
             this.center = center;
+            this.superficy = superficy;
         }
     }
 
@@ -351,7 +354,7 @@ public class SpriteCreator_v4 : MonoBehaviour
                     }
                 }
             }          
-            ObjJSON obj = new ObjJSON(ListObjJSONTemp[i].spriteColor, ListObjJSONTemp[i].lowerX, ListObjJSONTemp[i].higherY, ListObjJSONTemp[i].id, neighboreID, ListObjJSONTemp[i].center);
+            ObjJSON obj = new ObjJSON(ListObjJSONTemp[i].spriteColor, ListObjJSONTemp[i].lowerX, ListObjJSONTemp[i].higherY, ListObjJSONTemp[i].id, neighboreID, ListObjJSONTemp[i].center, ListObjJSONTemp[i].superficy);
             ListObjJSON.Add(obj);
         }
 

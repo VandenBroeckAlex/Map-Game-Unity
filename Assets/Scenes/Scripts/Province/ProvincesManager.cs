@@ -8,7 +8,7 @@ using static RaycastScript;
 
 
 
-public class ProvinceHandeler : MonoBehaviour
+public class ProvincesManager : MonoBehaviour
 {
 
 
@@ -48,6 +48,7 @@ public class ProvinceHandeler : MonoBehaviour
 
     public ProvinceUIController uiController;
 
+    [Obsolete]
     private void Start()
     {
         // initialization should be change later being in Start will cause problem sooner or later
@@ -55,7 +56,7 @@ public class ProvinceHandeler : MonoBehaviour
         
     }
 
-    [Obsolete]
+    [Obsolete]//do not remove this
     void InitializeHandeler()
     {
         RaycastScript.onProvincePlaneHit += GetProvinceId;
@@ -98,8 +99,8 @@ public class ProvinceHandeler : MonoBehaviour
 
     public int GetProvinceIdByColor(Color color)
     {
-        GameObject g = GameObject.Find("ProvinceHandeler");
-        ProvinceHandeler bScript = g.GetComponent<ProvinceHandeler>();
+        
+        ProvincesManager bScript = GetComponent<ProvincesManager>();
         Dictionary<int, Province> allProvinces = bScript.allProvinces;
 
         foreach (var kvp in jsonData)
@@ -132,8 +133,4 @@ public class ProvinceHandeler : MonoBehaviour
     }
 
 
-    public void UpdateProvince(Province province)
-    {
-
-    }
 }

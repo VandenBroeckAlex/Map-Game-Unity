@@ -7,7 +7,6 @@ namespace MyGame.Data
     public class Province
     {
         public string name;
-        public string description;
         public int id;
         public Type_province type;
         public bool isLand;
@@ -21,7 +20,6 @@ namespace MyGame.Data
         {
             this.id = id;
             this.name = name;
-            this.description = description;
             this.owner = owner;
             this.neighbors = neighbors;
 
@@ -31,7 +29,6 @@ namespace MyGame.Data
         public Province(int givenID, string givenName, string givenDescription, Type_province givenType, int givenOwner, int[] givenneighbors)
         {
             id = givenID;
-            description = givenDescription;
             name = givenName;
             type = givenType;
             ownerId = givenOwner;

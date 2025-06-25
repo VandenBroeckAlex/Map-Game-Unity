@@ -3,9 +3,9 @@
         <engine:VisualElement name="edit_province_view" data-source="project://database/Assets/Scenes/Scripts/Pop/BaseProvince.asset?fileID=11400000&amp;guid=23e35099945f5b94e9e31551984fc226&amp;type=2#BaseProvince" picking-mode="Ignore" style="flex-grow: 1; bottom: 0; right: 0; width: 100%; height: 100%; max-width: 400px; max-height: 600px; position: absolute; padding-left: 0; padding-right: 10px; background-color: rgb(185, 185, 185);">
             <engine:TabView>
                 <engine:Tab label="Province infos" name="province_infos">
-                    <engine:TextField select-all-on-focus="false" hide-placeholder-on-focus="true" name="ProvinceNameField" data-source-type="ProvinceHandeler, Assembly-CSharp" data-source-path="selectedProvince.name">
+                    <engine:TextField select-all-on-focus="false" hide-placeholder-on-focus="true" name="ProvinceNameField" data-source-type="ProvincesManager, Assembly-CSharp" data-source-path="selectedProvince.name">
                         <Bindings>
-                            <engine:DataBinding property="value" binding-mode="ToSource" data-source-type="ProvinceHandeler, Assembly-CSharp" data-source-path="selectedProvince.name" />
+                            <engine:DataBinding property="value" binding-mode="ToSource" data-source-type="ProvincesManager, Assembly-CSharp" data-source-path="selectedProvince.name" />
                         </Bindings>
                     </engine:TextField>
                     <engine:Toggle label="Is land" name="isLand" />

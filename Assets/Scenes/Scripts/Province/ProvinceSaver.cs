@@ -14,7 +14,7 @@ public class ProvinceSaver : MonoBehaviour
     {
         public int id;
         public string name;
-        public string description;
+        public int superficy;
         public int Type;
         public int owner;
         public int[] neighbors;
@@ -55,7 +55,7 @@ public class ProvinceSaver : MonoBehaviour
     public void SaveProvinceData()
     {
         LoadJsonDataMapPosition();
-        var provinceHandler = GameObject.Find("/ProvinceHandeler").GetComponent<ProvinceHandeler>();
+        var provinceHandler = GameObject.Find("/ProvinceHandeler").GetComponent<ProvincesManager>();
         Dictionary<int, Province> allProvinces = provinceHandler.allProvinces;
         //replace spriteListJSON with allProvinces from province handeler
         //provincePosition.spriteListJSON = newList
@@ -66,8 +66,7 @@ public class ProvinceSaver : MonoBehaviour
             Province jsonObj = new Province
             {
                 id = province.id,
-                name = province.name,
-                description = province.description,
+                name = province.name,           
                 type = province.type,
                 isLand = province.isLand,
                 isPassable = province.isPassable,

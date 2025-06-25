@@ -130,7 +130,7 @@ GameObject:
   - component: {fileID: 190250738}
   - component: {fileID: 190250739}
   m_Layer: 0
-  m_Name: ProvinceHandeler
+  m_Name: ProvincesManager
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -160,7 +160,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 190250736}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e5c0b4280845f0241af6776e0bb74faf, type: 3}
+  m_Script: {fileID: 11500000, guid: d017d4db1982876409ae57acb58aee88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   MatTileHiglight: {fileID: 0}
