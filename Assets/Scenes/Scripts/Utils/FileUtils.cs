@@ -9,7 +9,7 @@ using UnityEngine.Rendering;
 
 public class FileUtils 
 {
-    Texture2D LoadBaseImage(string baseImagePath)
+    public static Texture2D LoadBaseImage(string baseImagePath)
     {
         Texture2D BaseImg = new Texture2D(0,0);
         if (File.Exists(baseImagePath))
@@ -21,7 +21,7 @@ public class FileUtils
         return BaseImg;
     }
 
-    void DeleteOldSpriteFiles(string pathSave)
+    public static void DeleteOldSpriteFiles(string pathSave)
     {
         if (Directory.Exists(pathSave))
         {
@@ -32,7 +32,7 @@ public class FileUtils
         }
     }
 
-    private bool IsFolderEmpty(string folderPath)
+    public static bool IsFolderEmpty(string folderPath)
     {
         if (Directory.Exists(folderPath))
         {

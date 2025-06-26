@@ -34,9 +34,9 @@ public class SpriteCreator_v4 : MonoBehaviour
         jsonSavePathColorId = FilePath.ColorId;
         Directory.CreateDirectory(pathSave);
 
-        if (MainMenuControler.recalculateMapChoice || !File.Exists(jsonSavePathMapInfo) || IsFolderEmpty(pathSave))
+        if (MainMenuControler.recalculateMapChoice || !File.Exists(jsonSavePathMapInfo) || FileUtils.IsFolderEmpty(pathSave))
         {
-            LoadBaseImage();
+            BaseImg = FileUtils.LoadBaseImage(baseImagePath);
 
             if (BaseImg == null)
             {
@@ -44,7 +44,7 @@ public class SpriteCreator_v4 : MonoBehaviour
                 return;
             }
 
-            DeleteOldSpriteFiles();
+            FileUtils.DeleteOldSpriteFiles(pathSave);
             GenerateSprites();
             SaveSprites(spriteObjList);
             CreateJSON();
@@ -55,26 +55,7 @@ public class SpriteCreator_v4 : MonoBehaviour
         }
     }
 
-    void LoadBaseImage()
-    {
-        if (File.Exists(baseImagePath))
-        {
-            byte[] imageData = File.ReadAllBytes(baseImagePath);
-            BaseImg = new Texture2D(2, 2);
-            BaseImg.LoadImage(imageData);
-        }
-    }
-
-    void DeleteOldSpriteFiles()
-    {
-        if (Directory.Exists(pathSave))
-        {
-            foreach (string filePath in Directory.GetFiles(pathSave))
-            {
-                File.Delete(filePath);
-            }
-        }
-    }
+    
 
     private void GenerateSprites()
     {
@@ -176,8 +157,6 @@ public class SpriteCreator_v4 : MonoBehaviour
         return givenId++;
     }
 
-
-
     private void SaveSprites(List<SpriteObj> spriteList)
     {
         foreach (var sprite in spriteList)
@@ -222,16 +201,6 @@ public class SpriteCreator_v4 : MonoBehaviour
     }
 
    
-    private bool IsFolderEmpty(string folderPath)
-    {
-        if (Directory.Exists(folderPath))
-        {
-            return Directory.GetFiles(folderPath).Length == 0 &&
-                   Directory.GetDirectories(folderPath).Length == 0;
-        }
-        return true;
-    }
-
     // --- Data Classes ---
 
     private void CreateJSON()
