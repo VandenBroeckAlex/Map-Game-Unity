@@ -23,7 +23,7 @@ public class ProvincesManager : MonoBehaviour
         public string description;
         public int Type;
         public int owner;
-        public int[] neighbors;
+        public List<int> neighbors;
         public int lowerX;
         public int higherY;
     }

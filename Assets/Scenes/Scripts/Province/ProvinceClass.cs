@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 namespace MyGame.Data
@@ -8,15 +9,15 @@ namespace MyGame.Data
     {
         public string name;
         public int id;
-        public Type_province type;
+        public int type;
         public bool isLand;
         public bool isPassable;
         public int ownerId;
-        public int[] neighbors;
+        public List<int> neighbors;
         public int owner;
         public int occupierID;
-        public Type_rgo rgo;
-        public Province(int id, string name, string description, int owner, int[] neighbors)
+        public int rgo;
+        public Province(int id, string name, string description, int owner, List<int> neighbors)
         {
             this.id = id;
             this.name = name;
@@ -26,7 +27,7 @@ namespace MyGame.Data
         }
         public Province() { }
 
-        public Province(int givenID, string givenName, string givenDescription, Type_province givenType, int givenOwner, int[] givenneighbors)
+        public Province(int givenID, string givenName, string givenDescription, int givenType, int givenOwner, List<int> givenneighbors)
         {
             id = givenID;
             name = givenName;

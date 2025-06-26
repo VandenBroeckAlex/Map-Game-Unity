@@ -25,7 +25,7 @@ public class ProvinceSaver : MonoBehaviour
     {
         public int canvaWidth;
         public int canvaHeight;
-        public SpriteObjJSON[] spriteListJSON;
+        public ObjJSON[] spriteListJSON;
     }
 
     JSONData provincePosition;
@@ -36,15 +36,15 @@ public class ProvinceSaver : MonoBehaviour
     }
 
 
-    List<Province> ListObjJSON = new List<Province>();
+    List<ObjJSON> ListObjJSON = new List<ObjJSON>();
 
     public class CombinedJSON
     {
         public int canvaWidth;
         public int canvaHeight;
 
-        public List<Province> spriteListJSON;
-        public CombinedJSON(int width, int height, List<Province> list)
+        public List<ObjJSON> spriteListJSON;
+        public CombinedJSON(int width, int height, List<ObjJSON> list)
         {
             canvaWidth = width;
             canvaHeight = height;
@@ -52,40 +52,45 @@ public class ProvinceSaver : MonoBehaviour
         }
     }
 
+
+
+
+
     public void SaveProvinceData()
     {
-        LoadJsonDataMapPosition();
+        LoadJsonDataMapPosition();  
+
+        // Get all provinces from the ProvincesManager
         var provinceHandler = GameObject.Find("/ProvincesManager").GetComponent<ProvincesManager>();
         Dictionary<int, Province> allProvinces = provinceHandler.allProvinces;
-        //replace spriteListJSON with allProvinces from province handeler
-        //provincePosition.spriteListJSON = newList
+
+    
+        List<ObjJSON> ListObjJSON = new List<ObjJSON>(provincePosition.spriteListJSON);
+
         foreach (var kvp in allProvinces)
         {
-            Province province = kvp.Value; // get the actual Province object
-            
-
-            Province jsonObj = new Province
+            Province province = kvp.Value;
+            ObjJSON jsonObj = ListObjJSON.FirstOrDefault(obj => obj.id == province.id);
+            if (jsonObj != null)
             {
-                id = province.id,
-                name = province.name,           
-                type = province.type,
-                isLand = province.isLand,
-                isPassable = province.isPassable,
-                ownerId = province.ownerId,
-                neighbors = province.neighbors,
-                owner = province.owner,
-                occupierID = province.occupierID,
-                rgo = province.rgo,
-            };
-
-            ListObjJSON.Add(jsonObj);
+                jsonObj.name = province.name;
+                jsonObj.owner = province.owner;
+                jsonObj.neighbors = province.neighbors;
+                jsonObj.ownerId = province.ownerId;
+                jsonObj.occupierID = province.occupierID;
+                jsonObj.isLand = province.isLand;
+                jsonObj.isPassable = province.isPassable;
+                jsonObj.rgo = province.rgo;
+                jsonObj.type = province.type;         
+            }
         }
-
         CombinedJSON combinedData = new CombinedJSON(provincePosition.canvaWidth, provincePosition.canvaHeight, ListObjJSON);
         string output = JsonConvert.SerializeObject(combinedData, Formatting.Indented);
         File.WriteAllText(fullPath, output);
         Debug.Log("Province data saved!");
     }
+
+
 
 
 
