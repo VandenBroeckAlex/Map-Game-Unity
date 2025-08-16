@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Goods : MonoBehaviour
 {
+    [System.Serializable]
     public class Good : ScriptableObject
     {
         public string goodName;
@@ -15,7 +16,7 @@ public class Goods : MonoBehaviour
 }
 public enum GoodType
 {
-
+    Raw, Manufactured, Luxury
 }
 
                     

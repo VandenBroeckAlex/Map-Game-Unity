@@ -1,0 +1,8 @@
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns="UnityEngine.UIElements">
+    <Style src="color-preview.uss" />
+    <VisualElement class="color-picker">
+        <VisualElement name="SVBox" class="sv-box" />
+        <VisualElement name="HueSlider" class="hue-slider" />
+        <VisualElement name="ColorPreview" class="color-preview" />
+    </VisualElement>
+</ui:UXML>

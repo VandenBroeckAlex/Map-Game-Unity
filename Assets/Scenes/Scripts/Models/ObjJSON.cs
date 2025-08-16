@@ -12,7 +12,7 @@ public class ObjJSON
     public int type = 0;
     public int ownerId;
     public int occupierID;
-    public List<int> neighbors;   // Changed to List<int>
+    public List<int> neighbors;   
     public bool isLand = true;
     public bool isPassable = true;
     public int owner;

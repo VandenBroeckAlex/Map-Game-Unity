@@ -13,11 +13,9 @@ public class CountryHandler : MonoBehaviour
     {
         public string countryName;
         public Color color; 
-        public List<Province> ownedProvinces;
-        public List<Pop> population; 
         public float treasury;
         public float income;
-        public float expenses;
+        ///public float expenses;
         //public GovernmentType governmentType;
         //public Dictionary<GoodsType, float> nationalStockpile;
 
@@ -33,7 +31,6 @@ public class CountryHandler : MonoBehaviour
     void Start()
     {
         CountryList.Clear();    
-        CountryList.Add(new Country());
     }
 
    

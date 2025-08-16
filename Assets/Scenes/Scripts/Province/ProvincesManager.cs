@@ -120,6 +120,7 @@ public class ProvincesManager : MonoBehaviour
         return -1;
     }
 
+    // work if no province is deleted !
     Province GetProvinceInfoById(int id)
     {
         return allProvinces[id];

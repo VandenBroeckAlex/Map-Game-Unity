@@ -13,8 +13,7 @@ public class PopulationHandeler: MonoBehaviour
     public int test_population_size = 100;
 
     [SerializeField] public List<Pop> populationList = new();
-    public Pop testpop;
-
+    
     public float base_growth_rate = 0.004f;
     public float base_consumption = 1f;
     public float base_production = 1.1f;
@@ -32,6 +31,7 @@ public class PopulationHandeler: MonoBehaviour
 
     private void Start()
     {
+       
         populationList.Clear();
         for (int i = 0; i < test_population_size; i++)
         {
@@ -65,14 +65,24 @@ public class PopulationHandeler: MonoBehaviour
     {
         for (int i = 0; i < populationList.Count; i++)
         {
-            populationList[i].Size += (int)Math.Round(populationList[i].Size * base_growth_rate); //Base Growth Rate × Pop Size × Modifiers every years
+            populationList[i].Size += (int)Math.Round(populationList[i].Size * base_growth_rate); 
+            //Base Growth Rate × Pop Size × Modifiers every years
             //Debug.Log(pops[i].size);
         }
         Debug.Log("the pop have grow !");
     }
 
 
-   
+   private void PopBuy()
+    {
+        for (int i = 0; i < populationList.Count; i++)
+        {
+            // pass all the needs and all the money of a pop to market
+            // market awner with needs fill and money left
+            
+        }
+        Debug.Log("the pop's have buy goods !");
+    }
 
 }
 
@@ -113,7 +123,6 @@ public class Pop
         CashAmount = CASHAMOUNT;
         Stockpile = STOCKPILE;
         MaxNeed = MAXNEED;
-
 }
     
  

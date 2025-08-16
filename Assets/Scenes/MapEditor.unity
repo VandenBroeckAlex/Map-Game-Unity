@@ -307,6 +307,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   MovementSpeed: 1000
   ScrollSpeed: 10000
+  xLimits: {x: 0, y: 1000}
+  zLimits: {x: -1000, y: 0}
+  yLimits: {x: 8, y: 1000}
 --- !u!114 &238438346
 MonoBehaviour:
   m_ObjectHideFlags: 0

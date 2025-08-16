@@ -15,7 +15,7 @@ public class ProvinceSaver : MonoBehaviour
         public int id;
         public string name;
         public int superficy;
-        public int Type;
+        public int type;
         public int owner;
         public int[] neighbors;
         public int lowerX;
@@ -36,7 +36,7 @@ public class ProvinceSaver : MonoBehaviour
     }
 
 
-    List<ObjJSON> ListObjJSON = new List<ObjJSON>();
+    List<ObjJSON> ListObjJSON;
 
     public class CombinedJSON
     {
@@ -51,10 +51,6 @@ public class ProvinceSaver : MonoBehaviour
             spriteListJSON = list;
         }
     }
-
-
-
-
 
     public void SaveProvinceData()
     {

@@ -5,8 +5,9 @@ using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using Newtonsoft.Json;
+using static UnityEditor.U2D.ScriptablePacker;
 
-public class mapLoader : MonoBehaviour
+public class MapLoader : MonoBehaviour
 {
     public class SpritePositionData
     {
@@ -19,12 +20,15 @@ public class mapLoader : MonoBehaviour
     [System.Serializable]
     public class JSONData
     {
-        public float canvaWidth;
-        public float canvaHeight;
+        public int canvaWidth;
+        public int canvaHeight;
         public SpritePositionData[] spriteListJSON;
     }
 
     JSONData spriteData;
+    public static int canvaWidth;
+    public static int canvaHeight;
+
     Canvas canvas;
     public Material outlineMat;
 
@@ -137,6 +141,9 @@ public class mapLoader : MonoBehaviour
         if (spriteData != null)
         {
             rt.sizeDelta = new Vector2(spriteData.canvaWidth, spriteData.canvaHeight);
-        }
+             canvaWidth = spriteData.canvaWidth;
+             canvaHeight = spriteData.canvaHeight;
+}
+
     }
 }

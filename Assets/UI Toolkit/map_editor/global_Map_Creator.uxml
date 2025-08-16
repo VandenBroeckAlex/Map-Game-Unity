@@ -1,3 +1,8 @@
 <engine:UXML xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:engine="UnityEngine.UIElements" xmlns:editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <engine:Button text="save" name="save_button" style="width: 5%; height: 5%; bottom: 0; left: auto; top: auto; right: auto; flex-direction: column-reverse; justify-content: space-around; transform-origin: left bottom; translate: 0 0; position: absolute; margin-bottom: 10px; margin-left: 10px;" />
+    <engine:VisualElement style="flex-grow: 1; flex-direction: column-reverse; align-items: center;">
+        <engine:VisualElement style="flex-grow: 1; opacity: 1; width: 99%; height: 95%; bottom: 0; right: 0; top: 0;">
+            <engine:Button text="country" style="width: 5%; height: 5%;" />
+            <engine:Button text="save" name="save_button" style="width: 5%; height: 5%; bottom: 0; left: auto; top: auto; right: auto; flex-direction: column-reverse; justify-content: space-around; transform-origin: left bottom; translate: 0 0; position: absolute; margin-bottom: 2px; margin-left: 4px;" />
+        </engine:VisualElement>
+    </engine:VisualElement>
 </engine:UXML>

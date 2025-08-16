@@ -6,7 +6,9 @@ using System.Linq;
 using MyGame.Data;
 using System;
 using UnityEngine.Rendering;
-
+using NUnit.Framework;
+using static UnityEngine.Rendering.DebugUI;
+using static UnityEditor.Rendering.CameraUI;
 
 public class SpriteCreator_v4 : MonoBehaviour
 {
@@ -14,17 +16,22 @@ public class SpriteCreator_v4 : MonoBehaviour
     int givenId = 0;
 
     public Texture2D BaseImg = null;
-
     public List<SpriteObj> spriteObjList = new List<SpriteObj>();
     public List<ObjJSONTemp> ListObjJSONTemp = new List<ObjJSONTemp>();
 
     string baseImagePath;
     string jsonSavePathMapInfo;
     string jsonSavePathColorId;
-
+    
+    //Menu choices
     bool autoNeighbore = true;
-    bool TopAndBottomNeighbore = false;
-    bool LeftAndRightNeighbore = true;
+    bool topAndBottomNeighbore = false;
+    bool leftAndRightNeighbore = true;
+    
+
+    //keepExistingProvince
+    CombinedJSON spriteData;
+    Dictionary<float[], bool> existingProvinceColor = new Dictionary<float[], bool>();
 
     private void Awake()
     {
@@ -33,7 +40,7 @@ public class SpriteCreator_v4 : MonoBehaviour
         jsonSavePathMapInfo = FilePath.MapInfo;
         jsonSavePathColorId = FilePath.ColorId;
         Directory.CreateDirectory(pathSave);
-
+        Debug.Log(MainMenuControler.keepExistingProvinceDataChoice);
         if (MainMenuControler.recalculateMapChoice || !File.Exists(jsonSavePathMapInfo) || FileUtils.IsFolderEmpty(pathSave))
         {
             BaseImg = FileUtils.LoadBaseImage(baseImagePath);
@@ -43,7 +50,11 @@ public class SpriteCreator_v4 : MonoBehaviour
                 Debug.LogError("Base image not found or failed to load.");
                 return;
             }
-
+            if (MainMenuControler.keepExistingProvinceDataChoice == true)
+            {
+                Debug.Log("loading json");
+                LoadJSON();
+            }
             FileUtils.DeleteOldSpriteFiles(pathSave);
             GenerateSprites();
             SaveSprites(spriteObjList);
@@ -85,7 +96,7 @@ public class SpriteCreator_v4 : MonoBehaviour
                             float[] lastColor =  ColorUtils.GenerateColorFormat(lastPxColor);
                             if(autoNeighbore == true)
                             {
-                                if (y == 0 && TopAndBottomNeighbore == true)
+                                if (y == 0 && topAndBottomNeighbore == true)
                                 {
                                     sprite.neighboreColor.Add(lastColor);
                                     continue;
@@ -97,8 +108,7 @@ public class SpriteCreator_v4 : MonoBehaviour
                                     {
                                         sprite.neighboreColor.Add(lastColor);
                                     }
-                                }
-                                
+                                }  
                             }  
                         }
                         colorFoundInList = true;
@@ -116,7 +126,7 @@ public class SpriteCreator_v4 : MonoBehaviour
             }
         }
 
-        if(LeftAndRightNeighbore == true)
+        if(leftAndRightNeighbore == true)
         {
             //  read base image width 0 and base image maxwidth
             //color list of float
@@ -203,62 +213,168 @@ public class SpriteCreator_v4 : MonoBehaviour
    
     // --- Data Classes ---
 
+
+    private void LoadJSON()
+    {
+        
+        
+        //read old json and bool>
+        string jsonPath = FilePath.MapInfo;
+        if (File.Exists(jsonPath))
+        {
+            string jsonText = File.ReadAllText(jsonPath);
+            spriteData = JsonConvert.DeserializeObject<CombinedJSON>(jsonText);
+        }
+        else
+        {
+            Debug.LogError("map_info.json not found at " + jsonPath);
+            File.WriteAllText(jsonSavePathMapInfo, "");
+        }
+
+        //make a list of every province color < provincecolor -
+        // this should be fix !
+        if (4 < 1)
+        {
+            for (int i = 0; i < spriteData.spriteListJSON.Count; i++)
+            {
+
+                existingProvinceColor.Add(spriteData.spriteListJSON[i].spriteColor, false);
+                if (spriteData.spriteListJSON[i].id > givenId)
+                {
+                    givenId = spriteData.spriteListJSON[i].id;
+                }
+
+            }
+        }
+        bool result;
+        bool found = existingProvinceColor.TryGetValue(new float[] { 0.227450982f, 0.227450982f, 0.9882353f }, out result);
+        Debug.Log("cc: " + found + ", value: " + result);
+
+
+    }
+
+
     private void CreateJSON()
     {
-        List<ObjJSON> ListObjJSON = new List<ObjJSON>();
-        Dictionary<int, float[]> idColor = new Dictionary<int, float[]>();
-
-        // convert neighbore color to id
+        List<ObjJSON> listObjJSON = new List<ObjJSON>();
+        Dictionary<int, float[]> idColor = new Dictionary<int, float[]>();    
         for (int i = 0; i < ListObjJSONTemp.Count; i++)
         {
-            List<int> neighboreID = new List<int>();
-            
-            idColor[ListObjJSONTemp[i].id] = ListObjJSONTemp[i].spriteColor;
-
-          
-            if(autoNeighbore == true)
+            if(MainMenuControler.keepExistingProvinceDataChoice == true)
             {
-                for (int y = 0; y < ListObjJSONTemp[i].neighbors.Count; y++)
+                bool flag = false;
+                foreach (KeyValuePair<float[], bool> kvp in existingProvinceColor.ToList())
                 {
-
-                    for (int x = 0; x < ListObjJSONTemp.Count; x++)
+                    if(ColorComparator(kvp.Key, ListObjJSONTemp[i].spriteColor))
                     {
-                        if (Enumerable.SequenceEqual(ListObjJSONTemp[i].neighbors[y], ListObjJSONTemp[x].spriteColor))
+                        flag = true;
+                        existingProvinceColor[kvp.Key] = true;
+                    }
+                }
+
+                
+                if(flag == false) //than color is not in previous json add province
+                {
+                    
+                    List<int> neighboreID = new List<int>();
+                    idColor[ListObjJSONTemp[i].id] = ListObjJSONTemp[i].spriteColor;
+                    if (autoNeighbore == true)
+                    {
+                        for (int y = 0; y < ListObjJSONTemp[i].neighbors.Count; y++)
                         {
-                            neighboreID.Add(ListObjJSONTemp[x].id);
-                            continue;
+
+                            for (int x = 0; x < ListObjJSONTemp.Count; x++)
+                            {
+                                if (Enumerable.SequenceEqual(ListObjJSONTemp[i].neighbors[y], ListObjJSONTemp[x].spriteColor))
+                                {
+                                    neighboreID.Add(ListObjJSONTemp[x].id);
+                                    continue;
+                                }
+                            }
+                        }
+                    }
+                    ObjJSON obj = new ObjJSON(ListObjJSONTemp[i].spriteColor, ListObjJSONTemp[i].lowerX, ListObjJSONTemp[i].higherY, ListObjJSONTemp[i].id, neighboreID, ListObjJSONTemp[i].center, ListObjJSONTemp[i].superficy);
+                    listObjJSON.Add(obj);
+
+                }
+
+            }
+            if(MainMenuControler.keepExistingProvinceDataChoice == false)
+            {
+                List<int> neighboreID = new List<int>();
+                idColor[ListObjJSONTemp[i].id] = ListObjJSONTemp[i].spriteColor;
+                if (autoNeighbore == true)
+                {
+                    for (int y = 0; y < ListObjJSONTemp[i].neighbors.Count; y++)
+                    {
+
+                        for (int x = 0; x < ListObjJSONTemp.Count; x++)
+                        {
+                            if (Enumerable.SequenceEqual(ListObjJSONTemp[i].neighbors[y], ListObjJSONTemp[x].spriteColor))
+                            {
+                                neighboreID.Add(ListObjJSONTemp[x].id);
+                                continue;
+                            }
                         }
                     }
                 }
-            }          
-            ObjJSON obj = new ObjJSON(ListObjJSONTemp[i].spriteColor, ListObjJSONTemp[i].lowerX, ListObjJSONTemp[i].higherY, ListObjJSONTemp[i].id, neighboreID, ListObjJSONTemp[i].center, ListObjJSONTemp[i].superficy);
-            ListObjJSON.Add(obj);
+                ObjJSON obj = new ObjJSON(ListObjJSONTemp[i].spriteColor, ListObjJSONTemp[i].lowerX, ListObjJSONTemp[i].higherY, ListObjJSONTemp[i].id, neighboreID, ListObjJSONTemp[i].center, ListObjJSONTemp[i].superficy);
+                listObjJSON.Add(obj);
+            }         
         }
+
+        if (MainMenuControler.keepExistingProvinceDataChoice == true)
+        {
+            List<ObjJSON> existingProvinceList = spriteData.spriteListJSON;
+
+            // Remove province if their color doesn't appear
+            foreach (var provinceEntry in existingProvinceColor)
+            {
+                if (provinceEntry.Value == false)
+                {
+                    float[] targetColor = provinceEntry.Key;
+
+                    existingProvinceList.RemoveAll(item =>
+                        item.spriteColor.Length >= 3 &&
+                        item.spriteColor[0] == targetColor[0] &&
+                        item.spriteColor[1] == targetColor[1] &&
+                        item.spriteColor[2] == targetColor[2]
+                    );
+                }
+            }
+        }
+
+
 
         // check in other province if this province id appear
         //Because the image is read from bottom to top, the top province will never encounter the bottom province
-        // this is a horrible way to do it :(
-        //maybe merge this loop with the top one
+        // this is a horrible way to do it :(       
         if (autoNeighbore == true)
         {
-            for (int i = 0; i < ListObjJSON.Count; i++)
+            for (int i = 0; i < listObjJSON.Count; i++)
             {
-                for (int x = 0; x < ListObjJSON.Count; x++)
+                for (int x = 0; x < listObjJSON.Count; x++)
                 {
-                    for (int y = 0; y < ListObjJSON[x].neighbors.Count; y++)
+                    for (int y = 0; y < listObjJSON[x].neighbors.Count; y++)
                     {
-                        if (ListObjJSON[x].neighbors[y] == ListObjJSON[i].id)
+                        if (listObjJSON[x].neighbors[y] == listObjJSON[i].id)
                         {
-                            ListObjJSON[i].neighbors.Add(ListObjJSON[x].id);
+                            listObjJSON[i].neighbors.Add(listObjJSON[x].id);
                         }
                     }
                 }
                 //check if neighbore id does not repeat
-                ListObjJSON[i].neighbors = RemoveDuplicate(ListObjJSON[i].neighbors);
+                listObjJSON[i].neighbors = RemoveDuplicate(listObjJSON[i].neighbors);
             }
         }
         
-        CombinedJSON combinedData = new CombinedJSON(BaseImg.width, BaseImg.height, ListObjJSON);
+        if(MainMenuControler.keepExistingProvinceDataChoice == true)
+        {
+            listObjJSON.AddRange(spriteData.spriteListJSON);
+        }
+
+
+        CombinedJSON combinedData = new CombinedJSON(BaseImg.width, BaseImg.height, listObjJSON);
         string output = JsonConvert.SerializeObject(combinedData, Formatting.Indented);
         File.WriteAllText(jsonSavePathMapInfo, output);
 
@@ -268,5 +384,44 @@ public class SpriteCreator_v4 : MonoBehaviour
     List<int> RemoveDuplicate(List<int> givenList)
     {
         return givenList.Distinct().OrderBy(n => n).ToList();
+    }
+
+    string FindKeyByColor(Dictionary<string, float[]> jsonData, Color color)
+    {
+        foreach (var kvp in jsonData)
+        {
+            float[] stored = kvp.Value;
+
+            // Compare exact color values (no tolerance)
+            if (stored.Length >= 3 &&
+                color.r == stored[0] &&
+                color.g == stored[1] &&
+                color.b == stored[2])
+            {
+                Debug.Log("Found key: " + kvp.Key);
+                return kvp.Key; // Found a match
+            }
+        }
+
+        Debug.Log("No matching color found.");
+        return null; // Not found
+    }
+
+    bool ColorComparator(float[] color1, float[] color2)
+    {
+        
+        for(int i = 0;i< color1.Length; i++)
+        {
+            if (Mathf.Approximately(color1[i], color2[i]))
+            {
+
+            }
+            else
+            {
+                return false;
+            }
+            
+        }
+        return true;
     }
 }

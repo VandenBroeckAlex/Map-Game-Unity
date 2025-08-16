@@ -23,7 +23,6 @@ public class ProvinceUIController : MonoBehaviour
         closeButton.clicked += () => HideProvincePanel();
         HideProvincePanel(); // Hide at start
     }
-
     public void ShowProvinceInfo(Province province)
     {
         currentProvince = province;
