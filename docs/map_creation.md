@@ -26,4 +26,4 @@ The `SpriteCreator` is designed to split a single image into multiple smaller sp
 <img src="./img/good_edge.PNG" alt="Example good edge" width="100" />
 
 - - The edge should `not` look like this:
-<img src="./img/bad_edge.png" alt="Example bad edge" width="100" />
+<img src="./img/bad_edge.PNG" alt="Example bad edge" width="100" />
