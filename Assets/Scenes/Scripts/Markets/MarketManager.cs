@@ -1,41 +1,35 @@
 using MyGame.Data;
 using System.Collections;
 using System.Collections.Generic;
-using System.Drawing;
+using System;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
-using System.Linq;
 using static Goods;
+using static Market_object;
+using static UnityEngine.EventSystems.EventTrigger;
 
 
 
 // If game creation (not loading a save) 
 
-[System.Serializable]
-public class Market_good
-{
-    public int id;
-    public Good good;
-    public float supply;
-    public float demand;
-    public float price;
-}
-
-[System.Serializable]
-public class Market
-{
-    public int id;
-    public string name = "test";
-    public float CashAmount = 0;
-    public List<Market_good> goods_list = new();
-
-
-
-}
-
 public class MarketManager : MonoBehaviour
 {
     [SerializeField] public Market global_market = new Market();
+
+    public float priceSensitivity = 0.1f;
+
+    private void OnEnable()
+    { 
+        DateHandeler.onMonth += PriceFluctuation;
+    }
+
+    private void OnDisable()
+    {
+        DateHandeler.onMonth -= PriceFluctuation;
+    }
+
+
 
     private void Start()
     {
@@ -50,43 +44,158 @@ public class MarketManager : MonoBehaviour
         {
             id = 1,
             good = good,
-            supply = 1000f,
+            supply = 0f,
             demand = 0f,
             price = 1f
         });
     }
 
-    private void On_Pop_Buy(int marketId, float moneyAmount, Dictionary<int, float> PopStockpile, Dictionary<int, float> PopMaxNeeds)
+   
+    public List<MarketResponse> Pop_Buy_batch(List<MarketBuyRequest> PopRequestBatch)
     {
+        List<MarketResponse> marketResponse = new List<MarketResponse>();
+       
+        
+        for (int i = 0; i < PopRequestBatch.Count; i++) 
+        {
+            //construction of response object
+            MarketResponse response = new MarketResponse();
+           
+            response.popId = PopRequestBatch[i].popId;
+            response.goodsBought = new List<GoodResponse>();
+
+            
+
+            int marketId = PopRequestBatch[i].marketId;
+            float cashAmount = PopRequestBatch[i].cashAmount;
+            response.cashLeft = cashAmount;
+
+
+
+            for (int j = 0; j < PopRequestBatch[i].GoodRequest.Count; j++)
+            {
+                GoodResponse goodResponse = new GoodResponse();
+
+                int goodId = PopRequestBatch[i].GoodRequest[j].goodId;
+
+                goodResponse.goodId = goodId;
+
+
+
+                Market_object.Market_good Marketgood = global_market.goods_list
+                .Where(good => good.id == goodId).FirstOrDefault();
+
+
+
+                float amountWanted = PopRequestBatch[i].GoodRequest[j].amountWanted;
+                float totalCost = Marketgood.price * amountWanted;
+                if(cashAmount == 0)
+                {
+                    break;
+                }
+
+
+
+                if (totalCost <= cashAmount)
+                {
+                    // Can afford the full amount
+                    goodResponse.amountBought = RoundToTwoDecimals(amountWanted);
+                    response.cashLeft -= RoundToTwoDecimals(totalCost);
+                    response.goodsBought.Add(goodResponse);
+                    Debug.Log("full amount");
+                    Debug.Log("cash left =" + response.cashLeft);
+
+                    Marketgood.demand += RoundToTwoDecimals(amountWanted);
+                    Marketgood.stockpile -= RoundToTwoDecimals(amountWanted);   
+                    
+                }
+                else
+                {
+                    // Can only afford partial amount
+                    float amountAffordable = Mathf.Floor(cashAmount / Marketgood.price * 10f) / 10f;
+                    goodResponse.amountBought = RoundToTwoDecimals(amountAffordable);
+                    response.cashLeft = 0;
+                    response.goodsBought.Add(goodResponse);
+                    Debug.Log("partial amount");
+
+                    Marketgood.demand += RoundToTwoDecimals(amountWanted);
+                    Marketgood.stockpile -= RoundToTwoDecimals(amountAffordable);
+
+                    break; // Exit loop early, no cash left
+                }
+                
+          
+            }
+            marketResponse.Add(response);
+        }
         // Market curentMarket = marketList.FirstOrDefault(market => market.id == marketId);
 
+        return marketResponse;
     }
+
+
+    public List<MarketSellResponse> Pop_Sell_batch(List<MarketSellRequest> marketSellRequestList)
+    {
+        List<MarketSellResponse>  batch_response = new List<MarketSellResponse>();
+
+        for (int i = 0; i < marketSellRequestList.Count; i++)
+        {
+            MarketSellResponse response = new MarketSellResponse();
+            response.popId = marketSellRequestList[i].popId;
+
+            int goodId = marketSellRequestList[i].goodSell.goodId;
+
+                Market_object.Market_good Marketgood = global_market.goods_list
+               .Where(good => good.id == goodId).FirstOrDefault();
+
+            response.cashRecived = RoundToTwoDecimals(Marketgood.price * marketSellRequestList[i].goodSell.amountsell);
+            batch_response.Add(response);
+
+            Marketgood.supply += RoundToTwoDecimals(marketSellRequestList[i].goodSell.amountsell);
+            Marketgood.stockpile += RoundToTwoDecimals(marketSellRequestList[i].goodSell.amountsell);
+
+
+        }
+        return batch_response;
+    }
+
+    float RoundToTwoDecimals(float input)
+    {
+        return (float)Math.Round(input, 2);
+    }
+
+    private void PriceFluctuation()
+    {
+
+        for (int i = 0; i < global_market.goods_list.Count; i++) 
+        {
+
+            global_market.goods_list[i].RecordGoodHistory();
+
+            float supply = global_market.goods_list[i].supply;
+            float demand = global_market.goods_list[i].demand;
+            
+            float old_price = global_market.goods_list[i].price;
+             if ((demand - supply) > 0)
+            {       
+                global_market.goods_list[i].price += global_market.goods_list[i].price * priceSensitivity;
+            }
+            else
+            {   
+                global_market.goods_list[i].price -= global_market.goods_list[i].price * priceSensitivity;
+            }
+
+            //reset supply and demand beggening of the month
+            global_market.goods_list[i].supply = 0;
+            global_market.goods_list[i].demand = 0;
+            Debug.Log("supply:" + supply);
+            Debug.Log("demand:" + demand);
+            Debug.Log($"wood price is now : {global_market.goods_list[i].price}, it have change of {global_market.goods_list[i].price - old_price}$");
+        }
+    }
+
 }
 
-/*
-public class MarketRequest {
-    public int popId;
-    public int marketId;
-    public List<GoodRequest> goods;
-    public float cashAmount;
-}
-
-public class GoodRequest {
-    public int goodId;
-    public float amountWanted;
-}
-
-public class MarketResponse {
-    public int popId; // So you know who to route this back to
-    public List<GoodResponse> goodsBought;
-    public float cashLeft;
-}
-
-public class GoodResponse {
-    public int goodId;
-    public float amountBought;
-}
- */
 
 
 /*

@@ -34,7 +34,4 @@ public class Tick_script : MonoBehaviour
             yield return new WaitForSeconds(gameSpeed);
         }
     }       
-
-
-  
 }

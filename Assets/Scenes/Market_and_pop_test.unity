@@ -465,9 +465,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   global_market:
     id: 0
-    name: test
     CashAmount: 0
     goods_list: []
+  priceSensitivity: 0.1
 --- !u!4 &826838919
 Transform:
   m_ObjectHideFlags: 0
@@ -513,17 +513,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   test_population_size: 1
-  populationList:
-  - Id: 0
-    Size: 0
-    ProvinceId: 0
-    ClassType: 0
-    Culture: 0
-    Religion: 0
-    CashAmount: 0
-    Stockpile: 
-    MaxNeed: 
-    Ideology: 
+  marketManager: {fileID: 826838918}
+  populationList: []
   base_growth_rate: 0.004
   base_consumption: 1
   base_production: 1.1
@@ -567,7 +558,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1529637200}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 5faffdc300d53f64d8db981208af942c, type: 3}
   m_Name: 
@@ -580,7 +571,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1529637200}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: bec3d9b4244c5784eb36c96744761991, type: 3}
   m_Name: 

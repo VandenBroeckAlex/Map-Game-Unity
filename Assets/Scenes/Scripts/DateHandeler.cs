@@ -18,21 +18,15 @@ public class DateHandeler : MonoBehaviour
     private string strMonth = "";
 
 
-
     private void OnEnable()
     {
-        Tick_script.onTick += LogWord;
         Tick_script.onTick += HandleDate;
     }
 
     private void OnDisable()
     {
-        Tick_script.onTick -= LogWord;
         Tick_script.onTick -= HandleDate;
-
     }
-
-
 
 
     private void HandleDate()
@@ -44,11 +38,6 @@ public class DateHandeler : MonoBehaviour
 
 
 
-    private void LogWord()
-    {
-        Debug.Log("success !");
-    }
-
     private void HandleMonthDayChange()
     {
         monthDay++;
@@ -56,7 +45,6 @@ public class DateHandeler : MonoBehaviour
         if (monthDay == 2)
         {
             onMonth?.Invoke();
-            Debug.Log("cc !");
         }
         Debug.Log(monthDay);
         Debug.Log(monthDay == 2);

@@ -11,6 +11,7 @@ public class Goods : MonoBehaviour
         public GoodType type; // Raw, Manufactured, Luxury
         public float basePrice;
         public float weight; // For transport, if needed
+        //icon
     }
     
 }
