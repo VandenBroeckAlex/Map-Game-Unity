@@ -32,12 +32,13 @@ The first iteration focuses on the minimum viable way to represent province and 
   - [X] pop should grow or shrink based on if they could buy good or not 
   - [x] pop stockpile reset on first day of month 
 
+### Todo: Iteration 02
+- [ ] refactor with getter and setter !
+- [ ]  pop and market supply, demand, cash ammount RoundToTwoDecimals when set
+- [x] All goods must be defined in a json on load at start
 
 ### Ideas for Future Iterations
 
-- refactor with getter and setter !
-- pop and market supply, demand, cash ammount RoundToTwoDecimals when set
-- All goods must be defined in a json on load at start
 - Support multiple markets, with at least one by country.
 - Allow markets to trade with each other:
   - Limited inter-market exchange capacity.
@@ -49,3 +50,5 @@ The first iteration focuses on the minimum viable way to represent province and 
  - factory and good consumption and production
  - pop Need tier (low, middle , high)
  - goods that allow pop to produce more
+ - good ui
+ - market ui (with grid og ui good)

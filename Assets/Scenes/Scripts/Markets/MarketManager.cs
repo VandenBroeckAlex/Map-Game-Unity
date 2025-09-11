@@ -8,14 +8,19 @@ using UnityEngine.Rendering;
 using static Goods;
 using static Market_object;
 using static UnityEngine.EventSystems.EventTrigger;
+using static helpers_math;
+using static Goods_loader;
 
 
 
-// If game creation (not loading a save) 
+
 
 public class MarketManager : MonoBehaviour
 {
+   
     [SerializeField] public Market global_market = new Market();
+    List<Goods.Good> good_definition_list = new List<Goods.Good>();
+
 
     public float priceSensitivity = 0.1f;
 
@@ -33,21 +38,31 @@ public class MarketManager : MonoBehaviour
 
     private void Start()
     {
-        Goods.Good good = ScriptableObject.CreateInstance<Goods.Good>();
+        // initialisation for game creation (not loading a save)  Market should have different price at game beginning 
+        //call goodloader
+        good_definition_list = Load_goods();
 
-        good.basePrice = 1;
-        good.goodName = "wood";
-        good.weight = 0;
-        good.type = GoodType.Raw;
 
-        global_market.goods_list.Add(new Market_good
+        for (int i = 0; i <  good_definition_list.Count; i++)
         {
-            id = 1,
-            good = good,
-            supply = 0f,
-            demand = 0f,
-            price = 1f
-        });
+            Goods.Good good = new Goods.Good();
+            good.id = good_definition_list[i].id;
+            good.basePrice = good_definition_list[i].basePrice;
+            good.name = good_definition_list[i].name;
+            good.weight = good_definition_list[i].weight;
+            good.type = good_definition_list[i].type;
+
+            global_market.goods_list.Add(new Market_good
+            {
+                good = good,
+                supply = 0f,
+                demand = 0f,
+                price = 1f
+            });
+   
+        }
+        Debug.Log(global_market.goods_list[30].good.name);
+    
     }
 
    
@@ -80,10 +95,10 @@ public class MarketManager : MonoBehaviour
 
                 goodResponse.goodId = goodId;
 
-
+               
 
                 Market_object.Market_good Marketgood = global_market.goods_list
-                .Where(good => good.id == goodId).FirstOrDefault();
+                .Where(good => good.good.id == goodId).FirstOrDefault();
 
 
 
@@ -146,7 +161,7 @@ public class MarketManager : MonoBehaviour
             int goodId = marketSellRequestList[i].goodSell.goodId;
 
                 Market_object.Market_good Marketgood = global_market.goods_list
-               .Where(good => good.id == goodId).FirstOrDefault();
+               .Where(good => good.good.id == goodId).FirstOrDefault();
 
             response.cashRecived = RoundToTwoDecimals(Marketgood.price * marketSellRequestList[i].goodSell.amountsell);
             batch_response.Add(response);
@@ -159,10 +174,7 @@ public class MarketManager : MonoBehaviour
         return batch_response;
     }
 
-    float RoundToTwoDecimals(float input)
-    {
-        return (float)Math.Round(input, 2);
-    }
+
 
     private void PriceFluctuation()
     {

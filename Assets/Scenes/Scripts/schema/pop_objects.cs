@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Market_object;
+using static helpers_math;
 
 public class Pop_objects 
 {
@@ -11,11 +12,15 @@ public class Pop_objects
     {
         public int Id { get; }
         public int Size;
-        public int ProvinceId;
-        public Population_Type ClassType;
-        public Culture Culture;
-        public Religion Religion;
-        public float CashAmount;
+        public int ProvinceId { get; }
+        public Population_Type ClassType { get; }
+        public Culture Culture { get; }
+        public Religion Religion { get; }
+        private float _cashAmount;
+        public float CashAmount 
+        { get { return _cashAmount; }
+          set { _cashAmount = RoundToTwoDecimals(value); }
+        }
         //private float education;
         //private float militency;
         public PopGood[] GoodList;

@@ -8,6 +8,5 @@ public class Test_click_province : MonoBehaviour
     private void OnMouseUpAsButton()
     {
         Debug.Log("province");
-        
     }
 }

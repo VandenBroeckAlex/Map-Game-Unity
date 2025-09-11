@@ -24,6 +24,7 @@ public class Market_object
         public float supply;
         public float demand;
         public float stockpile;
+        public bool isDiscovered;
         public List <float> price_history = new List<float>();
         public List<float> demand_history = new List<float>();
         public List<float> supply_history = new List<float>();
