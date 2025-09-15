@@ -52,3 +52,4 @@ The first iteration focuses on the minimum viable way to represent province and 
  - goods that allow pop to produce more
  - good ui
  - market ui (with grid og ui good)
+ - market acces point (every x Province own can build a market acess to De-centralize market acess)

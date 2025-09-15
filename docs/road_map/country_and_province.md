@@ -11,11 +11,10 @@ The first iteration focuses on the minimum viable way to represent province and 
   - Size
   - RGO resource
   
-- [ ] **Create Basic Country Model**
+- [x] **Create Basic Country Model**
   - Name
+  - Cash
   - id 
 
 ### Ideas for future Iteration 
 
-- terrain height addapting to terrain type
-- province highlight on hover

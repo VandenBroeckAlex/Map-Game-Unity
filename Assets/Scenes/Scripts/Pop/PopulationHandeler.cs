@@ -12,10 +12,10 @@ using System.Linq;
 
 public class PopulationHandeler : MonoBehaviour
 {
-
+    private MarketManager marketManager;
     public int test_population_size = 100;
 
-    public MarketManager marketManager;
+    
 
     [SerializeField] public List<Pop> populationList = new();
 
@@ -37,6 +37,10 @@ public class PopulationHandeler : MonoBehaviour
         DateHandeler.onMonth -= ResetPopStockpile;
     }
 
+    private void Awake()
+    {
+        marketManager = MarketManager.Instance;
+    }
 
     private void Start()
     {
@@ -109,7 +113,7 @@ public class PopulationHandeler : MonoBehaviour
                     Market_object.GoodBuyRequest request = new()
                     {
                         goodId = populationList[i].GoodList[j].Good_id,
-                        amountWanted = populationList[i].GoodList[j].MaxNeed - populationList[i].GoodList[j].Stockpile
+                        amountWanted = (populationList[i].GoodList[j].MaxNeed * (populationList[i].Size / 1000)) - populationList[i].GoodList[j].Stockpile
                     };
                     PopRequest.GoodRequest.Add(request);
                 }  

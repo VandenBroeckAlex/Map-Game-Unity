@@ -7,7 +7,7 @@ using UnityEngine;
 public class UnitBaseStats : MonoBehaviour
 {
     public float baseDamage;
+    public float baseDefence;
     public float health;
     public float speed;
 }
-

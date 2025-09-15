@@ -16,7 +16,7 @@ public static class UnitStatsManager
         {
             string json = File.ReadAllText(path);
             _unitStats = JsonUtility.FromJson<UnitBaseStats>(json);
-        }
+        } 
         else
         {
             Debug.LogError("Stats file not found at: " + path);

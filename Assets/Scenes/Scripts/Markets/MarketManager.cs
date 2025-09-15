@@ -18,6 +18,10 @@ using static Goods_loader;
 public class MarketManager : MonoBehaviour
 {
    
+    public static MarketManager Instance { get; private set; }  
+
+  
+
     [SerializeField] public Market global_market = new Market();
     List<Goods.Good> good_definition_list = new List<Goods.Good>();
 
@@ -34,7 +38,19 @@ public class MarketManager : MonoBehaviour
         DateHandeler.onMonth -= PriceFluctuation;
     }
 
-
+    private void Awake()
+    {
+        // Singleton pattern: only one instance allowed
+        if (Instance == null)
+        {
+            Instance = this;
+            DontDestroyOnLoad(gameObject); 
+        }
+        else
+        {
+            Destroy(gameObject); 
+        }
+    }
 
     private void Start()
     {
