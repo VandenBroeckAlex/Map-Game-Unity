@@ -12,7 +12,7 @@ public class ProvincesManager : MonoBehaviour
 {
 
 
-    [SerializeField] public Dictionary<int, Province>  allProvinces = new Dictionary<int, Province>();
+    [SerializeField] public Dictionary<int, Tile>  allProvinces = new Dictionary<int, Tile>();
     //ux
     public Material MatTileHiglight;
    
@@ -39,7 +39,7 @@ public class ProvincesManager : MonoBehaviour
 
     public class ProvinceListData
     {
-        public List<Province> ProvinceList;
+        public List<Tile> ProvinceList;
     }
 
     public delegate void OnProvinceUpdated();
@@ -64,10 +64,10 @@ public class ProvincesManager : MonoBehaviour
         //faire une fonction du serializing values in handler
         foreach (var provinceEntry in provincePosition.spriteListJSON)
         {
-            allProvinces.Add(provinceEntry.id, new Province(
+            allProvinces.Add(provinceEntry.id, new LandTile(
                                          provinceEntry.id,
                                          provinceEntry.name,
-                                         provinceEntry.description,
+                                      
                                          provinceEntry.owner,
                                          provinceEntry.neighbors
                                          ));
@@ -101,7 +101,7 @@ public class ProvincesManager : MonoBehaviour
     {
         
         ProvincesManager bScript = GetComponent<ProvincesManager>();
-        Dictionary<int, Province> allProvinces = bScript.allProvinces;
+        Dictionary<int, Tile> allProvinces = bScript.allProvinces;
 
         foreach (var kvp in jsonData)
         {
@@ -121,7 +121,7 @@ public class ProvincesManager : MonoBehaviour
     }
 
     // work if no province is deleted !
-    Province GetProvinceInfoById(int id)
+    Tile GetProvinceInfoById(int id)
     {
         return allProvinces[id];
     }
@@ -129,7 +129,7 @@ public class ProvincesManager : MonoBehaviour
     public void GetProvinceId(Color color)
     {
         int  id = GetProvinceIdByColor((Color)color);
-        Province recivedProvince = GetProvinceInfoById(id);
+        Tile recivedProvince = GetProvinceInfoById(id);
         OnProvinceClicked(id);
     }
 

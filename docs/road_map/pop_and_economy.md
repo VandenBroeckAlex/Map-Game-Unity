@@ -33,9 +33,13 @@ The first iteration focuses on the minimum viable way to represent province and 
   - [x] pop stockpile reset on first day of month 
 
 ### Todo: Iteration 02
-- [ ] refactor with getter and setter !
-- [ ]  pop and market supply, demand, cash ammount RoundToTwoDecimals when set
-- [x] All goods must be defined in a json on load at start
+- [ ] **Refactoring**
+  - [ ] Refactor with getter and setter !
+  - [ ] Pop and market supply, demand, cash ammount RoundToTwoDecimals when set
+  - [x] All goods must be defined in a json on load at start
+- [ ] **Every Pop in a workplace**
+  - [ ] Wprkplace
+
 
 ### Ideas for Future Iterations
 

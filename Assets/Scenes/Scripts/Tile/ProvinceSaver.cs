@@ -58,26 +58,22 @@ public class ProvinceSaver : MonoBehaviour
 
         // Get all provinces from the ProvincesManager
         var provinceHandler = GameObject.Find("/ProvincesManager").GetComponent<ProvincesManager>();
-        Dictionary<int, Province> allProvinces = provinceHandler.allProvinces;
+        Dictionary<int, Tile> allProvinces = provinceHandler.allProvinces;
 
     
         List<ObjJSON> ListObjJSON = new List<ObjJSON>(provincePosition.spriteListJSON);
 
         foreach (var kvp in allProvinces)
         {
-            Province province = kvp.Value;
+            Tile province = kvp.Value;
             ObjJSON jsonObj = ListObjJSON.FirstOrDefault(obj => obj.id == province.id);
             if (jsonObj != null)
             {
-                jsonObj.name = province.name;
-                jsonObj.owner = province.owner;
+                jsonObj.name = province.name;             
                 jsonObj.neighbors = province.neighbors;
-                jsonObj.ownerId = province.ownerId;
-                jsonObj.occupierID = province.occupierID;
                 jsonObj.isLand = province.isLand;
                 jsonObj.isPassable = province.isPassable;
-                jsonObj.rgo = province.rgo;
-                jsonObj.type = province.type;         
+     
             }
         }
         CombinedJSON combinedData = new CombinedJSON(provincePosition.canvaWidth, provincePosition.canvaHeight, ListObjJSON);

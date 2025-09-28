@@ -10,7 +10,7 @@ public class ProvinceUIController : MonoBehaviour
     private Toggle isLandToggle;
     private Button closeButton;
 
-    private Province currentProvince;
+    private Tile currentProvince;
     void OnEnable()
     {
         root = GetComponent<UIDocument>().rootVisualElement;
@@ -23,7 +23,7 @@ public class ProvinceUIController : MonoBehaviour
         closeButton.clicked += () => HideProvincePanel();
         HideProvincePanel(); // Hide at start
     }
-    public void ShowProvinceInfo(Province province)
+    public void ShowProvinceInfo(Tile province)
     {
         currentProvince = province;
 

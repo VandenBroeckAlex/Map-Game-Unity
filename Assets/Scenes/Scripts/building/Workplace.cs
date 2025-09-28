@@ -4,10 +4,10 @@ using UnityEngine;
 using static Goods;
 
 
-public enum BuildingType
+public enum WorkplaceType
 {
-    ResourceProduction,
-    Manufacturing,
+    ResourceGathering,
+    Factory,
     Service,
     Military,
     Infrastructure,
@@ -15,35 +15,41 @@ public enum BuildingType
 }
 
 [System.Serializable]
-public class Building
+public class Workplace
 {
     public string Name;
-    public BuildingType Type;
-    public int ConstructionCost;
-    public int MaintenanceCost;
-    public int ConstructionTime; // in days
+    public WorkplaceType Type;
+    public int ConstructionCost; // IC cost
+    public Dictionary<string, int> MaintenanceCost; 
     public Dictionary<string, int> InputGoods; // e.g., "Iron": 2
     public Dictionary<string, int> OutputGoods; // e.g., "Steel": 1
     public int MaxWorkers;
     public float Efficiency; // Affected by tech, workforce skill, etc.
-    public bool IsUnlocked;
+    public int provinceId;
+    public float cashBuffer;
+    public float cashBufferMax;
+    public Dictionary<int,int> owner; 
 
     public virtual void Produce(Dictionary<string, int> goodsStockpile, int workerCount)
     {
-        // Simplified example
-        if (CanProduce(goodsStockpile, workerCount))
+        // Check Input
+        if(Type == WorkplaceType.Factory)
         {
-            foreach (var input in InputGoods)
-                goodsStockpile[input.Key] -= input.Value;
+            if (CanProduce(goodsStockpile, workerCount))
+            {
+                foreach (var input in InputGoods)
+                    goodsStockpile[input.Key] -= input.Value;
 
-            foreach (var output in OutputGoods)
-                goodsStockpile[output.Key] += output.Value;
+                foreach (var output in OutputGoods)
+                    goodsStockpile[output.Key] += output.Value;
+            }
         }
+        
     }
 
     private bool CanProduce(Dictionary<string, int> goodsStockpile, int workerCount)
     {
-        if (workerCount < MaxWorkers * 0.5f) return false; // Minimum workforce
+        
         foreach (var input in InputGoods)
             if (!goodsStockpile.ContainsKey(input.Key) || goodsStockpile[input.Key] < input.Value)
                 return false;

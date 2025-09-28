@@ -16,5 +16,9 @@ The first iteration focuses on the minimum viable way to represent province and 
   - Cash
   - id 
 
+### Todo: Iteration 02
+- [ ] Implement basic income tax
+- [ ] provinces become Tile , water Tile land tile(province)
+
 ### Ideas for future Iteration 
 

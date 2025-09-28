@@ -27,9 +27,7 @@ public class Country : MonoBehaviour
 
     //public Dictionary<Country, DiplomaticRelation> diplomaticRelations;
 
-    // Methods
-    //public void CalculateIncome();
-    //public void HandleTrade();
+    
 
     
 
