@@ -9,16 +9,12 @@ public class ObjJSON
     public float[] center;
     public string name = "";
     public int superficy;
-    public int type = 0;
-    public int ownerId;
-    public int occupierID;
     public List<int> neighbors;   
-    public bool isLand = true;
+    public bool isLand;
     public bool isPassable = true;
-    public int owner;
-    public int rgo;
 
-    public ObjJSON(float[] color, int x, int y, int id, List<int> neighbors, float[] center, int superficy)
+
+    public ObjJSON(float[] color, int x, int y, int id, List<int> neighbors, float[] center, int superficy, bool isLand)
     {
         this.id = id;
         this.spriteColor = color;
@@ -27,6 +23,7 @@ public class ObjJSON
         this.neighbors = neighbors;
         this.center = center;
         this.superficy = superficy;
+        this.isLand = isLand;
     }
 
     // Default constructor for JSON serialization

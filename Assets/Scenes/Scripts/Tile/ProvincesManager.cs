@@ -7,12 +7,12 @@ using UnityEngine;
 using static RaycastScript;
 
 
-
+[SerializeField]
 public class ProvincesManager : MonoBehaviour
 {
 
 
-    [SerializeField] public Dictionary<int, Tile>  allProvinces = new Dictionary<int, Tile>();
+    [SerializeField] public Dictionary<int, Tile>  provinces_list = new Dictionary<int, Tile>();
     //ux
     public Material MatTileHiglight;
    
@@ -64,7 +64,7 @@ public class ProvincesManager : MonoBehaviour
         //faire une fonction du serializing values in handler
         foreach (var provinceEntry in provincePosition.spriteListJSON)
         {
-            allProvinces.Add(provinceEntry.id, new LandTile(
+            provinces_list.Add(provinceEntry.id, new LandTile(
                                          provinceEntry.id,
                                          provinceEntry.name,
                                       
@@ -73,7 +73,7 @@ public class ProvincesManager : MonoBehaviour
                                          ));
 
         }
-        Debug.Log("number of province loaded :" + allProvinces.Count);
+        Debug.Log("number of province loaded :" + provinces_list.Count);
 
         if (uiController == null)
             uiController = FindObjectOfType<ProvinceUIController>();
@@ -94,14 +94,14 @@ public class ProvincesManager : MonoBehaviour
     public void OnProvinceClicked(int id)
     {
       
-        uiController.ShowProvinceInfo(allProvinces[id]);
+        uiController.ShowProvinceInfo(provinces_list[id]);
     }
 
     public int GetProvinceIdByColor(Color color)
     {
         
         ProvincesManager bScript = GetComponent<ProvincesManager>();
-        Dictionary<int, Tile> allProvinces = bScript.allProvinces;
+        Dictionary<int, Tile> allProvinces = bScript.provinces_list;
 
         foreach (var kvp in jsonData)
         {
@@ -123,7 +123,7 @@ public class ProvincesManager : MonoBehaviour
     // work if no province is deleted !
     Tile GetProvinceInfoById(int id)
     {
-        return allProvinces[id];
+        return provinces_list[id];
     }
 
     public void GetProvinceId(Color color)

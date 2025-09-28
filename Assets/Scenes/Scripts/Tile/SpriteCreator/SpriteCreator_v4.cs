@@ -293,8 +293,19 @@ public class SpriteCreator_v4 : MonoBehaviour
                             }
                         }
                     }
-                    ObjJSON obj = new ObjJSON(ListObjJSONTemp[i].spriteColor, ListObjJSONTemp[i].lowerX, ListObjJSONTemp[i].higherY, ListObjJSONTemp[i].id, neighboreID, ListObjJSONTemp[i].center, ListObjJSONTemp[i].superficy);
-                    listObjJSON.Add(obj);
+
+                    //check if Blue is 255 and red less than 180
+                    if (ListObjJSONTemp[i].spriteColor[2] == 1 && ListObjJSONTemp[i].spriteColor[0] < 0.4999)
+                    {
+                        ObjJSON obj = new ObjJSON(ListObjJSONTemp[i].spriteColor, ListObjJSONTemp[i].lowerX, ListObjJSONTemp[i].higherY, ListObjJSONTemp[i].id, neighboreID, ListObjJSONTemp[i].center, ListObjJSONTemp[i].superficy, false);
+                        listObjJSON.Add(obj);
+                    }
+                    else
+                    {
+                        ObjJSON obj = new ObjJSON(ListObjJSONTemp[i].spriteColor, ListObjJSONTemp[i].lowerX, ListObjJSONTemp[i].higherY, ListObjJSONTemp[i].id, neighboreID, ListObjJSONTemp[i].center, ListObjJSONTemp[i].superficy,true);
+                        listObjJSON.Add(obj);
+                    }
+                        
 
                 }
 
@@ -318,7 +329,7 @@ public class SpriteCreator_v4 : MonoBehaviour
                         }
                     }
                 }
-                ObjJSON obj = new ObjJSON(ListObjJSONTemp[i].spriteColor, ListObjJSONTemp[i].lowerX, ListObjJSONTemp[i].higherY, ListObjJSONTemp[i].id, neighboreID, ListObjJSONTemp[i].center, ListObjJSONTemp[i].superficy);
+                ObjJSON obj = new ObjJSON(ListObjJSONTemp[i].spriteColor, ListObjJSONTemp[i].lowerX, ListObjJSONTemp[i].higherY, ListObjJSONTemp[i].id, neighboreID, ListObjJSONTemp[i].center, ListObjJSONTemp[i].superficy,true);
                 listObjJSON.Add(obj);
             }         
         }
@@ -343,8 +354,6 @@ public class SpriteCreator_v4 : MonoBehaviour
                 }
             }
         }
-
-
 
         // check in other province if this province id appear
         //Because the image is read from bottom to top, the top province will never encounter the bottom province
