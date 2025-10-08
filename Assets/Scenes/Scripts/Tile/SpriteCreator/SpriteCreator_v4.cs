@@ -238,10 +238,10 @@ public class SpriteCreator_v4 : MonoBehaviour
             for (int i = 0; i < spriteData.spriteListJSON.Count; i++)
             {
 
-                existingProvinceColor.Add(spriteData.spriteListJSON[i].spriteColor, false);
-                if (spriteData.spriteListJSON[i].id > givenId)
+                existingProvinceColor.Add(spriteData.spriteListJSON[i].SpriteColor, false);
+                if (spriteData.spriteListJSON[i].Id > givenId)
                 {
-                    givenId = spriteData.spriteListJSON[i].id;
+                    givenId = spriteData.spriteListJSON[i].Id;
                 }
 
             }
@@ -346,10 +346,10 @@ public class SpriteCreator_v4 : MonoBehaviour
                     float[] targetColor = provinceEntry.Key;
 
                     existingProvinceList.RemoveAll(item =>
-                        item.spriteColor.Length >= 3 &&
-                        item.spriteColor[0] == targetColor[0] &&
-                        item.spriteColor[1] == targetColor[1] &&
-                        item.spriteColor[2] == targetColor[2]
+                        item.SpriteColor.Length >= 3 &&
+                        item.SpriteColor[0] == targetColor[0] &&
+                        item.SpriteColor[1] == targetColor[1] &&
+                        item.SpriteColor[2] == targetColor[2]
                     );
                 }
             }
@@ -366,9 +366,9 @@ public class SpriteCreator_v4 : MonoBehaviour
                 {
                     for (int y = 0; y < listObjJSON[x].neighbors.Count; y++)
                     {
-                        if (listObjJSON[x].neighbors[y] == listObjJSON[i].id)
+                        if (listObjJSON[x].neighbors[y] == listObjJSON[i].Id)
                         {
-                            listObjJSON[i].neighbors.Add(listObjJSON[x].id);
+                            listObjJSON[i].neighbors.Add(listObjJSON[x].Id);
                         }
                     }
                 }

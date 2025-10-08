@@ -31,8 +31,8 @@ public class ProvinceSaver : MonoBehaviour
     JSONData provincePosition;
     void LoadJsonDataMapPosition()
     {
-        string jsonFile = File.ReadAllText(fullPath);
-        provincePosition = JsonConvert.DeserializeObject<JSONData>(jsonFile);
+        string JsonFile = File.ReadAllText(fullPath);
+        provincePosition = JsonConvert.DeserializeObject<JSONData>(JsonFile);
     }
 
 
@@ -57,28 +57,28 @@ public class ProvinceSaver : MonoBehaviour
         LoadJsonDataMapPosition();  
 
         // Get all provinces from the ProvincesManager
-        var provinceHandler = GameObject.Find("/ProvincesManager").GetComponent<ProvincesManager>();
-        Dictionary<int, Tile> allProvinces = provinceHandler.provinces_list;
+        var ProvinceHandler = GameObject.Find("/ProvincesManager").GetComponent<ProvincesManager>();
+        Dictionary<int, Tile> allProvinces = ProvinceHandler.provinces_list;
 
     
         List<ObjJSON> ListObjJSON = new List<ObjJSON>(provincePosition.spriteListJSON);
 
         foreach (var kvp in allProvinces)
         {
-            Tile province = kvp.Value;
-            ObjJSON jsonObj = ListObjJSON.FirstOrDefault(obj => obj.id == province.id);
+            Tile Province = kvp.Value;
+            ObjJSON jsonObj = ListObjJSON.FirstOrDefault(obj => obj.Id == Province.id);
             if (jsonObj != null)
             {
-                jsonObj.name = province.name;             
-                jsonObj.neighbors = province.neighbors;
-                jsonObj.isLand = province.isLand;
-                jsonObj.isPassable = province.isPassable;
+                jsonObj.name = Province.name;             
+                jsonObj.neighbors = Province.neighbors;
+                jsonObj.isLand = Province.isLand;
+                jsonObj.isPassable = Province.isPassable;
      
             }
         }
-        CombinedJSON combinedData = new CombinedJSON(provincePosition.canvaWidth, provincePosition.canvaHeight, ListObjJSON);
-        string output = JsonConvert.SerializeObject(combinedData, Formatting.Indented);
-        File.WriteAllText(fullPath, output);
+        CombinedJSON CombinedData = new CombinedJSON(provincePosition.canvaWidth, provincePosition.canvaHeight, ListObjJSON);
+        string Output = JsonConvert.SerializeObject(CombinedData, Formatting.Indented);
+        File.WriteAllText(fullPath, Output);
         Debug.Log("Province data saved!");
     }
 

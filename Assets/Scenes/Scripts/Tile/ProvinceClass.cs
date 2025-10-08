@@ -17,11 +17,11 @@ namespace MyGame.Data
         public bool isPassable;
         public List<int> neighbors;     // (?)
         
-        public Tile(int givenID, string givenName,List<int> givenneighbors)
+        public Tile(int GivenID, string GivenName,List<int> Givenneighbors)
         {
-            id = givenID;
-            name = givenName;     
-            neighbors = givenneighbors;
+            id = GivenID;
+            name = GivenName;     
+            neighbors = Givenneighbors;
         }
 
     }

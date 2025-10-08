@@ -60,6 +60,7 @@ The third iteration will include an editor tool for managing provinces, as well 
 - [X] **load data correctly**
 - [X] **test projector for provinces**
 - [ ] **Add a create country page**
+- [ ] **JSON do not override and empty problem**
 
 
 

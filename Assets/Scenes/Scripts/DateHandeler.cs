@@ -20,12 +20,12 @@ public class DateHandeler : MonoBehaviour
 
     private void OnEnable()
     {
-        Tick_script.onTick += HandleDate;
+        Tick_script.OnTick += HandleDate;
     }
 
     private void OnDisable()
     {
-        Tick_script.onTick -= HandleDate;
+        Tick_script.OnTick -= HandleDate;
     }
 
 

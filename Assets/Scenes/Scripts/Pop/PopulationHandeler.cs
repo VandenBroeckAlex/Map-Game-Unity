@@ -24,15 +24,15 @@ public class PopulationHandeler : MonoBehaviour
     public float base_production = 1.1f;
     private void OnEnable()
     {
-        Tick_script.onTick += PopBuy;
-        Tick_script.onTick += PopSell;
+        Tick_script.OnTick += PopBuy;
+        Tick_script.OnTick += PopSell;
         DateHandeler.onMonth += PopGrowth;
         DateHandeler.onMonth += ResetPopStockpile;
     }
 
     private void OnDisable()
     {
-        Tick_script.onTick += PopBuy;
+        Tick_script.OnTick += PopBuy;
         DateHandeler.onMonth -= PopGrowth;
         DateHandeler.onMonth -= ResetPopStockpile;
     }

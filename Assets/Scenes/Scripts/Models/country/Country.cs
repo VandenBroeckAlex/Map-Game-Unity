@@ -13,7 +13,7 @@ public class Country : MonoBehaviour
     public float treasury;
     public float income; // the sum of all incom last month
 
-    public float income_tax;
+    public float Income_tax;
     public Country(int ID, string NAME, Color COLOR, float TREASURY )
     {
         id = ID;

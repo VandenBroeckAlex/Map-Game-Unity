@@ -2,8 +2,8 @@ using System.Collections.Generic;
 
 public class ObjJSON
 {
-    public int id;
-    public float[] spriteColor;
+    public int Id;
+    public float[] SpriteColor;
     public int lowerX;
     public int higherY;
     public float[] center;
@@ -16,8 +16,8 @@ public class ObjJSON
 
     public ObjJSON(float[] color, int x, int y, int id, List<int> neighbors, float[] center, int superficy, bool isLand)
     {
-        this.id = id;
-        this.spriteColor = color;
+        this.Id = id;
+        this.SpriteColor = color;
         this.lowerX = x;
         this.higherY = y;
         this.neighbors = neighbors;

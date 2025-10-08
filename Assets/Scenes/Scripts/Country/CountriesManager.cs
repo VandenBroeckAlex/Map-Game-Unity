@@ -5,17 +5,17 @@ using UnityEngine;
 
 public class CountriesManager : MonoBehaviour
 {
-    [SerializeField] public List<Country> CountryList = new();
-    public static CountriesManager Instance;
+    [SerializeField] public List<Country> countryList = new();
+    public static CountriesManager instance;
 
     
     // Start is called before the first frame update
     void Start()
     {
-        CountryList.Clear();    
+        countryList.Clear();    
         //Load country
         Country country = new Country(1,"France",Color.blue,100f);
-        CountryList.Add(country);
+        countryList.Add(country);
     }
 
    
@@ -24,7 +24,7 @@ public class CountriesManager : MonoBehaviour
 
     void Awake()
     {
-        if (Instance == null) Instance = this;
+        if (instance == null) instance = this;
         else Destroy(gameObject);
     }
 

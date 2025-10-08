@@ -22,49 +22,49 @@ public class MapLoader : MonoBehaviour
     {
         public int canvaWidth;
         public int canvaHeight;
-        public SpritePositionData[] spriteListJSON;
+        public SpritePositionData[] SpriteListJSON;
     }
 
-    JSONData spriteData;
-    public static int canvaWidth;
-    public static int canvaHeight;
+    JSONData SpriteData;
+    public static int CanvaWidth;
+    public static int CanvaHeight;
 
-    Canvas canvas;
-    public Material outlineMat;
+    Canvas _Canvas;
+    public Material OutlineMat;
 
     void Start()
     {
         LoadJsonData();
         CreateCanva();
-        StartCoroutine(LoadSpritesAsync(spriteData));
+        StartCoroutine(LoadSpritesAsync(SpriteData));
     }
 
     void LoadJsonData()
     {
-        string jsonPath = FilePath.MapInfo;
+        string JsonPath = FilePath.MapInfo;
 
-        if (File.Exists(jsonPath))
+        if (File.Exists(JsonPath))
         {
-            string jsonText = File.ReadAllText(jsonPath);
-            spriteData = JsonConvert.DeserializeObject<JSONData>(jsonText);
+            string jsonText = File.ReadAllText(JsonPath);
+            SpriteData = JsonConvert.DeserializeObject<JSONData>(jsonText);
         }
         else
         {
-            Debug.LogError("map_info.json not found at " + jsonPath);
+            Debug.LogError("map_info.json not found at " + JsonPath);
         }
     }
 
     IEnumerator LoadSpritesAsync(JSONData spriteData)
     {
-        string folderPath = FilePath.ProvincesSplit;
+        string FolderPath = FilePath.ProvincesSplit;
 
         int loadedCount = 0;
 
-        foreach (var spriteEntry in spriteData.spriteListJSON)
+        foreach (var spriteEntry in spriteData.SpriteListJSON)
         {
             try
             {
-                string filePath = Path.Combine(folderPath, $"img_{spriteEntry.id}.png");
+                string filePath = Path.Combine(FolderPath, $"img_{spriteEntry.id}.png");
 
                 if (File.Exists(filePath))
                 {
@@ -97,19 +97,19 @@ public class MapLoader : MonoBehaviour
             yield return null;
         }
 
-        Debug.Log($"Finished loading {loadedCount}/{spriteData.spriteListJSON.Length} sprites.");
+        Debug.Log($"Finished loading {loadedCount}/{spriteData.SpriteListJSON.Length} sprites.");
     }
 
 
     void CreateSpriteImage(Sprite sprite, SpritePositionData spriteEntry)
     {
         GameObject spriteObj = new GameObject("Sprite_" + spriteEntry.id);
-        spriteObj.transform.SetParent(canvas.transform);
+        spriteObj.transform.SetParent(_Canvas.transform);
         spriteObj.transform.rotation = Quaternion.Euler(90, 0, 0);
 
         Image image = spriteObj.AddComponent<Image>();
         image.sprite = sprite;
-        image.material = outlineMat;
+        image.material = OutlineMat;
 
         Color spriteColor = new Color(
             spriteEntry.spriteColor[0],
@@ -129,20 +129,20 @@ public class MapLoader : MonoBehaviour
     void CreateCanva()
     {
         GameObject canvasObj = new GameObject("MapCanvas");
-        canvas = canvasObj.AddComponent<Canvas>();
-        canvas.renderMode = RenderMode.WorldSpace;
-        canvas.pixelPerfect = true;
-        canvas.transform.position = Vector3.zero;
-        canvas.transform.rotation = Quaternion.Euler(90, 0, 0);
+        _Canvas = canvasObj.AddComponent<Canvas>();
+        _Canvas.renderMode = RenderMode.WorldSpace;
+        _Canvas.pixelPerfect = true;
+        _Canvas.transform.position = Vector3.zero;
+        _Canvas.transform.rotation = Quaternion.Euler(90, 0, 0);
 
-        RectTransform rt = canvas.GetComponent<RectTransform>();
+        RectTransform rt = _Canvas.GetComponent<RectTransform>();
         rt.pivot = new Vector2(0, 1);
 
-        if (spriteData != null)
+        if (SpriteData != null)
         {
-            rt.sizeDelta = new Vector2(spriteData.canvaWidth, spriteData.canvaHeight);
-             canvaWidth = spriteData.canvaWidth;
-             canvaHeight = spriteData.canvaHeight;
+            rt.sizeDelta = new Vector2(SpriteData.canvaWidth, SpriteData.canvaHeight);
+             CanvaWidth = SpriteData.canvaWidth;
+             CanvaHeight = SpriteData.canvaHeight;
 }
 
     }
