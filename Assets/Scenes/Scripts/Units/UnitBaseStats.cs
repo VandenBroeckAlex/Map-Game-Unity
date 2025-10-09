@@ -6,16 +6,15 @@ using UnityEngine;
 [System.Serializable]
 public class UnitStats
 {
-    public FCurentMax strength;
     public FCurentMax organisation;
     public FCurentMax moral;
 
-    public FCurentMax ManPower;
-    public FCurentMax Officer;
-
-    //public Supply supply;
+    public FCurentMax manPower;
+    public FCurentMax officer;
+    public List<PopGood> supply;
+    //public List<> supply;
     //public Weight weight;
-
+    // public float speed
     //public float coalConsumption;
     //public float armor;
     //public float softness; (%)
@@ -23,22 +22,26 @@ public class UnitStats
     //public float airDefense;
     public float softAttack;
     //public float hardAttack;
-
+    // public float melee
     //public int  combatWidth;
+    // public FCurentMax entrenchement
+    //public level
+    //public experience
 
-    public  float CurentSoftAttack()
+
+    public float CurentSoftAttack()
     {
-        if (ManPower.Max == 0)
+        if (manPower.max == 0)
             return 0;
 
-        return softAttack / ((ManPower.Current / ManPower.Max) * 100f);
+        return softAttack / ((manPower.current / manPower.max) * 100f);
     }
 
     public int PercentManPower()
     {
-        if (ManPower.Max == 0)
+        if (manPower.max == 0)
             return 0;
 
-        return Mathf.RoundToInt((ManPower.Current / ManPower.Max) * 100f);
+        return Mathf.RoundToInt((manPower.current / manPower.max) * 100f);
     }
 }

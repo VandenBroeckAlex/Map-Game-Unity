@@ -59,13 +59,7 @@ public class Pop_objects
         }
     }
 
-    public class PopGood
-    {
-        public int Good_id;
-        public float Stockpile;     
-        public float MaxNeed;
- 
-    }
+   
     public enum Population_Type
     {
         Miner,

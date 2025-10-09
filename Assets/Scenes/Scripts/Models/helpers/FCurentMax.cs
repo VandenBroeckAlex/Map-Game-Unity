@@ -5,14 +5,14 @@ using System;
 
 public struct FCurentMax 
 {
-    public float Current;
-    public float Max;
+    public float current;
+    public float max;
 
-    public void SetCurrent(float value) => Current = Math.Clamp(value, 0, Max);
+    public void SetCurrent(float value) => current = Math.Clamp(value, 0, max);
 
     public FCurentMax(float current, float max)
     {
-        this.Current = current;
-        Max = max;
+        this.current = current;
+        this.max = max;
     }
 }
