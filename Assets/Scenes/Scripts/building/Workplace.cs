@@ -17,14 +17,14 @@ public enum WorkplaceType
 [System.Serializable]
 public class Workplace
 {
-    public string Name;
-    public WorkplaceType Type;
-    public int ConstructionCost; // IC cost
-    public Dictionary<string, int> MaintenanceCost; 
-    public Dictionary<string, int> InputGoods; // e.g., "Iron": 2
-    public Dictionary<string, int> OutputGoods; // e.g., "Steel": 1
-    public int MaxWorkers;
-    public float Efficiency; // Affected by tech, workforce skill, etc.
+    public string name;
+    public WorkplaceType type;
+    public int constructionCost; // IC cost
+    public Dictionary<string, int> maintenanceCost; 
+    public Dictionary<string, int> inputGoods; 
+    public Dictionary<string, int> outputGoods; 
+    public FloatCurentMax maxWorkers;
+    public float efficiency; // Affected by tech, workforce skill, etc.
     public int provinceId;
     public float cashBuffer;
     public float cashBufferMax;
@@ -33,14 +33,14 @@ public class Workplace
     public virtual void Produce(Dictionary<string, int> goodsStockpile, int workerCount)
     {
         // Check Input
-        if(Type == WorkplaceType.Factory)
+        if(type == WorkplaceType.Factory)
         {
             if (CanProduce(goodsStockpile, workerCount))
             {
-                foreach (var input in InputGoods)
+                foreach (var input in inputGoods)
                     goodsStockpile[input.Key] -= input.Value;
 
-                foreach (var output in OutputGoods)
+                foreach (var output in outputGoods)
                     goodsStockpile[output.Key] += output.Value;
             }
         }
@@ -50,7 +50,7 @@ public class Workplace
     private bool CanProduce(Dictionary<string, int> goodsStockpile, int workerCount)
     {
         
-        foreach (var input in InputGoods)
+        foreach (var input in inputGoods)
             if (!goodsStockpile.ContainsKey(input.Key) || goodsStockpile[input.Key] < input.Value)
                 return false;
         return true;

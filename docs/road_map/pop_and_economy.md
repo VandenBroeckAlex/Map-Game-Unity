@@ -38,7 +38,7 @@ The first iteration focuses on the minimum viable way to represent province and 
   - [ ] Pop and market supply, demand, cash ammount RoundToTwoDecimals when set
   - [x] All goods must be defined in a json on load at start
 - [ ] **Every Pop in a workplace**
-  - [ ] Wprkplace
+  - [ ] Workplace
 
 
 ### Ideas for Future Iterations

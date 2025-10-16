@@ -4,18 +4,33 @@ using UnityEngine;
 using Newtonsoft.Json;
 using System.IO;
 
-public class Goods_loader   
+public class Goods_loader : MonoBehaviour 
 {
-    // Start is called before the first frame update
 
-    private static string _FilePath = FilePath.Goods;
+
+    [SerializeField]
+    public static List<Goods.Good> allGoodsDefinition;
 
     public static List<Goods.Good> Load_goods()
     {
+        string _FilePath = FilePath.Goods;
         Debug.Log("File Path: " + _FilePath);
         string jsonText = File.ReadAllText(_FilePath);
         List<Goods.Good>  good_list = JsonConvert.DeserializeObject<List<Goods.Good>>(jsonText);
-      return good_list;
+        allGoodsDefinition = good_list;
+
+
+
+
+
+
+        return good_list;
+
+    }
+
+    void Start()
+    {
+        Load_goods();
 
     }
 

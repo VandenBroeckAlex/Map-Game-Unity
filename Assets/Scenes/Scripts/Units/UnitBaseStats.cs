@@ -6,11 +6,11 @@ using UnityEngine;
 [System.Serializable]
 public class UnitStats
 {
-    public FCurentMax organisation;
-    public FCurentMax moral;
+    public FloatCurentMax organisation;
+    public FloatCurentMax moral;
 
-    public FCurentMax manPower;
-    public FCurentMax officer;
+    public FloatCurentMax manPower;
+    public FloatCurentMax officer;
     public List<PopGood> supply;
     //public List<> supply;
     //public Weight weight;

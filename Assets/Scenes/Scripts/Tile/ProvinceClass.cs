@@ -43,7 +43,8 @@ namespace MyGame.Data
         public int ownerId;
         public int occupierID;
         public int rgo;
-        public int type; 
+        public int type;
+        public bool isCoast;
         public LandTile(int givenID, string givenName,int givenType, List<int> givenneighbors)
             : base(givenID, givenName, givenneighbors)
         {
@@ -57,6 +58,7 @@ namespace MyGame.Data
     }
 
     //load it from resource json
+    // if type == Raw than good is valid rgo
     public enum Type_rgo
     {
         coal,
