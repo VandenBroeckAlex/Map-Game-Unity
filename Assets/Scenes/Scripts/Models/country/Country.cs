@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 [System.Serializable]
-public class Country : MonoBehaviour
+public class Country 
 {
     // Start is called before the first frame update
 

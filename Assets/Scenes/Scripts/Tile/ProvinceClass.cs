@@ -7,8 +7,7 @@ namespace MyGame.Data
     //base tile
 
     //make land and water inherit from it
-    [Serializable]
-
+    [SerializeField]
     public class Tile
     {
         public string name;

@@ -163,7 +163,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d017d4db1982876409ae57acb58aee88, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MatTileHiglight: {fileID: 0}
+  MatTileHiglight: {fileID: -876546973899608171, guid: bbaee4947bc93f941baa4c47faf37385, type: 3}
   uiController: {fileID: 911756277}
 --- !u!1 &238438336
 GameObject:
@@ -512,8 +512,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f58ea8c2be3f4154a85914c525bf9c43, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  CountryList: []
-  countries: []
+  countryList: []
 --- !u!4 &697213402
 Transform:
   m_ObjectHideFlags: 0
@@ -559,7 +558,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   test_population_size: 40
-  marketManager: {fileID: 0}
   populationList:
   - Size: 0
   base_growth_rate: 0.004
@@ -803,7 +801,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 49271683fb270bd478ecdb5458d3cd5e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  outlineMat: {fileID: 2100000, guid: 92dc20b4970df354a84061088b0dfc42, type: 2}
+  OutlineMat: {fileID: 2100000, guid: 92dc20b4970df354a84061088b0dfc42, type: 2}
 --- !u!114 &1401406616
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -818,8 +816,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   fileName: Province_Map_height.png
   terrainMaxHeight: 5
-  tileCountX: 2
-  tileCountZ: 2
+  tileCountX: 1
+  tileCountZ: 1
   waterMaterial: {fileID: 2100000, guid: 141d9d6ca43b6c843965491604c6deff, type: 2}
   provinceIdMat: {fileID: 2100000, guid: aa60ab8e189bc594f85e2775eea2c0e6, type: 2}
 --- !u!1 &1435200881

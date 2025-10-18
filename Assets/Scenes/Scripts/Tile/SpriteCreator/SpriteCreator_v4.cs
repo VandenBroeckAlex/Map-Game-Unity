@@ -358,24 +358,26 @@ public class SpriteCreator_v4 : MonoBehaviour
         // check in other province if this province id appear
         //Because the image is read from bottom to top, the top province will never encounter the bottom province
         // this is a horrible way to do it :(       
-        if (autoNeighbore == true)
-        {
-            for (int i = 0; i < listObjJSON.Count; i++)
-            {
-                for (int x = 0; x < listObjJSON.Count; x++)
-                {
-                    for (int y = 0; y < listObjJSON[x].neighbors.Count; y++)
-                    {
-                        if (listObjJSON[x].neighbors[y] == listObjJSON[i].Id)
-                        {
-                            listObjJSON[i].neighbors.Add(listObjJSON[x].Id);
-                        }
-                    }
-                }
-                //check if neighbore id does not repeat
-                listObjJSON[i].neighbors = RemoveDuplicate(listObjJSON[i].neighbors);
-            }
-        }
+        //refactor with linQ
+
+        //if (autoNeighbore == true)
+        //{
+        //    for (int i = 0; i < listObjJSON.Count; i++)
+        //    {
+        //        for (int x = 0; x < listObjJSON.Count; x++)
+        //        {
+        //            for (int y = 0; y < listObjJSON[x].neighbors.Count; y++)
+        //            {
+        //                if (listObjJSON[x].neighbors[y] == listObjJSON[i].Id)
+        //                {
+        //                    listObjJSON[i].neighbors.Add(listObjJSON[x].Id);
+        //                }
+        //            }
+        //        }
+        //        //check if neighbore id does not repeat
+        //        listObjJSON[i].neighbors = RemoveDuplicate(listObjJSON[i].neighbors);
+        //    }
+        //}
         
         if(MainMenuControler.keepExistingProvinceDataChoice == true)
         {

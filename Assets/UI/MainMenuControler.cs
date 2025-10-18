@@ -14,7 +14,7 @@ public class MainMenuControler : MonoBehaviour
     public Toggle recalculateMap;
     public Button quitButton;
     public Toggle keepExistingProvinceData;
-    public static bool keepExistingProvinceDataChoice = true;
+    public static bool keepExistingProvinceDataChoice = false;
 
 
     private void Awake()
