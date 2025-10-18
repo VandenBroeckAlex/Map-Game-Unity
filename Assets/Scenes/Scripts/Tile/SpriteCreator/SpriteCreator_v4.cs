@@ -41,6 +41,7 @@ public class SpriteCreator_v4 : MonoBehaviour
         jsonSavePathColorId = FilePath.ColorId;
         Directory.CreateDirectory(pathSave);
         Debug.Log(MainMenuControler.keepExistingProvinceDataChoice);
+
         if (MainMenuControler.recalculateMapChoice || !File.Exists(jsonSavePathMapInfo) || FileUtils.IsFolderEmpty(pathSave))
         {
             BaseImg = FileUtils.LoadBaseImage(baseImagePath);
@@ -129,7 +130,7 @@ public class SpriteCreator_v4 : MonoBehaviour
         if(leftAndRightNeighbore == true)
         {
             //  read base image width 0 and base image maxwidth
-            //color list of float
+            //  color list of float
             //  check the id of the color in spriteObjList and maxwidth color in neighbore
             for (int y = 0; y < BaseImg.height; y++)
             {
@@ -137,18 +138,18 @@ public class SpriteCreator_v4 : MonoBehaviour
                 Color rightPixelColor = BaseImg.GetPixel(BaseImg.width-1, y);
 
                 // get leftPixelColorObj add right
-                for (int x = 0; x < spriteObjList.Count; x++)
-                {
-                    if(leftPixelColor == spriteObjList[x].spriteColor)
-                    {
-                        if (!spriteObjList[x].neighboreColor.Any(c => c.SequenceEqual(ColorUtils.GenerateColorFormat(rightPixelColor))))
-                        {
-                            spriteObjList[x].neighboreColor.Add(ColorUtils.GenerateColorFormat(rightPixelColor));
-                        }
-                        break;
-                    }
+                 int _indexLeft = spriteObjList.FindIndex(s => s.spriteColor == leftPixelColor);
+                 int _indexRight = spriteObjList.FindIndex(s => s.spriteColor == rightPixelColor);
 
+                if (spriteObjList[_indexLeft].neighboreColor.Contains(ColorUtils.GenerateColorFormat(spriteObjList[_indexRight].spriteColor)) || spriteObjList[_indexLeft].spriteColor == spriteObjList[_indexRight].spriteColor)
+                {
+                    
+                    continue;
                 }
+
+                spriteObjList[_indexLeft].neighboreColor.Add(ColorUtils.GenerateColorFormat(spriteObjList[_indexRight].spriteColor));
+                spriteObjList[_indexRight].neighboreColor.Add(ColorUtils.GenerateColorFormat(spriteObjList[_indexLeft].spriteColor));
+
             }
 
 
@@ -312,6 +313,7 @@ public class SpriteCreator_v4 : MonoBehaviour
             }
             if(MainMenuControler.keepExistingProvinceDataChoice == false)
             {
+
                 List<int> neighboreID = new List<int>();
                 idColor[ListObjJSONTemp[i].id] = ListObjJSONTemp[i].spriteColor;
                 if (autoNeighbore == true)
@@ -358,8 +360,8 @@ public class SpriteCreator_v4 : MonoBehaviour
         // check in other province if this province id appear
         //Because the image is read from bottom to top, the top province will never encounter the bottom province
         // this is a horrible way to do it :(       
-        //refactor with linQ
 
+        // Ensure neighore goes both direction V01
         //if (autoNeighbore == true)
         //{
         //    for (int i = 0; i < listObjJSON.Count; i++)
@@ -369,7 +371,7 @@ public class SpriteCreator_v4 : MonoBehaviour
         //            for (int y = 0; y < listObjJSON[x].neighbors.Count; y++)
         //            {
         //                if (listObjJSON[x].neighbors[y] == listObjJSON[i].Id)
-        //                {
+        //                { 
         //                    listObjJSON[i].neighbors.Add(listObjJSON[x].Id);
         //                }
         //            }
@@ -378,8 +380,27 @@ public class SpriteCreator_v4 : MonoBehaviour
         //        listObjJSON[i].neighbors = RemoveDuplicate(listObjJSON[i].neighbors);
         //    }
         //}
-        
-        if(MainMenuControler.keepExistingProvinceDataChoice == true)
+
+        //refactor with linQ
+        if (autoNeighbore == true)
+        {
+            for (int i = 0; i < listObjJSON.Count; i++)
+            {
+                // get all province that have listObjJSON[i].id as neighbore
+                List<ObjJSON> neighbores = listObjJSON.Where( n => n.neighbors.Contains(listObjJSON[i].Id) ).ToList();
+
+                for(int x = 0; x < neighbores.Count; x ++)
+                {
+                    if (!listObjJSON[i].neighbors.Contains(neighbores[x].Id) || neighbores[x].Id != listObjJSON[i].Id)
+                    {
+                        listObjJSON[i].neighbors.Add (neighbores[x].Id);
+                    }
+                }
+                listObjJSON[i].neighbors = RemoveDuplicate(listObjJSON[i].neighbors);
+            }
+        }
+
+        if (MainMenuControler.keepExistingProvinceDataChoice == true)
         {
             listObjJSON.AddRange(spriteData.spriteListJSON);
         }
