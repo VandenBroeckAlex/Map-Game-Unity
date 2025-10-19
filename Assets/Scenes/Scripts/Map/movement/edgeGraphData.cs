@@ -5,10 +5,10 @@ using System;
 using UnityEngine;
 using System.IO;
 using Unity.VisualScripting;
-using static edgeGraphData;
+using static EdgeGraphData;
 using static UnityEngine.Rendering.DebugUI;
 
-public class edgeGraphData : MonoBehaviour
+public class EdgeGraphData 
 {
     // Start is called before the first frame update
 
@@ -44,14 +44,8 @@ public class edgeGraphData : MonoBehaviour
 
     JSONData provincePosition;
 
-    void Start()
-    {
-        calculateEdge();
-    }
-
-    // next step remove both edges  x -> y  y -> x
-    // bidirectional will always be true
-    void calculateEdge()
+   
+    public void CalculateEdge()
     {
         DeserializeJSON();
         foreach (var provinceEntry in provincePosition.spriteListJSON)
@@ -84,7 +78,7 @@ public class edgeGraphData : MonoBehaviour
                         Math.Pow(provinceEntry.center[1] - neighboreCenter[1], 2)
                     );
                    
-                    edgeObj.baseDistance = (float)System.Math.Round(distance, 2); ; // Cast double to float and Leave only two decimal places after the dot
+                    edgeObj.baseDistance = (float)System.Math.Round(distance, 2); ;
                 }
                 else
                 {

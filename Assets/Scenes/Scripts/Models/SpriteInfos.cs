@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class ObjJSONTemp
+public class SpriteInfos
 {
     public int id;
     public float[] spriteColor;
@@ -15,7 +15,7 @@ public class ObjJSONTemp
     public int owner = 0;
     public List<float[]> neighbors;
 
-    public ObjJSONTemp(float[] color, Vector2Int coord, int id, List<float[]> neighbors, float[] center, int superficy)
+    public SpriteInfos(float[] color, Vector2Int coord, int id, List<float[]> neighbors, float[] center, int superficy)
     {
         this.id = id;
         this.spriteColor = color;

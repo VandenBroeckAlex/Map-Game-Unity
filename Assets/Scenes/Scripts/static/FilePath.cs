@@ -9,4 +9,6 @@ public class FilePath
     public static string ProvincesSplit => Path.Combine(Application.persistentDataPath, "Provinces_split");
     public static string ProvinceMapImg => Path.Combine(Application.persistentDataPath, "Province_Map.png");
     public static string Goods => Path.Combine(Application.persistentDataPath, "Resources/ResourcesDef.json");
+    public static string SpritesInfos => Path.Combine(Application.persistentDataPath, "map/SpritesInfos.json");
+    public static string TilesInfos => Path.Combine(Application.persistentDataPath, "map/TilesInfos.json");
 }

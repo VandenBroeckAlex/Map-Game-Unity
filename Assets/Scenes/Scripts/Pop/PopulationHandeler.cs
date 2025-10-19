@@ -18,10 +18,11 @@ public class PopulationHandeler : MonoBehaviour
     
 
     [SerializeField] public List<Pop> populationList = new();
-
+    // ------ Put those in a json and load them -------
     public float base_growth_rate = 0.004f;
     public float base_consumption = 1f;
     public float base_production = 1.1f;
+    // ----------------------------------
     private void OnEnable()
     {
         Tick_script.onTick += PopBuy;

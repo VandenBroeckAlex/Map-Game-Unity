@@ -58,6 +58,8 @@ namespace MyGame.Data
 
     //load it from resource json
     // if type == Raw than good is valid rgo
+
+   
     public enum Type_rgo
     {
         coal,
