@@ -16,7 +16,6 @@ public class SpriteCreator_v5 : MonoBehaviour
 
     public Texture2D BaseImg = null;
     public List<SpriteObj> spriteObjList = new List<SpriteObj>();
-    public List<SpriteInfos> ListObjJSONTemp = new List<SpriteInfos>();
     public ArrayList TileInfos = new ArrayList();
     public List<SpriteInfo> SpriteInfos = new List<ObjJSON.SpriteInfo>();
     EdgeGraphData _edgeGraphData = new EdgeGraphData();
@@ -74,9 +73,16 @@ public class SpriteCreator_v5 : MonoBehaviour
 
             FileUtils.DeleteOldSpriteFiles(pathSave);
             GenerateDataFromImage();
+            CreateColorIdList();
             SaveSprites(spriteObjList);
+            if (autoNeighbore is true)
+            {
+                Debug.Log("Auto neighbore called");
+                AutoNeighbore();
+            }
+            //_edgeGraphData.CalculateEdge();
             CreateJSON();
-            _edgeGraphData.CalculateEdge();
+          
         }
         else
         {
@@ -156,23 +162,7 @@ public class SpriteCreator_v5 : MonoBehaviour
             {
                 string filePath = Path.Combine(pathSave, $"img_{sprite.id}.png");
                 File.WriteAllBytes(filePath, bytes);
-            }
-
-            var center = new float[]
-            {
-                (sprite.higherX - sprite.lowerX)/2f,
-                (sprite.higherY - sprite.lowerY)/2f
-            };
-
-            SpriteInfos jsonObj = new SpriteInfos(
-                ColorUtils.GenerateColorFormat(sprite.spriteColor),
-                new Vector2Int(sprite.lowerX, sprite.higherY),
-                sprite.id,
-                center,
-                sprite.spritePixels.Count
-                );
-
-            ListObjJSONTemp.Add(jsonObj);
+            }   
         }
     }
 
@@ -199,8 +189,15 @@ public class SpriteCreator_v5 : MonoBehaviour
             {
                 for (int w = 0; w < BaseImg.height; w++)
                 {
-                    Color pixelColor = BaseImg.GetPixel(z, w);
-
+                    Color pixelColor = BaseImg.GetPixel(w, z);
+                    //when pixel color change
+                    if (pixelColor != lastPixel)
+                    {
+                        // get province id of both color
+                        int lastProvinceId = GetIdByColor(lastPixel);
+                        int curentProvinceId = GetIdByColor(pixelColor);
+                        SetNeighbore(lastProvinceId, curentProvinceId);
+                    }
                 }
             }
         }
@@ -237,41 +234,41 @@ public class SpriteCreator_v5 : MonoBehaviour
     {
         List<ObjJSON> listObjJSON = new List<ObjJSON>();
 
-        Dictionary<int, float[]> idColor = new Dictionary<int, float[]>();
-
-      
-
         for (int i = 0; i < spriteObjList.Count; i++)
         {
-            List<int> neighboreID = new List<int>();
-         
+            AddTileInfos(spriteObjList[i].id, ColorUtils.GenerateColorFormat(spriteObjList[i].spriteColor), spriteObjList[i].spritePixels.Count, spriteObjList[i].neighboreId);
 
-            AddTileInfos(ListObjJSONTemp[i].id, ListObjJSONTemp[i].spriteColor, spriteObjList[i].spritePixels.Count);
-
-            AddSpriteInfos(ListObjJSONTemp[i].spriteColor, ListObjJSONTemp[i].lowerX, ListObjJSONTemp[i].higherY, ListObjJSONTemp[i].center);
-
+            AddSpriteInfos(ColorUtils.GenerateColorFormat(spriteObjList[i].spriteColor), spriteObjList[i].lowerX, spriteObjList[i].higherY, spriteObjList[i].higherX, spriteObjList[i].lowerX, spriteObjList[i].higherY, spriteObjList[i].lowerY);
         }
 
        
-        ExportJson(listObjJSON, idColor, TileInfos, SpriteInfos);
+        ExportJson(listObjJSON, color_id, TileInfos, SpriteInfos);
     }
-    private void AddTileInfos(int id,float[] spriteColor, int superficy)
+    private void AddTileInfos(int id,float[] spriteColor, int superficy, List<int>?neighbore)
     {
         if (spriteColor[2] == 1f && spriteColor[0] < 0.4999)
         {
             ObjJSON.WaterTile  tile = new ObjJSON.WaterTile(id,spriteColor, superficy);
+            tile.neighbors = neighbore;
             TileInfos.Add(tile);
         }
         else
         {
             ObjJSON.LandTile tile = new ObjJSON.LandTile(id, spriteColor,superficy);
+            tile.neighbors = neighbore;
             TileInfos.Add(tile);
         }
     }
 
-    private void AddSpriteInfos(float[] color, int x, int y, float[] center)
+    private void AddSpriteInfos(float[] color, int x, int y, int higherX, int lowerX, int higherY, int lowerY)
     {
-        ObjJSON.SpriteInfo spriteInfo = new ObjJSON.SpriteInfo (color,x,y,center);
+        var _center = new float[]
+        {
+                (higherX - lowerX)/2f,
+                (higherY - lowerY)/2f
+        };
+
+        ObjJSON.SpriteInfo spriteInfo = new ObjJSON.SpriteInfo (color,x,y,_center);
         SpriteInfos.Add(spriteInfo);
     }
 
@@ -294,7 +291,6 @@ public class SpriteCreator_v5 : MonoBehaviour
     }
 
 
-
     List<int> RemoveDuplicate(List<int> givenList)
     {
         return givenList.Distinct().OrderBy(n => n).ToList();
@@ -311,8 +307,8 @@ public class SpriteCreator_v5 : MonoBehaviour
         //spriteObjList
         SpriteObj Tile1 = spriteObjList.Where( s => s.id == id1).FirstOrDefault();
         SpriteObj Tile2 = spriteObjList.Where(s => s.id == id2).FirstOrDefault();
-
-        if(Tile1 is not null || Tile2 is not null)
+        
+        if(Tile1 is not null && Tile2 is not null)
         {
             if (!Tile1.neighboreId.Contains(id2))
             {
@@ -324,4 +320,9 @@ public class SpriteCreator_v5 : MonoBehaviour
             }
         }
     }
+
+
+    //neighbore top and bottom
+
+    //neighbore right and left
 }

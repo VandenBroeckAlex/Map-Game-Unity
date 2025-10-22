@@ -8,7 +8,7 @@ using Unity.VisualScripting;
 using static EdgeGraphData;
 using static UnityEngine.Rendering.DebugUI;
 
-public class EdgeGraphData 
+public class EdgeGraphData : MonoBehaviour
 {
     // Start is called before the first frame update
 
