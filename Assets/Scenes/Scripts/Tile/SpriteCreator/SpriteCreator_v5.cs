@@ -31,7 +31,7 @@ public class SpriteCreator_v5 : MonoBehaviour
     //Menu choices
     bool autoNeighbore = true;
     bool topAndBottomNeighbore = false;
-    bool leftAndRightNeighbore = true;
+    bool leftAndRightNeighbore = false;
     bool keepExistingProvinceData = MainMenuControler.keepExistingProvinceDataChoice;
 
     //keepExistingProvince
@@ -79,6 +79,19 @@ public class SpriteCreator_v5 : MonoBehaviour
             {
                 Debug.Log("Auto neighbore called");
                 AutoNeighbore();
+
+                if (leftAndRightNeighbore is true)
+                {
+                    Debug.Log("cc  LR !");
+                    SetRightAndLeftOfImageAsNeighbore();
+                }
+                
+                if (topAndBottomNeighbore)
+                {
+                    Debug.Log("cc  TB !");
+                    SetRightAndLeftOfImageAsNeighbore();
+                }
+                
             }
             //_edgeGraphData.CalculateEdge();
             CreateJSON();
@@ -172,6 +185,7 @@ public class SpriteCreator_v5 : MonoBehaviour
         Color lastPixel = BaseImg.GetPixel(0, 0);
         for (int x = 0; x < BaseImg.width; x++)
         {
+            lastPixel = BaseImg.GetPixel(x, 0);
             for (int y = 0; y < BaseImg.height; y++)
             {
                 Color pixelColor = BaseImg.GetPixel(x, y);
@@ -183,26 +197,29 @@ public class SpriteCreator_v5 : MonoBehaviour
                     int curentProvinceId = GetIdByColor(pixelColor);
                     SetNeighbore(lastProvinceId, curentProvinceId);
                 }
+                lastPixel = pixelColor;
             }
-            //read image top bottome left to right
-            for (int z = 0; z < BaseImg.width; z++)
+            
+        }
+        //read image top bottome left to right
+        for (int y = 0; y < BaseImg.width; y++)
+        {
+            lastPixel = BaseImg.GetPixel(0, y);
+            for (int x = 0; x < BaseImg.height; x++)
             {
-                for (int w = 0; w < BaseImg.height; w++)
+                Color pixelColor = BaseImg.GetPixel(x, y);
+                //when pixel color change
+                if (pixelColor != lastPixel)
                 {
-                    Color pixelColor = BaseImg.GetPixel(w, z);
-                    //when pixel color change
-                    if (pixelColor != lastPixel)
-                    {
-                        // get province id of both color
-                        int lastProvinceId = GetIdByColor(lastPixel);
-                        int curentProvinceId = GetIdByColor(pixelColor);
-                        SetNeighbore(lastProvinceId, curentProvinceId);
-                    }
+                    // get province id of both color
+                    int lastProvinceId = GetIdByColor(lastPixel);
+                    int curentProvinceId = GetIdByColor(pixelColor);
+                    SetNeighbore(lastProvinceId, curentProvinceId);
                 }
+                lastPixel = pixelColor;
             }
         }
     }
-    // --- Data Classes ---
 
     private void CreateColorIdList()
     {
@@ -249,12 +266,17 @@ public class SpriteCreator_v5 : MonoBehaviour
         if (spriteColor[2] == 1f && spriteColor[0] < 0.4999)
         {
             ObjJSON.WaterTile  tile = new ObjJSON.WaterTile(id,spriteColor, superficy);
-            tile.neighbors = neighbore;
+            if(neighbore is not null)
+            {
+                neighbore.Sort();
+                tile.neighbors = neighbore;
+            }          
             TileInfos.Add(tile);
         }
         else
         {
             ObjJSON.LandTile tile = new ObjJSON.LandTile(id, spriteColor,superficy);
+            neighbore.Sort();
             tile.neighbors = neighbore;
             TileInfos.Add(tile);
         }
@@ -308,7 +330,7 @@ public class SpriteCreator_v5 : MonoBehaviour
         SpriteObj Tile1 = spriteObjList.Where( s => s.id == id1).FirstOrDefault();
         SpriteObj Tile2 = spriteObjList.Where(s => s.id == id2).FirstOrDefault();
         
-        if(Tile1 is not null && Tile2 is not null)
+        if(Tile1 is not null && Tile2 is not null && Tile1 != Tile2 )
         {
             if (!Tile1.neighboreId.Contains(id2))
             {
@@ -323,6 +345,34 @@ public class SpriteCreator_v5 : MonoBehaviour
 
 
     //neighbore top and bottom
+    private void SetTopBottomOfIamgeAsNeighbore()
+    {
+        for (int x = 0; x < BaseImg.width; x++)
+        {
+            Color TopPixelColor = BaseImg.GetPixel(x, BaseImg.height);
+            Color BottomPixelColor = BaseImg.GetPixel(x, 0);
 
+            int TopPixelId = GetIdByColor(TopPixelColor);
+            int BootomPixelId = GetIdByColor(BottomPixelColor);
+
+            SetNeighbore(TopPixelId, BootomPixelId);
+                
+        }
+    }
     //neighbore right and left
+    private void SetRightAndLeftOfImageAsNeighbore()
+    {
+        for (int y = 0; y < BaseImg.height; y++)
+        {
+            Color leftPixelColor = BaseImg.GetPixel(0, y);
+            Color rightPixelColor = BaseImg.GetPixel(BaseImg.width, y);
+
+            int leftPixelId = GetIdByColor(leftPixelColor);
+            int rightpixelId = GetIdByColor(rightPixelColor);
+
+            SetNeighbore(leftPixelId, rightpixelId);
+
+        }
+    }
 }
+ 
