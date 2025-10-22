@@ -63,6 +63,7 @@ public class EdgeGraphData
 
                 foreach (var province in provincePosition.spriteListJSON)
                 {
+                    //linq
                     if (province.id == neighbore)
                     {
                         neighboreCenter = province.center;

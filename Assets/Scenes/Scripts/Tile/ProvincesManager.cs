@@ -88,7 +88,7 @@ public class ProvincesManager : MonoBehaviour
         jsonData = JsonConvert.DeserializeObject<Dictionary<int, float[]>>(jsonFile);
 
       
-        string provincePath = FilePath.MapInfo;
+        string provincePath = FilePath.TilesInfos;
         string provinceJson = File.ReadAllText(provincePath);
         provincePosition = JsonConvert.DeserializeObject<JSONData>(provinceJson);
     }

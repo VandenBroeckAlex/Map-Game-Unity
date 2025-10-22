@@ -17,6 +17,7 @@ public class Pop_objects
         public Culture Culture { get; }
         public Religion Religion { get; }
         private float _cashAmount;
+        private float _savings;
         public float CashAmount 
         { get { return _cashAmount; }
           set { _cashAmount = RoundToTwoDecimals(value); }

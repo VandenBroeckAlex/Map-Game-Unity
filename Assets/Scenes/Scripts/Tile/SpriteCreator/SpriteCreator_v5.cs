@@ -1,16 +1,13 @@
 using MyGame.Data;
 using Newtonsoft.Json;
-using NUnit.Framework;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using UnityEngine;
-using UnityEngine.Rendering;
+
 using static ObjJSON;
-using static UnityEditor.Rendering.CameraUI;
-using static UnityEngine.Rendering.DebugUI;
+
 
 public class SpriteCreator_v5 : MonoBehaviour
 {
@@ -23,15 +20,14 @@ public class SpriteCreator_v5 : MonoBehaviour
     public ArrayList TileInfos = new ArrayList();
     public List<SpriteInfo> SpriteInfos = new List<ObjJSON.SpriteInfo>();
     EdgeGraphData _edgeGraphData = new EdgeGraphData();
+    Dictionary<int,float[]> color_id = new Dictionary<int, float[]>();
 
-    
-    string pathSave = FilePath.ProvincesSplit;
-    string baseImagePath = FilePath.ProvinceMapImg;
-    string jsonSavePathMapInfo = FilePath.MapInfo;
-    string jsonSavePathColorId = FilePath.ColorId;
-    string jsonSavePathSpritsInfo = FilePath.SpritesInfos;
-    string jsonSavePathTileInfo = FilePath.TilesInfos;
-    
+    string pathSave;
+    string baseImagePath;
+    string jsonSavePathMapInfo;
+    string jsonSavePathColorId;
+    string jsonSavePathSpritsInfo;
+    string jsonSavePathTileInfo;
     
     //Menu choices
     bool autoNeighbore = true;
@@ -41,7 +37,7 @@ public class SpriteCreator_v5 : MonoBehaviour
 
     //keepExistingProvince
     CombinedJSON spriteData;
-    Dictionary<float[], bool> existingProvinceColor = new Dictionary<float[], bool>();
+    
 
 
     List<Tile> test;
@@ -50,8 +46,14 @@ public class SpriteCreator_v5 : MonoBehaviour
 
     private void Awake()
     {
+
+        pathSave = FilePath.ProvincesSplit;
+        baseImagePath = FilePath.ProvinceMapImg;
+        jsonSavePathMapInfo = FilePath.MapInfo;
+        jsonSavePathColorId = FilePath.ColorId;
+        jsonSavePathSpritsInfo = FilePath.SpritesInfos;
+        jsonSavePathTileInfo = FilePath.TilesInfos;
         Directory.CreateDirectory(pathSave);
-        
 
         if (MainMenuControler.recalculateMapChoice 
             || !File.Exists(jsonSavePathMapInfo) 
@@ -68,27 +70,17 @@ public class SpriteCreator_v5 : MonoBehaviour
                 Debug.LogError("Base image not found or failed to load.");
                 return;
             }
-            //for id
-            if (keepExistingProvinceData == true)
-            {
-                Debug.Log("loading json");
-                LoadJSON();
-                if(spriteData is null)
-                {
-                    keepExistingProvinceData = false;
-                }
-                givenId = spriteData.spriteListJSON.LastOrDefault().Id + 1;
-            }
+
 
             FileUtils.DeleteOldSpriteFiles(pathSave);
-            GenerateSprites();
+            GenerateDataFromImage();
             SaveSprites(spriteObjList);
             CreateJSON();
             _edgeGraphData.CalculateEdge();
         }
         else
         {
-            Debug.Log("The map has not been recalculated.");
+            Debug.Log("The map has NOT been recalculated.");
         }
 
         
@@ -96,97 +88,40 @@ public class SpriteCreator_v5 : MonoBehaviour
 
 
 
-    private void GenerateSprites()
+    private void GenerateDataFromImage()
     {
-        Color lastPxColor = Color.black;
+
         //read the whole image
         for (int x = 0; x < BaseImg.width; x++)
         {
             for (int y = 0; y < BaseImg.height; y++)
             {
                 Color pixelColor = BaseImg.GetPixel(x, y);
-                bool colorFoundInList = false;
 
-                foreach (var sprite in spriteObjList)
-                {
-                    if (sprite.spriteColor == pixelColor)
-                    {
-                        Vector2Int pxCoord = new Vector2Int(x, y);
-                        sprite.spritePixels.Add(pxCoord);
+                var _sprite = spriteObjList.Where(s => s.spriteColor == pixelColor).FirstOrDefault();
 
-                        sprite.lowerX = Mathf.Min(sprite.lowerX, x);
-                        sprite.higherX = Mathf.Max(sprite.higherX, x);
-                        sprite.lowerY = Mathf.Min(sprite.lowerY, y);
-                        sprite.higherY = Mathf.Max(sprite.higherY, y);
-
-                        if (pixelColor != lastPxColor)
-                        {
-                            float[] lastColor = ColorUtils.GenerateColorFormat(lastPxColor);
-
-                            if (autoNeighbore == true)
-                            {
-                                if (y == 0 && topAndBottomNeighbore == true)
-                                {
-                                    sprite.neighboreColor.Add(lastColor);
-                                    continue;
-                                }
-
-                                if (y != 0)
-                                {
-                                    if (!sprite.neighboreColor.Any(c => c.SequenceEqual(lastColor)))
-                                    {
-                                        sprite.neighboreColor.Add(lastColor);
-                                    }
-                                }
-                            }
-                        }
-                        colorFoundInList = true;
-                        break;
-                    }
-                }
-
-                if (!colorFoundInList)
+                if (_sprite is not null)
                 {
                     Vector2Int pxCoord = new Vector2Int(x, y);
-                    SpriteObj newSpriteObj = GenerateSpriteObj(pixelColor, pxCoord, ColorUtils.GenerateColorFormat(lastPxColor));
+                    _sprite.spritePixels.Add(pxCoord);
+
+                    _sprite.lowerX = Mathf.Min(_sprite.lowerX, x);
+                    _sprite.higherX = Mathf.Max(_sprite.higherX, x);
+                    _sprite.lowerY = Mathf.Min(_sprite.lowerY, y);
+                    _sprite.higherY = Mathf.Max(_sprite.higherY, y);
+                }
+                if (_sprite is null)
+                {
+                    Vector2Int pxCoord = new Vector2Int(x, y);
+                    SpriteObj newSpriteObj = GenerateSpriteObj(pixelColor, pxCoord);
                     spriteObjList.Add(newSpriteObj);
                 }
-                lastPxColor = pixelColor;
             }
-        }
-
-        if (leftAndRightNeighbore == true)
-        {
-            //  read base image width 0 and base image maxwidth
-            //  color list of float
-            //  check the id of the color in spriteObjList and maxwidth color in neighbore
-            for (int y = 0; y < BaseImg.height; y++)
-            {
-                Color leftPixelColor = BaseImg.GetPixel(0, y);
-                Color rightPixelColor = BaseImg.GetPixel(BaseImg.width - 1, y);
-
-                // get leftPixelColorObj add right
-                int _indexLeft = spriteObjList.FindIndex(s => s.spriteColor == leftPixelColor);
-                int _indexRight = spriteObjList.FindIndex(s => s.spriteColor == rightPixelColor);
-
-                if (spriteObjList[_indexLeft].neighboreColor.Contains(ColorUtils.GenerateColorFormat(spriteObjList[_indexRight].spriteColor)) || spriteObjList[_indexLeft].spriteColor == spriteObjList[_indexRight].spriteColor)
-                {
-
-                    continue;
-                }
-
-                spriteObjList[_indexLeft].neighboreColor.Add(ColorUtils.GenerateColorFormat(spriteObjList[_indexRight].spriteColor));
-                spriteObjList[_indexRight].neighboreColor.Add(ColorUtils.GenerateColorFormat(spriteObjList[_indexLeft].spriteColor));
-
-            }
-
-
         }
     }
-
-    private SpriteObj GenerateSpriteObj(Color pixelColor, Vector2Int pixelCoord, float[] neighboreColor)
+    private SpriteObj GenerateSpriteObj(Color pixelColor, Vector2Int pixelCoord )
     {
-        SpriteObj newSprite = new SpriteObj(pixelColor, pixelCoord, neighboreColor);
+        SpriteObj newSprite = new SpriteObj(pixelColor, pixelCoord);
         newSprite.SetId(GenerateID());
         return newSprite;
     }
@@ -210,7 +145,7 @@ public class SpriteCreator_v5 : MonoBehaviour
             {
                 int x = pixel.x - sprite.lowerX;
                 int y = pixel.y - sprite.lowerY;
-                colorArray[x + y * width] = Color.cyan;
+                colorArray[x + y * width] = sprite.spriteColor;
             }
 
             tex.SetPixels(colorArray);
@@ -223,15 +158,17 @@ public class SpriteCreator_v5 : MonoBehaviour
                 File.WriteAllBytes(filePath, bytes);
             }
 
-
-
+            var center = new float[]
+            {
+                (sprite.higherX - sprite.lowerX)/2f,
+                (sprite.higherY - sprite.lowerY)/2f
+            };
 
             SpriteInfos jsonObj = new SpriteInfos(
                 ColorUtils.GenerateColorFormat(sprite.spriteColor),
                 new Vector2Int(sprite.lowerX, sprite.higherY),
                 sprite.id,
-                sprite.neighboreColor,
-                new float[] { ((sprite.higherX - sprite.lowerX) / 2) + sprite.lowerX, ((sprite.higherY - sprite.lowerY) / 2) + sprite.lowerY }, // ((higher - lower)/2) + lower
+                center,
                 sprite.spritePixels.Count
                 );
 
@@ -239,9 +176,44 @@ public class SpriteCreator_v5 : MonoBehaviour
         }
     }
 
+    private void AutoNeighbore()
+    {
+        //read image top bottome 
+        Color lastPixel = BaseImg.GetPixel(0, 0);
+        for (int x = 0; x < BaseImg.width; x++)
+        {
+            for (int y = 0; y < BaseImg.height; y++)
+            {
+                Color pixelColor = BaseImg.GetPixel(x, y);
+                //when pixel color change
+                if (pixelColor != lastPixel)
+                {
+                    // get province id of both color
+                    int lastProvinceId = GetIdByColor(lastPixel);
+                    int curentProvinceId = GetIdByColor(pixelColor);
+                    SetNeighbore(lastProvinceId, curentProvinceId);
+                }
+            }
+            //read image top bottome left to right
+            for (int z = 0; z < BaseImg.width; z++)
+            {
+                for (int w = 0; w < BaseImg.height; w++)
+                {
+                    Color pixelColor = BaseImg.GetPixel(z, w);
 
+                }
+            }
+        }
+    }
     // --- Data Classes ---
 
+    private void CreateColorIdList()
+    {
+        foreach (var _tile in spriteObjList)
+        {
+            color_id.Add(_tile.id, ColorUtils.GenerateColorFormat(_tile.spriteColor));
+        }
+    }
 
     private void LoadJSON()
     {
@@ -258,26 +230,6 @@ public class SpriteCreator_v5 : MonoBehaviour
             Debug.LogError("map_info.json not found at " + jsonPath);
             File.WriteAllText(jsonSavePathMapInfo, "");
         }
-
-        //make a list of every province color < provincecolor -
-        // this should be fix !
-
-        //for (int i = 0; i < spriteData.spriteListJSON.Count; i++)
-        //{
-
-        //    existingProvinceColor.Add(spriteData.spriteListJSON[i].SpriteColor, false);
-        //    if (spriteData.spriteListJSON[i].Id > givenId)
-        //    {
-        //        givenId = spriteData.spriteListJSON[i].Id;
-        //    }
-
-        //}
-
-        //bool result;
-        //bool found = existingProvinceColor.TryGetValue(new float[] { 0.227450982f, 0.227450982f, 0.9882353f }, out result);
-        //Debug.Log("cc: " + found + ", value: " + result);
-
-
     }
 
 
@@ -287,52 +239,32 @@ public class SpriteCreator_v5 : MonoBehaviour
 
         Dictionary<int, float[]> idColor = new Dictionary<int, float[]>();
 
-       
+      
 
-
-        // TODO AddTileInfos
-
-        // TODO AddSpriteInfos
-
-        for (int i = 0; i < ListObjJSONTemp.Count; i++)
+        for (int i = 0; i < spriteObjList.Count; i++)
         {
             List<int> neighboreID = new List<int>();
-            idColor[ListObjJSONTemp[i].id] = ListObjJSONTemp[i].spriteColor;
+         
 
-            if (autoNeighbore == true)
-            {
-                for (int y = 0; y < ListObjJSONTemp[i].neighbors.Count; y++)
-                {
+            AddTileInfos(ListObjJSONTemp[i].id, ListObjJSONTemp[i].spriteColor, spriteObjList[i].spritePixels.Count);
 
-                    for (int x = 0; x < ListObjJSONTemp.Count; x++)
-                    {
-                        if (Enumerable.SequenceEqual(ListObjJSONTemp[i].neighbors[y], ListObjJSONTemp[x].spriteColor))
-                        {
-                            neighboreID.Add(ListObjJSONTemp[x].id);
-                            continue;
-                        }
-                    }
-                }
-            }
+            AddSpriteInfos(ListObjJSONTemp[i].spriteColor, ListObjJSONTemp[i].lowerX, ListObjJSONTemp[i].higherY, ListObjJSONTemp[i].center);
 
         }
 
-        // TODO Remove province if their color doesn't appear
-
-        // TODO check in other province if this province id appear
-        SetLeftNeighbor(listObjJSON);
-        ExportJson(listObjJSON, idColor);
+       
+        ExportJson(listObjJSON, idColor, TileInfos, SpriteInfos);
     }
-    private void AddTileInfos(int id,float[] spriteColor,List<int> neighbore, int superficy)
+    private void AddTileInfos(int id,float[] spriteColor, int superficy)
     {
         if (spriteColor[2] == 1f && spriteColor[0] < 0.4999)
         {
-            ObjJSON.WaterTile  tile = new ObjJSON.WaterTile(id,spriteColor,neighbore, superficy);
+            ObjJSON.WaterTile  tile = new ObjJSON.WaterTile(id,spriteColor, superficy);
             TileInfos.Add(tile);
         }
         else
         {
-            ObjJSON.LandTile tile = new ObjJSON.LandTile(id, spriteColor, neighbore, superficy);
+            ObjJSON.LandTile tile = new ObjJSON.LandTile(id, spriteColor,superficy);
             TileInfos.Add(tile);
         }
     }
@@ -344,79 +276,52 @@ public class SpriteCreator_v5 : MonoBehaviour
     }
 
 
-    private void ExportJson(List<ObjJSON> listObjJSON, Dictionary<int, float[]> idColor)
+    private void ExportJson(List<ObjJSON> listObjJSON, Dictionary<int, float[]> idColor, ArrayList TileInfos, List<SpriteInfo> SpriteInfos)
     {
+        
+        string output = JsonConvert.SerializeObject(TileInfos, Formatting.Indented);
+        File.WriteAllText(jsonSavePathTileInfo, output);
+
+        output = JsonConvert.SerializeObject(SpriteInfos, Formatting.Indented);
+        File.WriteAllText(jsonSavePathSpritsInfo, output);
+
         CombinedJSON combinedData = new CombinedJSON(BaseImg.width, BaseImg.height, listObjJSON);
-        string output = JsonConvert.SerializeObject(combinedData, Formatting.Indented);
+        output = JsonConvert.SerializeObject(combinedData, Formatting.Indented);
         File.WriteAllText(jsonSavePathMapInfo, output);
 
         output = JsonConvert.SerializeObject(idColor, Formatting.Indented);
         File.WriteAllText(jsonSavePathColorId, output);
     }
 
-    private void SetLeftNeighbor(List<ObjJSON> listObjJSON)
-    {
-        //Because the image is read from bottom to top, the top province will never encounter the bottom province       
-        if (autoNeighbore == true)
-        {
-            for (int i = 0; i < listObjJSON.Count; i++)
-            {
-                // get all province that have listObjJSON[i].id as neighbore
-                List<ObjJSON> neighbores = listObjJSON.Where(n => n.neighbors.Contains(listObjJSON[i].Id)).ToList();
 
-                for (int x = 0; x < neighbores.Count; x++)
-                {
-                    if (!listObjJSON[i].neighbors.Contains(neighbores[x].Id) || neighbores[x].Id != listObjJSON[i].Id)
-                    {
-                        listObjJSON[i].neighbors.Add(neighbores[x].Id);
-                    }
-                }
-                listObjJSON[i].neighbors = RemoveDuplicate(listObjJSON[i].neighbors);
-            }
-        }
-    }
 
     List<int> RemoveDuplicate(List<int> givenList)
     {
         return givenList.Distinct().OrderBy(n => n).ToList();
     }
 
-    string FindKeyByColor(Dictionary<string, float[]> jsonData, Color color)
+    private int GetIdByColor(Color _color)
     {
-        foreach (var kvp in jsonData)
-        {
-            float[] stored = kvp.Value;
-
-            // Compare exact color values (no tolerance)
-            if (stored.Length >= 3 &&
-                color.r == stored[0] &&
-                color.g == stored[1] &&
-                color.b == stored[2])
-            {
-                Debug.Log("Found key: " + kvp.Key);
-                return kvp.Key; // Found a match
-            }
-        }
-
-        Debug.Log("No matching color found.");
-        return null; // Not found
+        var tile = color_id.Where(c => c.Value.SequenceEqual(ColorUtils.GenerateColorFormat(_color))).FirstOrDefault();
+        return tile.Key;
     }
 
-    bool ColorComparator(float[] color1, float[] color2)
+    private void SetNeighbore(int id1, int id2) 
     {
+        //spriteObjList
+        SpriteObj Tile1 = spriteObjList.Where( s => s.id == id1).FirstOrDefault();
+        SpriteObj Tile2 = spriteObjList.Where(s => s.id == id2).FirstOrDefault();
 
-        for (int i = 0; i < color1.Length; i++)
+        if(Tile1 is not null || Tile2 is not null)
         {
-            if (Mathf.Approximately(color1[i], color2[i]))
+            if (!Tile1.neighboreId.Contains(id2))
             {
-
+                Tile1.neighboreId.Add(id2);
             }
-            else
+            if (!Tile2.neighboreId.Contains(id1))
             {
-                return false;
+                Tile2.neighboreId.Add(id1);
             }
-
         }
-        return true;
     }
 }

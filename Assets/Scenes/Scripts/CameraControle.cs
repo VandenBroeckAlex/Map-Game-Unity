@@ -16,7 +16,7 @@ public class PlayerController : MonoBehaviour
     {
         // x => + y => -
         
-        transform.position = new Vector3(MapLoader.CanvaWidth, MapLoader.CanvaHeight/2, MapLoader.CanvaHeight);
+        //transform.position = new Vector3(MapLoader.CanvaWidth, MapLoader.CanvaHeight/2, MapLoader.CanvaHeight);
     }
 
 

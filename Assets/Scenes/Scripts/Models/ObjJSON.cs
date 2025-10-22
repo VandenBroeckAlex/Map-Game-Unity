@@ -41,11 +41,10 @@ public class ObjJSON
         public int superficy;
         public bool isLand = false;
         public bool isPassable = true;
-        public WaterTile(int ID, float[] SPRITECOLOR, List<int> NEIGHBORS,int SUPERFICY)
+        public WaterTile(int ID, float[] SPRITECOLOR, int SUPERFICY)
         {
             this.Id=ID;
             this.SpriteColor = SPRITECOLOR;
-            this.neighbors=NEIGHBORS;
             this.superficy = SUPERFICY;
         }
     }
@@ -64,22 +63,20 @@ public class ObjJSON
         public bool isLand = true;
         public bool isPassable = true;
         public bool isCoast = false;
-        public LandTile(int ID, float[] SPRITECOLOR, List<int> NEIGHBORS, int SUPERFICY)
+        public LandTile(int ID, float[] SPRITECOLOR, int SUPERFICY)
         {
             this.Id = ID;
             this.SpriteColor = SPRITECOLOR;
-            this.neighbors = NEIGHBORS;
             this.superficy = SUPERFICY;
         }
     }
 
     public class CoastalTile : LandTile
     {       
-        public CoastalTile(int ID, float[] SPRITECOLOR, List<int> NEIGHBORS, int SUPERFICY) : base(ID, SPRITECOLOR, NEIGHBORS, SUPERFICY)
+        public CoastalTile(int ID, float[] SPRITECOLOR,  int SUPERFICY) : base(ID, SPRITECOLOR,SUPERFICY)
         {
             this.Id = ID;
             this.SpriteColor = SPRITECOLOR;
-            this.neighbors = NEIGHBORS;
             this.superficy = SUPERFICY;
             this.isCoast = true;
         }
