@@ -35,7 +35,6 @@ public class ObjJSON
     {
         public int Id;
         public float[] SpriteColor;
-
         public string name = "";
         public List<int> neighbors;
         public int superficy;

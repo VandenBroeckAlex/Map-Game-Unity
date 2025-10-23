@@ -1,9 +1,11 @@
 using MyGame.Data;
 using Newtonsoft.Json;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEngine;
 
 using static ObjJSON;
@@ -16,10 +18,12 @@ public class SpriteCreator_v5 : MonoBehaviour
 
     public Texture2D BaseImg = null;
     public List<SpriteObj> spriteObjList = new List<SpriteObj>();
-    public ArrayList TileInfos = new ArrayList();
-    public List<SpriteInfo> SpriteInfos = new List<ObjJSON.SpriteInfo>();
-    EdgeGraphData _edgeGraphData = new EdgeGraphData();
+    public List<MyGame.Data.Tile> tileInfos = new List<Tile>();
+    public List<SpriteInfo> spriteInfos = new List<ObjJSON.SpriteInfo>();
+    List<EdgeGraphData.EdgeObj> _edgeData = new List<EdgeGraphData.EdgeObj>();
     Dictionary<int,float[]> color_id = new Dictionary<int, float[]>();
+    List<ObjJSON> listObjJSON = new List<ObjJSON>(); // this is useless
+
 
     string pathSave;
     string baseImagePath;
@@ -27,19 +31,21 @@ public class SpriteCreator_v5 : MonoBehaviour
     string jsonSavePathColorId;
     string jsonSavePathSpritsInfo;
     string jsonSavePathTileInfo;
-    
+    string jsonSavePathEdgeInfo;
+
     //Menu choices
     bool autoNeighbore = true;
     bool topAndBottomNeighbore = false;
     bool leftAndRightNeighbore = false;
-    bool keepExistingProvinceData = MainMenuControler.keepExistingProvinceDataChoice;
+    bool keepExistingProvinceData = true;//MainMenuControler.keepExistingProvinceDataChoice;
+    bool keepNeighbore = false;
+    bool keepsuperficy = false;
+    bool keepCenter = false;
 
     //keepExistingProvince
-    CombinedJSON spriteData;
+
     
-
-
-    List<Tile> test;
+  
 
 
 
@@ -52,6 +58,7 @@ public class SpriteCreator_v5 : MonoBehaviour
         jsonSavePathColorId = FilePath.ColorId;
         jsonSavePathSpritsInfo = FilePath.SpritesInfos;
         jsonSavePathTileInfo = FilePath.TilesInfos;
+        jsonSavePathEdgeInfo = FilePath.MapEdge;
         Directory.CreateDirectory(pathSave);
 
         if (MainMenuControler.recalculateMapChoice 
@@ -82,30 +89,68 @@ public class SpriteCreator_v5 : MonoBehaviour
 
                 if (leftAndRightNeighbore is true)
                 {
-                    Debug.Log("cc  LR !");
                     SetRightAndLeftOfImageAsNeighbore();
                 }
                 
                 if (topAndBottomNeighbore)
                 {
-                    Debug.Log("cc  TB !");
                     SetRightAndLeftOfImageAsNeighbore();
                 }
-                
             }
-            //_edgeGraphData.CalculateEdge();
-            CreateJSON();
-          
+
+            for (int i = 0; i < spriteObjList.Count; i++)
+            {
+                AddTileInfos(spriteObjList[i].id, ColorUtils.GenerateColorFormat(spriteObjList[i].spriteColor), spriteObjList[i].spritePixels.Count, spriteObjList[i].neighboreId);
+
+                AddSpriteInfos(ColorUtils.GenerateColorFormat(spriteObjList[i].spriteColor), spriteObjList[i].lowerX, spriteObjList[i].higherY, spriteObjList[i].higherX, spriteObjList[i].lowerX, spriteObjList[i].higherY, spriteObjList[i].lowerY);
+            }
+
+
+
+
+            // keep existing data
+            // load json
+            // TODO check json validity
+            if (keepExistingProvinceData)
+            {
+                if (!File.Exists(jsonSavePathTileInfo))
+                {
+                    Debug.LogError("tilesInfos.json not found at " + jsonSavePathTileInfo);
+                    File.WriteAllText(jsonSavePathMapInfo, "");
+                    keepExistingProvinceData = false;
+                }
+
+
+                List<Tile> existingProvinceData = LoadJSON(jsonSavePathTileInfo);
+
+                for (int i = existingProvinceData.Count - 1; i >= 0; i--)
+                {
+                    var existingTile = existingProvinceData[i];
+                    var imgTile = tileInfos.Where(_tile => _tile.spriteColor.SequenceEqual(existingTile.spriteColor)).FirstOrDefault();
+
+                    if (imgTile is not null)
+                    {
+                        tileInfos.Remove(imgTile);
+                    }
+                    else
+                    {
+                        existingProvinceData.RemoveAt(i);
+                    }
+                }
+                tileInfos = existingProvinceData.Concat( tileInfos).ToList();
+            }
+
+
+            CreateNeighboreEdge();
+
+            ExportJson(color_id, tileInfos, spriteInfos,_edgeData);
         }
         else
         {
             Debug.Log("The map has NOT been recalculated.");
         }
 
-        
     }
-
-
 
     private void GenerateDataFromImage()
     {
@@ -144,12 +189,10 @@ public class SpriteCreator_v5 : MonoBehaviour
         newSprite.SetId(GenerateID());
         return newSprite;
     }
-
     private int GenerateID()
     {
         return givenId++;
     }
-
     private void SaveSprites(List<SpriteObj> spriteList)
     {
         foreach (var sprite in spriteList)
@@ -178,7 +221,6 @@ public class SpriteCreator_v5 : MonoBehaviour
             }   
         }
     }
-
     private void AutoNeighbore()
     {
         //read image top bottome 
@@ -220,7 +262,6 @@ public class SpriteCreator_v5 : MonoBehaviour
             }
         }
     }
-
     private void CreateColorIdList()
     {
         foreach (var _tile in spriteObjList)
@@ -228,60 +269,34 @@ public class SpriteCreator_v5 : MonoBehaviour
             color_id.Add(_tile.id, ColorUtils.GenerateColorFormat(_tile.spriteColor));
         }
     }
-
-    private void LoadJSON()
+    private List<Tile> LoadJSON(string path)
     {
-
-        //read old json 
-        string jsonPath = FilePath.MapInfo;
-        if (File.Exists(jsonPath))
-        {
-            string jsonText = File.ReadAllText(jsonPath);
-            spriteData = JsonConvert.DeserializeObject<CombinedJSON>(jsonText);
-        }
-        else
-        {
-            Debug.LogError("map_info.json not found at " + jsonPath);
-            File.WriteAllText(jsonSavePathMapInfo, "");
-        }
-    }
-
-
-    private void CreateJSON()
-    {
-        List<ObjJSON> listObjJSON = new List<ObjJSON>();
-
-        for (int i = 0; i < spriteObjList.Count; i++)
-        {
-            AddTileInfos(spriteObjList[i].id, ColorUtils.GenerateColorFormat(spriteObjList[i].spriteColor), spriteObjList[i].spritePixels.Count, spriteObjList[i].neighboreId);
-
-            AddSpriteInfos(ColorUtils.GenerateColorFormat(spriteObjList[i].spriteColor), spriteObjList[i].lowerX, spriteObjList[i].higherY, spriteObjList[i].higherX, spriteObjList[i].lowerX, spriteObjList[i].higherY, spriteObjList[i].lowerY);
-        }
-
-       
-        ExportJson(listObjJSON, color_id, TileInfos, SpriteInfos);
+            string jsonText = File.ReadAllText(path);
+            return JsonConvert.DeserializeObject<List<Tile>>(jsonText);
     }
     private void AddTileInfos(int id,float[] spriteColor, int superficy, List<int>?neighbore)
     {
         if (spriteColor[2] == 1f && spriteColor[0] < 0.4999)
         {
-            ObjJSON.WaterTile  tile = new ObjJSON.WaterTile(id,spriteColor, superficy);
+            MyGame.Data.WaterTile  tile = new MyGame.Data.WaterTile(id);
+            
             if(neighbore is not null)
             {
                 neighbore.Sort();
                 tile.neighbors = neighbore;
+                tile.spriteColor = spriteColor;
             }          
-            TileInfos.Add(tile);
+            tileInfos.Add(tile);
         }
         else
         {
-            ObjJSON.LandTile tile = new ObjJSON.LandTile(id, spriteColor,superficy);
+            MyGame.Data.LandTile tile = new MyGame.Data.LandTile(id);
             neighbore.Sort();
             tile.neighbors = neighbore;
-            TileInfos.Add(tile);
+            tile.spriteColor = spriteColor;
+            tileInfos.Add(tile);
         }
     }
-
     private void AddSpriteInfos(float[] color, int x, int y, int higherX, int lowerX, int higherY, int lowerY)
     {
         var _center = new float[]
@@ -291,39 +306,33 @@ public class SpriteCreator_v5 : MonoBehaviour
         };
 
         ObjJSON.SpriteInfo spriteInfo = new ObjJSON.SpriteInfo (color,x,y,_center);
-        SpriteInfos.Add(spriteInfo);
+        spriteInfos.Add(spriteInfo);
     }
-
-
-    private void ExportJson(List<ObjJSON> listObjJSON, Dictionary<int, float[]> idColor, ArrayList TileInfos, List<SpriteInfo> SpriteInfos)
+    private void ExportJson( Dictionary<int, float[]> idColor, List<Tile> TileInfos, List<SpriteInfo> SpriteInfos, List<EdgeGraphData.EdgeObj> _edgeData)
     {
-        
-        string output = JsonConvert.SerializeObject(TileInfos, Formatting.Indented);
+        var settings = new JsonSerializerSettings
+        {
+            Formatting = Formatting.Indented,
+            ContractResolver = new StrictOrderContractResolver()
+        };
+
+        string output = JsonConvert.SerializeObject(TileInfos, settings);
         File.WriteAllText(jsonSavePathTileInfo, output);
 
         output = JsonConvert.SerializeObject(SpriteInfos, Formatting.Indented);
         File.WriteAllText(jsonSavePathSpritsInfo, output);
 
-        CombinedJSON combinedData = new CombinedJSON(BaseImg.width, BaseImg.height, listObjJSON);
-        output = JsonConvert.SerializeObject(combinedData, Formatting.Indented);
-        File.WriteAllText(jsonSavePathMapInfo, output);
-
         output = JsonConvert.SerializeObject(idColor, Formatting.Indented);
         File.WriteAllText(jsonSavePathColorId, output);
+
+        output = JsonConvert.SerializeObject(_edgeData, Formatting.Indented);
+        File.WriteAllText(jsonSavePathEdgeInfo, output);
     }
-
-
-    List<int> RemoveDuplicate(List<int> givenList)
-    {
-        return givenList.Distinct().OrderBy(n => n).ToList();
-    }
-
     private int GetIdByColor(Color _color)
     {
         var tile = color_id.Where(c => c.Value.SequenceEqual(ColorUtils.GenerateColorFormat(_color))).FirstOrDefault();
         return tile.Key;
     }
-
     private void SetNeighbore(int id1, int id2) 
     {
         //spriteObjList
@@ -342,8 +351,48 @@ public class SpriteCreator_v5 : MonoBehaviour
             }
         }
     }
+    private void CreateNeighboreEdge()
+    {
+        List<int> processedIds =  new List<int>();
+        //_edgeGraphData
+        foreach (var tile in tileInfos)
+        {         
+            foreach (var neighboreId in tile.neighbors)
+            {
+                //if neighbore not in idSeen
+                if (!processedIds.Contains(neighboreId))
+                {
+                    //get neighbore color
+                    var neighboreColor = tileInfos.Where(t => t.id == neighboreId).Select(t => t.spriteColor).FirstOrDefault();
+                    
+                    
+                    //get tile and neighbore center
 
+                    var tileCenter = spriteInfos.Where(s => s.SpriteColor.SequenceEqual(tile.spriteColor)).Select(s => s.center).FirstOrDefault();
+                    if (tileCenter is null) 
+                    {
+                        Debug.Log("tileCenter is null");
+                    }
+                    //var neighboreCenter
+                    var neighboreCenter = spriteInfos.Where(s => s.SpriteColor.SequenceEqual(neighboreColor)).Select(s => s.center).FirstOrDefault();
+                    if (neighboreCenter is null)
+                    {
+                        Debug.Log("neighboreCenter is null");
+                    }
 
+                    //create edge
+
+                    EdgeGraphData.EdgeObj edge = new EdgeGraphData.EdgeObj();
+                    edge.from = tile.id;
+                    edge.to = neighboreId;
+                    edge.baseDistance = (float)(Math.Pow((tileCenter[0] - neighboreCenter[0]), 2) + Math.Pow((tileCenter[1] - neighboreCenter[1]), 2));
+                    _edgeData.Add(edge);
+                }
+            }
+            //add tile id in processedIds
+            processedIds.Add(tile.id);
+        }
+    }
     //neighbore top and bottom
     private void SetTopBottomOfIamgeAsNeighbore()
     {

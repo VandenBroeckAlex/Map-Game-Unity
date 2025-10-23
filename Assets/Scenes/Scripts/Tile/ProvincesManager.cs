@@ -66,13 +66,11 @@ public class ProvincesManager : MonoBehaviour
         //faire une fonction du serializing values in handler
         foreach (var provinceEntry in provincePosition.spriteListJSON)
         {
-            provinces_list.Add(provinceEntry.id, new LandTile(
-                                         provinceEntry.id,
-                                         provinceEntry.name,
-                                      
-                                         provinceEntry.owner,
-                                         provinceEntry.neighbors
-                                         ));
+            LandTile _newTile = new LandTile( provinceEntry.id);
+            _newTile.name = provinceEntry.name;
+            _newTile.ownerId = provinceEntry.owner;
+            _newTile.neighbors = provinceEntry.neighbors;
+            provinces_list.Add(provinceEntry.id, _newTile);
 
         }
         Debug.Log("number of province loaded :" + provinces_list.Count);

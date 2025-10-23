@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Text.Json;
+using System.Text.Json.Serialization;
+using Newtonsoft.Json;
 
 namespace MyGame.Data
 {
@@ -10,28 +13,29 @@ namespace MyGame.Data
     [SerializeField]
     public class Tile
     {
-        public string name;
-        public int id;
-        public bool isLand;
-        public bool isPassable;
-        public List<int> neighbors;     // (?)
-        
-        public Tile(int GivenID, string GivenName,List<int> Givenneighbors)
+        [JsonProperty(Order = 0)]
+        public int id { get; set; }
+        public string name {  get; set; }
+        public float[] spriteColor { get; set; }
+        public List<int> neighbors {  get; set; }
+        public int superficy {  get; set; }
+        public bool isLand {  get; set; }
+        public bool isPassable {  get; set; }
+
+        public Tile(int GivenID )
         {
             id = GivenID;
-            name = GivenName;     
-            neighbors = Givenneighbors;
         }
 
     }
     public class WaterTile : Tile
     {
+        [JsonProperty(Order = 1)]
         public int type;
 
-        public WaterTile(int givenID, string givenName, string givenDescription, int givenType, List<int> givenneighbors)
-            : base(givenID, givenName, givenneighbors)
+        public WaterTile(int givenID)
+            : base(givenID)
         {
-            type = givenType;
             isLand = false;
             isPassable = true;
         }
@@ -39,20 +43,22 @@ namespace MyGame.Data
 
     public class LandTile : Tile
     {
-        public int ownerId;
-        public int occupierID;
-        public int rgo;
-        public int type;
-        public bool isCoast;
-        public LandTile(int givenID, string givenName,int givenType, List<int> givenneighbors)
-            : base(givenID, givenName, givenneighbors)
+        [JsonProperty(Order = 7)]
+        public int ownerId {  get; set; }
+        [JsonProperty(Order = 8)]
+        public int occupierID {  get; set; }
+        [JsonProperty(Order = 9)]
+        public int rgo {  get; set; }
+        [JsonProperty(Order = 10)]
+        public int type {  get; set; }
+        [JsonProperty(Order = 11)]
+        public bool isCoast {  get; set; }
+
+        public LandTile(int givenID)
+            : base(givenID)
         {
             isLand = true;
             isPassable = true;
-            id = givenID;
-            name = givenName;
-            type = givenType;
-            neighbors = givenneighbors;
         }
     }
 
