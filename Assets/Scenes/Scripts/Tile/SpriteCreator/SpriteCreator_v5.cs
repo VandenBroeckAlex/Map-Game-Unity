@@ -7,7 +7,7 @@ using System.IO;
 using System.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
-
+using MyGame.Data;
 using static ObjJSON;
 
 
@@ -22,7 +22,7 @@ public class SpriteCreator_v5 : MonoBehaviour
     public List<SpriteInfo> spriteInfos = new List<ObjJSON.SpriteInfo>();
     List<EdgeGraphData.EdgeObj> _edgeData = new List<EdgeGraphData.EdgeObj>();
     Dictionary<int,float[]> color_id = new Dictionary<int, float[]>();
-    List<ObjJSON> listObjJSON = new List<ObjJSON>(); // this is useless
+
 
 
     string pathSave;
@@ -106,11 +106,13 @@ public class SpriteCreator_v5 : MonoBehaviour
             }
 
 
-
+             
 
             // keep existing data
             // load json
             // TODO check json validity
+
+            // check that 2 province do  not have the same color
             if (keepExistingProvinceData)
             {
                 if (!File.Exists(jsonSavePathTileInfo))
@@ -123,6 +125,12 @@ public class SpriteCreator_v5 : MonoBehaviour
 
                 List<Tile> existingProvinceData = LoadJSON(jsonSavePathTileInfo);
 
+                if (existingProvinceData.Count >= 0) 
+                {
+                    Debug.LogError("No tiles infos in file");
+                    keepExistingProvinceData = false;
+                }
+
                 for (int i = existingProvinceData.Count - 1; i >= 0; i--)
                 {
                     var existingTile = existingProvinceData[i];
@@ -133,7 +141,7 @@ public class SpriteCreator_v5 : MonoBehaviour
                         tileInfos.Remove(imgTile);
                     }
                     else
-                    {
+                    {                      
                         existingProvinceData.RemoveAt(i);
                     }
                 }
@@ -142,6 +150,8 @@ public class SpriteCreator_v5 : MonoBehaviour
 
 
             CreateNeighboreEdge();
+
+            AutoCoastalTile();
 
             ExportJson(color_id, tileInfos, spriteInfos,_edgeData);
         }
@@ -421,6 +431,20 @@ public class SpriteCreator_v5 : MonoBehaviour
 
             SetNeighbore(leftPixelId, rightpixelId);
 
+        }
+    }
+    private void AutoCoastalTile() 
+    {
+        foreach (LandTile landTile in tileInfos.OfType<LandTile>())
+        {
+            foreach (int neighborId in landTile.neighbors)
+            {
+                Tile neighbor = tileInfos.FirstOrDefault(t => t.id == neighborId);
+                if (neighbor is not null && !neighbor.isLand)
+                {
+                    landTile.isCoast = true;
+                }
+            }
         }
     }
 }

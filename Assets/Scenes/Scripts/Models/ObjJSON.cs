@@ -31,55 +31,6 @@ public class ObjJSON
     // Default constructor for JSON serialization
     public ObjJSON() { }
 
-    public class WaterTile
-    {
-        public int Id;
-        public float[] SpriteColor;
-        public string name = "";
-        public List<int> neighbors;
-        public int superficy;
-        public bool isLand = false;
-        public bool isPassable = true;
-        public WaterTile(int ID, float[] SPRITECOLOR, int SUPERFICY)
-        {
-            this.Id=ID;
-            this.SpriteColor = SPRITECOLOR;
-            this.superficy = SUPERFICY;
-        }
-    }
-
-    public class LandTile 
-    {
-        public int Id;
-        public float[] SpriteColor;
-        public string name = "";
-        public List<int> neighbors;
-        public int superficy;        
-        public string type = ""; //enum 
-        public string rgo = ""; //enum 
-        public int ownerId = 0; //id in country list 
-        public int? occupierID;
-        public bool isLand = true;
-        public bool isPassable = true;
-        public bool isCoast = false;
-        public LandTile(int ID, float[] SPRITECOLOR, int SUPERFICY)
-        {
-            this.Id = ID;
-            this.SpriteColor = SPRITECOLOR;
-            this.superficy = SUPERFICY;
-        }
-    }
-
-    public class CoastalTile : LandTile
-    {       
-        public CoastalTile(int ID, float[] SPRITECOLOR,  int SUPERFICY) : base(ID, SPRITECOLOR,SUPERFICY)
-        {
-            this.Id = ID;
-            this.SpriteColor = SPRITECOLOR;
-            this.superficy = SUPERFICY;
-            this.isCoast = true;
-        }
-    }
 
     public class SpriteInfo
     {

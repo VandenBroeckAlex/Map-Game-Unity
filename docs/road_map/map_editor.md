@@ -36,9 +36,9 @@ The third iteration will include an editor tool for managing provinces, as well 
 - [⏳] **Province Editor Tool**
   - [⏳] Develop a tool that allows users to edit province info in game.
   
-  - [ ] **Load new map keep province data**
-   - [ ] new province will be created only for color that did not appear previously
-    - [ ] Delete province object if theire color do not appear in the new map
+  - [x] **Load new map keep province data**
+   - [x] new province will be created only for color that did not appear previously
+    - [x] Delete province object if theire color do not appear in the new map
 - [X] **Change provice id plane mat on load**
 
 - [X] **Graph for displacement and distance between provinces**
@@ -60,8 +60,8 @@ The third iteration will include an editor tool for managing provinces, as well 
 - [X] **load data correctly**
 - [X] **test projector for provinces**
 - [ ] **Add a create country page**
-- [ ] **JSON do not override and empty problem**
-
+- [x] **JSON do not override and empty problem**
+- [x] **Auto sea Tile, Auto is coastal**
 
 
 ### Todo: Iteration ?

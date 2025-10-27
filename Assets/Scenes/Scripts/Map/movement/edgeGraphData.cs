@@ -15,7 +15,7 @@ public class EdgeGraphData : MonoBehaviour
     [SerializeField]
     enum TerrainType {plaine, forest, mountain, marsh, desert, jungle }
 
-    private List<EdgeObj> JSONObj = new List<EdgeObj>();
+    
 
     public class SpriteObjJSON
     {
@@ -40,95 +40,6 @@ public class EdgeGraphData : MonoBehaviour
         public int to;
         public float baseDistance;
 
-    }
-
-    JSONData provincePosition;
-
-   
-    public void CalculateEdge()
-    {
-        DeserializeJSON();
-        foreach (var provinceEntry in provincePosition.spriteListJSON)
-        {
-            foreach(var neighbore in  provinceEntry.neighbors)
-            {
-               
-                EdgeObj edgeObj = new EdgeObj();
-                edgeObj.from = provinceEntry.id;
-                edgeObj.to = neighbore;
-
-              
-                float[] neighboreCenter = new float[2];
-                bool found = false;
-
-                foreach (var province in provincePosition.spriteListJSON)
-                {
-                    //linq
-                    if (province.id == neighbore)
-                    {
-                        neighboreCenter = province.center;
-                        found = true;
-                        break;
-                    }
-                }
-
-                if (found)
-                {
-                    double distance = Math.Sqrt(
-                        Math.Pow(provinceEntry.center[0] - neighboreCenter[0], 2) +
-                        Math.Pow(provinceEntry.center[1] - neighboreCenter[1], 2)
-                    );
-                   
-                    edgeObj.baseDistance = (float)System.Math.Round(distance, 2); ;
-                }
-                else
-                {
-                    Console.WriteLine($"Warning: Neighbor with ID {neighbore} not found.");
-                }
-
-                JSONObj.Add(edgeObj);
-            }            
-        }
-        RemoveDuplicate();
-        CreateJSON(JSONObj);
-    }
-    void DeserializeJSON()
-    {
-        string provincePath = FilePath.MapInfo;
-        string provinceJson = File.ReadAllText(provincePath);
-        provincePosition = JsonConvert.DeserializeObject<JSONData>(provinceJson);
-    }
-
-    void CreateJSON(List <EdgeObj> Data) 
-    {
-        string output = JsonConvert.SerializeObject(Data, Formatting.Indented);
-        File.WriteAllText(FilePath.MapEdge, output);
-    }
-
-    void RemoveDuplicate()
-    {
-        HashSet<string> seenEdges = new();
-
-        
-        for (int i = JSONObj.Count - 1; i >= 0; i--)
-        {
-            int a = JSONObj[i].from;
-            int b = JSONObj[i].to;
-
-            
-            int min = Math.Min(a, b);
-            int max = Math.Max(a, b);
-            string key = $"{min}-{max}";
-
-            if (seenEdges.Contains(key))
-            {
-                JSONObj.RemoveAt(i);
-            }
-            else
-            {
-                seenEdges.Add(key);
-            }
-        }
     }
 }
 
