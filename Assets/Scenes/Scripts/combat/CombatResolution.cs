@@ -6,11 +6,11 @@ using UnityEngine;
 public class CombatResolution : MonoBehaviour
 {
 
-    List<UnitStats> attackerList;
-    List<UnitStats> defenderList;
+    List<Bataillon> attackerList;
+    List<Bataillon> defenderList;
 
     //constructor
-    CombatResolution(List<UnitStats> attacker, List<UnitStats> defender)
+    CombatResolution(List<Bataillon> attacker, List<Bataillon> defender)
     {
         attackerList = attacker;
         defenderList = defender;
@@ -21,8 +21,8 @@ public class CombatResolution : MonoBehaviour
         //0)assign unit randomly 
         for (int i = 0; i < attackerList.Count; i++)
         {
-            UnitStats attacker = attackerList[i];
-            UnitStats target = defenderList[UnityEngine.Random.Range(0, defenderList.Count)];
+            Bataillon attacker = attackerList[i];
+            Bataillon target = defenderList[UnityEngine.Random.Range(0, defenderList.Count)];
             //1) shot fire
             int attackerDamage = Convert.ToInt32(Math.Floor(attacker.softAttack * (attacker.manPower.current / attacker.manPower.max) * (attacker.organisation.current / attacker.organisation.max)));
             int targetDamage = Convert.ToInt32(Math.Floor(target.softAttack * (target.manPower.current / target.manPower.max) * (target.organisation.current / target.organisation.max)));

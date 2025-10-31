@@ -10,7 +10,7 @@ using static Pop_objects;
 using System.Linq;
 
 
-public class PopulationHandeler : MonoBehaviour
+public class PopulationManager : MonoBehaviour
 {
     private MarketManager marketManager;
     public int test_population_size = 100;

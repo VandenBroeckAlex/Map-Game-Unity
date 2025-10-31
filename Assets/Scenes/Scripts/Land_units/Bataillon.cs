@@ -4,21 +4,26 @@ using UnityEngine;
 
 
 [System.Serializable]
-public class UnitStats
+public class Bataillon 
 {
+    [SerializeField]
+    public int id;
     public FloatCurentMax organisation;
     public FloatCurentMax moral;
-
-    public FloatCurentMax manPower;
-    public FloatCurentMax officer;
+    public IntcurentMax manPower;
+    public IntcurentMax officer;
     public List<PopGood> supply;
+    public bool isSupport;
     //public List<> supply;
     //public Weight weight;
     // public float speed
     //public float coalConsumption;
     //public float armor;
     //public float softness; (%)
-
+    public int range; // Should be in weapon good stats
+    public int[] rangeAttack;
+    public int[] rangeDefense;
+    public int frontage;
     //public float airDefense;
     public float softAttack;
     //public float hardAttack;

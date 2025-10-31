@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-    public struct IntcurentMax
+[System.Serializable]
+public class IntcurentMax
     {
         public int current;
         public int max;
-
-        public IntcurentMax(int current, int max)
+    [SerializeField]
+    public IntcurentMax(int current, int max)
         {
             this.current = current;
             this.max = max;

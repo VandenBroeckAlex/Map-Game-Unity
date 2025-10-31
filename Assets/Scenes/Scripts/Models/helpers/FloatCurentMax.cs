@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System;
 
-public struct FloatCurentMax 
+[System.Serializable]
+public class FloatCurentMax 
 {
     public float current;
     public float max;
@@ -16,3 +17,4 @@ public struct FloatCurentMax
         this.max = max;
     }
 }
+
