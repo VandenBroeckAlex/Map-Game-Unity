@@ -6,7 +6,7 @@
 
 A battle consist of 2 ellements, a 2D grid representing the battlefield and one pool of reinforcement by side
 
-<img src="./img/Land_battle_Schema.png" alt="Land_battle_Schema"  />
+<img src="../../img/Land_battle_Schema.png" alt="Land_battle_Schema"  />
 
 The size of the grid is determined by the battalion with the greatest range along the X-axis (which may be reduced by terrain) and by the terrain frontage along the Y-axis.
 
