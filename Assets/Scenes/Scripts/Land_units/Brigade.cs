@@ -6,10 +6,12 @@ using UnityEngine;
 public class Brigade 
 {
     public string name;
+    public int id;
     [SerializeField]
     public List<Bataillon> bataillons;
     public List<PopGood> supply;
     public IntcurentMax Manpower;
+    
 
     public IntcurentMax GetManPower()
     {
@@ -20,5 +22,16 @@ public class Brigade
             mp.max += bataillon.manPower.max;
         }
         return mp;
+    }
+    public bool IsRouted()
+    {
+        foreach(var bataillon in bataillons)
+        {
+            if(bataillon.isRouted == false)
+            {
+                return false;
+            }
+        }
+        return true;
     }
 }
