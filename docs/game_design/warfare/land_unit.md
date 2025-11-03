@@ -6,7 +6,7 @@
 **Brigade** are smallest player controle unit.
 They are made up of battalion.
 
-<img src="./img/bataillon_schema.png" alt="bataillon_schema" width="300" />
+<img src="../../img/bataillon_schema.png" alt="bataillon_schema" width="300" />
 
 ## battalion Stats
 
