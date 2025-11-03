@@ -1,12 +1,12 @@
+<sub>Back to [Main read me](../../../README.md)
+<sub>[back](../warfare.md)
 # Land Battle
-
-
 
 **Core Design**
 
 A battle consist of 2 ellements, a 2D grid representing the battlefield and one pool of reinforcement by side
 
-<img src="../img/Land_battle_Schema.png" alt="Example good edge"  />
+<img src="/img/Land_battle_Schema.png" alt="Example good edge"  />
 
 The size of the grid is determined by the battalion with the greatest range along the X-axis (which may be reduced by terrain) and by the terrain frontage along the Y-axis.
 

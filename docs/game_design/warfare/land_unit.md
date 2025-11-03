@@ -1,10 +1,12 @@
+<sub>Back to [Main read me](../../../README.md)
+<sub>[back](../warfare.md)
 ## Land Units
 
 
 **Brigade** are smallest player controle unit.
 They are made up of battalion.
 
-<img src="../img/bataillon_schema.png" alt="Example good edge" width="300" />
+<img src="/img/bataillon_schema.png" alt="Example good edge" width="300" />
 
 ## battalion Stats
 
