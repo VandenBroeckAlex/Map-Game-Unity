@@ -37,7 +37,7 @@ public class SpriteCreator_v5 : MonoBehaviour
     bool autoNeighbore = true;
     bool topAndBottomNeighbore = false;
     bool leftAndRightNeighbore = false;
-    bool keepExistingProvinceData = true;//MainMenuControler.keepExistingProvinceDataChoice;
+    bool keepExistingProvinceData = false;//MainMenuControler.keepExistingProvinceDataChoice;
     bool keepNeighbore = false;
     bool keepsuperficy = false;
     bool keepCenter = false;
@@ -102,7 +102,7 @@ public class SpriteCreator_v5 : MonoBehaviour
             {
                 AddTileInfos(spriteObjList[i].id, ColorUtils.GenerateColorFormat(spriteObjList[i].spriteColor), spriteObjList[i].spritePixels.Count, spriteObjList[i].neighboreId);
 
-                AddSpriteInfos(ColorUtils.GenerateColorFormat(spriteObjList[i].spriteColor), spriteObjList[i].lowerX, spriteObjList[i].higherY, spriteObjList[i].higherX, spriteObjList[i].lowerX, spriteObjList[i].higherY, spriteObjList[i].lowerY);
+                AddSpriteInfos(ColorUtils.GenerateColorFormat(spriteObjList[i].spriteColor), spriteObjList[i].lowerX, spriteObjList[i].higherY, spriteObjList[i].higherX, spriteObjList[i].lowerX, spriteObjList[i].higherY, spriteObjList[i].lowerY, spriteObjList[i].id);
             }
 
 
@@ -307,7 +307,7 @@ public class SpriteCreator_v5 : MonoBehaviour
             tileInfos.Add(tile);
         }
     }
-    private void AddSpriteInfos(float[] color, int x, int y, int higherX, int lowerX, int higherY, int lowerY)
+    private void AddSpriteInfos(float[] color, int x, int y, int higherX, int lowerX, int higherY, int lowerY,int id)
     {
         var _center = new float[]
         {
@@ -315,7 +315,7 @@ public class SpriteCreator_v5 : MonoBehaviour
                 (higherY - lowerY)/2f
         };
 
-        ObjJSON.SpriteInfo spriteInfo = new ObjJSON.SpriteInfo (color,x,y,_center);
+        ObjJSON.SpriteInfo spriteInfo = new ObjJSON.SpriteInfo (color,x,y,_center,id);
         spriteInfos.Add(spriteInfo);
     }
     private void ExportJson( Dictionary<int, float[]> idColor, List<Tile> TileInfos, List<SpriteInfo> SpriteInfos, List<EdgeGraphData.EdgeObj> _edgeData)
@@ -378,13 +378,13 @@ public class SpriteCreator_v5 : MonoBehaviour
                     
                     //get tile and neighbore center
 
-                    var tileCenter = spriteInfos.Where(s => s.SpriteColor.SequenceEqual(tile.spriteColor)).Select(s => s.center).FirstOrDefault();
+                    var tileCenter = spriteInfos.Where(s => s.spriteColor.SequenceEqual(tile.spriteColor)).Select(s => s.center).FirstOrDefault();
                     if (tileCenter is null) 
                     {
                         Debug.Log("tileCenter is null");
                     }
                     //var neighboreCenter
-                    var neighboreCenter = spriteInfos.Where(s => s.SpriteColor.SequenceEqual(neighboreColor)).Select(s => s.center).FirstOrDefault();
+                    var neighboreCenter = spriteInfos.Where(s => s.spriteColor.SequenceEqual(neighboreColor)).Select(s => s.center).FirstOrDefault();
                     if (neighboreCenter is null)
                     {
                         Debug.Log("neighboreCenter is null");

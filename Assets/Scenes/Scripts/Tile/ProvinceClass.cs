@@ -15,9 +15,9 @@ namespace MyGame.Data
     {
         [JsonProperty(Order = 0)]
         public int id { get; set; }
-        public string name {  get; set; }
-        public float[] spriteColor { get; set; }
-        public List<int> neighbors {  get; set; }
+        public string name { get; set; } = "";
+        public float[] spriteColor { get; set; } = new float[3];
+        public List<int> neighbors {  get; set; } = new List<int>();
         public int superficy {  get; set; }
         public bool isLand {  get; set; }
         public bool isPassable {  get; set; }

@@ -154,6 +154,7 @@ MonoBehaviour:
     id: 0
     bataillons:
     - id: 0
+      name: Attacker inf
       organisation:
         current: 100
         max: 100
@@ -170,11 +171,12 @@ MonoBehaviour:
       range: 2
       rangeAttack: 0500000002000000
       rangeDefense: 0500000002000000
-      frontage: 3
+      frontage: 4
       isRouted: 0
-      softAttack: 100
-      initiative: 0
+      firepower: 5
+      initiative: 3
     - id: 0
+      name: Attacker arty
       organisation:
         current: 20
         max: 20
@@ -188,13 +190,13 @@ MonoBehaviour:
         current: 10
         max: 10
       isSupport: 1
-      range: 4
-      rangeAttack: 0a000000
+      range: 5
+      rangeAttack: 02000000
       rangeDefense: 0c000000
       frontage: 5
       isRouted: 0
-      softAttack: 40
-      initiative: 0
+      firepower: 10
+      initiative: 2
     Manpower:
       current: 0
       max: 0
@@ -203,6 +205,7 @@ MonoBehaviour:
     id: 0
     bataillons:
     - id: 0
+      name: Defender inf
       organisation:
         current: 100
         max: 100
@@ -221,8 +224,8 @@ MonoBehaviour:
       rangeDefense: 0300000002000000
       frontage: 5
       isRouted: 0
-      softAttack: 100
-      initiative: 0
+      firepower: 10
+      initiative: 4
     Manpower:
       current: 0
       max: 0
@@ -527,30 +530,59 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   army:
-  - name: 
+  - name: Attacker
     id: 0
     bataillons:
     - id: 0
+      name: Attacker Arty
       organisation:
-        current: 0
-        max: 0
+        current: 100
+        max: 100
       moral:
-        current: 0
-        max: 0
+        current: 100
+        max: 100
       manPower:
-        current: 0
-        max: 0
+        current: 1000
+        max: 1000
       officer:
-        current: 0
-        max: 0
+        current: 10
+        max: 10
       isSupport: 0
-      range: 0
-      rangeAttack: 
-      rangeDefense: 
-      frontage: 0
+      range: 7
+      rangeAttack: 0a000000
+      rangeDefense: 02000000
+      frontage: 5
+      isRouted: 1
+      firepower: 20
+      initiative: 3
+    Manpower:
+      current: 0
+      max: 0
+  - name: Defender
+    id: 0
+    bataillons:
+    - id: 0
+      name: defender inf
+      organisation:
+        current: 100
+        max: 100
+      moral:
+        current: 100
+        max: 100
+      manPower:
+        current: 1000
+        max: 1000
+      officer:
+        current: 10
+        max: 10
+      isSupport: 0
+      range: 2
+      rangeAttack: 02000000
+      rangeDefense: 02000000
+      frontage: 5
       isRouted: 0
-      softAttack: 0
-      initiative: 0
+      firepower: 10
+      initiative: 3
     Manpower:
       current: 0
       max: 0

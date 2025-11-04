@@ -1,5 +1,6 @@
 using MyGame.Data;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,7 +37,7 @@ public class ProvincesManager : MonoBehaviour
      
     }
 
-    JSONData provincePosition;
+    List<Tile> provinces = new List<Tile>();
     Dictionary<int, float[]> jsonData;
 
     public class ProvinceListData
@@ -62,23 +63,37 @@ public class ProvincesManager : MonoBehaviour
     void InitializeHandeler()
     {
         RaycastScript.onProvincePlaneHit += GetProvinceId;
-        LoadJsonDataMapPosition();
-        //faire une fonction du serializing values in handler
-        foreach (var provinceEntry in provincePosition.spriteListJSON)
+        LoadJsonTileInfo();
+        Debug.Log($"number of province in json {provinces.Count}");
+        //faire une fonction du serializing values in manager
+        foreach (var provinceEntry in provinces)
         {
-            LandTile _newTile = new LandTile( provinceEntry.id);
-            _newTile.name = provinceEntry.name;
-            _newTile.ownerId = provinceEntry.owner;
-            _newTile.neighbors = provinceEntry.neighbors;
-            provinces_list.Add(provinceEntry.id, _newTile);
+            if(provinceEntry is LandTile Ltile)
+            {
+                LandTile _newTile = new LandTile(provinceEntry.id);
+                _newTile.name = Ltile.name;
+                _newTile.ownerId = Ltile.ownerId;
+                _newTile.neighbors = Ltile.neighbors;
+                provinces_list.Add(Ltile.id, _newTile);
+            }
+            if (provinceEntry is WaterTile Wtile)
+            {
+                WaterTile _newTile = new WaterTile(Wtile.id);
+                _newTile.name = Wtile.name;
+                _newTile.neighbors = Wtile.neighbors;
+                provinces_list.Add(Wtile.id, _newTile);
+            }
+
+
 
         }
+      
         Debug.Log("number of province loaded :" + provinces_list.Count);
 
         if (uiController == null)
             uiController = FindObjectOfType<ProvinceUIController>();
     }
-    void LoadJsonDataMapPosition()
+    void LoadJsonTileInfo()
     {
         string fullPath = FilePath.ColorId;
         string jsonFile = File.ReadAllText(fullPath);
@@ -88,7 +103,26 @@ public class ProvincesManager : MonoBehaviour
       
         string provincePath = FilePath.TilesInfos;
         string provinceJson = File.ReadAllText(provincePath);
-        provincePosition = JsonConvert.DeserializeObject<JSONData>(provinceJson);
+        JArray listTile = JArray.Parse(provinceJson);
+
+        foreach (JObject tile in listTile)
+        {
+            if (tile == null) continue; // safety
+            bool isLand = tile["isLand"]?.Value<bool>() ?? false;
+
+            if (isLand)
+            {
+                LandTile landTile = tile.ToObject<LandTile>();
+                provinces.Add(landTile);
+            }
+            else
+            {
+                WaterTile waterTile = tile.ToObject<WaterTile>();
+                provinces.Add(waterTile);
+            }
+        }
+
+        //provinces 
     }
 
     public void OnProvinceClicked(int id)
@@ -133,5 +167,7 @@ public class ProvincesManager : MonoBehaviour
         OnProvinceClicked(id);
     }
 
+
+    
 
 }

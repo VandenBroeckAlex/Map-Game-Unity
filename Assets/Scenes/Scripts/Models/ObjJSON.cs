@@ -34,15 +34,16 @@ public class ObjJSON
 
     public class SpriteInfo
     {
-        public float[] SpriteColor;
+        public float[] spriteColor;
         public int lowerX;
         public int higherY;
         public float[] center;
+        public int id;
 
-        public SpriteInfo(float[] color, int x, int y,  float[] center)
+        public SpriteInfo(float[] color, int x, int y,  float[] center,int id)
         {
-       
-            this.SpriteColor = color;
+            this.id = id;
+            this.spriteColor = color;
             this.lowerX = x;
             this.higherY = y;
             this.center = center;

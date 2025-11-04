@@ -33,7 +33,7 @@ public class LandBattleEngine : MonoBehaviour
     public List<BEBataillon>[] battlefield;
     //   -----------------------
     // ---- Batle Info for json -------
-    private int baseDamage = 1;
+    private int baseDamage = 5;
 
 
     private void Start()
