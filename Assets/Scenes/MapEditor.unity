@@ -471,7 +471,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7b492dfa36342cf49848740af56b9d67, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  BaseImg: {fileID: 0}
 --- !u!114 &652475202
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -829,9 +828,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   fileName: Province_Map_height.png
-  terrainMaxHeight: 5
-  tileCountX: 1
-  tileCountZ: 1
+  terrainMaxHeight: 40
+  tileCountX: 2
+  tileCountZ: 2
   waterMaterial: {fileID: 2100000, guid: 141d9d6ca43b6c843965491604c6deff, type: 2}
   provinceIdMat: {fileID: 2100000, guid: aa60ab8e189bc594f85e2775eea2c0e6, type: 2}
 --- !u!1 &1435200881
