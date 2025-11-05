@@ -60,6 +60,7 @@ public class BEBataillon
     public Bataillon stats;
   
     public bool isAttacker;
+    public bool haveMoved = false;
     public BEBataillon(Bataillon baseBataillon)
     {
         stats = baseBataillon;

@@ -5,11 +5,11 @@ using System;
 
 public class LandBattleEngine : MonoBehaviour
 {
-    // Start is called before the first frame update
+    
     public bool battleOver = false;
     private void OnEnable()
     {
-        Tick_script.onTick += CombatTurn;
+        Tick_script.onTick += BattleTurn;
     }
 
     // ------ Army info -------
@@ -39,18 +39,26 @@ public class LandBattleEngine : MonoBehaviour
     private void Start()
     {
         InitializeBattleField();
-        Battle();
+        for (int i = 0; i < 10; i++)
+        {
+            BattleTurn();
+        }
+            
+        //return raport
     }
 
-    private void Battle()
+    private void BattleTurn()
     {
         //while(battleOver is false)
-        for (int i = 0; i < 10; i++) 
-        {
-            CombatTurn();
-            
-        }
-        //return raport
+                
+            List<BEBataillon> listBataillon = A_InField.Concat(D_InField).ToList()
+            .OrderByDescending(b => b.stats.initiative).ToList();
+
+            foreach (var bataillon in listBataillon)
+            {
+                BataillonTurn(bataillon);
+            }
+        ResetTurnFlags();
     }
 
     private void InitializeBattleField()
@@ -64,10 +72,6 @@ public class LandBattleEngine : MonoBehaviour
 
         InitializeTroopInField();
 
-        //for (int i = 0; i < battlefield.Length; i++) 
-        //{
-        //    Debug.Log($"Their is : {battlefield[i].Count} in row  {i}");
-        //}
     }
 
 
@@ -186,18 +190,13 @@ public class LandBattleEngine : MonoBehaviour
         battlefield[position].Add(b);
     }
 
+    
 
-    private void CombatTurn()
+    private void BataillonTurn(BEBataillon bataillon)
     {
         //get by initiative
-        List<BEBataillon> listBataillon = A_InField.Concat(D_InField).ToList()
-        .OrderByDescending(b => b.stats.initiative).ToList();
-        //A_InField.OrderByDescending(b => b.bataillon.initiative).ToList();
-        //D_InField.OrderByDescending(b => b.bataillon.initiative).ToList();
-        // range ?
-        Debug.Log($"listBataillon size is {listBataillon.Count()}");
-        foreach (var bataillon in listBataillon) 
-        {
+       
+        
             Debug.Log($"----  {bataillon.stats.name}'s turn ! -------");
             int bataillonPosition = GetBataillonPosition(bataillon);
             if (bataillon is not null)
@@ -207,7 +206,7 @@ public class LandBattleEngine : MonoBehaviour
                 //Debug.Log($"targetRow = {targetRow}");
                 //Debug.Log($"bataillonPosition : {bataillonPosition}, isAttacker : {bataillon.isAttacker}, targetRow : {targetRow}");
                 //if targetRow == -1 N
-                if(targetRow == -1)
+                if(targetRow == -1 && bataillon.haveMoved is false)
                 {
                     Debug.Log("Ennemi out of range");                    //advance
                     if(bataillon.isAttacker is true)
@@ -227,7 +226,7 @@ public class LandBattleEngine : MonoBehaviour
                 {
                     Debug.Log("Hand to hand battle");
                 }        
-            }
+            
 
 
             //GetAtPosition()
@@ -274,13 +273,10 @@ public class LandBattleEngine : MonoBehaviour
     }
     private void GetFieldRange()
     {
-        Debug.Log($"salut ! il y a {A_ReinforcementPool.Count} bataillons dans l'attack pool");
         foreach(var bataillon in A_ReinforcementPool)
         {
-            Debug.Log($"Bataillon range : {bataillon.stats.range} | range : {range}");
             if (bataillon.stats.range > range)
             {
-                Debug.Log("cc " + bataillon.stats.range);
                 range = bataillon.stats.range;
             }
         }
@@ -316,12 +312,24 @@ public class LandBattleEngine : MonoBehaviour
     {
         battlefield[from].Remove(b);
         battlefield[to].Add(b);
+        b.haveMoved = true;
         Debug.Log($"bataillon {b.stats.name} moved from {from} to {to}");
+        BataillonTurn(b);
     }
 
     private List<BEBataillon> GetAtPosition(int position)
     {
         return battlefield[position];
+    }
+
+    public void ResetTurnFlags()
+    {
+        List<BEBataillon> listBataillon = A_InField.Concat(D_InField).ToList()
+           .OrderByDescending(b => b.stats.initiative).ToList();
+        foreach (var b in listBataillon)
+        {
+            b.haveMoved = false;
+        }
     }
 
     private int GetFrontageInField(int field)
