@@ -19,7 +19,7 @@ public class LandBattleField
 
 
     // ------ Battlefield info -------
-    public int range = 3;
+    public int fieldRange = 3;
     public int fieldFrontage;
     public List<BEBataillon>[] battlefield;
     public LandBattleField(List<Brigade> Attacker, List<Brigade> Defender)

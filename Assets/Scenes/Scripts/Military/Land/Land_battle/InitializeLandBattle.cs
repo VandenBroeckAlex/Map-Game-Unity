@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 
-public class InitializeLandBattle : MonoBehaviour
+public class InitializeLandBattle 
 {
      
   
 
     // ------ Army info -------
-    public List<Brigade> Attacker;
-    public List<Brigade> Defender;
+    private List<Brigade> Attacker;
+    private List<Brigade> Defender;
 
-    public List<BEBataillon> A_InField = new List<BEBataillon>();
-    public List<BEBataillon> D_InField = new List<BEBataillon>();
+    private List<BEBataillon> A_InField = new List<BEBataillon>();
+    private List<BEBataillon> D_InField = new List<BEBataillon>();
 
-    public List<BEBataillon> A_ReinforcementPool = new List<BEBataillon>();
-    public List<BEBataillon> D_ReinforcementPool = new List<BEBataillon>();
+    private List<BEBataillon> A_ReinforcementPool = new List<BEBataillon>();
+    private List<BEBataillon> D_ReinforcementPool = new List<BEBataillon>();
 
     //public General AttackerGeneral
     //public General DefenderGeneral
@@ -24,15 +24,15 @@ public class InitializeLandBattle : MonoBehaviour
 
 
     // ------ Battlefield info -------
-    public int range = 3;
-    public int fieldFrontage;
+    private int range = 3;
+    private int fieldFrontage;
 
 
-    public List<BEBataillon>[] battlefield;
+    private List<BEBataillon>[] battlefield;
     //   -----------------------
     // ---- Batle Info for json -------
 
-    private LandBattleField InitializeBattleField(List<Brigade> _Attacker, List<Brigade> _Defender)
+    public LandBattleField InitializeBattleField(List<Brigade> _Attacker, List<Brigade> _Defender)
     {
         LandBattleField NewBattlefield = new LandBattleField(_Attacker, _Defender);
         Attacker = _Attacker;
@@ -48,7 +48,7 @@ public class InitializeLandBattle : MonoBehaviour
         InitializeTroopInField();
 
         NewBattlefield.battlefield = battlefield;
-        NewBattlefield.range = range;
+        NewBattlefield.fieldRange = range;
         NewBattlefield.fieldFrontage = fieldFrontage;
         NewBattlefield.A_InField = A_InField;
         NewBattlefield.D_InField = D_InField;

@@ -239,7 +239,7 @@ public class LandBattleEngine : MonoBehaviour
 
     }
 
-    public BEBataillon ResultRangeAttack(BEBataillon attaker, BEBataillon defender,int distance)
+    public BEBataillon ResultRangeAttack(BEBataillon attaker, BEBataillon defender,int range)
     {
         for(int i = 0; i < attaker.stats.rangeAttack[0]; i++)
         {
@@ -253,13 +253,13 @@ public class LandBattleEngine : MonoBehaviour
                 if(attackerRoll > defenderRoll)
                 {
                     //damage 10%
-                    damage = attaker.stats.CurentSoftAttack() * 0.1f * baseDamage;
+                    damage = attaker.stats.CurentSoftAttack(range) * 0.1f * baseDamage;
                 }
             }
             else
             {
                 //damage 40%
-                 damage = attaker.stats.CurentSoftAttack() * 0.4f * baseDamage;
+                 damage = attaker.stats.CurentSoftAttack(range) * 0.4f * baseDamage;
             }
             defender.stats.manPower.current -= (int)damage;
             Debug.Log($"{(int)damage} damges deal by {attaker.stats.name} to {defender.stats.name}");

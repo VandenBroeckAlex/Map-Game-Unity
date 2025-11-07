@@ -21,7 +21,7 @@ public abstract class Workplace
     public WorkplaceType type;
     public int constructionCost; // IC cost
     public Dictionary<string, int> maintenanceCost;
-    public IntcurentMax Workers;
+    public IntCurentMax Workers;
     public string workerType; // change to enum
     public int provinceId;
 

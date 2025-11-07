@@ -11,8 +11,8 @@ public class Bataillon
     public string name;
     public FloatCurentMax organisation;
     public FloatCurentMax moral;
-    public IntcurentMax manPower;
-    public IntcurentMax officer;
+    public IntCurentMax manPower;
+    public IntCurentMax officer;
     public List<PopGood> supply;
     public bool isSupport;
     //public List<> supply;
@@ -38,7 +38,7 @@ public class Bataillon
     
 
 
-    public float CurentSoftAttack()
+    public float CurentSoftAttack(int range)
     {
         if (manPower.max == 0)
             return 0;
@@ -53,6 +53,8 @@ public class Bataillon
 
         return Mathf.RoundToInt((manPower.current / manPower.max) * 100f);
     }
+
+  
 }
 
 public class BEBataillon 
@@ -61,6 +63,7 @@ public class BEBataillon
   
     public bool isAttacker;
     public bool haveMoved = false;
+    public bool isDisengaging = false;
     public BEBataillon(Bataillon baseBataillon)
     {
         stats = baseBataillon;

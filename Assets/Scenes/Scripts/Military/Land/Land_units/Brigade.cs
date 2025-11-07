@@ -10,12 +10,12 @@ public class Brigade
     [SerializeField]
     public List<Bataillon> bataillons;
     public List<PopGood> supply;
-    public IntcurentMax Manpower;
+    public IntCurentMax Manpower;
     
 
-    public IntcurentMax GetManPower()
+    public IntCurentMax GetManPower()
     {
-        IntcurentMax mp = new IntcurentMax(0,0);
+        IntCurentMax mp = new IntCurentMax(0,0);
         foreach(Bataillon bataillon in bataillons)
         {
             mp.current += bataillon.manPower.current;
@@ -23,6 +23,19 @@ public class Brigade
         }
         return mp;
     }
+    public FloatCurentMax GetAverageOrganisation()
+    {
+        FloatCurentMax orga  = new FloatCurentMax(0,0);
+        foreach(Bataillon bataillon in bataillons)
+        {
+            orga.current += bataillon.organisation.current;
+            orga.max += bataillon.organisation.max;
+        }
+
+        return orga;
+    }
+
+    //All bataillon must be routed
     public bool IsRouted()
     {
         foreach(var bataillon in bataillons)
