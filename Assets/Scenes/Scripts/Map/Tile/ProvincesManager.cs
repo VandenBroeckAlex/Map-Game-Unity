@@ -4,6 +4,7 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using static RaycastScript;
 
@@ -11,7 +12,7 @@ using static RaycastScript;
 [SerializeField]
 public class ProvincesManager : MonoBehaviour
 {
-
+    public static ProvincesManager instance;
 
     [SerializeField] 
     public Dictionary<int, Tile>  provinces_list = new Dictionary<int, Tile>();
@@ -51,12 +52,64 @@ public class ProvincesManager : MonoBehaviour
 
     public ProvinceUIController uiController;
 
+    //lookup textures:
+ 
+    private Texture2D lookupTex;
+    [SerializeField] private Material terrainMaterial;
+
+    private void Awake()
+    {
+        if(instance  == null)
+        {
+            instance = this;
+        }
+       
+     
+        else 
+        {
+            Destroy(gameObject);
+            Debug.Log("An instence of Province manager already exist");
+        }
+    }
+
     [Obsolete]
     private void Start()
     {
-        // initialization should be change later being in Start will cause problem sooner or later
+        if (terrainMaterial == null)
+            terrainMaterial = Resources.Load<Material>("Materials/PoliticalMap");
+
+        Debug.Log("terrainMaterial: " + terrainMaterial);
+
+        // Load province map
+        Texture2D provinceMap = FileUtils.LoadBaseImage(FilePath.ProvinceMapImg);
+
+        // Force exact linear uncompressed format
+        Color32[] pixels = provinceMap.GetPixels32();
+        Texture2D linearProvinceMap = new Texture2D(provinceMap.width, provinceMap.height, TextureFormat.RGBA32, false, true);
+        linearProvinceMap.SetPixels32(pixels);
+        linearProvinceMap.Apply(false, true);
+
+        provinceMap = linearProvinceMap;
+
+        provinceMap.filterMode = FilterMode.Point;
+        provinceMap.wrapMode = TextureWrapMode.Clamp;
+
+
+
+        terrainMaterial.SetTexture("_ProvinceTex", linearProvinceMap);
+
         InitializeHandeler();
+
+        lookupTex = new Texture2D(4096, 4096, TextureFormat.RGBA32, false);
+        lookupTex.filterMode = FilterMode.Point;
+        lookupTex.wrapMode = TextureWrapMode.Clamp;
+
         
+        BuildPoliticalLookupTexture();
+
+        Debug.Log("Lookup texture size: " + lookupTex.width + "x" + lookupTex.height);
+        terrainMaterial.SetTexture("_LookupTex", lookupTex);
+        File.WriteAllBytes(Application.dataPath + "/lookup_debug.png", lookupTex.EncodeToPNG());
     }
 
     [Obsolete]//do not remove this
@@ -74,6 +127,7 @@ public class ProvincesManager : MonoBehaviour
                 _newTile.name = Ltile.name;
                 _newTile.ownerId = Ltile.ownerId;
                 _newTile.neighbors = Ltile.neighbors;
+                _newTile.spriteColor = Ltile.spriteColor;
                 provinces_list.Add(Ltile.id, _newTile);
             }
             if (provinceEntry is WaterTile Wtile)
@@ -81,6 +135,7 @@ public class ProvincesManager : MonoBehaviour
                 WaterTile _newTile = new WaterTile(Wtile.id);
                 _newTile.name = Wtile.name;
                 _newTile.neighbors = Wtile.neighbors;
+                _newTile.spriteColor = Wtile.spriteColor;
                 provinces_list.Add(Wtile.id, _newTile);
             }
 
@@ -168,6 +223,65 @@ public class ProvincesManager : MonoBehaviour
     }
 
 
-    
+    public void BuildPoliticalLookupTexture()
+    {
+        int texSize = 4096;
+        Color[] pixels = new Color[texSize * texSize];
+
+        // default color 
+        for (int i = 0; i < pixels.Length; i++)
+            pixels[i] = Color.red;
+
+        foreach (var kv in provinces_list)
+        {
+            Tile province = kv.Value;
+            if (!province.isLand) continue;
+
+
+            Color32 c = new Color32(
+            (byte)Mathf.RoundToInt(province.spriteColor[0] * 255f),
+            (byte)Mathf.RoundToInt(province.spriteColor[1] * 255f),
+            (byte)Mathf.RoundToInt(province.spriteColor[2] * 255f),
+            255);
+
+            LandTile landprovince = (LandTile)province;
+            Debug.Log($"Province {province.name}: spriteColor=({province.spriteColor[0]}, {province.spriteColor[1]}, {province.spriteColor[2]}");
+            Color32 ownerColor = CountriesManager.instance.GetCountryColorById(landprovince.ownerId);
+            ownerColor.a = 255;
+            int index = (c.r << 16) | (c.g << 8) | c.b;
+            Debug.Log($"Province {province.name}: rgb=({c.r},{c.g},{c.b}) index={index}");
+          
+            int texX = index % texSize;
+            int texY = index / texSize;
+
+            // Safety check
+            if (texX >= 0 && texX < texSize && texY >= 0 && texY < texSize)
+                pixels[texY * texSize + texX] = ownerColor;
+        }
+
+        lookupTex = new Texture2D(texSize, texSize, TextureFormat.RGBA32, false);
+        lookupTex.filterMode = FilterMode.Point;
+        lookupTex.wrapMode = TextureWrapMode.Clamp;      
+        lookupTex.SetPixels(pixels);
+        lookupTex.Apply(false,false);
+        //lookupTex.GetPixel();
+        terrainMaterial.SetTexture("_LookupTex", lookupTex);
+
+        int count = pixels.Count(p => p != Color.red);
+        Debug.Log($"LookupTex non-white pixels: {count}");
+
+    }
+
+    //public void RefreshProvinceColor(Color provinceColor)
+    //{
+    //    // called when province ownership changes
+    //    int index = provinceManager.GetProvinceIndex(provinceColor);
+    //    int x = index % 256;
+    //    int y = index / 256;
+
+    //    Color newColor = provinceManager.GetCountryColorByProvinceColor(provinceColor);
+    //    lookupTex.SetPixel(x, y, newColor);
+    //    lookupTex.Apply();
+    //}
 
 }

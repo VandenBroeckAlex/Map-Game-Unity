@@ -7,7 +7,7 @@ public class Country
 {
     // Start is called before the first frame update
 
-    public int id { get; }
+    public int id;
     public string name;
     public Color color;
     public float treasury;

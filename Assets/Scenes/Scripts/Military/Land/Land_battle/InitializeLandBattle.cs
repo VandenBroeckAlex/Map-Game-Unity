@@ -9,14 +9,14 @@ public class InitializeLandBattle
   
 
     // ------ Army info -------
-    private List<Brigade> Attacker;
-    private List<Brigade> Defender;
+    private List<Brigade> attacker;
+    private List<Brigade> defender;
 
-    private List<BEBataillon> A_InField = new List<BEBataillon>();
-    private List<BEBataillon> D_InField = new List<BEBataillon>();
+    private List<BEBataillon> a_InField = new List<BEBataillon>();
+    private List<BEBataillon> d_InField = new List<BEBataillon>();
 
-    private List<BEBataillon> A_ReinforcementPool = new List<BEBataillon>();
-    private List<BEBataillon> D_ReinforcementPool = new List<BEBataillon>();
+    private List<BEBataillon> a_ReinforcementPool = new List<BEBataillon>();
+    private List<BEBataillon> d_ReinforcementPool = new List<BEBataillon>();
 
     //public General AttackerGeneral
     //public General DefenderGeneral
@@ -32,17 +32,18 @@ public class InitializeLandBattle
     //   -----------------------
     // ---- Batle Info for json -------
 
-    public LandBattleField InitializeBattleField(List<Brigade> _Attacker, List<Brigade> _Defender)
+    public LandBattleField InitializeBattleField(List<Brigade> _Attacker, List<Brigade> _Defender, int _fieldFrontage)
     {
         LandBattleField NewBattlefield = new LandBattleField(_Attacker, _Defender);
-        Attacker = _Attacker;
-        Defender = _Defender;
-
+        attacker = _Attacker;
+        defender = _Defender;
+        fieldFrontage = _fieldFrontage;
         //frontage = TileTerrain.frontagte;
         CreateBataillonPool();
 
         GetFieldRange();
         Debug.Log($"The field have a range of {range}");
+        Debug.Log($"The field have a frontage of {fieldFrontage}");
         CreateField();
 
         InitializeTroopInField();
@@ -50,10 +51,10 @@ public class InitializeLandBattle
         NewBattlefield.battlefield = battlefield;
         NewBattlefield.fieldRange = range;
         NewBattlefield.fieldFrontage = fieldFrontage;
-        NewBattlefield.A_InField = A_InField;
-        NewBattlefield.D_InField = D_InField;
-        NewBattlefield.A_ReinforcementPool = A_ReinforcementPool;
-        NewBattlefield.D_ReinforcementPool = D_ReinforcementPool;
+        NewBattlefield.a_InField = a_InField;
+        NewBattlefield.d_InField = d_InField;
+        NewBattlefield.a_ReinforcementPool = a_ReinforcementPool;
+        NewBattlefield.d_ReinforcementPool = d_ReinforcementPool;
         return NewBattlefield;
             
     }
@@ -61,23 +62,23 @@ public class InitializeLandBattle
 
     private void CreateBataillonPool()
     {
-        foreach (var brigade in Attacker)
+        foreach (var brigade in attacker)
         {
             foreach (var bataillon in brigade.bataillons)
             {
                 BEBataillon newbat = new BEBataillon(bataillon);
                 newbat.isAttacker = true;
-                A_ReinforcementPool.Add(newbat);
+                a_ReinforcementPool.Add(newbat);
             }
 
         }
-        foreach (var brigade in Defender)
+        foreach (var brigade in defender)
         {
             foreach (var bataillon in brigade.bataillons)
             {
                 BEBataillon newbat = new BEBataillon(bataillon);
                 newbat.isAttacker = false;
-                D_ReinforcementPool.Add(newbat);
+                d_ReinforcementPool.Add(newbat);
             }
         }
     }
@@ -98,9 +99,9 @@ public class InitializeLandBattle
         //bool fieldFrontageFilled = false;
         //bool SupportFrontageFilled = false;
         //attacker 
-        for (int i = A_ReinforcementPool.Count - 1; i >= 0; i--)
+        for (int i = a_ReinforcementPool.Count - 1; i >= 0; i--)
         {
-            var bataillon = A_ReinforcementPool[i];
+            var bataillon = a_ReinforcementPool[i];
             // check if isSupport
             if (bataillon is not null && bataillon.stats.isSupport == true)
             {
@@ -113,8 +114,8 @@ public class InitializeLandBattle
                     //position 0
                     PlaceBataillon(bataillon, 0);
 
-                    A_ReinforcementPool.RemoveAt(i);
-                    A_InField.Add(bataillon);
+                    a_ReinforcementPool.RemoveAt(i);
+                    a_InField.Add(bataillon);
                 }
 
             }
@@ -125,8 +126,8 @@ public class InitializeLandBattle
                 if (bataillon.stats.frontage + frontageLeft <= fieldFrontage)
                 {
                     PlaceBataillon(bataillon, 1);
-                    A_ReinforcementPool.RemoveAt(i);
-                    A_InField.Add(bataillon);
+                    a_ReinforcementPool.RemoveAt(i);
+                    a_InField.Add(bataillon);
                 }
             }
         }
@@ -134,9 +135,9 @@ public class InitializeLandBattle
         // check if isSupport
 
 
-        for (int i = D_ReinforcementPool.Count - 1; i >= 0; i--)
+        for (int i = d_ReinforcementPool.Count - 1; i >= 0; i--)
         {
-            var bataillon = D_ReinforcementPool[i];
+            var bataillon = d_ReinforcementPool[i];
             // check if isSupport
             if (bataillon is not null && bataillon.stats.isSupport == true)
             {
@@ -149,8 +150,8 @@ public class InitializeLandBattle
                     //position range -1
                     PlaceBataillon(bataillon, range - 1);
 
-                    D_ReinforcementPool.RemoveAt(i);
-                    D_InField.Add(bataillon);
+                    d_ReinforcementPool.RemoveAt(i);
+                    d_InField.Add(bataillon);
                 }
 
             }
@@ -161,8 +162,8 @@ public class InitializeLandBattle
                 if (frontageLeft + bataillon.stats.frontage <= fieldFrontage)
                 {
                     PlaceBataillon(bataillon, range - 2);
-                    D_ReinforcementPool.RemoveAt(i);
-                    D_InField.Add(bataillon);
+                    d_ReinforcementPool.RemoveAt(i);
+                    d_InField.Add(bataillon);
                 }
             }
         }
@@ -177,14 +178,14 @@ public class InitializeLandBattle
 
     private void GetFieldRange()
     {
-        foreach (var bataillon in A_ReinforcementPool)
+        foreach (var bataillon in a_ReinforcementPool)
         {
             if (bataillon.stats.range > range)
             {
                 range = bataillon.stats.range;
             }
         }
-        foreach (var bataillon in D_ReinforcementPool)
+        foreach (var bataillon in d_ReinforcementPool)
         {
             if (bataillon.stats.range > range)
             {

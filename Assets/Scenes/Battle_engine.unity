@@ -149,12 +149,12 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   battleOver: 0
-  Attacker:
-  - name: A
+  attacker:
+  - name: North army
     id: 0
     bataillons:
     - id: 0
-      name: Attacker inf
+      name: A_inf_01
       organisation:
         current: 100
         max: 100
@@ -165,21 +165,21 @@ MonoBehaviour:
         current: 1000
         max: 1000
       officer:
-        current: 10
-        max: 10
+        current: 0
+        max: 0
       isSupport: 0
-      range: 2
-      rangeAttack: 0500000002000000
-      rangeDefense: 0500000002000000
-      frontage: 4
+      range: 4
+      rangeAttack: 05000000
+      rangeDefense: 05000000
+      frontage: 10
       isRouted: 0
-      firepower: 5
-      initiative: 3
-    - id: 0
-      name: Attacker arty
+      firepower: 10
+      initiative: 2
+    - id: 2
+      name: A_Arty
       organisation:
-        current: 20
-        max: 20
+        current: 100
+        max: 100
       moral:
         current: 100
         max: 100
@@ -187,25 +187,47 @@ MonoBehaviour:
         current: 30
         max: 30
       officer:
-        current: 10
-        max: 10
+        current: 0
+        max: 0
       isSupport: 1
-      range: 5
-      rangeAttack: 02000000
-      rangeDefense: 0c000000
+      range: 7
+      rangeAttack: 03000000
+      rangeDefense: 01000000
       frontage: 5
       isRouted: 0
+      firepower: 25
+      initiative: 1
+    - id: 2
+      name: A_Inf_02
+      organisation:
+        current: 100
+        max: 100
+      moral:
+        current: 100
+        max: 100
+      manPower:
+        current: 30
+        max: 30
+      officer:
+        current: 0
+        max: 0
+      isSupport: 0
+      range: 5
+      rangeAttack: 03000000
+      rangeDefense: 01000000
+      frontage: 20
+      isRouted: 0
       firepower: 10
-      initiative: 2
+      initiative: 1
     Manpower:
       current: 0
       max: 0
-  Defender:
-  - name: B
+  defender:
+  - name: South Army
     id: 0
     bataillons:
     - id: 0
-      name: Defender inf
+      name: D_inf
       organisation:
         current: 100
         max: 100
@@ -219,18 +241,18 @@ MonoBehaviour:
         current: 10
         max: 10
       isSupport: 0
-      range: 2
-      rangeAttack: 0300000002000000
-      rangeDefense: 0300000002000000
-      frontage: 5
+      range: 5
+      rangeAttack: 05000000
+      rangeDefense: 05000000
+      frontage: 15
       isRouted: 0
       firepower: 10
-      initiative: 4
+      initiative: 5
     Manpower:
       current: 0
       max: 0
   range: 4
-  fieldFrontage: 20
+  fieldFrontage: 35
 --- !u!4 &363934523
 Transform:
   m_ObjectHideFlags: 0
@@ -239,7 +261,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 363934521}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 28.577332, y: -46.458813, z: -52.70884}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -500,6 +522,113 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!1 &1836512602
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1836512606}
+  - component: {fileID: 1836512605}
+  - component: {fileID: 1836512604}
+  - component: {fileID: 1836512603}
+  m_Layer: 0
+  m_Name: f
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!135 &1836512603
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1836512602}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 0.5
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!23 &1836512604
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1836512602}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: bba151c3535b77741a243368f2f26e21, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!33 &1836512605
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1836512602}
+  m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!4 &1836512606
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1836512602}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 188.17302, y: 26.078554, z: -299.30927}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2006929844
 GameObject:
   m_ObjectHideFlags: 0
@@ -548,7 +677,7 @@ MonoBehaviour:
         current: 10
         max: 10
       isSupport: 0
-      range: 7
+      range: 5
       rangeAttack: 0a000000
       rangeDefense: 02000000
       frontage: 5
@@ -616,3 +745,4 @@ SceneRoots:
   - {fileID: 378977582}
   - {fileID: 2006929846}
   - {fileID: 363934523}
+  - {fileID: 1836512606}

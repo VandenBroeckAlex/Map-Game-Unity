@@ -4,14 +4,14 @@ using UnityEngine;
 
 public class LandBattleField 
 {
-    public List<Brigade> Attacker;
-    public List<Brigade> Defender;
+    public List<Brigade> attacker;
+    public List<Brigade> defender;
 
-    public List<BEBataillon> A_InField = new List<BEBataillon>();
-    public List<BEBataillon> D_InField = new List<BEBataillon>();
+    public List<BEBataillon> a_InField = new List<BEBataillon>();
+    public List<BEBataillon> d_InField = new List<BEBataillon>();
 
-    public List<BEBataillon> A_ReinforcementPool = new List<BEBataillon>();
-    public List<BEBataillon> D_ReinforcementPool = new List<BEBataillon>();
+    public List<BEBataillon> a_ReinforcementPool = new List<BEBataillon>();
+    public List<BEBataillon> d_ReinforcementPool = new List<BEBataillon>();
 
     //public General AttackerGeneral
     //public General DefenderGeneral
@@ -19,12 +19,12 @@ public class LandBattleField
 
 
     // ------ Battlefield info -------
-    public int fieldRange = 3;
+    public int fieldRange;
     public int fieldFrontage;
     public List<BEBataillon>[] battlefield;
     public LandBattleField(List<Brigade> Attacker, List<Brigade> Defender)
     {
-        this.Attacker = Attacker;  
-        this.Defender = Defender;
+        this.attacker = Attacker;  
+        this.defender = Defender;
     }
 }

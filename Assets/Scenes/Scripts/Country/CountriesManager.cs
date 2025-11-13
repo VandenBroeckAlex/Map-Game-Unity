@@ -1,6 +1,7 @@
 using MyGame.Data;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public class CountriesManager : MonoBehaviour
@@ -11,15 +12,22 @@ public class CountriesManager : MonoBehaviour
 
 
     // Start is called before the first frame update
-    void Awake()
+    private void Awake()
     {
-        if (instance == null) instance = this;
-        else Destroy(gameObject);
+        if (instance == null)
+        {
+            instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
+            Debug.Log("An instence of Country manager already exist");
+        }
     }
 
     void Start()
     {
-        countryList.Clear();    
+        //countryList.Clear();    
         //Load country
       
         countryList.Add(new Country(1, "France", Color.blue, 100f));
@@ -29,7 +37,13 @@ public class CountriesManager : MonoBehaviour
     }
 
    
+    public Color GetCountryColorById(int _id)
+    {
+        Country country = countryList.Where(c => c.id == _id ).FirstOrDefault();
 
+
+        return country.color;
+    }
 
 
     //public Country GetCountryByTag(string tag);

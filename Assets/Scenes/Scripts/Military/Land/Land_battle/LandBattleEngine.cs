@@ -9,18 +9,19 @@ public class LandBattleEngine : MonoBehaviour
     public bool battleOver = false;
     private void OnEnable()
     {
+        // The battle manager will call that
         Tick_script.onTick += BattleTurn;
     }
 
     // ------ Army info -------
-    public List<Brigade> Attacker;
-    public List<Brigade> Defender;
+    public List<Brigade> attacker;
+    public List<Brigade> defender;
 
-    public List<BEBataillon> A_InField = new List<BEBataillon>();
-    public List<BEBataillon> D_InField = new List<BEBataillon>();
+    public List<BEBataillon> a_InField = new List<BEBataillon>();
+    public List<BEBataillon> d_InField = new List<BEBataillon>();
 
-    public List<BEBataillon> A_ReinforcementPool = new List<BEBataillon>();
-    public List<BEBataillon> D_ReinforcementPool = new List<BEBataillon>();
+    public List<BEBataillon> a_ReinforcementPool = new List<BEBataillon>();
+    public List<BEBataillon> d_ReinforcementPool = new List<BEBataillon>();
 
     //public General AttackerGeneral
     //public General DefenderGeneral
@@ -28,8 +29,9 @@ public class LandBattleEngine : MonoBehaviour
 
 
     // ------ Battlefield info -------
+    LandBattleField _landbattlefield;
     public int range = 3;
-    public int fieldFrontage;
+    public int fieldFrontage = 35;
     public List<BEBataillon>[] battlefield;
     //   -----------------------
     // ---- Batle Info for json -------
@@ -38,7 +40,19 @@ public class LandBattleEngine : MonoBehaviour
 
     private void Start()
     {
-        InitializeBattleField();
+        InitializeLandBattle initialiser = new InitializeLandBattle();
+        _landbattlefield = initialiser.InitializeBattleField(attacker, defender, fieldFrontage);
+
+        a_InField = _landbattlefield.a_InField;
+        d_InField = _landbattlefield.d_InField;
+        a_ReinforcementPool = _landbattlefield.a_ReinforcementPool;
+        d_ReinforcementPool = _landbattlefield.d_ReinforcementPool;
+        battlefield = _landbattlefield.battlefield;
+        Debug.Log($"{a_InField.Count} : A_InField");
+        Debug.Log($"{d_InField.Count} : D_InField");
+        Debug.Log($"{a_ReinforcementPool.Count} : A_ReinforcementPool");
+        Debug.Log($"{d_ReinforcementPool.Count} : D_ReinforcementPool");
+        initialiser = null;
         for (int i = 0; i < 10; i++)
         {
             BattleTurn();
@@ -51,9 +65,9 @@ public class LandBattleEngine : MonoBehaviour
     {
         //while(battleOver is false)
                 
-            List<BEBataillon> listBataillon = A_InField.Concat(D_InField).ToList()
+            List<BEBataillon> listBataillon = a_InField.Concat(d_InField).ToList()
             .OrderByDescending(b => b.stats.initiative).ToList();
-
+            Debug.Log(listBataillon.Count +"bataillons");
             foreach (var bataillon in listBataillon)
             {
                 BataillonTurn(bataillon);
@@ -61,129 +75,7 @@ public class LandBattleEngine : MonoBehaviour
         ResetTurnFlags();
     }
 
-    private void InitializeBattleField()
-    {
-        //frontage = TileTerrain.frontagte;
-        CreateBataillonPool();
-
-        GetFieldRange();
-        Debug.Log($"The field have a range of {range}");
-        CreateField();
-
-        InitializeTroopInField();
-
-    }
-
-
-   private void CreateBataillonPool()
-    {
-        foreach (var brigade in Attacker)
-        {
-            foreach(var bataillon in brigade.bataillons)
-            {
-                BEBataillon newbat = new BEBataillon(bataillon);
-                newbat.isAttacker = true;
-                A_ReinforcementPool.Add(newbat);
-            }
-            
-        }
-        foreach (var brigade in Defender)
-        {
-            foreach (var bataillon in brigade.bataillons)
-            {
-                BEBataillon newbat = new BEBataillon(bataillon);
-                newbat.isAttacker = false;
-                D_ReinforcementPool.Add(newbat);
-            }
-        }
-    }
-
-    private void CreateField()
-    {
-        battlefield = new List<BEBataillon>[range];
-        for (int i = 0; i < range; i++)
-        {
-            battlefield[i] = new List<BEBataillon>();
-        }
-    }
-
-
-    private void InitializeTroopInField()
-    {
-        //Keep track if frontage is full
-        //bool fieldFrontageFilled = false;
-        //bool SupportFrontageFilled = false;
-        //attacker 
-        for (int i = A_ReinforcementPool.Count - 1; i>= 0;  i--)
-        {
-            var bataillon = A_ReinforcementPool[i];
-            // check if isSupport
-            if (bataillon is not null && bataillon.stats.isSupport == true)
-            {
-                //yes
-
-                //check if some of bataillon frontage including the one to add is smaller than field frontage
-                int frontageLeft = GetFrontageInField(0);
-                if (bataillon.stats.frontage + frontageLeft <= fieldFrontage)
-                {
-                    //position 0
-                    PlaceBataillon(bataillon, 0);
-
-                    A_ReinforcementPool.RemoveAt(i);
-                    A_InField.Add(bataillon);
-                }
-                 
-            }
-            //no position 1
-            else if (bataillon is not null && bataillon.stats.isSupport == false)
-            {
-                int frontageLeft = GetFrontageInField(1);
-                if (bataillon.stats.frontage + frontageLeft <= fieldFrontage)
-                {
-                    PlaceBataillon(bataillon, 1);
-                    A_ReinforcementPool.RemoveAt(i);
-                    A_InField.Add(bataillon);
-                }
-            } 
-        }
-        //defender
-        // check if isSupport
-
-    
-        for (int i = D_ReinforcementPool.Count -1; i >= 0; i--)
-        {
-            var bataillon = D_ReinforcementPool[i];
-            // check if isSupport
-            if (bataillon is not null && bataillon.stats.isSupport == true)
-            {
-                //yes
-
-                //check if some of bataillon frontage including the one to add is smaller than field frontage
-                int frontageLeft = GetFrontageInField(range - 1);
-                if (bataillon.stats.frontage + frontageLeft <= fieldFrontage)
-                {
-                    //position range -1
-                    PlaceBataillon(bataillon, range-1);
-
-                    D_ReinforcementPool.RemoveAt(i);
-                    D_InField.Add(bataillon);
-                }
-
-            }
-            //no position range -2 
-            else if (bataillon is not null && bataillon.stats.isSupport == false)
-            {
-                int frontageLeft = GetFrontageInField(range - 2);
-                if (frontageLeft + bataillon.stats.frontage  <= fieldFrontage)
-                {
-                    PlaceBataillon(bataillon, range - 2);
-                    D_ReinforcementPool.RemoveAt(i);
-                    D_InField.Add(bataillon);
-                }
-            }
-        }
-        
-    }
+   
 
     public void PlaceBataillon(BEBataillon b, int position)
     {
@@ -192,35 +84,37 @@ public class LandBattleEngine : MonoBehaviour
 
     
 
-    private void BataillonTurn(BEBataillon bataillon)
+    private void BataillonTurn(BEBataillon A_bataillon)
     {
         //get by initiative
        
         
-            Debug.Log($"----  {bataillon.stats.name}'s turn ! -------");
-            int bataillonPosition = GetBataillonPosition(bataillon);
-            if (bataillon is not null)
+            Debug.Log($"----  {A_bataillon.stats.name}'s turn ! -------");
+            int bataillonPosition = GetBataillonPosition(A_bataillon);
+            if (A_bataillon is not null)
             {
                 
-                int targetRow = GetTargetRow(bataillonPosition, bataillon.stats.range, bataillon.isAttacker);
+                int targetRow = GetTargetRow(bataillonPosition, A_bataillon.stats.range, A_bataillon.isAttacker);
                 //Debug.Log($"targetRow = {targetRow}");
                 //Debug.Log($"bataillonPosition : {bataillonPosition}, isAttacker : {bataillon.isAttacker}, targetRow : {targetRow}");
                 //if targetRow == -1 N
-                if(targetRow == -1 && bataillon.haveMoved is false)
+                if(targetRow == -1 && A_bataillon.haveMoved is false)
                 {
                     Debug.Log("Ennemi out of range");                    //advance
-                    if(bataillon.isAttacker is true)
-                    MoveBataillon(bataillon, bataillonPosition, bataillonPosition + 1);
+                    if(A_bataillon.isAttacker is true)
+                    MoveBataillon(A_bataillon, bataillonPosition, bataillonPosition + 1);
                     else
-                    MoveBataillon(bataillon, bataillonPosition, bataillonPosition - 1);
+                    MoveBataillon(A_bataillon, bataillonPosition, bataillonPosition - 1);
                 }
-                else if(bataillon.isAttacker is true && targetRow > bataillonPosition + 1)
+                else if(A_bataillon.isAttacker is true && targetRow > bataillonPosition + 1)
                 {
-                    ResultRangeAttack(bataillon, battlefield[targetRow][0], targetRow - bataillonPosition);
+                    int index = SelectRandomBataillonInRow(targetRow);
+                    ResultRangeAttack(A_bataillon, battlefield[targetRow][index], targetRow - bataillonPosition);
                 }
-                else if (bataillon.isAttacker is false && targetRow < bataillonPosition -1)
+                else if (A_bataillon.isAttacker is false && targetRow < bataillonPosition -1)
                 {
-                    ResultRangeAttack(bataillon, battlefield[targetRow][0], targetRow - bataillonPosition);
+                    int index = SelectRandomBataillonInRow(targetRow);
+                    ResultRangeAttack(A_bataillon, battlefield[targetRow][0], targetRow - bataillonPosition);
                 }
                 else if (targetRow == bataillonPosition + 1)
                 {
@@ -271,25 +165,7 @@ public class LandBattleEngine : MonoBehaviour
     {
 
     }
-    private void GetFieldRange()
-    {
-        foreach(var bataillon in A_ReinforcementPool)
-        {
-            if (bataillon.stats.range > range)
-            {
-                range = bataillon.stats.range;
-            }
-        }
-        foreach (var bataillon in D_ReinforcementPool)
-        {
-            if (bataillon.stats.range > range)
-            {
-                range = bataillon.stats.range;
-            }
-        }
-
-        range += 1; //So troop on front line are at range
-    }
+    
 
     // When a brigade leave an attack or a defense to change tile
     private void DisEngage()
@@ -324,7 +200,7 @@ public class LandBattleEngine : MonoBehaviour
 
     public void ResetTurnFlags()
     {
-        List<BEBataillon> listBataillon = A_InField.Concat(D_InField).ToList()
+        List<BEBataillon> listBataillon = a_InField.Concat(d_InField).ToList()
            .OrderByDescending(b => b.stats.initiative).ToList();
         foreach (var b in listBataillon)
         {
@@ -375,5 +251,13 @@ public class LandBattleEngine : MonoBehaviour
         }
 
             return -1;
+    }
+
+    private int SelectRandomBataillonInRow(int row)
+    {
+        int max = battlefield[row].Count() ;
+        int index = UnityEngine.Random.Range(0, max);
+        Debug.Log($"max index is {max} , the chosen index is {index}");
+        return index;
     }
 }
