@@ -535,7 +535,7 @@ MonoBehaviour:
     Income_tax: 0
   - id: 1
     name: Robert
-    color: {r: 0.75, g: 0.8910763, b: 1, a: 0}
+    color: {r: 0, g: 0.5625, b: 1, a: 0}
     treasury: 0
     income: 0
     Income_tax: 0

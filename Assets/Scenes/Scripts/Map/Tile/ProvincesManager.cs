@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 using static RaycastScript;
 
@@ -39,7 +40,7 @@ public class ProvincesManager : MonoBehaviour
     }
 
     List<Tile> provinces = new List<Tile>();
-    Dictionary<int, float[]> jsonData;
+    Dictionary<int, float[]> colorIDList;
 
     public class ProvinceListData
     {
@@ -153,7 +154,7 @@ public class ProvincesManager : MonoBehaviour
         string fullPath = FilePath.ColorId;
         string jsonFile = File.ReadAllText(fullPath);
 
-        jsonData = JsonConvert.DeserializeObject<Dictionary<int, float[]>>(jsonFile);
+        colorIDList = JsonConvert.DeserializeObject<Dictionary<int, float[]>>(jsonFile);
 
       
         string provincePath = FilePath.TilesInfos;
@@ -192,7 +193,7 @@ public class ProvincesManager : MonoBehaviour
         ProvincesManager bScript = GetComponent<ProvincesManager>();
         Dictionary<int, Tile> allProvinces = bScript.provinces_list;
 
-        foreach (var kvp in jsonData)
+        foreach (var kvp in colorIDList)
         {
             float[] stored = kvp.Value;
 
@@ -230,8 +231,11 @@ public class ProvincesManager : MonoBehaviour
 
         // default color 
         for (int i = 0; i < pixels.Length; i++)
-            pixels[i] = Color.red;
-
+        {
+            pixels[i] = Color.white;
+            pixels[i].a = 0f;
+        }
+            
         foreach (var kv in provinces_list)
         {
             Tile province = kv.Value;
@@ -245,7 +249,7 @@ public class ProvincesManager : MonoBehaviour
             255);
 
             LandTile landprovince = (LandTile)province;
-            Debug.Log($"Province {province.name}: spriteColor=({province.spriteColor[0]}, {province.spriteColor[1]}, {province.spriteColor[2]}");
+            //Debug.Log($"Province {province.name}: spriteColor=({province.spriteColor[0]}, {province.spriteColor[1]}, {province.spriteColor[2]}");
             Color32 ownerColor = CountriesManager.instance.GetCountryColorById(landprovince.ownerId);
             ownerColor.a = 255;
             int index = (c.r << 16) | (c.g << 8) | c.b;
@@ -256,9 +260,11 @@ public class ProvincesManager : MonoBehaviour
 
             // Safety check
             if (texX >= 0 && texX < texSize && texY >= 0 && texY < texSize)
-                pixels[texY * texSize + texX] = ownerColor;
-        }
+            Debug.Log($"Setting pixel at ({texX}, {texY}) with alpha={ownerColor.a}");
+            pixels[texY * texSize + texX] = ownerColor;
 
+        }
+        Debug.Log("def col alpha = :" + pixels[0].a);
         lookupTex = new Texture2D(texSize, texSize, TextureFormat.RGBA32, false);
         lookupTex.filterMode = FilterMode.Point;
         lookupTex.wrapMode = TextureWrapMode.Clamp;      
@@ -267,9 +273,42 @@ public class ProvincesManager : MonoBehaviour
         //lookupTex.GetPixel();
         terrainMaterial.SetTexture("_LookupTex", lookupTex);
 
-        int count = pixels.Count(p => p != Color.red);
+        int count = pixels.Count(p => p != Color.white);
         Debug.Log($"LookupTex non-white pixels: {count}");
+        
+    }
 
+
+
+    public void BuildProvinceIdLookupTexture()
+    {
+        
+        int maxId = colorIDList.Max(KeyValuePair => KeyValuePair.Key);
+        Texture2D lookupTex = new Texture2D(maxId, 1);
+        Color[] pixels = new Color[maxId];
+
+        // default color 
+        for (int i = 0; i < pixels.Length; i++)
+            pixels[i] = Color.red;
+
+        foreach (KeyValuePair<int, float[]> entry in colorIDList)
+        {
+            float[] col = entry.Value;
+
+            Color32 color = new Color32(
+           (byte)Mathf.RoundToInt(col[0] * 255f),
+           (byte)Mathf.RoundToInt(col[1] * 255f),
+           (byte)Mathf.RoundToInt(col[2] * 255f),
+           255);
+            pixels[entry.Key] = color;
+        }
+        lookupTex = new Texture2D(maxId, 1, TextureFormat.RGBA32, false);
+        lookupTex.filterMode = FilterMode.Point;
+        lookupTex.wrapMode = TextureWrapMode.Clamp;
+        lookupTex.SetPixels(pixels);
+        lookupTex.Apply(false, false);
+        //lookupTex.GetPixel();
+        terrainMaterial.SetTexture("_LookupTex", lookupTex);
     }
 
     //public void RefreshProvinceColor(Color provinceColor)
