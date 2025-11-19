@@ -12,11 +12,11 @@ public class Market_object
     {
         public int id;
         public float CashAmount = 0;
-        public List<Market_good> goods_list = new();
+        public List<MarketGood> goods_list = new();
     }
 
     [System.Serializable]
-    public class Market_good
+    public class MarketGood
     {
         public int id;
         public Good good;

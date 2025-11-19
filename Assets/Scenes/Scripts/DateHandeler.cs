@@ -2,7 +2,7 @@
 using MyGame.Data;
 using System;
 using UnityEngine;
-using static Tick_script;
+using static TickScript;
 
 public class DateHandeler : MonoBehaviour
 {
@@ -20,12 +20,12 @@ public class DateHandeler : MonoBehaviour
 
     private void OnEnable()
     {
-        Tick_script.onTick += HandleDate;
+        TickScript.onTick += HandleDate;
     }
 
     private void OnDisable()
     {
-        Tick_script.onTick -= HandleDate;
+        TickScript.onTick -= HandleDate;
     }
 
 
@@ -47,7 +47,7 @@ public class DateHandeler : MonoBehaviour
             onMonth?.Invoke();
         }
         Debug.Log(monthDay);
-        Debug.Log(monthDay == 2);
+
 
         switch (month)
         {

@@ -10,21 +10,21 @@ public class Pop_objects
     [System.Serializable]
     public class Pop
     {
-        public int Id { get; }
-        public int Size;
-        public int ProvinceId { get; }
-        public Population_Type ClassType { get; }
-        public Culture Culture { get; }
-        public Religion Religion { get; }
+        public int id { get; }
+        public int size;
+        public int provinceId { get; }
+        public Population_Type classType { get; }
+        public Culture culture { get; }
+        public Religion religion { get; }
         private float _cashAmount;
         private float _savings;
-        public float CashAmount 
+        public float cashAmount 
         { get { return _cashAmount; }
           set { _cashAmount = RoundToTwoDecimals(value); }
         }
         //private float education;
         //private float militency;
-        public PopGood[] GoodList;
+        public List<PopGood> GoodList = new List<PopGood>();
         
         public Dictionary<string, float> PoliticalLeaning = new Dictionary<string, float>
         {
@@ -36,20 +36,20 @@ public class Pop_objects
 
 
         //constructor
-        public Pop(int ID, int SIZE, int PROVINCEID, Population_Type TYPE, Culture CULTURE, Religion RELIGION, float CASHAMOUNT, PopGood[] STOCKPILE)
+        public Pop(int ID, int SIZE, int PROVINCEID, Population_Type TYPE, Culture CULTURE, Religion RELIGION, float CASHAMOUNT, List<PopGood> STOCKPILE)
         {
-            Id = ID;
-            Size = SIZE;
-            ProvinceId = PROVINCEID;
-            ClassType = TYPE;
-            Culture = CULTURE;
-            Religion = RELIGION;
-            CashAmount = CASHAMOUNT;
-            GoodList = STOCKPILE;
+            id = ID;
+            size = SIZE;
+            provinceId = PROVINCEID;
+            classType = TYPE;
+            culture = CULTURE;
+            religion = RELIGION;
+            cashAmount = CASHAMOUNT;
+            GoodList =  STOCKPILE;
         }
         public bool HaveBasicNeed()
         {
-            for (int i = 0; i < GoodList.Length; i++)
+            for (int i = 0; i < GoodList.Count; i++)
             {
                 if (GoodList[i].Stockpile != GoodList[i].MaxNeed)
                 {

@@ -25,7 +25,7 @@ public class Country
     //public GovernmentType governmentType;
     //public Dictionary<GoodsType, float> nationalStockpile; (should probably not be here)
 
-    //public Dictionary<Country, DiplomaticRelation> diplomaticRelations; (should probably not be here)
+    //public Dictionary<Country, DiplomaticRelation> diplomat icRelations; (should probably not be here)
 
 
 

@@ -47,30 +47,29 @@ public class ProvincesManager : MonoBehaviour
         public List<Tile> ProvinceList;
     }
 
+
+    //UI
     public delegate void OnProvinceUpdated();
     public static OnProvinceUpdated onProvinceUpdated;
-
-
     public ProvinceUIController uiController;
 
-    //lookup textures:
- 
+
+
+    //Lookup textures:
     private Texture2D lookupTex;
     [SerializeField] private Material terrainMaterial;
 
+    ProvinceColorIndexLUT _ProvinceColorIndexLUT = new ProvinceColorIndexLUT();
+    PoliticalMapLUT _PoliticalMapLUT = new PoliticalMapLUT();
 
 
 
-
-
-    [Obsolete]
+    
     public void Initialize()
     {
         CreateSingleton();
         if (terrainMaterial == null)
             terrainMaterial = Resources.Load<Material>("Materials/PoliticalMap");
-
-        Debug.Log("terrainMaterial: " + terrainMaterial);
 
         // Load province map
         Texture2D provinceMap = FileUtils.LoadBaseImage(FilePath.ProvinceMapImg);
@@ -94,12 +93,9 @@ public class ProvincesManager : MonoBehaviour
 
         lookupTex = new Texture2D(4096, 4096, TextureFormat.RGBA32, false);
         lookupTex.filterMode = FilterMode.Point;
-        lookupTex.wrapMode = TextureWrapMode.Clamp;
+        lookupTex.wrapMode = TextureWrapMode.Clamp; 
 
 
-        BuildPoliticalLookupTexture();
-
-        Debug.Log("Lookup texture size: " + lookupTex.width + "x" + lookupTex.height);
         terrainMaterial.SetTexture("_LookupTex", lookupTex);
         File.WriteAllBytes(Application.dataPath + "/lookup_debug.png", lookupTex.EncodeToPNG());
     }
@@ -121,10 +117,10 @@ public class ProvincesManager : MonoBehaviour
 
 
 
-    [Obsolete]//do not remove this
+   
     public void InitializeHandeler()
     {
-        CreateSingleton();
+       
         RaycastScript.onProvincePlaneHit += GetProvinceId;
         LoadJsonTileInfo();
         Debug.Log($"number of province in json {provinces.Count}");
@@ -155,8 +151,13 @@ public class ProvincesManager : MonoBehaviour
       
         Debug.Log("number of province loaded :" + provinces_list.Count);
 
+
+        int LUTSize = colorIDList.Max(KeyValuePair => KeyValuePair.Key);
+       
+        _ProvinceColorIndexLUT.BuildProvinceIdLookupTexture(colorIDList, terrainMaterial,LUTSize);
+        _PoliticalMapLUT.BuildPoliticalLookupTexture(provinces_list,LUTSize, terrainMaterial);
         if (uiController == null)
-            uiController = FindObjectOfType<ProvinceUIController>();
+            uiController = FindFirstObjectByType<ProvinceUIController>();
     }
     void LoadJsonTileInfo()
     {
@@ -219,7 +220,7 @@ public class ProvincesManager : MonoBehaviour
         return -1;
     }
 
-    // work if no province is deleted !
+
     Tile GetProvinceInfoById(int id)
     {
         return provinces_list[id];
@@ -233,103 +234,5 @@ public class ProvincesManager : MonoBehaviour
     }
 
 
-    public void BuildPoliticalLookupTexture()
-    {
-        int texSize = 4096;
-        Color[] pixels = new Color[texSize * texSize];
-
-        // default color 
-        for (int i = 0; i < pixels.Length; i++)
-        {
-            pixels[i] = Color.white;
-            pixels[i].a = 0f;
-        }
-            
-        foreach (var kv in provinces_list)
-        {
-            Tile province = kv.Value;
-            if (!province.isLand) continue;
-
-
-            Color32 c = new Color32(
-            (byte)Mathf.RoundToInt(province.spriteColor[0] * 255f),
-            (byte)Mathf.RoundToInt(province.spriteColor[1] * 255f),
-            (byte)Mathf.RoundToInt(province.spriteColor[2] * 255f),
-            255);
-
-            LandTile landprovince = (LandTile)province;
-            //Debug.Log($"Province {province.name}: spriteColor=({province.spriteColor[0]}, {province.spriteColor[1]}, {province.spriteColor[2]}");
-            Color32 ownerColor = CountriesManager.instance.GetCountryColorById(landprovince.ownerId);
-            ownerColor.a = 255;
-            int index = (c.r << 16) | (c.g << 8) | c.b;
-            //Debug.Log($"Province {province.name}: rgb=({c.r},{c.g},{c.b}) index={index}");
-          
-            int texX = index % texSize;
-            int texY = index / texSize;
-
-            // Safety check
-            if (texX >= 0 && texX < texSize && texY >= 0 && texY < texSize)
-            //Debug.Log($"Setting pixel at ({texX}, {texY}) with alpha={ownerColor.a}");
-            pixels[texY * texSize + texX] = ownerColor;
-
-        }
-        //Debug.Log("def col alpha = :" + pixels[0].a);
-        lookupTex = new Texture2D(texSize, texSize, TextureFormat.RGBA32, false);
-        lookupTex.filterMode = FilterMode.Point;
-        lookupTex.wrapMode = TextureWrapMode.Clamp;      
-        lookupTex.SetPixels(pixels);
-        lookupTex.Apply(false,false);
-        //lookupTex.GetPixel();
-        terrainMaterial.SetTexture("_LookupTex", lookupTex);
-
-        int count = pixels.Count(p => p != Color.white);
-        Debug.Log($"LookupTex non-white pixels: {count}");
-        
-    }
-
-
-
-    public void BuildProvinceIdLookupTexture()
-    {
-        
-        int maxId = colorIDList.Max(KeyValuePair => KeyValuePair.Key);
-        Texture2D lookupTex = new Texture2D(maxId, 1);
-        Color[] pixels = new Color[maxId];
-
-        // default color 
-        for (int i = 0; i < pixels.Length; i++)
-            pixels[i] = Color.red;
-
-        foreach (KeyValuePair<int, float[]> entry in colorIDList)
-        {
-            float[] col = entry.Value;
-
-            Color32 color = new Color32(
-           (byte)Mathf.RoundToInt(col[0] * 255f),
-           (byte)Mathf.RoundToInt(col[1] * 255f),
-           (byte)Mathf.RoundToInt(col[2] * 255f),
-           255);
-            pixels[entry.Key] = color;
-        }
-        lookupTex = new Texture2D(maxId, 1, TextureFormat.RGBA32, false);
-        lookupTex.filterMode = FilterMode.Point;
-        lookupTex.wrapMode = TextureWrapMode.Clamp;
-        lookupTex.SetPixels(pixels);
-        lookupTex.Apply(false, false);
-        //lookupTex.GetPixel();
-        terrainMaterial.SetTexture("_LookupTex", lookupTex);
-    }
-
-    //public void RefreshProvinceColor(Color provinceColor)
-    //{
-    //    // called when province ownership changes
-    //    int index = provinceManager.GetProvinceIndex(provinceColor);
-    //    int x = index % 256;
-    //    int y = index / 256;
-
-    //    Color newColor = provinceManager.GetCountryColorByProvinceColor(provinceColor);
-    //    lookupTex.SetPixel(x, y, newColor);
-    //    lookupTex.Apply();
-    //}
 
 }

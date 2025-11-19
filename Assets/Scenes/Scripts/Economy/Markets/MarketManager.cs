@@ -18,11 +18,11 @@ using static Goods_loader;
 public class MarketManager : MonoBehaviour
 {
    
-    public static MarketManager Instance { get; private set; }  
+    public static MarketManager instance { get; private set; }  
 
   
 
-    [SerializeField] public Market global_market = new Market();
+    [SerializeField] public Market globalMarket = new Market();
     List<Goods.Good> good_definition_list = new List<Goods.Good>();
 
 
@@ -38,28 +38,36 @@ public class MarketManager : MonoBehaviour
         DateHandeler.onMonth -= PriceFluctuation;
     }
 
-    private void Awake()
+   
+
+    public void Initialize()
+    {
+        CreateSingleton();
+        InitializeGoods();
+        CreateDefaultMarket();
+    }
+
+    private void CreateSingleton()
     {
         // Singleton pattern: only one instance allowed
-        if (Instance == null)
+        if (instance == null)
         {
-            Instance = this;
-            DontDestroyOnLoad(gameObject); 
+            instance = this;
+            DontDestroyOnLoad(gameObject);
         }
         else
         {
-            Destroy(gameObject); 
+            Debug.Log("An instance of market manager already exist");
+            Destroy(gameObject);
         }
     }
-
-    private void Start()
+    private void InitializeGoods()
     {
-        // initialisation for game creation (not loading a save)  Market should have different price at game beginning 
-        //call goodloader
+        Debug.Log("Is initializing goods");
         good_definition_list = Load_goods();
+        Debug.Log($"{good_definition_list.Count} goods have been loaded");
 
-
-        for (int i = 0; i <  good_definition_list.Count; i++)
+        for (int i = 0; i < good_definition_list.Count; i++)
         {
             Goods.Good good = new Goods.Good();
             good.id = good_definition_list[i].id;
@@ -68,20 +76,19 @@ public class MarketManager : MonoBehaviour
             good.weight = good_definition_list[i].weight;
             good.type = good_definition_list[i].type;
 
-            global_market.goods_list.Add(new Market_good
+            globalMarket.goods_list.Add(new MarketGood
             {
                 good = good,
                 supply = 0f,
                 demand = 0f,
                 price = 1f
             });
-   
+
         }
-        Debug.Log(global_market.goods_list[30].good.name);
-    
+        //Debug.Log(globalMarket.goods_list[30].good.name);
     }
 
-   
+
     public List<MarketResponse> Pop_Buy_batch(List<MarketBuyRequest> PopRequestBatch)
     {
         List<MarketResponse> marketResponse = new List<MarketResponse>();
@@ -113,7 +120,7 @@ public class MarketManager : MonoBehaviour
 
                
 
-                Market_object.Market_good Marketgood = global_market.goods_list
+                Market_object.MarketGood Marketgood = globalMarket.goods_list
                 .Where(good => good.good.id == goodId).FirstOrDefault();
 
 
@@ -176,7 +183,7 @@ public class MarketManager : MonoBehaviour
 
             int goodId = marketSellRequestList[i].goodSell.goodId;
 
-                Market_object.Market_good Marketgood = global_market.goods_list
+                Market_object.MarketGood Marketgood = globalMarket.goods_list
                .Where(good => good.good.id == goodId).FirstOrDefault();
 
             response.cashRecived = RoundToTwoDecimals(Marketgood.price * marketSellRequestList[i].goodSell.amountsell);
@@ -195,33 +202,54 @@ public class MarketManager : MonoBehaviour
     private void PriceFluctuation()
     {
 
-        for (int i = 0; i < global_market.goods_list.Count; i++) 
+        for (int i = 0; i < globalMarket.goods_list.Count; i++) 
         {
 
-            global_market.goods_list[i].RecordGoodHistory();
+            globalMarket.goods_list[i].RecordGoodHistory();
 
-            float supply = global_market.goods_list[i].supply;
-            float demand = global_market.goods_list[i].demand;
+            float supply = globalMarket.goods_list[i].supply;
+            float demand = globalMarket.goods_list[i].demand;
             
-            float old_price = global_market.goods_list[i].price;
+            float old_price = globalMarket.goods_list[i].price;
              if ((demand - supply) > 0)
             {       
-                global_market.goods_list[i].price += global_market.goods_list[i].price * priceSensitivity;
+                globalMarket.goods_list[i].price += globalMarket.goods_list[i].price * priceSensitivity;
             }
             else
             {   
-                global_market.goods_list[i].price -= global_market.goods_list[i].price * priceSensitivity;
+                globalMarket.goods_list[i].price -= globalMarket.goods_list[i].price * priceSensitivity;
             }
 
             //reset supply and demand beggening of the month
-            global_market.goods_list[i].supply = 0;
-            global_market.goods_list[i].demand = 0;
+            globalMarket.goods_list[i].supply = 0;
+            globalMarket.goods_list[i].demand = 0;
             Debug.Log("supply:" + supply);
             Debug.Log("demand:" + demand);
-            Debug.Log($"wood price is now : {global_market.goods_list[i].price}, it have change of {global_market.goods_list[i].price - old_price}$");
+            Debug.Log($"{globalMarket.goods_list[i].good.name}, price is now : {globalMarket.goods_list[i].price}, it have change of {globalMarket.goods_list[i].price - old_price}$");
         }
     }
 
+
+    private void CreateDefaultMarket()
+    {
+        globalMarket.id = 0;
+        globalMarket.goods_list = new List<MarketGood>();
+
+        foreach (Goods.Good _good in good_definition_list) 
+        { 
+            MarketGood _mg = new MarketGood();
+            _mg.id = _good.id;
+            _mg.good = _good;
+            _mg.price = 1;
+            _mg.supply = 0;
+            _mg.demand = 0;
+            _mg.stockpile = 100;
+            //Debug.Log($"Adding {_mg.good.name} to the market");
+            globalMarket.goods_list.Add(_mg);
+        }
+
+
+    }
 }
 
 

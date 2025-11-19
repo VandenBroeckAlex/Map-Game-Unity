@@ -28,10 +28,6 @@ public class Goods_loader : MonoBehaviour
 
     }
 
-    void Start()
-    {
-        Load_goods();
-
-    }
+   
 
 }

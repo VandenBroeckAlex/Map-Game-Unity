@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Runtime.CompilerServices;
 using UnityEngine;
 
-public class Tick_script : MonoBehaviour
+public class TickScript : MonoBehaviour
 {
     
     
@@ -17,11 +17,13 @@ public class Tick_script : MonoBehaviour
     
 
 
-    void Start()
-    {
-        StartCoroutine(TickTime());       
-    }
+   
 
+    public void StartTickScript()
+    {
+        Debug.Log("Tick script start called");
+        StartCoroutine(TickTime());
+    }
 
 
      public  IEnumerator TickTime()
@@ -34,4 +36,21 @@ public class Tick_script : MonoBehaviour
             yield return new WaitForSeconds(gameSpeed);
         }
     }       
+
+    public void PauseGame()
+    {
+        gameSpeed = 0;
+    }
+    public void OneSpeed()
+    {
+        gameSpeed = 0.8f;
+    }
+    public void TwoSpeed()
+    {
+        gameSpeed = 0.5f;
+    }
+    public void ThreeSpeed()
+    {
+        gameSpeed = 0.1f;
+    }
 }

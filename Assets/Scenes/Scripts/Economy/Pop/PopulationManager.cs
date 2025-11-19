@@ -1,10 +1,7 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEditor;
 using UnityEngine;
-using UnityEngine.Rendering;
+using static MarketManager;
 using static Market_object;
 using static Pop_objects;
 using System.Linq;
@@ -25,37 +22,37 @@ public class PopulationManager : MonoBehaviour
     // ----------------------------------
     private void OnEnable()
     {
-        Tick_script.onTick += PopBuy;
-        Tick_script.onTick += PopSell;
+        TickScript.onTick += PopBuy;
+        TickScript.onTick += PopSell;
         DateHandeler.onMonth += PopGrowth;
         DateHandeler.onMonth += ResetPopStockpile;
     }
 
     private void OnDisable()
     {
-        Tick_script.onTick += PopBuy;
+        TickScript.onTick += PopBuy;
         DateHandeler.onMonth -= PopGrowth;
         DateHandeler.onMonth -= ResetPopStockpile;
     }
 
-    private void Awake()
-    {
-        marketManager = MarketManager.Instance;
-    }
+ 
 
-    private void Start()
-    {
-        PopGood[] StockPile = new PopGood[1];
-        StockPile[0] = new PopGood();
-        StockPile[0].Good_id = 1;
-        StockPile[0].MaxNeed = 5;
-        StockPile[0].Stockpile = 0;
+   
 
+    public void InitializePopulation()
+    {
+        marketManager = MarketManager.instance;
+
+        List<PopGood> StockPile = new List<PopGood>();
+
+        PopGood good1 = new PopGood();
+        good1.Good_id = 1;
+        good1.MaxNeed = 5;
+        good1.Stockpile = 0;
+        StockPile.Add(good1);
 
         populationList.Clear();
         populationList.Add(new Pop(1, 1000, 1, Population_Type.Farmer, Culture.French, Religion.Catholic, 0f, StockPile));
-
-        //get save or initial to create pop
     }
 
     /*
@@ -70,7 +67,7 @@ public class PopulationManager : MonoBehaviour
         List<Pop> selectedPops = new();
         for (int i = 0; i < populationList.Count; i++)
         {
-            if (populationList[i].ProvinceId == provinceID)
+            if (populationList[i].provinceId == provinceID)
             {
                 selectedPops.Add(populationList[i]);
             }
@@ -85,9 +82,9 @@ public class PopulationManager : MonoBehaviour
         {
             // change pop MaxNeed at the same time (popsize / 1000) * MaxNeed
             if (populationList[i].HaveBasicNeed())
-                populationList[i].Size += (int)Math.Round(populationList[i].Size * base_growth_rate);
+                populationList[i].size += (int)Math.Round(populationList[i].size * base_growth_rate);
             //Base Growth Rate × Pop Size × CountryModifiers x provinceModdiefier x popGoodFullFilment every month
-            Debug.Log(populationList[i].Size);
+            Debug.Log(populationList[i].size);
             Debug.Log("the pop have grow !");
         }
     }
@@ -100,21 +97,21 @@ public class PopulationManager : MonoBehaviour
         {
             Market_object.MarketBuyRequest PopRequest = new()
             {
-                popId = populationList[i].Id,
+                popId = populationList[i].id,
                 GoodRequest = new(),
-                cashAmount = populationList[i].CashAmount,
+                cashAmount = populationList[i].cashAmount,
                 marketId = 0
             };
 
-            float cash = populationList[i].CashAmount;
-            for (int j = 0; j < populationList[i].GoodList.Length; j++)
+            float cash = populationList[i].cashAmount;
+            for (int j = 0; j < populationList[i].GoodList.Count; j++)
             {
                 if (populationList[i].GoodList[j].MaxNeed != populationList[i].GoodList[j].Stockpile)
                 {
                     Market_object.GoodBuyRequest request = new()
                     {
                         goodId = populationList[i].GoodList[j].Good_id,
-                        amountWanted = (populationList[i].GoodList[j].MaxNeed * (populationList[i].Size / 1000)) - populationList[i].GoodList[j].Stockpile
+                        amountWanted = (populationList[i].GoodList[j].MaxNeed * (populationList[i].size / 1000)) - populationList[i].GoodList[j].Stockpile
                     };
                     PopRequest.GoodRequest.Add(request);
                 }  
@@ -126,6 +123,7 @@ public class PopulationManager : MonoBehaviour
             
         }
         //call MarketManager with PopBuyBatchRequest
+        Debug.Log(marketManager);
         List<MarketResponse> market_awnser = marketManager.Pop_Buy_batch(PopBuyBatchRequest);
 
         // market awnser with needs fill and money left
@@ -133,8 +131,8 @@ public class PopulationManager : MonoBehaviour
         for (int i = 0; i < market_awnser.Count; i++)
         {
             Pop pop = populationList
-            .FirstOrDefault(p => p.Id == market_awnser[i].popId);
-            pop.CashAmount = market_awnser[i].cashLeft;
+            .FirstOrDefault(p => p.id == market_awnser[i].popId);
+            pop.cashAmount = market_awnser[i].cashLeft;
         
             for (int j = 0; j < market_awnser[i].goodsBought.Count; j++) 
             {
@@ -144,7 +142,7 @@ public class PopulationManager : MonoBehaviour
                 PopGood popGood = pop.GoodList.FirstOrDefault(g => g.Good_id == good_id);
 
                 popGood.Stockpile += ammount_bought;
-                Debug.Log($"Pop have bougt {ammount_bought}/{popGood.MaxNeed}  wood, it have  {pop.CashAmount}$ left");
+                Debug.Log($"Pop have bougt {ammount_bought}/{popGood.MaxNeed}  wood, it have  {pop.cashAmount}$ left");
             }
             
         }
@@ -158,12 +156,12 @@ public class PopulationManager : MonoBehaviour
         {
             Market_object.MarketSellRequest PopRequest = new()
             {
-                popId = populationList[i].Id,
+                popId = populationList[i].id,
                 goodSell = new(),
                 marketId = 0
             };
             PopRequest.goodSell.goodId = 1;
-            PopRequest.goodSell.amountsell = (populationList[i].Size * base_production)/1000;
+            PopRequest.goodSell.amountsell = (populationList[i].size * base_production)/1000;
             PopSellBatchRequest.Add(PopRequest);
         }
         //call marketSell
@@ -176,9 +174,9 @@ public class PopulationManager : MonoBehaviour
            float pop_cash_recived = market_awnser[i].cashRecived;
 
             Pop pop = populationList
-            .FirstOrDefault(p => p.Id == market_awnser[i].popId);
+            .FirstOrDefault(p => p.id == market_awnser[i].popId);
 
-            pop.CashAmount += pop_cash_recived;
+            pop.cashAmount += pop_cash_recived;
         }
 
     }
@@ -188,7 +186,7 @@ public class PopulationManager : MonoBehaviour
         for( int i=0; i < populationList.Count; i++)
         {
          
-                for(int j = 0; j < populationList[i].GoodList.Length; j++)
+                for(int j = 0; j < populationList[i].GoodList.Count; j++)
                 {
                 populationList[i].GoodList[j].Stockpile = 0;
                 }
