@@ -20,6 +20,14 @@ public class PopulationManager : MonoBehaviour
     public float base_consumption = 1f;
     public float base_production = 1.1f;
     // ----------------------------------
+
+    // ----------------------------------
+
+
+
+    // ----------------------------------
+
+
     private void OnEnable()
     {
         TickScript.onTick += PopBuy;
@@ -52,7 +60,7 @@ public class PopulationManager : MonoBehaviour
         StockPile.Add(good1);
 
         populationList.Clear();
-        populationList.Add(new Pop(1, 1000, 1, Population_Type.Farmer, Culture.French, Religion.Catholic, 0f, StockPile));
+        populationList.Add(new Pop(1, 1000, 1, new PopJob("Miner","poor"), Culture.French, Religion.Catholic, 0f, StockPile));
     }
 
     /*
@@ -123,7 +131,6 @@ public class PopulationManager : MonoBehaviour
             
         }
         //call MarketManager with PopBuyBatchRequest
-        Debug.Log(marketManager);
         List<MarketResponse> market_awnser = marketManager.Pop_Buy_batch(PopBuyBatchRequest);
 
         // market awnser with needs fill and money left

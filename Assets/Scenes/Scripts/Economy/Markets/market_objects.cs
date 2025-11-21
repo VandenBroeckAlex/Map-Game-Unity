@@ -11,6 +11,7 @@ public class Market_object
     public class Market
     {
         public int id;
+        public int countryId;
         public float CashAmount = 0;
         public List<MarketGood> goods_list = new();
     }
@@ -57,6 +58,7 @@ public class Market_object
     {
         public int popId;
         public int marketId;
+        //pop type
         public GoodSellRequest goodSell;
     }
 

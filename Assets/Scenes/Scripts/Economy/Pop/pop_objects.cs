@@ -13,7 +13,7 @@ public class Pop_objects
         public int id { get; }
         public int size;
         public int provinceId { get; }
-        public Population_Type classType { get; }
+        public PopJob job { get; }
         public Culture culture { get; }
         public Religion religion { get; }
         private float _cashAmount;
@@ -36,12 +36,12 @@ public class Pop_objects
 
 
         //constructor
-        public Pop(int ID, int SIZE, int PROVINCEID, Population_Type TYPE, Culture CULTURE, Religion RELIGION, float CASHAMOUNT, List<PopGood> STOCKPILE)
+        public Pop(int ID, int SIZE, int PROVINCEID, PopJob JOB, Culture CULTURE, Religion RELIGION, float CASHAMOUNT, List<PopGood> STOCKPILE)
         {
             id = ID;
             size = SIZE;
             provinceId = PROVINCEID;
-            classType = TYPE;
+            job = JOB;
             culture = CULTURE;
             religion = RELIGION;
             cashAmount = CASHAMOUNT;
@@ -60,13 +60,42 @@ public class Pop_objects
         }
     }
 
-   
-    public enum Population_Type
+
+    public enum JobType
     {
+        Farmer,
         Miner,
-        Farmer
+        Priest,
+        Soldier,        
     }
 
+    //population strata 
+    public class PopJob
+    {
+        public string Type { get; }
+        public string DefaultStrata { get; }
+
+        public PopJob(string type, string defaultStrata)
+        {
+            Type = type;
+            DefaultStrata = defaultStrata;
+        }
+    }
+
+    //changing strata shoud be done at culture level
+    //public class CultureStrataOverrides
+    //{
+    //    public Dictionary<JobType, string> Overrides = new();
+
+    //    public string GetStrataForJob(PopJob job)
+    //    {
+    //        if (Overrides.TryGetValue(job.Type, out string s))
+    //            return s;
+
+    //        return job.DefaultStrata;
+    //    }
+    //}
+    //culture.StrataOverrides.Overrides[JobType.Merchant] = "Lower";
     public enum Culture
     {
         French,

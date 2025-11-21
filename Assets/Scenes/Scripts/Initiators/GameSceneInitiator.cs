@@ -54,10 +54,10 @@ public class GameSceneInitiator : MonoBehaviour
 
     private async UniTask InitializeObject()
     {
-        _countriesManager.Initialize();
-        _provincesManager.Initialize();
-        _marketManager.Initialize();
-        _populationManager.InitializePopulation();
+         _countriesManager.Initialize();
+         _provincesManager.Initialize();
+         _marketManager.Initialize();
+         _populationManager.InitializePopulation();
     }
     private async UniTask CreateObject()
     {

@@ -59,13 +59,13 @@ public class ProvincesManager : MonoBehaviour
     private Texture2D lookupTex;
     [SerializeField] private Material terrainMaterial;
 
-    ProvinceColorIndexLUT _ProvinceColorIndexLUT = new ProvinceColorIndexLUT();
-    PoliticalMapLUT _PoliticalMapLUT = new PoliticalMapLUT();
+    ProvinceColorIndexLUT _ProvinceColorIndexLUT = new();
+    PoliticalMapLUT _PoliticalMapLUT = new ();
 
 
 
     
-    public void Initialize()
+    public int Initialize()
     {
         CreateSingleton();
         if (terrainMaterial == null)
@@ -73,6 +73,7 @@ public class ProvincesManager : MonoBehaviour
 
         InitializeHandeler();
         InitializeLookupTex();
+        return 0;
     }
 
     public void CreateSingleton()

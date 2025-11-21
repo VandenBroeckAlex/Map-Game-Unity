@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using static CountriesManager;
 [System.Serializable]
 public class Country 
 {
@@ -28,7 +28,16 @@ public class Country
     //public Dictionary<Country, DiplomaticRelation> diplomat icRelations; (should probably not be here)
 
 
-
-
+    public class TaxOnGood
+    {
+        //Type import / export 
+        // GoodID / all ?
+        //ammount in %
+    }
+    public class TaxOnEntity
+    {
+        //Type pop / working places ?
+        //ammount in %
+    }
 
 }
