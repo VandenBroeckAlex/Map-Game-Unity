@@ -13,7 +13,7 @@ public class Country
     public float treasury;
     public float income; // the sum of all incom last month
 
-    public float Income_tax;
+    public float Income_tax = 0.1f;
     public Country(int ID, string NAME, Color COLOR, float TREASURY )
     {
         id = ID;

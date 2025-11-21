@@ -65,7 +65,7 @@ public class ProvincesManager : MonoBehaviour
 
 
     
-    public int Initialize()
+    public void Initialize()
     {
         CreateSingleton();
         if (terrainMaterial == null)
@@ -73,7 +73,6 @@ public class ProvincesManager : MonoBehaviour
 
         InitializeHandeler();
         InitializeLookupTex();
-        return 0;
     }
 
     public void CreateSingleton()
@@ -189,7 +188,7 @@ public class ProvincesManager : MonoBehaviour
     }
 
 
-    Tile GetProvinceInfoById(int id)
+    Tile GetProvinceById(int id)
     {
         return provinces_list[id];
     }
@@ -197,11 +196,24 @@ public class ProvincesManager : MonoBehaviour
     public void GetProvinceId(Color color)
     {
         int  id = GetProvinceIdByColor((Color)color);
-        Tile recivedProvince = GetProvinceInfoById(id);
+        Tile recivedProvince = GetProvinceById(id);
         OnProvinceClicked(id);
     }
 
+    public int GetProvinceOwnerByProvinceId(int id)
+    {
+       Tile province = GetProvinceById(id);
 
+        if( province == null || province.isLand is false)
+        {
+            return -1;
+        }
+        else
+        {
+            LandTile Lprovince = (LandTile)province;
+            return Lprovince.ownerId;
+        }
+    }
     //LUT handeling
 
     Texture2D LoadProvinceMap(string path)

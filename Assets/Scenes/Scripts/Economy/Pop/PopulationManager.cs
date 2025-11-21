@@ -9,7 +9,8 @@ using System.Linq;
 
 public class PopulationManager : MonoBehaviour
 {
-    private MarketManager marketManager;
+    private MarketManager _marketManager;
+    private ProvincesManager _provincesManager;
     public int test_population_size = 100;
 
     
@@ -49,8 +50,8 @@ public class PopulationManager : MonoBehaviour
 
     public void InitializePopulation()
     {
-        marketManager = MarketManager.instance;
-
+        _marketManager = MarketManager.instance;
+        _provincesManager = ProvincesManager.instance;
         List<PopGood> StockPile = new List<PopGood>();
 
         PopGood good1 = new PopGood();
@@ -60,7 +61,11 @@ public class PopulationManager : MonoBehaviour
         StockPile.Add(good1);
 
         populationList.Clear();
-        populationList.Add(new Pop(1, 1000, 1, new PopJob("Miner","poor"), Culture.French, Religion.Catholic, 0f, StockPile));
+        Pop newPop = new Pop(1, 1000, 1, new PopJob("Miner", "poor"), Culture.French, Religion.Catholic, 0f, StockPile);
+        newPop.countryID = GetPopCountry(1);
+        populationList.Add(newPop);
+
+    
     }
 
     /*
@@ -108,7 +113,7 @@ public class PopulationManager : MonoBehaviour
                 popId = populationList[i].id,
                 GoodRequest = new(),
                 cashAmount = populationList[i].cashAmount,
-                marketId = 0
+                marketId = populationList[i].countryID
             };
 
             float cash = populationList[i].cashAmount;
@@ -131,7 +136,7 @@ public class PopulationManager : MonoBehaviour
             
         }
         //call MarketManager with PopBuyBatchRequest
-        List<MarketResponse> market_awnser = marketManager.Pop_Buy_batch(PopBuyBatchRequest);
+        List<MarketResponse> market_awnser = _marketManager.Pop_Buy_batch(PopBuyBatchRequest);
 
         // market awnser with needs fill and money left
         // assign the right values to the right pop
@@ -165,14 +170,14 @@ public class PopulationManager : MonoBehaviour
             {
                 popId = populationList[i].id,
                 goodSell = new(),
-                marketId = 0
+                marketId = populationList[i].countryID
             };
             PopRequest.goodSell.goodId = 1;
             PopRequest.goodSell.amountsell = (populationList[i].size * base_production)/1000;
             PopSellBatchRequest.Add(PopRequest);
         }
         //call marketSell
-        List<MarketSellResponse> market_awnser = marketManager.Pop_Sell_batch(PopSellBatchRequest);
+        List<MarketSellResponse> market_awnser = _marketManager.Pop_Sell(PopSellBatchRequest);
         //re-assign cash to pop
 
         for (int i = 0; i < market_awnser.Count; i++)       
@@ -202,6 +207,12 @@ public class PopulationManager : MonoBehaviour
         
     }
    
+    private int GetPopCountry(int provinceID)
+    {
+        int countryID = _provincesManager.GetProvinceOwnerByProvinceId(provinceID);
+        return countryID;
+    }
+
 }
 
 

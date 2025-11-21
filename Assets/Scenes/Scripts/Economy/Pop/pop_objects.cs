@@ -13,6 +13,7 @@ public class Pop_objects
         public int id { get; }
         public int size;
         public int provinceId { get; }
+        public int countryID { get; set; }
         public PopJob job { get; }
         public Culture culture { get; }
         public Religion religion { get; }

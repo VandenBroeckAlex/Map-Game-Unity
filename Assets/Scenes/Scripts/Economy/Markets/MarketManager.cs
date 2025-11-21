@@ -1,16 +1,17 @@
 using MyGame.Data;
+using System;
 using System.Collections;
 using System.Collections.Generic;
-using System;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
+using UnityEngine.UIElements;
+using static CountriesManager;
 using static Goods;
+using static Goods_loader;
+using static helpers_math;
 using static Market_object;
 using static UnityEngine.EventSystems.EventTrigger;
-using static helpers_math;
-using static Goods_loader;
-using static CountriesManager;
 
 
 
@@ -21,11 +22,11 @@ public class MarketManager : MonoBehaviour
     private CountriesManager _countriesManager;
     public static MarketManager instance { get; private set; }  
 
-  
+    
 
-    [SerializeField] public Market WorldMarket = new Market();
+    //[SerializeField] public Market worldMarket = new Market();
     List<Goods.Good> good_definition_list = new List<Goods.Good>();
-
+    List<MarketGood> default_market_goods = new List<MarketGood>();
     public Dictionary<int,Market> marketList = new Dictionary<int,Market>();
 
     public float priceSensitivity = 0.1f;
@@ -46,8 +47,10 @@ public class MarketManager : MonoBehaviour
     {
         _countriesManager = CountriesManager.instance;
         CreateSingleton();
-        InitializeGoods();
-        WorldMarket = CreateMarket();
+        Debug.Log("Is initializing goods");
+        good_definition_list = Load_goods();
+        InitializeDefaultMarketGoods();
+        //worldMarket = CreateMarket();
         InitializeCountryMarket();
 
         Debug.Log($"Their is {marketList.Count} markets in the list");
@@ -67,10 +70,9 @@ public class MarketManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    private void InitializeGoods()
+    private void InitializeDefaultMarketGoods()
     {
-        Debug.Log("Is initializing goods");
-        good_definition_list = Load_goods();
+        
         Debug.Log($"{good_definition_list.Count} goods have been loaded");
 
         for (int i = 0; i < good_definition_list.Count; i++)
@@ -82,7 +84,7 @@ public class MarketManager : MonoBehaviour
             good.weight = good_definition_list[i].weight;
             good.type = good_definition_list[i].type;
 
-            WorldMarket.goods_list.Add(new MarketGood
+            default_market_goods.Add(new MarketGood
             {
                 good = good,
                 supply = 0f,
@@ -108,9 +110,10 @@ public class MarketManager : MonoBehaviour
             response.popId = PopRequestBatch[i].popId;
             response.goodsBought = new List<GoodResponse>();
 
-            
 
-            int marketId = PopRequestBatch[i].marketId;
+
+            int market_id = PopRequestBatch[i].marketId;
+            Market _market = marketList[market_id];
             float cashAmount = PopRequestBatch[i].cashAmount;
             response.cashLeft = cashAmount;
 
@@ -126,10 +129,11 @@ public class MarketManager : MonoBehaviour
 
                
 
-                Market_object.MarketGood Marketgood = WorldMarket.goods_list
+                Market_object.MarketGood Marketgood = _market.goods_list
                 .Where(good => good.good.id == goodId).FirstOrDefault();
 
-
+                Debug.Log($"The culprit market is {_market.id}");
+                Debug.Log($"{Marketgood.good.name}");
 
                 float amountWanted = PopRequestBatch[i].GoodRequest[j].amountWanted;
                 float totalCost = Marketgood.price * amountWanted;
@@ -178,28 +182,47 @@ public class MarketManager : MonoBehaviour
     }
 
 
-    public List<MarketSellResponse> Pop_Sell_batch(List<MarketSellRequest> marketSellRequestList)
+    public List<MarketSellResponse> Pop_Sell(List<MarketSellRequest> marketSellRequestList)
     {
         List<MarketSellResponse>  batch_response = new List<MarketSellResponse>();
 
         for (int i = 0; i < marketSellRequestList.Count; i++)
         {
+            //create the response object
             MarketSellResponse response = new MarketSellResponse();
             response.popId = marketSellRequestList[i].popId;
-
             int goodId = marketSellRequestList[i].goodSell.goodId;
 
-                Market_object.MarketGood Marketgood = WorldMarket.goods_list
+
+
+            //search for market
+            int market_id = marketSellRequestList[i].marketId;
+            Market _market = marketList[market_id];
+
+            //search for good
+                Market_object.MarketGood Marketgood = _market.goods_list
                .Where(good => good.good.id == goodId).FirstOrDefault();
 
-            response.cashRecived = RoundToTwoDecimals(Marketgood.price * marketSellRequestList[i].goodSell.amountsell);
+
+            //country tax
+            float BrutCash = RoundToTwoDecimals(Marketgood.price * marketSellRequestList[i].goodSell.amountsell);
+
+            //TODO change this !
+            //country tax
+            float country_income_tax = 0.1f;
+
+            float country_income = BrutCash * country_income_tax;
+            // NetCash
+
+            response.cashRecived = RoundToTwoDecimals(BrutCash - country_income);
             batch_response.Add(response);
 
             Marketgood.supply += RoundToTwoDecimals(marketSellRequestList[i].goodSell.amountsell);
             Marketgood.stockpile += RoundToTwoDecimals(marketSellRequestList[i].goodSell.amountsell);
-
-
         }
+
+        
+
         return batch_response;
     }
 
@@ -207,35 +230,38 @@ public class MarketManager : MonoBehaviour
 
     private void PriceFluctuation()
     {
-
-        for (int i = 0; i < WorldMarket.goods_list.Count; i++) 
+        foreach (KeyValuePair<int, Market> kv in marketList)
         {
-
-            WorldMarket.goods_list[i].RecordGoodHistory();
-
-            float supply = WorldMarket.goods_list[i].supply;
-            float demand = WorldMarket.goods_list[i].demand;
-            
-            float old_price = WorldMarket.goods_list[i].price;
-             if ((demand - supply) > 0)
-            {       
-                WorldMarket.goods_list[i].price += WorldMarket.goods_list[i].price * priceSensitivity;
-            }
-            else if(demand == supply)
+            Market market = kv.Value;
+            for (int i = 0; i < market.goods_list.Count; i++)
             {
-                
-            }
-            else
-            {   
-                WorldMarket.goods_list[i].price -= WorldMarket.goods_list[i].price * priceSensitivity;
-            }
 
-            //reset supply and demand beggening of the month
-            WorldMarket.goods_list[i].supply = 0;
-            WorldMarket.goods_list[i].demand = 0;
-            Debug.Log("supply:" + supply);
-            Debug.Log("demand:" + demand);
-            Debug.Log($"{WorldMarket.goods_list[i].good.name}, price is now : {WorldMarket.goods_list[i].price}, it have change of {WorldMarket.goods_list[i].price - old_price}$");
+                market.goods_list[i].RecordGoodHistory();
+
+                float supply = market.goods_list[i].supply;
+                float demand = market.goods_list[i].demand;
+
+                float old_price = market.goods_list[i].price;
+                if ((demand - supply) > 0)
+                {
+                    market.goods_list[i].price += market.goods_list[i].price * priceSensitivity;
+                }
+                else if (demand == supply)
+                {
+
+                }
+                else
+                {
+                    market.goods_list[i].price -= market.goods_list[i].price * priceSensitivity;
+                }
+
+                //reset supply and demand beggening of the month
+                market.goods_list[i].supply = 0;
+                market.goods_list[i].demand = 0;
+                Debug.Log("supply:" + supply);
+                Debug.Log("demand:" + demand);
+                Debug.Log($"{market.goods_list[i].good.name}, price is now : {market.goods_list[i].price}, it have change of {market.goods_list[i].price - old_price}$");
+            }
         }
     }
 
@@ -244,20 +270,7 @@ public class MarketManager : MonoBehaviour
     {
         Market Market = new Market();
         Market.goods_list = new List<MarketGood>();
-
-        foreach (Goods.Good _good in good_definition_list) 
-        { 
-            MarketGood _mg = new MarketGood();
-            _mg.id = _good.id;
-            _mg.good = _good;
-            _mg.price = 1;
-            _mg.supply = 0;
-            _mg.demand = 0;
-            _mg.stockpile = 100;
-            //Debug.Log($"Adding {_mg.good.name} to the market");
-            Market.goods_list.Add(_mg);
-        }
-
+        Market.goods_list = default_market_goods;
         return Market;
     }
 
@@ -266,6 +279,9 @@ public class MarketManager : MonoBehaviour
         Market market = new Market();
         market = CreateMarket();
         market.id = countryId;
+        market.goods_list = default_market_goods;
+
+
         marketList.Add(countryId, market);
 
     }
