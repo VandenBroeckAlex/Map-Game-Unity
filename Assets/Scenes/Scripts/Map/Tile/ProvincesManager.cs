@@ -71,33 +71,8 @@ public class ProvincesManager : MonoBehaviour
         if (terrainMaterial == null)
             terrainMaterial = Resources.Load<Material>("Materials/PoliticalMap");
 
-        // Load province map
-        Texture2D provinceMap = FileUtils.LoadBaseImage(FilePath.ProvinceMapImg);
-
-        // Force exact linear uncompressed format
-        Color32[] pixels = provinceMap.GetPixels32();
-        Texture2D linearProvinceMap = new Texture2D(provinceMap.width, provinceMap.height, TextureFormat.RGBA32, false, true);
-        linearProvinceMap.SetPixels32(pixels);
-        linearProvinceMap.Apply(false, true);
-
-        provinceMap = linearProvinceMap;
-
-        provinceMap.filterMode = FilterMode.Point;
-        provinceMap.wrapMode = TextureWrapMode.Clamp;
-
-
-
-        terrainMaterial.SetTexture("_ProvinceTex", linearProvinceMap);
-
         InitializeHandeler();
-
-        lookupTex = new Texture2D(4096, 4096, TextureFormat.RGBA32, false);
-        lookupTex.filterMode = FilterMode.Point;
-        lookupTex.wrapMode = TextureWrapMode.Clamp; 
-
-
-        terrainMaterial.SetTexture("_LookupTex", lookupTex);
-        File.WriteAllBytes(Application.dataPath + "/lookup_debug.png", lookupTex.EncodeToPNG());
+        InitializeLookupTex();
     }
 
     public void CreateSingleton()
@@ -148,16 +123,8 @@ public class ProvincesManager : MonoBehaviour
 
 
         }
-      
         Debug.Log("number of province loaded :" + provinces_list.Count);
-
-
-        int LUTSize = colorIDList.Max(KeyValuePair => KeyValuePair.Key);
        
-        _ProvinceColorIndexLUT.BuildProvinceIdLookupTexture(colorIDList, terrainMaterial,LUTSize);
-        _PoliticalMapLUT.BuildPoliticalLookupTexture(provinces_list,LUTSize, terrainMaterial);
-        if (uiController == null)
-            uiController = FindFirstObjectByType<ProvinceUIController>();
     }
     void LoadJsonTileInfo()
     {
@@ -234,5 +201,99 @@ public class ProvincesManager : MonoBehaviour
     }
 
 
+    //LUT handeling
 
+    Texture2D LoadProvinceMap(string path)
+    {
+        byte[] data = File.ReadAllBytes(path);
+
+        Texture2D tex = new Texture2D(2, 2, TextureFormat.RGBA32, false, true);
+
+        
+        tex.LoadImage(data, false);
+
+        tex.filterMode = FilterMode.Point;
+        tex.wrapMode = TextureWrapMode.Clamp;
+
+        return tex;
+    }
+
+    Dictionary<Color32, int> BuildColorToIDMap(Dictionary<int, float[]> idColor)
+    {
+        Dictionary<Color32, int> map = new();
+
+        foreach (KeyValuePair<int, float[]> entry in idColor)
+        {
+            Color _provColor = new(entry.Value[0], entry.Value[1], entry.Value[2], 1f);
+            Color32 _provColor32 = _provColor;
+            map[_provColor32] = entry.Key;
+        }
+
+        return map;
+    }
+    Texture2D BuildProvinceIDMap(Texture2D provinceMap, Dictionary<Color32, int> colorToID)
+    {
+        int width = provinceMap.width;
+        int height = provinceMap.height;
+
+        Texture2D idMap = new Texture2D(width, height, TextureFormat.RGBA32, false, true);
+        idMap.filterMode = FilterMode.Point;
+        idMap.wrapMode = TextureWrapMode.Clamp;
+
+        Color32[] src = provinceMap.GetPixels32();
+        Color32[] dst = new Color32[src.Length];
+
+        for (int i = 0; i < src.Length; i++)
+        {
+            Color32 color = src[i];
+            color.a = 255;
+
+            int id = 0;
+            if (!colorToID.TryGetValue(color, out id))
+            {
+                Debug.LogError($"Province color {color} not found in dictionary!");
+                id = 0;
+            }
+
+            // store index as: index = R + G*255
+            byte lo = (byte)(id & 0xFF);       // low byte  R
+            byte hi = (byte)((id >> 8) & 0xFF); // high byte  G
+
+            dst[i] = new Color32(lo, hi, 0, 255);
+        }
+
+        idMap.SetPixels32(dst);
+        idMap.Apply();
+
+        return idMap;
+    }
+
+
+
+    private void InitializeLookupTex()
+    {
+        // 1. Load province map
+        Texture2D provinceMap = LoadProvinceMap(FilePath.ProvinceMapImg);
+        terrainMaterial.SetTexture("_ProvinceTex", provinceMap);
+        
+        // 2. Load province definitions
+
+        // 3. Build color ID lookup
+        Dictionary<Color32, int> colorToID = BuildColorToIDMap(colorIDList);
+
+        // 4. Build ProvinceIDMap (ID -> stored in RG)
+        Texture2D idMap = BuildProvinceIDMap(provinceMap, colorToID);
+        terrainMaterial.SetTexture("_ProvinceIDMap", idMap);
+
+        // DEBUG
+        File.WriteAllBytes(Application.dataPath + "/ProvinceID_debug.png", idMap.EncodeToPNG());
+
+        // 5. Build the Political LUT (ID -> country color)
+        Texture2D politicalLUT = PoliticalMapLUT.BuildPoliticalLUT(provinces_list);
+        terrainMaterial.SetTexture("_LookupTex", politicalLUT);
+        terrainMaterial.SetInt("_LookupWidth", politicalLUT.width);
+        File.WriteAllBytes(Application.dataPath + "/PoliticalLUT_debug.png", politicalLUT.EncodeToPNG());
+
+        
+    }
 }

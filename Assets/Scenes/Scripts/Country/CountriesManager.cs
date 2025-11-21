@@ -37,8 +37,8 @@ public class CountriesManager : MonoBehaviour
     private void InitializeDefaultCountry()
     {
         countryList.Add(new Country(1, "France", Color.blue, 100f));
-        countryList.Add(new Country(2, "Germany", Color.gray, 100f));
-        countryList.Add(new Country(3, "Italy", Color.green, 100f));
+        countryList.Add(new Country(2, "Germany", Color.bisque, 100f));
+        countryList.Add(new Country(3, "Italy", Color.aliceBlue, 100f));
         countryList.Add(new Country(0, "Belgium", Color.yellow, 100f));
     } 
    

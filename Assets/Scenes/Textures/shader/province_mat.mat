@@ -90,7 +90,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ProvinceIDMap:
-        m_Texture: {fileID: 10309, guid: 0000000000000000f000000000000000, type: 0}
+        m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _ProvinceTex:
@@ -101,6 +101,8 @@ Material:
     m_Floats:
     - PixelSnap: 0
     - _BumpScale: 1
+    - _CountryBorderThickness: 0.003
+    - _CountryBorderWidth: 2.5
     - _Cutoff: 0.5
     - _DetailNormalMapScale: 1
     - _DstBlend: 0
@@ -108,10 +110,16 @@ Material:
     - _GlossMapScale: 1
     - _Glossiness: 0.5
     - _GlossyReflections: 1
+    - _HoverProvinceID: 3.41
+    - _HoverStrength: 0.35
+    - _LookupWidth: 82
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
     - _Parallax: 0.02
+    - _ProvinceBorderThickness: 0.001
+    - _ProvinceBorderWidth: 7.61
+    - _ProvinceCount: 20000
     - _SmoothnessTextureChannel: 0
     - _SpecularHighlights: 1
     - _SrcBlend: 1
@@ -119,10 +127,11 @@ Material:
     - _ZWrite: 1
     m_Colors:
     - _BaseColor: {r: 0.8301887, g: 0.23104309, b: 0.23104309, a: 1}
-    - _BorderColor: {r: 0, g: 0, b: 0, a: 1}
+    - _BorderColor: {r: 0.4056604, g: 0.4056604, b: 0.4056604, a: 1}
     - _Color: {r: 1, g: 1, b: 1, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
     - _Flip: {r: 1, g: 1, b: 1, a: 1}
+    - _HoverColor: {r: 0.46226418, g: 0.12577724, b: 0.08067818, a: 1}
     - _RendererColor: {r: 1, g: 1, b: 1, a: 1}
     - _WorldToUVOffset: {r: 0, g: 0, b: 0, a: 0}
     - _WorldToUVScale: {r: 0.01, g: 0.01, b: 0, a: 0}
