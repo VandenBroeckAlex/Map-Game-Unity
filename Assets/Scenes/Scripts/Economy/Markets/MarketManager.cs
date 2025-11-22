@@ -27,6 +27,7 @@ public class MarketManager : MonoBehaviour
     //[SerializeField] public Market worldMarket = new Market();
     List<Goods.Good> good_definition_list = new List<Goods.Good>();
     List<MarketGood> default_market_goods = new List<MarketGood>();
+
     public Dictionary<int,Market> marketList = new Dictionary<int,Market>();
 
     public float priceSensitivity = 0.1f;
@@ -182,7 +183,7 @@ public class MarketManager : MonoBehaviour
 
     public List<MarketSellResponse> Pop_Sell(List<MarketSellRequest> marketSellRequestList)
     {
-        List<MarketSellResponse>  batch_response = new List<MarketSellResponse>();
+        List<MarketSellResponse> batch_response = new List<MarketSellResponse>();
 
         for (int i = 0; i < marketSellRequestList.Count; i++)
         {
@@ -198,8 +199,8 @@ public class MarketManager : MonoBehaviour
             Market _market = marketList[market_id];
 
             //search for good
-                Market_object.MarketGood Marketgood = _market.goods_list
-               .Where(good => good.good.id == goodId).FirstOrDefault();
+            Market_object.MarketGood Marketgood = _market.goods_list
+            .Where(good => good.good.id == goodId).FirstOrDefault();
 
 
             //country tax
@@ -207,11 +208,13 @@ public class MarketManager : MonoBehaviour
 
             //TODO change this !
             //country tax
-            float country_income_tax = 0.1f;
+            float country_income_tax = _countriesManager.countryList[_market.countryId].Income_tax;
 
-            float country_income = BrutCash * country_income_tax;
+            float country_income = BrutCash * (country_income_tax); //country_income_tax * province controle * admin capacity
+
+            _countriesManager.countryList[_market.countryId].ReceiveCash(country_income);
+
             // NetCash
-
             response.cashRecived = RoundToTwoDecimals(BrutCash - country_income);
             batch_response.Add(response);
 
@@ -219,11 +222,22 @@ public class MarketManager : MonoBehaviour
             Marketgood.stockpile += RoundToTwoDecimals(marketSellRequestList[i].goodSell.amountsell);
         }
 
-        
+        foreach (KeyValuePair<int, Country> kv in _countriesManager.countryList)
+        {
+            Country country = kv.Value;
+            Debug.Log($"{country.name} treasury = {country.treasury}");
+        }
 
         return batch_response;
     }
 
+
+    public void ChangeMarketIncomeTax(int countryId, float tax)
+    {
+        Market market = marketList[countryId];
+
+        market.SetOwnerIncomeTax(tax);
+    }
 
 
     private void PriceFluctuation()
@@ -256,11 +270,12 @@ public class MarketManager : MonoBehaviour
                 //reset supply and demand beggening of the month
                 market.goods_list[i].supply = 0;
                 market.goods_list[i].demand = 0;
-                Debug.Log("supply:" + supply);
-                Debug.Log("demand:" + demand);
-                Debug.Log($"{market.goods_list[i].good.name}, price is now : {market.goods_list[i].price}, it have change of {market.goods_list[i].price - old_price}$");
+                //Debug.Log("supply:" + supply);
+                //Debug.Log("demand:" + demand);
+                //Debug.Log($"{market.goods_list[i].good.name}, price is now : {market.goods_list[i].price}, it have change of {market.goods_list[i].price - old_price}$");
             }
         }
+
     }
 
 

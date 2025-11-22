@@ -8,6 +8,7 @@ public class Country
 {
     // Start is called before the first frame update
 
+
     public int id;
     public string name;
     public Color color;
@@ -28,17 +29,26 @@ public class Country
 
     //public Dictionary<Country, DiplomaticRelation> diplomat icRelations; (should probably not be here)
 
+    public void ReceiveCash(float cash )
+    {
+        treasury += cash;
+        income += cash;
+    }
+    public void ResetIncome()
+    {
+        income = 0;
+    }
 
     public class TaxOnGood
     {
-        //Type import / export 
-        // GoodID / all ?
-        //ammount in %
+        string type; // import - export - TVA
+                     // GoodID / all ?
+        float ammount; // in %
     }
     public class TaxOnEntity
     {
-        //Type pop / working places ?
-        //ammount in %
+        string type; // pop / working places ?
+        float ammount; //in %
     }
 
 }
