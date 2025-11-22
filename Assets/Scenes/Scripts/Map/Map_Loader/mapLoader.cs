@@ -44,16 +44,16 @@ public class MapLoader : MonoBehaviour
 
     void LoadJsonData()
     {
-        string JsonPath = FilePath.SpritesInfos;
+        string jsonPath = FilePath.SpritesInfos;
 
-        if (File.Exists(JsonPath))
+        if (File.Exists(jsonPath))
         {
-            string jsonText = File.ReadAllText(JsonPath);
+            string jsonText = File.ReadAllText(jsonPath);
             SpriteData = JsonConvert.DeserializeObject<List<SpriteInfo>>(jsonText);
         }
         else
         {
-            Debug.LogError("map_info.json not found at " + JsonPath);
+            Debug.LogError("map_info.json not found at " + jsonPath);
         }
     }
 

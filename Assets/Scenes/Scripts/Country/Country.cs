@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static CountriesManager;
+
 [System.Serializable]
 public class Country 
 {
@@ -11,7 +12,7 @@ public class Country
     public string name;
     public Color color;
     public float treasury;
-    public float income; // the sum of all incom last month
+    public float income; // the sum of all income last month
 
     public float Income_tax = 0.1f;
     public Country(int ID, string NAME, Color COLOR, float TREASURY )

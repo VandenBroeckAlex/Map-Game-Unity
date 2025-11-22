@@ -131,9 +131,7 @@ public class MarketManager : MonoBehaviour
 
                 Market_object.MarketGood Marketgood = _market.goods_list
                 .Where(good => good.good.id == goodId).FirstOrDefault();
-
-                Debug.Log($"The culprit market is {_market.id}");
-                Debug.Log($"{Marketgood.good.name}");
+           
 
                 float amountWanted = PopRequestBatch[i].GoodRequest[j].amountWanted;
                 float totalCost = Marketgood.price * amountWanted;

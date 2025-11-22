@@ -112,7 +112,7 @@ Material:
     - _GlossyReflections: 1
     - _HoverProvinceID: 3.41
     - _HoverStrength: 0.35
-    - _LookupWidth: 82
+    - _LookupWidth: 5
     - _Metallic: 0
     - _Mode: 0
     - _OcclusionStrength: 1
