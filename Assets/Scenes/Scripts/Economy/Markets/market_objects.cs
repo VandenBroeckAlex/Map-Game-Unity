@@ -19,7 +19,7 @@ public class Market_object
 
         public void SetOwnerIncomeTax(float _owner_Income_tax)
         {
-            owner_Income_tax = _owner_Income_tax;
+            owner_Income_tax = _owner_Income_tax; 
         }
         public float GetOwner_Income_tax()
         {

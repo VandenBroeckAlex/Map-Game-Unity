@@ -98,7 +98,7 @@ public class PopulationManager : MonoBehaviour
                 populationList[i].size += (int)Math.Round(populationList[i].size * base_growth_rate);
             //Base Growth Rate × Pop Size × CountryModifiers x provinceModdiefier x popGoodFullFilment every month
             Debug.Log(populationList[i].size);
-            Debug.Log("the pop have grow !");
+            Debug.Log("the pop have grown !");
         }
     }
 

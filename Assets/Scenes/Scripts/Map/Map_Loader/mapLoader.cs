@@ -1,12 +1,11 @@
 ﻿using Newtonsoft.Json;
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using UnityEngine.UI;
 using static ObjJSON;
-using static UnityEditor.U2D.ScriptablePacker;
+
 
 public class MapLoader : MonoBehaviour
 {
@@ -94,9 +93,7 @@ public class MapLoader : MonoBehaviour
             catch (System.Exception ex)
             {
                 Debug.LogError($"Exception loading sprite ID {spriteEntry.id}: {ex}");
-            }
-
-            // This must be outside the try-catch
+            }    
             yield return null;
         }
 

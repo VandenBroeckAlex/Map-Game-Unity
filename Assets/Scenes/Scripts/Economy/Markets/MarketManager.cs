@@ -56,7 +56,6 @@ public class MarketManager : MonoBehaviour
 
         Debug.Log($"Their is {marketList.Count} markets in the list");
     }
-
     private void CreateSingleton()
     {
         // Singleton pattern: only one instance allowed
@@ -71,6 +70,7 @@ public class MarketManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
     private void InitializeDefaultMarketGoods()
     {
         

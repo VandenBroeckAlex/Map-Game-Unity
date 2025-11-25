@@ -19,7 +19,7 @@ public class GameSceneInitiator : MonoBehaviour
     [SerializeField] private MapLoader _mapLoader;
     [SerializeField] private EventSystem _eventSystem;
     [SerializeField] private EdgeGraphData _edgeGraphData;
-
+    [SerializeField] private UI_market_manager _uI_Market_Manager;
 
     [SerializeField] private UIDocument _uiDoc;
     //[SerializeField] private ProvinceUIController _editProvUI;
@@ -47,17 +47,21 @@ public class GameSceneInitiator : MonoBehaviour
         _mapLoader = Instantiate(_mapLoader);
         _eventSystem = Instantiate(_eventSystem);
         _populationManager = Instantiate(_populationManager);
+        //_uI_Market_Manager  = Instantiate(_uI_Market_Manager);
         //_edgeGraphData = Instantiate(_edgeGraphData);
         //_uiDoc = Instantiate(_uiDoc);
         //_editProvUI = Instantiate(_editProvUI); 
+
     }
 
     private async UniTask InitializeObject()
     {
+          _tickScript.Initialize();
          _countriesManager.Initialize();
          _provincesManager.Initialize();
          _marketManager.Initialize();
          _populationManager.InitializePopulation();
+        _uI_Market_Manager.Initilize(); 
     }
     private async UniTask CreateObject()
     {
