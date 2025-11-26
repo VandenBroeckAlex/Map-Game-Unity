@@ -32,7 +32,7 @@ public class Market_object
     {
         public int id;
         public Good good;
-        public float price;
+        public decimal price;
         public float supply;
         public float demand;
         public float stockpile;

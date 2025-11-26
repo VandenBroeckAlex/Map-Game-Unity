@@ -5,9 +5,9 @@ public class PlayerManager : MonoBehaviour
 {
     public static PlayerManager Instance { get; private set; }
 
-    private List<PlayerData> players = new List<PlayerData>();
+    private List<Player> players = new List<Player>();
 
-    private PlayerData humanPlayer;
+    private Player humanPlayer;
 
     private void Awake()
     {
@@ -17,16 +17,17 @@ public class PlayerManager : MonoBehaviour
             return;
         }
         Instance = this;
+        Initialize();
         DontDestroyOnLoad(gameObject);
     }
 
     public void Initialize()
     {
-        humanPlayer = new PlayerData(0, "Alex", 0, true);
+        humanPlayer = new Player(0, "Alex", 0, true);
         players.Add(humanPlayer);
     }
 
-    public PlayerData GetHumanPlayer()
+    public Player GetHumanPlayer()
     {
         return humanPlayer;
     }

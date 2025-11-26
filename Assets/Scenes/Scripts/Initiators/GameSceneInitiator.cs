@@ -21,7 +21,7 @@ public class GameSceneInitiator : MonoBehaviour
     [SerializeField] private EdgeGraphData _edgeGraphData;
     //[SerializeField] private UI_market_manager _uI_Market_Manager;
     [SerializeField] private UI_Time_manager _UiTimeManager;
-
+    [SerializeField] private UI_market_manager _UI_Market_Manager;
 
     //[SerializeField] private ProvinceUIController _editProvUI;
 
@@ -69,7 +69,7 @@ public class GameSceneInitiator : MonoBehaviour
          _provincesManager.Initialize();
          _marketManager.Initialize();
          _populationManager.InitializePopulation();
-        // _uI_Market_Manager.Initilize(); 
+        _UI_Market_Manager.Initilize(); 
         _UiTimeManager.Initialize();
     }
     private async UniTask CreateObject()

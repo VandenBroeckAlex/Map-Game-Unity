@@ -30,6 +30,8 @@ public class MarketManager : MonoBehaviour
 
     public Dictionary<int,Market> marketList = new Dictionary<int,Market>();
 
+    public event Action OnMarketUpdated;
+
     public float priceSensitivity = 0.1f;
 
     private void OnEnable()
@@ -120,6 +122,7 @@ public class MarketManager : MonoBehaviour
 
 
 
+
             for (int j = 0; j < PopRequestBatch[i].GoodRequest.Count; j++)
             {
                 GoodResponse goodResponse = new GoodResponse();
@@ -177,6 +180,7 @@ public class MarketManager : MonoBehaviour
         }
         // Market curentMarket = marketList.FirstOrDefault(market => market.id == marketId);
 
+        OnMarketUpdated?.Invoke();//call refresh ui
         return marketResponse;
     }
 
@@ -228,6 +232,7 @@ public class MarketManager : MonoBehaviour
             Debug.Log($"{country.name} treasury = {country.treasury}");
         }
 
+        OnMarketUpdated?.Invoke();//call refresh ui
         return batch_response;
     }
 
@@ -254,9 +259,10 @@ public class MarketManager : MonoBehaviour
                 float demand = market.goods_list[i].demand;
 
                 float old_price = market.goods_list[i].price;
+
                 if ((demand - supply) > 0)
                 {
-                    market.goods_list[i].price += market.goods_list[i].price * priceSensitivity;
+                    market.goods_list[i].price += RoundToTwoDecimals(market.goods_list[i].price * priceSensitivity);
                 }
                 else if (demand == supply)
                 {
@@ -264,7 +270,7 @@ public class MarketManager : MonoBehaviour
                 }
                 else
                 {
-                    market.goods_list[i].price -= market.goods_list[i].price * priceSensitivity;
+                    market.goods_list[i].price -= RoundToTwoDecimals(market.goods_list[i].price * priceSensitivity);
                 }
 
                 //reset supply and demand beggening of the month
@@ -276,6 +282,12 @@ public class MarketManager : MonoBehaviour
             }
         }
 
+    }
+
+
+    public Market GetMarketByCountryId(int countryId)
+    {
+        return marketList[countryId];
     }
 
 
