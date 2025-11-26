@@ -10,6 +10,7 @@ public class Country
 
 
     public int id;
+    public int playerId;
     public string name;
     public Color color;
     public float treasury;

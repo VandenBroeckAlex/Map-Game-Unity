@@ -24,6 +24,7 @@ public class GameSceneInitiator : MonoBehaviour
     [SerializeField] private UIDocument _uiDoc;
     //[SerializeField] private ProvinceUIController _editProvUI;
 
+    private GameObject _root;
     private async void Start()
     {
         BindObject();
@@ -38,20 +39,23 @@ public class GameSceneInitiator : MonoBehaviour
 
     private void BindObject()
     {
-        _tickScript = Instantiate(_tickScript);
-        _countriesManager = Instantiate(_countriesManager);
-        _mainCamera = Instantiate(_mainCamera);
-        _provincesManager = Instantiate(_provincesManager);
-        _goods_loader = Instantiate(_goods_loader);
-        _marketManager = Instantiate(_marketManager);
-        _mapLoader = Instantiate(_mapLoader);
-        _eventSystem = Instantiate(_eventSystem);
-        _populationManager = Instantiate(_populationManager);
-        //_uI_Market_Manager  = Instantiate(_uI_Market_Manager);
-        //_edgeGraphData = Instantiate(_edgeGraphData);
-        //_uiDoc = Instantiate(_uiDoc);
-        //_editProvUI = Instantiate(_editProvUI); 
+        _root = new GameObject("GameRoot");
 
+        _tickScript = Instantiate(_tickScript, _root.transform);
+        _countriesManager = Instantiate(_countriesManager, _root.transform);
+        _mainCamera = Instantiate(_mainCamera, _root.transform);
+        _provincesManager = Instantiate(_provincesManager, _root.transform);
+        _goods_loader = Instantiate(_goods_loader, _root.transform);
+        _marketManager = Instantiate(_marketManager, _root.transform);
+        _mapLoader = Instantiate(_mapLoader, _root.transform);
+        _eventSystem = Instantiate(_eventSystem, _root.transform);
+        _populationManager = Instantiate(_populationManager, _root.transform);
+
+        // optional others
+        //_uI_Market_Manager  = Instantiate(_uI_Market_Manager, _root.transform);
+        //_edgeGraphData = Instantiate(_edgeGraphData, _root.transform);
+        //_uiDoc = Instantiate(_uiDoc, _root.transform);
+        //_editProvUI = Instantiate(_editProvUI, _root.transform);
     }
 
     private async UniTask InitializeObject()

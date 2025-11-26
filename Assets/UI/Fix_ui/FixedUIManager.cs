@@ -1,16 +1,31 @@
+using UnityEditor.Rendering.LookDev;
 using UnityEngine;
 
 public class FixedUIManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
-    {
-        
-    }
+    //public CountryInfoPanel countryInfoPanel;
+    // public TimePanel timePanel; // script + ui
+    //public ResourcePanel resourcePanel;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    //void Start()
+    //{
+    //    UpdateCountryInfo(GameData.PlayerCountry);
+    //    UpdateResources(GameData.Resources);
+    //    UpdateTime(GameData.Time);
+    //}
+    //public void UpdateResources(ResourceData data)
+    //{
+    //    resourcePanel.SetData(data);
+    //}
+
+    //public void UpdateCountryInfo(Country country)
+    //{
+    //    countryInfoPanel.SetData(country);
+    //}
+
+    //public void UpdateTime(TimeData t)
+    //{
+    //    timePanel.SetTime(t.currentDay, t.speed);
+    //}
+
 }
