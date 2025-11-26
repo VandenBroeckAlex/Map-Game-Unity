@@ -1,16 +1,33 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    public static PlayerManager Instance { get; private set; }
+
+    private List<PlayerData> players = new List<PlayerData>();
+
+    private PlayerData humanPlayer;
+
+    private void Awake()
     {
-        
+        if (Instance != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+        Instance = this;
+        DontDestroyOnLoad(gameObject);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void Initialize()
     {
-        
+        humanPlayer = new PlayerData(0, "Alex", 0, true);
+        players.Add(humanPlayer);
+    }
+
+    public PlayerData GetHumanPlayer()
+    {
+        return humanPlayer;
     }
 }

@@ -1,16 +1,30 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 using static Goods;
 
 public class UI_Time_manager : MonoBehaviour
 {
     public static UI_Time_manager instance;
+
+    private TickScript _tickscript; 
+
     public GameObject UI_time;
     public Transform fixed_ui;
+
+    public Button pause;
+    public Button resume;
 
     public void Initialize()
     {
         instance = this;
+        _tickscript = TickScript.instance;
+        fixed_ui = GameObject.Find("FixedUI").transform;
+        UI_time = GameObject.Find("fix_right container");
+        pause = GameObject.Find("pause").GetComponent<Button>();
+        pause.onClick.AddListener(() => PauseGame());
+        resume = GameObject.Find("play").GetComponent<Button>();
+        resume.onClick.AddListener(() => ResumeGame());
     }
     private void OnEnable()
     {
@@ -26,6 +40,16 @@ public class UI_Time_manager : MonoBehaviour
         TextMeshProUGUI[] texts = UI_time.GetComponentsInChildren<TextMeshProUGUI>();
         texts[0].text = date;
         Debug.Log(date);
+    }
 
+    private void PauseGame()
+    {
+        Debug.Log("button pause game");
+        _tickscript.PauseGame();
+    }
+    private void ResumeGame()
+    {
+        Debug.Log("button resume game");
+        _tickscript.ThreeSpeed();
     }
 }

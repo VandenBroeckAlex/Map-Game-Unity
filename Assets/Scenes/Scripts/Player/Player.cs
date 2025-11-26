@@ -1,12 +1,16 @@
-using UnityEngine;
-
-public class Player : MonoBehaviour
+[System.Serializable]
+public class PlayerData
 {
-    int playerID;
-    string playerName;
-    int controlledCountryID;
-    bool isHuman;        // true if controlled by a real player
-    //NetworkID netID;     
+    public int id;
+    public string playerName;
+    public int countryID;
+    public bool isHuman;
 
-    //PlayerManager.players = { Player("Human", countryId) };
+    public PlayerData(int id, string name, int countryID, bool isHuman)
+    {
+        this.id = id;
+        this.playerName = name;
+        this.countryID = countryID;
+        this.isHuman = isHuman;
+    }
 }

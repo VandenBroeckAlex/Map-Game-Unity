@@ -19,12 +19,14 @@ public class GameSceneInitiator : MonoBehaviour
     [SerializeField] private MapLoader _mapLoader;
     [SerializeField] private EventSystem _eventSystem;
     [SerializeField] private EdgeGraphData _edgeGraphData;
-    [SerializeField] private UI_market_manager _uI_Market_Manager;
+    //[SerializeField] private UI_market_manager _uI_Market_Manager;
+    [SerializeField] private UI_Time_manager _UiTimeManager;
 
-    [SerializeField] private UIDocument _uiDoc;
+
     //[SerializeField] private ProvinceUIController _editProvUI;
 
     private GameObject _root;
+    private GameObject _ui;
     private async void Start()
     {
         BindObject();
@@ -40,6 +42,7 @@ public class GameSceneInitiator : MonoBehaviour
     private void BindObject()
     {
         _root = new GameObject("GameRoot");
+        _ui = new GameObject("Ui");
 
         _tickScript = Instantiate(_tickScript, _root.transform);
         _countriesManager = Instantiate(_countriesManager, _root.transform);
@@ -51,8 +54,9 @@ public class GameSceneInitiator : MonoBehaviour
         _eventSystem = Instantiate(_eventSystem, _root.transform);
         _populationManager = Instantiate(_populationManager, _root.transform);
 
+        _UiTimeManager = Instantiate(_UiTimeManager, _ui.transform);
         // optional others
-        //_uI_Market_Manager  = Instantiate(_uI_Market_Manager, _root.transform);
+       // _uI_Market_Manager  = Instantiate(_uI_Market_Manager, _root.transform);
         //_edgeGraphData = Instantiate(_edgeGraphData, _root.transform);
         //_uiDoc = Instantiate(_uiDoc, _root.transform);
         //_editProvUI = Instantiate(_editProvUI, _root.transform);
@@ -65,7 +69,8 @@ public class GameSceneInitiator : MonoBehaviour
          _provincesManager.Initialize();
          _marketManager.Initialize();
          _populationManager.InitializePopulation();
-        _uI_Market_Manager.Initilize(); 
+        // _uI_Market_Manager.Initilize(); 
+        _UiTimeManager.Initialize();
     }
     private async UniTask CreateObject()
     {

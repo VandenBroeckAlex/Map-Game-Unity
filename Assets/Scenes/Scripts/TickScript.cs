@@ -61,18 +61,21 @@ public class TickScript : MonoBehaviour
 
     public void PauseGame()
     {
-        gameSpeed = 0;
+        isPaused = true;
     }
     public void OneSpeed()
     {
+        isPaused = false;
         gameSpeed = 0.8f;
     }
     public void TwoSpeed()
     {
+        isPaused = false;
         gameSpeed = 0.5f;
     }
     public void ThreeSpeed()
     {
+        isPaused = false;
         gameSpeed = 0.1f;
     }
 }
