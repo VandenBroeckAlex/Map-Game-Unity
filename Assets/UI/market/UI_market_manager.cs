@@ -43,10 +43,10 @@ public class UI_market_manager : MonoBehaviour
             TextMeshProUGUI[] texts = newGo.GetComponentsInChildren<TextMeshProUGUI>();
             //Maybe query field by name ?
             texts[0].text = $"{good.good.name}";
-            texts[1].text = $"Stockpile : {good.stockpile.ToString("F2")}";
-            texts[2].text = $"Supply : {good.supply.ToString("F2")}";
-            texts[3].text = $"Demand : {good.demand.ToString("F2")}";
-            texts[4].text = $"Price : {good.price.ToString("F2")} £";
+            texts[1].text = $"Stockpile : {(good.stockpile / 100f).ToString("F2")}";
+            texts[2].text = $"Supply : {(good.supply/100).ToString("F2")}";
+            texts[3].text = $"Demand : {(good.demand/100).ToString("F2")}";
+            texts[4].text = $"Price : {(good.price/100).ToString("F2")} £";
         }
     }
     

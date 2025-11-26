@@ -90,9 +90,9 @@ public class MarketManager : MonoBehaviour
             default_market_goods.Add(new MarketGood
             {
                 good = good,
-                supply = 0f,
-                demand = 0f,
-                price = 1f
+                supply = 0,
+                demand = 0,
+                price = 100
             });
 
         }
@@ -117,7 +117,7 @@ public class MarketManager : MonoBehaviour
 
             int market_id = PopRequestBatch[i].marketId;
             Market _market = marketList[market_id];
-            float cashAmount = PopRequestBatch[i].cashAmount;
+            int cashAmount = PopRequestBatch[i].cashAmount;
             response.cashLeft = cashAmount;
 
 
@@ -137,8 +137,8 @@ public class MarketManager : MonoBehaviour
                 .Where(good => good.good.id == goodId).FirstOrDefault();
            
 
-                float amountWanted = PopRequestBatch[i].GoodRequest[j].amountWanted;
-                float totalCost = Marketgood.price * amountWanted;
+                int amountWanted = PopRequestBatch[i].GoodRequest[j].amountWanted;
+                int totalCost = Marketgood.price * amountWanted;
                 if(cashAmount == 0)
                 {
                     break;
@@ -149,27 +149,27 @@ public class MarketManager : MonoBehaviour
                 if (totalCost <= cashAmount)
                 {
                     // Can afford the full amount
-                    goodResponse.amountBought = RoundToTwoDecimals(amountWanted);
-                    response.cashLeft -= RoundToTwoDecimals(totalCost);
+                    goodResponse.amountBought = amountWanted;
+                    response.cashLeft -= totalCost;
                     response.goodsBought.Add(goodResponse);
                     Debug.Log("full amount");
                     Debug.Log("cash left =" + response.cashLeft);
 
-                    Marketgood.demand += RoundToTwoDecimals(amountWanted);
-                    Marketgood.stockpile -= RoundToTwoDecimals(amountWanted);   
+                    Marketgood.demand += amountWanted;
+                    Marketgood.stockpile -= amountWanted;   
                     
                 }
                 else
                 {
                     // Can only afford partial amount
-                    float amountAffordable = Mathf.Floor(cashAmount / Marketgood.price * 10f) / 10f;
-                    goodResponse.amountBought = RoundToTwoDecimals(amountAffordable);
+                    int amountAffordable = cashAmount / Marketgood.price ;
+                    goodResponse.amountBought = amountAffordable;
                     response.cashLeft = 0;
                     response.goodsBought.Add(goodResponse);
                     Debug.Log("partial amount");
 
-                    Marketgood.demand += RoundToTwoDecimals(amountWanted);
-                    Marketgood.stockpile -= RoundToTwoDecimals(amountAffordable);
+                    Marketgood.demand += amountWanted;
+                    Marketgood.stockpile -= amountAffordable;
 
                     break; // Exit loop early, no cash left
                 }
@@ -208,22 +208,22 @@ public class MarketManager : MonoBehaviour
 
 
             //country tax
-            float BrutCash = RoundToTwoDecimals(Marketgood.price * marketSellRequestList[i].goodSell.amountsell);
+            int BrutCash = Marketgood.price * marketSellRequestList[i].goodSell.amountsell;
 
             //TODO change this !
             //country tax
             float country_income_tax = _countriesManager.countryList[_market.countryId].Income_tax;
 
-            float country_income = BrutCash * (country_income_tax); //country_income_tax * province controle * admin capacity
+            int country_income = (int)(BrutCash * country_income_tax); //country_income_tax * province controle * admin capacity
 
             _countriesManager.countryList[_market.countryId].ReceiveCash(country_income);
 
             // NetCash
-            response.cashRecived = RoundToTwoDecimals(BrutCash - country_income);
+            response.cashRecived = BrutCash - country_income;
             batch_response.Add(response);
 
-            Marketgood.supply += RoundToTwoDecimals(marketSellRequestList[i].goodSell.amountsell);
-            Marketgood.stockpile += RoundToTwoDecimals(marketSellRequestList[i].goodSell.amountsell);
+            Marketgood.supply += marketSellRequestList[i].goodSell.amountsell;
+            Marketgood.stockpile += marketSellRequestList[i].goodSell.amountsell;
         }
 
         foreach (KeyValuePair<int, Country> kv in _countriesManager.countryList)
@@ -262,7 +262,7 @@ public class MarketManager : MonoBehaviour
 
                 if ((demand - supply) > 0)
                 {
-                    market.goods_list[i].price += RoundToTwoDecimals(market.goods_list[i].price * priceSensitivity);
+                    market.goods_list[i].price += (int)(market.goods_list[i].price * priceSensitivity);
                 }
                 else if (demand == supply)
                 {
@@ -270,7 +270,7 @@ public class MarketManager : MonoBehaviour
                 }
                 else
                 {
-                    market.goods_list[i].price -= RoundToTwoDecimals(market.goods_list[i].price * priceSensitivity);
+                    market.goods_list[i].price -=   (int)(market.goods_list[i].price * priceSensitivity);
                 }
 
                 //reset supply and demand beggening of the month

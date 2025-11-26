@@ -17,11 +17,11 @@ public class Pop_objects
         public PopJob job { get; }
         public Culture culture { get; }
         public Religion religion { get; }
-        private float _cashAmount;
+        private int _cashAmount;
         private float _savings;
-        public float cashAmount 
+        public int cashAmount 
         { get { return _cashAmount; }
-          set { _cashAmount = RoundToTwoDecimals(value); }
+          set { _cashAmount = value; }
         }
         //private float education;
         //private float militency;
@@ -37,7 +37,7 @@ public class Pop_objects
 
 
         //constructor
-        public Pop(int ID, int SIZE, int PROVINCEID, PopJob JOB, Culture CULTURE, Religion RELIGION, float CASHAMOUNT, List<PopGood> STOCKPILE)
+        public Pop(int ID, int SIZE, int PROVINCEID, PopJob JOB, Culture CULTURE, Religion RELIGION, int CASHAMOUNT, List<PopGood> STOCKPILE)
         {
             id = ID;
             size = SIZE;

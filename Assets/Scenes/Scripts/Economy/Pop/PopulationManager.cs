@@ -61,7 +61,7 @@ public class PopulationManager : MonoBehaviour
         StockPile.Add(good1);
 
         populationList.Clear();
-        Pop newPop = new Pop(1, 1000, 1, new PopJob("Miner", "poor"), Culture.French, Religion.Catholic, 0f, StockPile);
+        Pop newPop = new Pop(1, 1000, 1, new PopJob("Miner", "poor"), Culture.French, Religion.Catholic, 0, StockPile);
         newPop.countryID = GetPopCountry(1);
         populationList.Add(newPop);
 
@@ -149,7 +149,7 @@ public class PopulationManager : MonoBehaviour
             for (int j = 0; j < market_awnser[i].goodsBought.Count; j++) 
             {
                 int good_id = market_awnser[i].goodsBought[j].goodId;
-                float ammount_bought = market_awnser[i].goodsBought[j].amountBought;
+                int ammount_bought = market_awnser[i].goodsBought[j].amountBought;
 
                 PopGood popGood = pop.GoodList.FirstOrDefault(g => g.Good_id == good_id);
 
@@ -173,7 +173,7 @@ public class PopulationManager : MonoBehaviour
                 marketId = populationList[i].countryID
             };
             PopRequest.goodSell.goodId = 1;
-            PopRequest.goodSell.amountsell = (populationList[i].size * base_production)/1000;
+            PopRequest.goodSell.amountsell = (int)(populationList[i].size * base_production)/1000;
             PopSellBatchRequest.Add(PopRequest);
         }
         //call marketSell
@@ -183,7 +183,7 @@ public class PopulationManager : MonoBehaviour
         for (int i = 0; i < market_awnser.Count; i++)       
         {
            int pop_id = market_awnser[i].popId;
-           float pop_cash_recived = market_awnser[i].cashRecived;
+           int pop_cash_recived = market_awnser[i].cashRecived;
 
             Pop pop = populationList
             .FirstOrDefault(p => p.id == market_awnser[i].popId);

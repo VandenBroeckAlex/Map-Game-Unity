@@ -11,8 +11,8 @@ public class Goods
         public int id;
         public string name;
         public GoodType type; // Raw, Manufactured, Luxury
-        public float basePrice;
-        public float weight; // For transport, if needed
+        public int basePrice;
+        public int weight; // For transport, if needed
         public string iconPath;
         //public float price;
         //icon

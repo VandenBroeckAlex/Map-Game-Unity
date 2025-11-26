@@ -32,15 +32,24 @@ public class Market_object
     {
         public int id;
         public Good good;
-        public decimal price;
-        public float supply;
-        public float demand;
-        public float stockpile;
+        public int price 
+        {
+            get { return price; }
+            set 
+            {  
+                if(value < 1) {  price = 1; }
+                else {  price = value; }
+            }
+        }
+        
+        public int supply;
+        public int demand;
+        public int stockpile;
         public bool isDiscovered;
-        public List <float> price_history = new List<float>();
-        public List<float> demand_history = new List<float>();
-        public List<float> supply_history = new List<float>();
-        public List<float> stockpile_history = new List<float>();
+        public List <int> price_history = new List<int>();
+        public List<int> demand_history = new List<int>();
+        public List<int> supply_history = new List<int>();
+        public List<int> stockpile_history = new List<int>();
 
         public void RecordGoodHistory()
         {
@@ -62,7 +71,7 @@ public class Market_object
         public int popId;
         public int marketId;
         public List<GoodBuyRequest> GoodRequest; // Turn it into an array
-        public float cashAmount;
+        public int cashAmount;
     }
 
     public class MarketSellRequest
@@ -77,19 +86,19 @@ public class Market_object
     public class GoodBuyRequest
     {
         public int goodId;
-        public float amountWanted;
+        public int amountWanted;
     }
 
     public class GoodSellRequest
     {
         public int goodId;
-        public float amountsell;
+        public int amountsell;
     }
 
     public class MarketSellResponse 
     {
         public int popId;
-        public float cashRecived;
+        public int cashRecived;
     }
 
 
@@ -97,13 +106,13 @@ public class Market_object
     {
         public int popId; 
         public List<GoodResponse> goodsBought;
-        public float cashLeft;
+        public int cashLeft;
     }
 
     public class GoodResponse
     {
         public int goodId;
-        public float amountBought;
+        public int amountBought;
     }
 
 }
