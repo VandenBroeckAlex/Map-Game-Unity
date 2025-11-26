@@ -9,11 +9,14 @@ public class DateHandeler : MonoBehaviour
     public delegate void OnMonth();
     public static OnMonth onMonth;
 
+    public delegate void  OnDateChanged(string date);
+    public static event OnDateChanged onDateChanged;
+
     private string[] strWeekDayList = { "Monday", "Tuesday", "Wednesday", "Thursday","Friday", "Saturday", "Sunday" };
     private string[] strMonthsList = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
     public byte monthDay;
     private int month = 1;
-    private int year = 1;
+    private int year = 1815;
     private byte weekDay = 0;
     private string strMonth = "";
 
@@ -32,11 +35,15 @@ public class DateHandeler : MonoBehaviour
     private void HandleDate()
     {
         HandleMonthDayChange();
-        Debug.Log("The date is: " + GetStrDay() + " - " + monthDay + "/" + GetStrMonth() + "/ " + year);
-
+        string _string = GetDateString();
+        Debug.Log(_string);
+        onDateChanged?.Invoke(_string);
     }
 
-
+    public string GetDateString()
+    {
+        return $"{GetStrMonth()} {monthDay}, {year}";
+    }
 
     private void HandleMonthDayChange()
     {

@@ -27,7 +27,7 @@ public class UI_market_manager : MonoBehaviour
         {
             GameObject newGo = Instantiate(goodCard, goodCardParent);
             TextMeshProUGUI[] texts = newGo.GetComponentsInChildren<TextMeshProUGUI>();
-            texts[0].text = good.good.name;
+            texts[0].text = $"{good.good.name} : {good.price} £ ";
         }
     }
     public void OnGameResumePress()
