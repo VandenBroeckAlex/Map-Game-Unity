@@ -32,16 +32,14 @@ public class Market_object
     {
         public int id;
         public Good good;
-        public int price 
+        private int _price;
+
+        public int price
         {
-            get { return price; }
-            set 
-            {  
-                if(value < 1) {  price = 1; }
-                else {  price = value; }
-            }
+            get => _price;
+            set => _price = Mathf.Max(1, value);
         }
-        
+
         public int supply;
         public int demand;
         public int stockpile;

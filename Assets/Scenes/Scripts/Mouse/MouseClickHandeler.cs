@@ -24,13 +24,11 @@ public class MouseClickHandeler : MonoBehaviour
         // left click
         if(Input.GetMouseButtonDown(0))
         {
-            Debug.Log("left click");
             onLeftClick?.Invoke();
         }
         //right click
         if(Input.GetMouseButtonDown(1))
         {
-            Debug.Log("Right click");
             onRightClick?.Invoke();
         }
     }

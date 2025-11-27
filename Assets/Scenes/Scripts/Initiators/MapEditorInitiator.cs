@@ -22,7 +22,7 @@ public class MapEditorInitiator : MonoBehaviour
     {
         BindObject();
         await InitializeObject();
-        await CreateObject();
+        //await CreateObject();
         Destroy(gameObject);
     }
 
@@ -44,10 +44,12 @@ public class MapEditorInitiator : MonoBehaviour
     private async UniTask InitializeObject()
     {
         _countriesManager.Initialize();
+        await UniTask.Yield();
         _provincesManager.Initialize();
+        await UniTask.Yield();
     }
-    private async UniTask CreateObject()
-    {
+    //private async UniTask CreateObject()
+    //{
 
-    }
+    //}
 }

@@ -61,7 +61,7 @@ public class PopulationManager : MonoBehaviour
         StockPile.Add(good1);
 
         populationList.Clear();
-        Pop newPop = new Pop(1, 1000, 1, new PopJob("Miner", "poor"), Culture.French, Religion.Catholic, 0, StockPile);
+        Pop newPop = new Pop(1, 1000, 1, new PopJob("Miner", "poor"), Culture.French, Religion.Catholic, 100, StockPile);
         newPop.countryID = GetPopCountry(1);
         populationList.Add(newPop);
 
@@ -95,7 +95,13 @@ public class PopulationManager : MonoBehaviour
         {
             // change pop MaxNeed at the same time (popsize / 1000) * MaxNeed
             if (populationList[i].HaveBasicNeed())
-                populationList[i].size += (int)Math.Round(populationList[i].size * base_growth_rate);
+            {
+                int newPopulation = (int)Math.Round(populationList[i].size * base_growth_rate);
+                populationList[i].size += newPopulation;
+                Debug.Log(populationList[i].size);
+                Debug.Log($"the pop have grown with {newPopulation} people!");
+            }
+                
             //Base Growth Rate × Pop Size × CountryModifiers x provinceModdiefier x popGoodFullFilment every month
             Debug.Log(populationList[i].size);
             Debug.Log("the pop have grown !");
@@ -173,7 +179,8 @@ public class PopulationManager : MonoBehaviour
                 marketId = populationList[i].countryID
             };
             PopRequest.goodSell.goodId = 1;
-            PopRequest.goodSell.amountsell = (int)(populationList[i].size * base_production)/1000;
+            PopRequest.goodSell.amountsell = (int)((populationList[i].size * base_production)/1000)*100;
+            Debug.Log($"Pop have sell an amount of {PopRequest.goodSell.amountsell} ");
             PopSellBatchRequest.Add(PopRequest);
         }
         //call marketSell

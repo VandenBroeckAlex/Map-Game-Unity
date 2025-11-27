@@ -34,8 +34,7 @@ public class UI_market_manager : MonoBehaviour
     }
     public void PopulateList()
     {     
-        Debug.Log($"Their is {_marketManager.marketList.Count} market in ref");
-        Market_object.Market _market = _marketManager.marketList[1];
+        Market_object.Market _market = _marketManager.marketList[player_country_id];
         
         foreach(Market_object.MarketGood good in _market.goods_list)
         {
@@ -44,9 +43,9 @@ public class UI_market_manager : MonoBehaviour
             //Maybe query field by name ?
             texts[0].text = $"{good.good.name}";
             texts[1].text = $"Stockpile : {(good.stockpile / 100f).ToString("F2")}";
-            texts[2].text = $"Supply : {(good.supply/100).ToString("F2")}";
-            texts[3].text = $"Demand : {(good.demand/100).ToString("F2")}";
-            texts[4].text = $"Price : {(good.price/100).ToString("F2")} £";
+            texts[2].text = $"Supply : {(good.supply/100f).ToString("F2")}";
+            texts[3].text = $"Demand : {(good.demand/100f).ToString("F2")}";
+            texts[4].text = $"Price : {(good.price/100f).ToString("F2")} £";
         }
     }
     

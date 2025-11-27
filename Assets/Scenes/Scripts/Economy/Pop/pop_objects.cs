@@ -18,7 +18,7 @@ public class Pop_objects
         public Culture culture { get; }
         public Religion religion { get; }
         private int _cashAmount;
-        private float _savings;
+        private int _savings;
         public int cashAmount 
         { get { return _cashAmount; }
           set { _cashAmount = value; }

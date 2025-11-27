@@ -39,7 +39,6 @@ public class UI_Time_manager : MonoBehaviour
     {
         TextMeshProUGUI[] texts = UI_time.GetComponentsInChildren<TextMeshProUGUI>();
         texts[0].text = date;
-        Debug.Log(date);
     }
 
     private void PauseGame()

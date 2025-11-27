@@ -31,7 +31,7 @@ public class GameSceneInitiator : MonoBehaviour
     {
         BindObject();
         await InitializeObject();
-        await CreateObject();
+        //await CreateObject();
         _tickScript.StartTickScript();
 
 
@@ -65,15 +65,25 @@ public class GameSceneInitiator : MonoBehaviour
     private async UniTask InitializeObject()
     {
           _tickScript.Initialize();
+        Debug.Log("tickScript have been initialize");
+          await UniTask.Yield();
          _countriesManager.Initialize();
-         _provincesManager.Initialize();
-         _marketManager.Initialize();
-         _populationManager.InitializePopulation();
-        _UI_Market_Manager.Initilize(); 
+        Debug.Log("countriesManager have been initialize");
+        await UniTask.Yield();
+        _provincesManager.Initialize();
+        Debug.Log("provincesManager have been initialize");
+        await UniTask.Yield();
+        _marketManager.Initialize();
+        Debug.Log("marketManager have been initialize");
+        await UniTask.Yield();
+        _populationManager.InitializePopulation();
+        await UniTask.Yield();
+        _UI_Market_Manager.Initilize();
+        await UniTask.Yield();
         _UiTimeManager.Initialize();
     }
-    private async UniTask CreateObject()
-    {
+    //private async UniTask CreateObject()
+    //{
 
-    }
+    //}
 }

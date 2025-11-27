@@ -13,11 +13,11 @@ public class Country
     public int playerId;
     public string name;
     public Color color;
-    public float treasury;
-    public float income; // the sum of all income last month
+    public int treasury;
+    public int income; // the sum of all income last month
 
     public float Income_tax = 0.1f;
-    public Country(int ID, string NAME, Color COLOR, float TREASURY )
+    public Country(int ID, string NAME, Color COLOR, int TREASURY )
     {
         id = ID;
         name = NAME;
@@ -30,7 +30,7 @@ public class Country
 
     //public Dictionary<Country, DiplomaticRelation> diplomat icRelations; (should probably not be here)
 
-    public void ReceiveCash(float cash )
+    public void ReceiveCash(int cash )
     {
         treasury += cash;
         income += cash;
