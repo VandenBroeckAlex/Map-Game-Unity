@@ -78,6 +78,12 @@ public class CountriesManager : MonoBehaviour
         return country.color;
     }
 
+    public string GetCountryNameById(int _id)
+    {
+        Country country = countryList.Where(c => c.Key == _id).FirstOrDefault().Value;
+        return country.name;
+    }
+
     public class CountryDef
     {
         public int id { get; set; }

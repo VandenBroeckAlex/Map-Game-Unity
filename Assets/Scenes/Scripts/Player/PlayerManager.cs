@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class PlayerManager : MonoBehaviour
 {
-    public static PlayerManager Instance { get; private set; }
+    public static PlayerManager instance { get; private set; }
 
     private List<Player> players = new List<Player>();
 
@@ -11,12 +11,12 @@ public class PlayerManager : MonoBehaviour
 
     private void Awake()
     {
-        if (Instance != null)
+        if (instance != null)
         {
             Destroy(gameObject);
             return;
         }
-        Instance = this;
+        instance = this;
         Initialize();
         DontDestroyOnLoad(gameObject);
     }

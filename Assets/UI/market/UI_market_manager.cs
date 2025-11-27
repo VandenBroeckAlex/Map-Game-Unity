@@ -10,12 +10,16 @@ public class UI_market_manager : MonoBehaviour
     public Transform goodCardParent;
     MarketManager _marketManager;
     PlayerManager _playerManager;
+    CountriesManager _countriesManager;
     int player_country_id;
 
-  
+    TextMeshProUGUI marketNameText;
+
+
     void OnEnable()
     {
-        BuildUI();
+        RefreshUI();
+       
         MarketManager.instance.OnMarketUpdated += RefreshUI;
     }
 
@@ -27,16 +31,27 @@ public class UI_market_manager : MonoBehaviour
 
     public void Initilize()
     {
-        _playerManager = PlayerManager.Instance;
+        _playerManager = PlayerManager.instance;
         _marketManager = MarketManager.instance;
+        _countriesManager = CountriesManager.instance;
         Player player = _playerManager.GetHumanPlayer();
         player_country_id = player.countryID;
+        Transform t = transform.Find("Title/Title_box/T_Market_name");
+        if (t == null)
+        {
+            Debug.LogError("T_Market_name not found! Check hierarchy.");
+            return;
+        }
+
+         marketNameText = t.GetComponent<TextMeshProUGUI>();
     }
     public void PopulateList()
     {     
-        Market_object.Market _market = _marketManager.marketList[player_country_id];
-        
-        foreach(Market_object.MarketGood good in _market.goods_list)
+        Market_object.Market _market = _marketManager.marketList[player_country_id];        
+
+        marketNameText.text = $"{_countriesManager.GetCountryNameById(_market.countryId)} market";
+
+        foreach (Market_object.MarketGood good in _market.goods_list)
         {
             GameObject newGo = Instantiate(goodCard, goodCardParent);
             TextMeshProUGUI[] texts = newGo.GetComponentsInChildren<TextMeshProUGUI>();
@@ -58,8 +73,5 @@ public class UI_market_manager : MonoBehaviour
 
         PopulateList();
     }
-    private void BuildUI()
-    {
-        RefreshUI();
-    }
+    
 }
