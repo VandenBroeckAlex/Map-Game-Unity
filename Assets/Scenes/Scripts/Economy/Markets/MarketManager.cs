@@ -321,6 +321,7 @@ public class MarketManager : MonoBehaviour
         Market market = new Market();
         market = CreateMarket();
         market.id = countryId;
+        market.countryId = countryId;
         marketList.Add(countryId, market);
     }
 

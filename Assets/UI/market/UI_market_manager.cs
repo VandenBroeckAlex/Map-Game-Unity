@@ -3,6 +3,7 @@ using UnityEngine.UI;
 using static TickScript;
 using static MarketManager;
 using TMPro;
+using System.Collections.Generic;
 public class UI_market_manager : MonoBehaviour
 {
 
@@ -14,7 +15,8 @@ public class UI_market_manager : MonoBehaviour
     int player_country_id;
 
     TextMeshProUGUI marketNameText;
-
+    Button closeButton;
+    public UI_market_manager targetWindow;
 
     void OnEnable()
     {
@@ -36,20 +38,25 @@ public class UI_market_manager : MonoBehaviour
         _countriesManager = CountriesManager.instance;
         Player player = _playerManager.GetHumanPlayer();
         player_country_id = player.countryID;
+
+        //get title fild
         Transform t = transform.Find("Title/Title_box/T_Market_name");
         if (t == null)
         {
             Debug.LogError("T_Market_name not found! Check hierarchy.");
             return;
         }
-
          marketNameText = t.GetComponent<TextMeshProUGUI>();
+        //get close button
+        t = transform.Find("close_button");
+        closeButton = t.GetComponent<Button>();
+        closeButton.onClick.AddListener(() => CloseWindow());
     }
     public void PopulateList()
     {     
-        Market_object.Market _market = _marketManager.marketList[player_country_id];        
 
-        marketNameText.text = $"{_countriesManager.GetCountryNameById(_market.countryId)} market";
+        Market_object.Market _market = _marketManager.marketList[player_country_id];
+        marketNameText.text = $"{_countriesManager.GetCountryNameById(player_country_id)} market";
 
         foreach (Market_object.MarketGood good in _market.goods_list)
         {
@@ -74,4 +81,8 @@ public class UI_market_manager : MonoBehaviour
         PopulateList();
     }
     
+    private void CloseWindow()
+    {
+        targetWindow.gameObject.SetActive(false);
+    }
 }
