@@ -72,18 +72,18 @@ public class PopulationManager : MonoBehaviour
 
         populationList.Clear();
         Pop newPop = new Pop(1, 1000, 1, new PopJob("Miner", "poor"), Culture.French, Religion.Catholic, 10, StockPile);
-        newPop.countryID = GetPopCountry(1);
+        newPop.countryID = GetPopCountryByProvinceId(1);
         populationList.Add(newPop);
 
     
     }
 
-    /*
-     public Pop[] SelectPopulationByCountry(int countryId)
+    
+     public List<Pop> SelectPopulationByCountry(int countryId)
      {
-
+        return populationList.Where(p => p.countryID == countryId).ToList();
      }
-    */
+    
 
     public List<Pop> SelectPopulationByProvince(int provinceID)
     {
@@ -231,7 +231,7 @@ public class PopulationManager : MonoBehaviour
         
     }
    
-    private int GetPopCountry(int provinceID)
+    private int GetPopCountryByProvinceId(int provinceID)
     {
         int countryID = _provincesManager.GetProvinceOwnerByProvinceId(provinceID);
         return countryID;
