@@ -23,6 +23,10 @@ public class LandBattleEngine : MonoBehaviour
     public List<BEBataillon> a_ReinforcementPool = new List<BEBataillon>();
     public List<BEBataillon> d_ReinforcementPool = new List<BEBataillon>();
 
+
+    private int a_troop_lost = 0;
+    private int d_troop_lost = 0;
+
     //public General AttackerGeneral
     //public General DefenderGeneral
     //   -----------------------
@@ -48,11 +52,16 @@ public class LandBattleEngine : MonoBehaviour
         a_ReinforcementPool = _landbattlefield.a_ReinforcementPool;
         d_ReinforcementPool = _landbattlefield.d_ReinforcementPool;
         battlefield = _landbattlefield.battlefield;
+
         Debug.Log($"{a_InField.Count} : A_InField");
         Debug.Log($"{d_InField.Count} : D_InField");
         Debug.Log($"{a_ReinforcementPool.Count} : A_ReinforcementPool");
         Debug.Log($"{d_ReinforcementPool.Count} : D_ReinforcementPool");
+
+
+
         initialiser = null;
+
         for (int i = 0; i < 10; i++)
         {
             BattleTurn();
@@ -63,19 +72,47 @@ public class LandBattleEngine : MonoBehaviour
 
     private void BattleTurn()
     {
-        //while(battleOver is false)
-                
-            List<BEBataillon> listBataillon = a_InField.Concat(d_InField).ToList()
-            .OrderByDescending(b => b.stats.initiative).ToList();
-            Debug.Log(listBataillon.Count +"bataillons");
-            foreach (var bataillon in listBataillon)
-            {
-                BataillonTurn(bataillon);
-            }
+        //reinforcement here
+       
+        
+        bool attackerRouting = IsRouting(a_InField);
+        bool defenderRouting = IsRouting(d_InField);
+
+        if (attackerRouting || defenderRouting)
+        {
+            EndBattle();
+        }
+
+
+        List<BEBataillon> listBataillon = a_InField.Concat(d_InField).ToList()
+        .OrderByDescending(b => b.stats.initiative).ToList();
+        Debug.Log(listBataillon.Count +"bataillons");
+        foreach (var bataillon in listBataillon)
+        {
+            BataillonTurn(bataillon);
+        }
         ResetTurnFlags();
     }
 
-   
+    private bool IsRouting(List<BEBataillon> army)
+    {
+        foreach(var bataillon in army)
+        {
+            if(bataillon.isDisengaging == false)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
+
+    private void EndBattle()
+    {
+        Debug.Log("The battle is over !");
+        Debug.Log($"the Attacker have lost {a_troop_lost} men.");
+        Debug.Log($"the Defender have lost {d_troop_lost} men.");
+    }
 
     public void PlaceBataillon(BEBataillon b, int position)
     {
@@ -84,37 +121,37 @@ public class LandBattleEngine : MonoBehaviour
 
     
 
-    private void BataillonTurn(BEBataillon A_bataillon)
+    private void BataillonTurn(BEBataillon bataillon)
     {
         //get by initiative
        
         
-            Debug.Log($"----  {A_bataillon.stats.name}'s turn ! -------");
-            int bataillonPosition = GetBataillonPosition(A_bataillon);
-            if (A_bataillon is not null)
+            Debug.Log($"----  {bataillon.stats.name}'s turn ! -------");
+            int bataillonPosition = GetBataillonPosition(bataillon);
+            if (bataillon is not null)
             {
                 
-                int targetRow = GetTargetRow(bataillonPosition, A_bataillon.stats.range, A_bataillon.isAttacker);
+                int targetRow = GetTargetRow(bataillonPosition, bataillon.stats.range, bataillon.isAttacker);
                 //Debug.Log($"targetRow = {targetRow}");
                 //Debug.Log($"bataillonPosition : {bataillonPosition}, isAttacker : {bataillon.isAttacker}, targetRow : {targetRow}");
                 //if targetRow == -1 N
-                if(targetRow == -1 && A_bataillon.haveMoved is false)
+                if(targetRow == -1 && bataillon.haveMoved is false)
                 {
                     Debug.Log("Ennemi out of range");                    //advance
-                    if(A_bataillon.isAttacker is true)
-                    MoveBataillon(A_bataillon, bataillonPosition, bataillonPosition + 1);
+                    if(bataillon.isAttacker is true)
+                    MoveBataillon(bataillon, bataillonPosition, bataillonPosition + 1);
                     else
-                    MoveBataillon(A_bataillon, bataillonPosition, bataillonPosition - 1);
+                    MoveBataillon(bataillon, bataillonPosition, bataillonPosition - 1);
                 }
-                else if(A_bataillon.isAttacker is true && targetRow > bataillonPosition + 1)
+                else if(bataillon.isAttacker is true && targetRow > bataillonPosition + 1)
                 {
                     int index = SelectRandomBataillonInRow(targetRow);
-                    ResultRangeAttack(A_bataillon, battlefield[targetRow][index], targetRow - bataillonPosition);
+                    ResultRangeAttack(bataillon, battlefield[targetRow][index], targetRow - bataillonPosition,true);
                 }
-                else if (A_bataillon.isAttacker is false && targetRow < bataillonPosition -1)
+                else if (bataillon.isAttacker is false && targetRow < bataillonPosition -1)
                 {
                     int index = SelectRandomBataillonInRow(targetRow);
-                    ResultRangeAttack(A_bataillon, battlefield[targetRow][0], targetRow - bataillonPosition);
+                    ResultRangeAttack(bataillon, battlefield[targetRow][0], targetRow - bataillonPosition, false);
                 }
                 else if (targetRow == bataillonPosition + 1)
                 {
@@ -133,13 +170,13 @@ public class LandBattleEngine : MonoBehaviour
 
     }
 
-    public BEBataillon ResultRangeAttack(BEBataillon attaker, BEBataillon defender,int range)
+    public BEBataillon ResultRangeAttack(BEBataillon damageDealer, BEBataillon damageReceiver,int range, bool is_attacker)
     {
-        for(int i = 0; i < attaker.stats.rangeAttack[0]; i++)
+        for(int i = 0; i < damageDealer.stats.rangeAttack[0]; i++)
         {
             float damage = 0;
             //if both have dice
-            if (defender.stats.rangeDefense[0] >= i)
+            if (damageReceiver.stats.rangeDefense[0] >= i)
             {
                 int attackerRoll = UnityEngine.Random.Range(1, 7);
                 int defenderRoll = UnityEngine.Random.Range(1, 7);
@@ -147,19 +184,28 @@ public class LandBattleEngine : MonoBehaviour
                 if(attackerRoll > defenderRoll)
                 {
                     //damage 10%
-                    damage = attaker.stats.CurentSoftAttack(range) * 0.1f * baseDamage;
+                    damage = damageDealer.stats.CurentSoftAttack(range) * 0.1f * baseDamage;
                 }
             }
             else
             {
                 //damage 40%
-                 damage = attaker.stats.CurentSoftAttack(range) * 0.4f * baseDamage;
+                 damage = damageDealer.stats.CurentSoftAttack(range) * 0.4f * baseDamage;
             }
-            defender.stats.manPower.current -= (int)damage;
-            Debug.Log($"{(int)damage} damges deal by {attaker.stats.name} to {defender.stats.name}");
+            damageReceiver.stats.manPower.current -= (int)damage;
+
+            if(is_attacker == true)
+            {
+                d_troop_lost += (int)damage;
+            }
+            else
+            {
+                a_troop_lost += (int)damage;
+            }
+                Debug.Log($"{(int)damage} damges deal by {damageDealer.stats.name} to {damageReceiver.stats.name}");
         }
 
-        return defender;
+        return damageReceiver;
     }
     public void AssaultAttack()
     {

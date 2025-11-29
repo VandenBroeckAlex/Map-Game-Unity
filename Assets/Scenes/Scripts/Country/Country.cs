@@ -17,13 +17,18 @@ public class Country
     public int income; // the sum of all income last month
 
     public float Income_tax = 0.1f;
+
+    public CountryStats stats;
+
     public Country(int ID, string NAME, Color COLOR, int TREASURY )
     {
         id = ID;
         name = NAME;
         color = COLOR;
         treasury = TREASURY;
+        stats = new CountryStats();
     }
+
     ///public float expenses;
     //public GovernmentType governmentType;
     //public Dictionary<GoodsType, float> nationalStockpile; (should probably not be here)

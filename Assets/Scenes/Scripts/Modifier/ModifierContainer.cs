@@ -7,35 +7,38 @@ public class ModifierContainer
 {
     public List<Modifier> activeModifiers = new();
 
-    public float GetModifiedValue(string statName, float baseValue)
+    public float GetModifierValue(string statKey)
     {
         float additive = 0f;
-        float multiplier = 1f;
+        float multiplicative = 1f;
 
-        foreach (var mod in activeModifiers)
+        foreach (var m in activeModifiers)
         {
-            foreach (var effect in mod.effects)
+            if (m.id != statKey)
+                continue;  // skip unrelated modifiers
+
+            switch (m.type)
             {
-                if (effect.affectedStat == statName)
-                {
-                    if (effect.type == ModifierType.Additive)
-                        additive += effect.value;
-                    else if (effect.type == ModifierType.Multiplicative)
-                        multiplier *= (1 + effect.value);
-                }
+                case ModifierType.Additive:
+                    additive += m.value;
+                    break;
+
+                case ModifierType.Multiplicative:
+                    multiplicative *= 1 + (m.value/100);
+                    break;
             }
         }
 
-        return (baseValue + additive) * multiplier;
+        return (1 + additive) * multiplicative - 1;
     }
 
-    public void UpdateModifiers(float deltaTime)
+    public void UpdateModifiers(int timeintick)
     {
         for (int i = activeModifiers.Count - 1; i >= 0; i--)
         {
             if (activeModifiers[i].duration > 0)
             {
-                activeModifiers[i].duration -= deltaTime;
+                activeModifiers[i].duration -= timeintick;
                 if (activeModifiers[i].duration <= 0)
                     activeModifiers.RemoveAt(i);
             }

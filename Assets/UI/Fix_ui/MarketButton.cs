@@ -1,3 +1,4 @@
+using MyGame.Data;
 using UnityEngine;
 
 public class MarketButton : MonoBehaviour
@@ -7,6 +8,7 @@ public class MarketButton : MonoBehaviour
 
     public void OnButtonClicked()
     {
-        marketUI.gameObject.SetActive(true);
+        int id = PlayerManager.instance.GetHumanPlayer().countryID;
+        UIManager.instance.RequestOpenMarket(0);
     }
 }

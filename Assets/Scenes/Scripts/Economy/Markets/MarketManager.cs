@@ -164,7 +164,6 @@ public class MarketManager : MonoBehaviour
                     Debug.Log("cash left =" + response.cashLeft);
 
                     Marketgood.demand += amountWanted;
-                    Debug.Log($"the demand is : {Marketgood.demand} in {_market.id}");
                     Marketgood.stockpile -= amountWanted;      
                 }
                 else

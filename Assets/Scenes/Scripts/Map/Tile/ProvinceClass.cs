@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Text.Json;
 using System.Text.Json.Serialization;
 using Newtonsoft.Json;
+using Unity.VisualScripting.Antlr3.Runtime.Misc;
 
 namespace MyGame.Data
 {
@@ -22,9 +23,12 @@ namespace MyGame.Data
         public bool isLand {  get; set; }
         public bool isPassable {  get; set; }
 
+        public ProvinceStats stats;
+
         public Tile(int GivenID )
         {
             id = GivenID;
+            stats = new ProvinceStats();
         }
 
     }
@@ -53,12 +57,13 @@ namespace MyGame.Data
         public int type {  get; set; }
         [JsonProperty(Order = 11)]
         public bool isCoast {  get; set; }
+  
 
         public LandTile(int givenID)
             : base(givenID)
         {
             isLand = true;
-            isPassable = true;
+            isPassable = true; 
         }
     }
 

@@ -68,6 +68,11 @@ public class CountriesManager : MonoBehaviour
         { 
             Debug.Log(country.Value.name);
         }
+        Modifier modifier = new Modifier("pop_growth",4,ModifierType.Multiplicative);
+
+        countryList[0].stats.modifiers.AddModifier(modifier);
+            
+
     } 
    
     public Color GetCountryColorById(int _id)

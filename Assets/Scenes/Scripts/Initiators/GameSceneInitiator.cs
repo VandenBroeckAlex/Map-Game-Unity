@@ -78,7 +78,7 @@ public class GameSceneInitiator : MonoBehaviour
         await UniTask.Yield();
         _populationManager.InitializePopulation();
         await UniTask.Yield();
-        _UI_Market_Manager.Initilize();
+        _UI_Market_Manager.CacheReferences();
         await UniTask.Yield();
         _UiTimeManager.Initialize();
     }

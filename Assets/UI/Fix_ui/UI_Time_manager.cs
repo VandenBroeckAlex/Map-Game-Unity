@@ -19,7 +19,7 @@ public class UI_Time_manager : MonoBehaviour
     {
         instance = this;
         _tickscript = TickScript.instance;
-        fixed_ui = GameObject.Find("FixedUI").transform;
+        fixed_ui = GameObject.Find("FixedLayer").transform;
         UI_time = GameObject.Find("fix_right container");
         pause = GameObject.Find("pause").GetComponent<Button>();
         pause.onClick.AddListener(() => PauseGame());

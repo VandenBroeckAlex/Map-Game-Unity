@@ -11,6 +11,7 @@ public class PopulationManager : MonoBehaviour
 {
     private MarketManager _marketManager;
     private ProvincesManager _provincesManager;
+    private CountriesManager _countriesManager;
     public int test_population_size = 100;
 
     
@@ -19,7 +20,7 @@ public class PopulationManager : MonoBehaviour
     // ------ Put those in a json and load them -------
     public float base_growth_rate = 0.004f;
     public float base_consumption = 1f;
-    public float base_production = 1.1f;
+    public float base_production = 0.11f;
     // ----------------------------------
 
     // ----------------------------------
@@ -52,16 +53,25 @@ public class PopulationManager : MonoBehaviour
     {
         _marketManager = MarketManager.instance;
         _provincesManager = ProvincesManager.instance;
+        _countriesManager = CountriesManager.instance;
+
         List<PopGood> StockPile = new List<PopGood>();
 
         PopGood good1 = new PopGood();
         good1.Good_id = 1;
-        good1.MaxNeed = 5;
+        good1.MaxNeed = 500;
         good1.Stockpile = 0;
         StockPile.Add(good1);
 
+        PopGood good2 = new PopGood();
+        good2.Good_id = 2;
+        good2.MaxNeed = 500;
+        good2.Stockpile = 0;
+        StockPile.Add(good2);
+
+
         populationList.Clear();
-        Pop newPop = new Pop(1, 1000, 1, new PopJob("Miner", "poor"), Culture.French, Religion.Catholic, 100, StockPile);
+        Pop newPop = new Pop(1, 1000, 1, new PopJob("Miner", "poor"), Culture.French, Religion.Catholic, 10, StockPile);
         newPop.countryID = GetPopCountry(1);
         populationList.Add(newPop);
 
@@ -96,7 +106,11 @@ public class PopulationManager : MonoBehaviour
             // change pop MaxNeed at the same time (popsize / 1000) * MaxNeed
             if (populationList[i].HaveBasicNeed())
             {
-                int newPopulation = (int)Math.Round(populationList[i].size * base_growth_rate);
+                int pcId = populationList[i].countryID;
+                int ppId = populationList[i].provinceId;
+                float growRate =  base_growth_rate + _countriesManager.countryList[pcId].stats.GetPopulationGrowth() + _provincesManager.provinces_list[ppId].stats.GetPopulationGrowth();
+                Debug.Log($"grow rate = {_countriesManager.countryList[pcId].stats.GetPopulationGrowth()}");
+                int newPopulation = (int)Math.Round(populationList[i].size * growRate);
                 populationList[i].size += newPopulation;
                 Debug.Log(populationList[i].size);
                 Debug.Log($"the pop have grown with {newPopulation} people!");
@@ -122,11 +136,13 @@ public class PopulationManager : MonoBehaviour
                 marketId = populationList[i].countryID
             };
 
-            float cash = populationList[i].cashAmount;
+            //Debug.Log($"the pop need {populationList[i].GoodList.Count} type of good");
             for (int j = 0; j < populationList[i].GoodList.Count; j++)
             {
+                //Debug.Log($"good id : {populationList[i].GoodList[j].Good_id} , Max need : {populationList[i].GoodList[j].MaxNeed} : stockpile :{populationList[i].GoodList[j].Stockpile}");
                 if (populationList[i].GoodList[j].MaxNeed != populationList[i].GoodList[j].Stockpile)
                 {
+                    
                     Market_object.GoodBuyRequest request = new()
                     {
                         goodId = populationList[i].GoodList[j].Good_id,
@@ -135,6 +151,7 @@ public class PopulationManager : MonoBehaviour
                     PopRequest.GoodRequest.Add(request);
                 }  
             }
+            Debug.Log($"the pop try to buy {PopRequest.GoodRequest.Count} type of good");
             if(PopRequest.GoodRequest != null)
             {
                 PopBuyBatchRequest.Add(PopRequest);
