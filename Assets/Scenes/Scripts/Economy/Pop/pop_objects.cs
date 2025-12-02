@@ -97,6 +97,9 @@ public class Pop_objects
     //    }
     //}
     //culture.StrataOverrides.Overrides[JobType.Merchant] = "Lower";
+    
+
+    //culture and religion will be object holding stats not just name
     public enum Culture
     {
         French,

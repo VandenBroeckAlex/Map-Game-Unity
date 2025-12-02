@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEngine;
 using static ObjJSON;
 using System.IO;
-using Newtonsoft.Json;
+
 
 public class CountriesManager : MonoBehaviour
 {
@@ -14,7 +14,6 @@ public class CountriesManager : MonoBehaviour
     public static CountriesManager instance;
 
 
-    // Start is called before the first frame update
     public void Initialize()
     {
         CreateSingleton();
@@ -87,6 +86,11 @@ public class CountriesManager : MonoBehaviour
     {
         Country country = countryList.Where(c => c.Key == _id).FirstOrDefault().Value;
         return country.name;
+    }
+
+    public Country GetCountryById(int _id)
+    {
+        return countryList.Where(c => c.Key.Equals(_id)).FirstOrDefault().Value;
     }
 
     public class CountryDef

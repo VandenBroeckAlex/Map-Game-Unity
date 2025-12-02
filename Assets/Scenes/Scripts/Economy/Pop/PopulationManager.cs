@@ -186,7 +186,6 @@ public class PopulationManager : MonoBehaviour
     private void PopSell()
     {
         List<MarketSellRequest> PopSellBatchRequest = new();
-
         for (int i = 0; i < populationList.Count; i++)
         {
             Market_object.MarketSellRequest PopRequest = new()
@@ -221,14 +220,11 @@ public class PopulationManager : MonoBehaviour
     {
         for( int i=0; i < populationList.Count; i++)
         {
-         
                 for(int j = 0; j < populationList[i].GoodList.Count; j++)
                 {
                 populationList[i].GoodList[j].Stockpile = 0;
                 }
-
         }
-        
     }
    
     private int GetPopCountryByProvinceId(int provinceID)

@@ -41,4 +41,15 @@ public class FileUtils
         }
         return true;
     }
+
+    public static bool CreateDirectory(string path)
+    {
+        if (Directory.Exists(path))
+        {
+            return true;
+        }
+
+        Directory.CreateDirectory(path);
+        return true;
+    }
 }
