@@ -6,12 +6,9 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.Rendering;
 using UnityEngine.UIElements;
-using static CountriesManager;
-using static Goods;
 using static Goods_loader;
-using static helpers_math;
 using static Market_object;
-using static UnityEngine.EventSystems.EventTrigger;
+using static GoodDatabase;
 
 
 
@@ -20,12 +17,12 @@ public class MarketManager : MonoBehaviour
 {
 
     private CountriesManager _countriesManager;
-    public static MarketManager instance { get; private set; }  
+    public static MarketManager instance { get; private set; }
 
-    
+
 
     //[SerializeField] public Market worldMarket = new Market();
-    List<Goods.Good> good_definition_list = new List<Goods.Good>();
+    List<Goods.Good> good_definition_list = GoodDatabase.good_definition_list;
     List<MarketGood> default_market_goods = new List<MarketGood>();
 
     public Dictionary<int,Market> marketList = new Dictionary<int,Market>();

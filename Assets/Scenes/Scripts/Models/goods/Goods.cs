@@ -1,7 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using static Goods;
+using static Goods_loader;
 
 public class Goods 
 {
@@ -24,4 +25,13 @@ public enum GoodType
     Raw, Manufactured, Luxury, Military
 }
 
-                    
+
+public static class GoodDatabase
+{
+    public static List<Good> good_definition_list = new List<Good>();
+
+    public static void Initialize()
+    {
+        good_definition_list = Load_goods();
+    }
+}
