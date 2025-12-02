@@ -55,15 +55,15 @@ public class PopulationManager : MonoBehaviour
         _provincesManager = ProvincesManager.instance;
         _countriesManager = CountriesManager.instance;
 
-        List<PopGood> StockPile = new List<PopGood>();
+        List<GoodRequirement> StockPile = new List<GoodRequirement>();
 
-        PopGood good1 = new PopGood();
+        GoodRequirement good1 = new GoodRequirement();
         good1.Good_id = 1;
         good1.MaxNeed = 500;
         good1.Stockpile = 0;
         StockPile.Add(good1);
 
-        PopGood good2 = new PopGood();
+        GoodRequirement good2 = new GoodRequirement();
         good2.Good_id = 2;
         good2.MaxNeed = 500;
         good2.Stockpile = 0;
@@ -174,7 +174,7 @@ public class PopulationManager : MonoBehaviour
                 int good_id = market_awnser[i].goodsBought[j].goodId;
                 int ammount_bought = market_awnser[i].goodsBought[j].amountBought;
 
-                PopGood popGood = pop.GoodList.FirstOrDefault(g => g.Good_id == good_id);
+                GoodRequirement popGood = pop.GoodList.FirstOrDefault(g => g.Good_id == good_id);
 
                 popGood.Stockpile += ammount_bought;
                 Debug.Log($"Pop have bougt {ammount_bought}/{popGood.MaxNeed}  wood, it have  {pop.cashAmount}$ left");
@@ -183,8 +183,8 @@ public class PopulationManager : MonoBehaviour
         }
         
     }
-    private void PopSell()
-    {
+    private void PopSell() 
+    { 
         List<MarketSellRequest> PopSellBatchRequest = new();
         for (int i = 0; i < populationList.Count; i++)
         {

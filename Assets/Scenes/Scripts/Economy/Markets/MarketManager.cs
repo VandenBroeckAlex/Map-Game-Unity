@@ -277,7 +277,7 @@ public class MarketManager : MonoBehaviour
                 else
                 {
                     market.goods_list[i].price -=   (int)(market.goods_list[i].price * priceSensitivity);
-                }
+                } 
 
                 //reset supply and demand beggening of the month
                 market.goods_list[i].supply = 0;

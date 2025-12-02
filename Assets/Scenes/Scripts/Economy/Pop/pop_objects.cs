@@ -25,7 +25,7 @@ public class Pop_objects
         }
         //private float education;
         //private float militency;
-        public List<PopGood> GoodList = new List<PopGood>();
+        public List<GoodRequirement> GoodList = new List<GoodRequirement>();
         
         public Dictionary<string, float> PoliticalLeaning = new Dictionary<string, float>
         {
@@ -37,7 +37,7 @@ public class Pop_objects
 
 
         //constructor
-        public Pop(int ID, int SIZE, int PROVINCEID, PopJob JOB, Culture CULTURE, Religion RELIGION, int CASHAMOUNT, List<PopGood> STOCKPILE)
+        public Pop(int ID, int SIZE, int PROVINCEID, PopJob JOB, Culture CULTURE, Religion RELIGION, int CASHAMOUNT, List<GoodRequirement> STOCKPILE)
         {
             id = ID;
             size = SIZE;
@@ -73,8 +73,9 @@ public class Pop_objects
     //population strata 
     public class PopJob
     {
+        public int ID;
         public string Type { get; }
-        public string DefaultStrata { get; }
+        public string Strata { get; }
 
         public PopJob(string type, string defaultStrata)
         {
@@ -100,6 +101,7 @@ public class Pop_objects
     
 
     //culture and religion will be object holding stats not just name
+    
     public enum Culture
     {
         French,
@@ -110,4 +112,5 @@ public class Pop_objects
         Catholic,
         Protestant
     }
+
 }

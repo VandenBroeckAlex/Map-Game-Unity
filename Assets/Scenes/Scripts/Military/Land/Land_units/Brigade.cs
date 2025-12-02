@@ -9,7 +9,7 @@ public class Brigade
     public int id;
     [SerializeField]
     public List<Bataillon> bataillons;
-    public List<PopGood> supply;
+    public List<GoodRequirement> supply;
     public IntCurentMax Manpower;
     
 

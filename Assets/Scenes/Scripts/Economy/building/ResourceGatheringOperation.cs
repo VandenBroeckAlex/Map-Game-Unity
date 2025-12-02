@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ResourceGatheringOperation : ProductionWorkplace
 {
-    public Dictionary<string, int> outputGoods;
+    public Goods outputGoods;
 
 
 }

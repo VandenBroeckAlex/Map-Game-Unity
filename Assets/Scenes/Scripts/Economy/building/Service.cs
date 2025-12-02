@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class Service : ProductionWorkplace
 {
-    public Dictionary<string, int> output;
+    public Dictionary<string, int> output; // research, admin capacity, literacy boost, doctor( + birth rate, less death)
 }

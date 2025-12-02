@@ -13,7 +13,7 @@ public class Bataillon
     public FloatCurentMax moral;
     public IntCurentMax manPower;
     public IntCurentMax officer;
-    public List<PopGood> supply;
+    public List<GoodRequirement> supply;
     public bool isSupport;
     //public List<> supply;
     //public Weight weight;
