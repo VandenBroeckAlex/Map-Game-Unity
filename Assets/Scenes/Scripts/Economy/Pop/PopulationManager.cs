@@ -13,7 +13,7 @@ public class PopulationManager : MonoBehaviour
     private ProvincesManager _provincesManager;
     private CountriesManager _countriesManager;
     public int test_population_size = 100;
-
+    public static List<JobType> jobTypes = new List<JobType>();
     
 
     [SerializeField] public List<Pop> populationList = new();

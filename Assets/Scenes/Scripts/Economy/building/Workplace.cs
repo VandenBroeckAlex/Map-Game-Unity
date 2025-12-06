@@ -18,7 +18,7 @@ public enum WorkplaceType
 }
 
 [System.Serializable]
-public abstract class Workplace 
+public class Workplace 
 {
     private int provinceId;
     private int workplaceId;
@@ -34,9 +34,20 @@ public abstract class Workplace
     public int level;
 
     public int poorStrataWage = 1;
-    public int MiddleStrataWage = 2;
+    public int middleStrataWage = 2;
 
-   public class WorkerRequirment
+    public Workplace(int _provinceId, int _workplaceId, List<GoodRequirement> _goodConstructionCost, List<GoodRequirement> _maintenanceCost, List<WorkerRequirment> _workers, float wageMultiplier)
+    {
+        provinceId = _provinceId;
+        workplaceId = _workplaceId;
+        goodConstructionCost = _goodConstructionCost;
+        maintenanceCost = _maintenanceCost;
+        workers = _workers;
+        poorStrataWage = (int)(poorStrataWage * wageMultiplier);
+        middleStrataWage = (int)(middleStrataWage * wageMultiplier);
+    }
+
+    public class WorkerRequirment
     {
         public PopJob workerType;
         public IntCurentMax curentMax;
@@ -48,8 +59,8 @@ public abstract class Workplace
 
     }
 
-
     
+
 
     public int GetProvinceId()
     {

@@ -23,6 +23,9 @@ public class Pop_objects
         { get { return _cashAmount; }
           set { _cashAmount = value; }
         }
+
+        private Dictionary<int, int> workplace; //id num
+
         //private float education;
         //private float militency;
         public List<GoodRequirement> GoodList = new List<GoodRequirement>();
@@ -80,7 +83,7 @@ public class Pop_objects
         public PopJob(string type, string defaultStrata)
         {
             Type = type;
-            DefaultStrata = defaultStrata;
+            Strata = defaultStrata;
         }
     }
 

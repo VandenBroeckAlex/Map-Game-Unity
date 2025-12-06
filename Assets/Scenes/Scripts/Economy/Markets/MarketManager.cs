@@ -46,9 +46,8 @@ public class MarketManager : MonoBehaviour
     public void Initialize()
     {
         _countriesManager = CountriesManager.instance;
-        CreateSingleton();
-        Debug.Log("Is initializing goods");
-        good_definition_list = Load_goods();
+        CreateSingleton();        
+        //good_definition_list = Load_goods();
         default_market_goods = CreateMarketGoodTemplate();
         //worldMarket = CreateMarket();
         InitializeCountryMarket();

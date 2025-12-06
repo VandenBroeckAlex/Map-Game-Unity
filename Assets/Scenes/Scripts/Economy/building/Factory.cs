@@ -2,8 +2,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Factory : ProductionWorkplace
+public class Factory 
 {
+    ProductionWorkplace productionWorkplace;
     public Dictionary<string, int> inputGoods;
     public Dictionary<string, int> outputGoods;
 
