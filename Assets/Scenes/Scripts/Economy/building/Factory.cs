@@ -13,30 +13,12 @@ public class Factory
     //Type of remuneration
 
     public Factory(
-        int _provinceId, int _workplaceId,
-        List<GoodRequirement> _goodConstructionCost,
-        List<GoodRequirement> _maintenanceCost,
-        List<WorkerRequirment> _workers,
-        float wageMultiplier,
-        int _cashBuffer,
-        int _cashBufferMax,
-        int _efficiency,
-        Dictionary<int, int> _owner,
+        ProductionWorkplace _productionWorkplace,
         Dictionary<string, int> _inputGoods,
         Dictionary<string, int> _outputGoods
         )
-    { 
-        productionWorkplace = new ProductionWorkplace(
-                     _provinceId, 
-                     _workplaceId,
-                      _goodConstructionCost,
-                     _maintenanceCost,
-                     _workers,
-                     wageMultiplier,
-                     _cashBuffer,
-                     _cashBufferMax,
-                     _efficiency,
-                     _owner);
+    {
+        productionWorkplace = _productionWorkplace;
         inputGoods = _inputGoods;
         outputGoods = _outputGoods;
     }
