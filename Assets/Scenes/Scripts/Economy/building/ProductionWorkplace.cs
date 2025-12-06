@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Workplace;
 
-public abstract class ProductionWorkplace 
+public class ProductionWorkplace 
 {
     public Workplace workplace;
     public int cashBuffer;
@@ -11,7 +11,7 @@ public abstract class ProductionWorkplace
     public int efficiency;
     public Dictionary<int, int> owner;
 
-    ProductionWorkplace(int _provinceId, int _workplaceId,
+    public ProductionWorkplace(int _provinceId, int _workplaceId,
         List<GoodRequirement> _goodConstructionCost,
         List<GoodRequirement> _maintenanceCost,
         List<WorkerRequirment> _workers,
