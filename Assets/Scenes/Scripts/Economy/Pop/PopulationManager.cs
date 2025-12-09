@@ -1,10 +1,11 @@
 using System;
 using System.Collections.Generic;
-using UnityEngine;
-using static MarketManager;
-using static Market_object;
-using static Pop_objects;
 using System.Linq;
+using System.Security.Cryptography;
+using UnityEngine;
+using static Market_object;
+using static MarketManager;
+using static Pop_objects;
 
 
 public class PopulationManager : MonoBehaviour
@@ -79,24 +80,7 @@ public class PopulationManager : MonoBehaviour
     }
 
     
-     public List<Pop> SelectPopulationByCountry(int countryId)
-     {
-        return populationList.Where(p => p.countryID == countryId).ToList();
-     }
     
-
-    public List<Pop> SelectPopulationByProvince(int provinceID)
-    {
-        List<Pop> selectedPops = new();
-        for (int i = 0; i < populationList.Count; i++)
-        {
-            if (populationList[i].provinceId == provinceID)
-            {
-                selectedPops.Add(populationList[i]);
-            }
-        }
-        return selectedPops;
-    }
 
 
     private void PopGrowth()
@@ -121,7 +105,6 @@ public class PopulationManager : MonoBehaviour
             Debug.Log("the pop have grown !");
         }
     }
-
 
     private void PopBuy()
     {
@@ -183,6 +166,8 @@ public class PopulationManager : MonoBehaviour
         }
         
     }
+    
+    //This should be removed
     private void PopSell() 
     { 
         List<MarketSellRequest> PopSellBatchRequest = new();
@@ -215,7 +200,6 @@ public class PopulationManager : MonoBehaviour
         }
 
     }
-
     private void ResetPopStockpile()
     {
         for( int i=0; i < populationList.Count; i++)
@@ -226,12 +210,51 @@ public class PopulationManager : MonoBehaviour
                 }
         }
     }
-   
+
+
+    public void PopHired(int popId, int ammount, int workplaceId)
+    {
+        Pop pop = GetPopById(popId);
+        pop.HireInWorkplace(workplaceId,ammount);
+    }
+
+    public void PopFired(int popId, int ammount, int workplaceId)
+    {
+        Pop pop = GetPopById(popId);
+        pop.FiredFromWorkplace(workplaceId, ammount);
+    }
+
+    private Pop GetPopById(int id)
+    {
+        return populationList.Where(p => p.id == id).First();
+    }
     private int GetPopCountryByProvinceId(int provinceID)
     {
         int countryID = _provincesManager.GetProvinceOwnerByProvinceId(provinceID);
         return countryID;
     }
+
+
+
+
+    //--------- For UI ---------
+    public List<Pop> SelectPopulationByCountry(int countryId)
+    {
+        return populationList.Where(p => p.countryID == countryId).ToList();
+    }
+    public List<Pop> SelectPopulationByProvince(int provinceID)
+    {
+        List<Pop> selectedPops = new();
+        for (int i = 0; i < populationList.Count; i++)
+        {
+            if (populationList[i].provinceId == provinceID)
+            {
+                selectedPops.Add(populationList[i]);
+            }
+        }
+        return selectedPops;
+    }
+
 
 }
 

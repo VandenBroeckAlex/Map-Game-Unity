@@ -3,17 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Workplace;
 
-public class Factory 
+public class Factory : IWorkspace, IProductionBuilding, ITransformationBuilding
 {
-    public ProductionWorkplace productionWorkplace;
+    
+    public Production productionWorkplace;
     public Dictionary<string, int> inputGoods;
     public Dictionary<string, int> outputGoods;
 
     //Type of production
     //Type of remuneration
 
+
+
     public Factory(
-        ProductionWorkplace _productionWorkplace,
+        Production _productionWorkplace,
         Dictionary<string, int> _inputGoods,
         Dictionary<string, int> _outputGoods
         )
@@ -48,6 +51,68 @@ public class Factory
             if (!goodsStockpile.ContainsKey(input.Key) || goodsStockpile[input.Key] < input.Value)
                 return false;
         return true;
+    }
+
+    public void OnWorkerHired(int popId, int numberOfHired)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void LayOffWorker()
+    {
+        //if can not get good for effective production fire proportionnaly
+        throw new System.NotImplementedException();
+    }
+
+    public void OutputGoods()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void BuyInputGoods()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void SellGood(int goodId, int ammount)
+    {
+        
+        Market_object.Market market = MarketManager.instance.marketList[productionWorkplace.workplace.countryId];
+    }
+    
+    public void PayEmployees()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void SetWages()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Upgrade()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Degrade()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void DestroyBuiding()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void TakeLoan()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void BuyMaintenanceGood()
+    {
+        throw new System.NotImplementedException();
     }
 }
  

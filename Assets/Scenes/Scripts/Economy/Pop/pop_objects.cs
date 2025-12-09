@@ -24,7 +24,7 @@ public class Pop_objects
           set { _cashAmount = value; }
         }
 
-        private Dictionary<int, int> workplace; //id num
+        private Dictionary<int, int> workplace; //id ammount
 
         //private float education;
         //private float militency;
@@ -62,6 +62,27 @@ public class Pop_objects
             }
             return true;
         }
+    
+        public void FiredFromWorkplace(int workplaceId,int ammount)
+        {
+            int workerNumber = workplace[workplaceId];
+
+            if (workerNumber == 0) 
+            {
+                workplace.Remove(workplaceId);
+            }
+            if(workerNumber < 0)
+            {
+                throw new System.Exception("Workplace and pop data is De-Sync");
+            }
+
+            workplace[workplaceId] =- ammount;
+        }
+
+        public void HireInWorkplace(int workplaceId, int ammount) 
+        { 
+            workplace[workplaceId] =+ ammount;
+        }
     }
 
 
@@ -76,14 +97,14 @@ public class Pop_objects
     //population strata 
     public class PopJob
     {
-        public int ID;
-        public string Type { get; }
-        public string Strata { get; }
+        public int iD;
+        public string type { get; }
+        public string strata { get; }
 
         public PopJob(string type, string defaultStrata)
         {
-            Type = type;
-            Strata = defaultStrata;
+            this.type = type;
+            strata = defaultStrata;
         }
     }
 

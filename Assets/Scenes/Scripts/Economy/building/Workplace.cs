@@ -20,32 +20,53 @@ public enum WorkplaceType
 [System.Serializable]
 public class Workplace 
 {
+    public int id;
+    public int countryId;
     private int provinceId;
     private int workplaceId;
     public string name;
     public WorkplaceType type;
-    public int constructionCost; // IC cost
+    public int constructionCost; // IC cost / Time
+
     public List<GoodRequirement> goodConstructionCost = new List<GoodRequirement>();
     public List<GoodRequirement> maintenanceCost = new List<GoodRequirement>();
 
     private Dictionary<int, int> popAmmount = new Dictionary<int, int>();
 
-    public List<WorkerRequirment> workers;
+    public List<WorkerRequirment> workersRequirement;
+    public Dictionary<int, int> owner;
     public int level;
+
+    public int profit;
+    public int cashBuffer;
+    public int cashBufferMax;
+    public int efficiency;
 
     public int poorStrataWage = 1;
     public int middleStrataWage = 2;
 
-    public Workplace(int _provinceId, int _workplaceId, List<GoodRequirement> _goodConstructionCost, List<GoodRequirement> _maintenanceCost, List<WorkerRequirment> _workers, float wageMultiplier)
-    {
-        provinceId = _provinceId;
-        workplaceId = _workplaceId;
-        goodConstructionCost = _goodConstructionCost;
-        maintenanceCost = _maintenanceCost;
-        workers = _workers;
-        poorStrataWage = (int)(poorStrataWage * wageMultiplier);
-        middleStrataWage = (int)(middleStrataWage * wageMultiplier);
-    }
+    public bool isOpen;
+    public bool isUnderConstruction;
+
+    public Workplace(
+        int _provinceId, int _workplaceId, 
+        int _countryId,
+        List<GoodRequirement> _goodConstructionCost, 
+        List<GoodRequirement> _maintenanceCost,
+        Dictionary<int, int> _owner,
+        List<WorkerRequirment> _workers,
+        float wageMultiplier)
+            {
+                countryId = _countryId;
+                provinceId = _provinceId;
+                workplaceId = _workplaceId;
+                goodConstructionCost = _goodConstructionCost;
+                maintenanceCost = _maintenanceCost;
+                owner = _owner;
+                workersRequirement = _workers;
+                poorStrataWage = (int)(poorStrataWage * wageMultiplier);
+                middleStrataWage = (int)(middleStrataWage * wageMultiplier);
+            }
 
     public class WorkerRequirment
     {
@@ -58,8 +79,6 @@ public class Workplace
         }
 
     }
-
-    
 
 
     public int GetProvinceId()
@@ -83,7 +102,6 @@ public class Workplace
             popAmmount[popId] = 0;
 
         popAmmount[popId] += numberOfHired;
-
     }
 
     public void LayOffWorker(int popId, int numberOfLayedOff)

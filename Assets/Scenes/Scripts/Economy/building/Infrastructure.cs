@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class Infrastructure 
 {
-    ProductionWorkplace productionWorkplace;
+    Production productionWorkplace;
     public Dictionary<string, int> outputGoods;
 
-    public Infrastructure(ProductionWorkplace _productionWorkplace, Dictionary<string, int> _outputGoods)
+    public Infrastructure(Production _productionWorkplace, Dictionary<string, int> _outputGoods)
     {
         productionWorkplace = _productionWorkplace;
         outputGoods = _outputGoods;

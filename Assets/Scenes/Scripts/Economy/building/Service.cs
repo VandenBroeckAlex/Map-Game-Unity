@@ -4,10 +4,13 @@ using UnityEngine;
 
 public class Service 
 {
-    ProductionWorkplace productionWorkplace;
+    Production productionWorkplace;
     public Dictionary<string, int> output; // research, admin capacity, literacy boost, doctor( + birth rate, less death)
 
-    public Service(ProductionWorkplace _productionWorkplace, Dictionary<string, int> _output)
+    public Production Production => productionWorkplace;
+    public Workplace workplace => productionWorkplace.workplace;
+
+    public Service(Production _productionWorkplace, Dictionary<string, int> _output)
     {
         productionWorkplace = _productionWorkplace;
         output = _output;
