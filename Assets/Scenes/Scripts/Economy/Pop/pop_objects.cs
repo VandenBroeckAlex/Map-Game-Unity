@@ -1,8 +1,9 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static Market_object;
 using static helpers_math;
+using static Market_object;
 
 public class Pop_objects 
 {
@@ -73,7 +74,7 @@ public class Pop_objects
             }
             if(workerNumber < 0)
             {
-                throw new System.Exception("Workplace and pop data is De-Sync");
+                new InvalidOperationException("Workplace and pop data is De-Sync");
             }
 
             workplace[workplaceId] =- ammount;

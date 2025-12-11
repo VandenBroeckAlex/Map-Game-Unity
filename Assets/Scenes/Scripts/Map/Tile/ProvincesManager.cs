@@ -14,6 +14,7 @@ using static RaycastScript;
 public class ProvincesManager : MonoBehaviour
 {
     public static ProvincesManager instance;
+    private GameContext context;
 
     [SerializeField] 
     public Dictionary<int, Tile>  provinces_list = new Dictionary<int, Tile>();
@@ -64,7 +65,11 @@ public class ProvincesManager : MonoBehaviour
 
 
 
-    
+    public ProvincesManager(GameContext context)
+    {
+        this.context = context;
+    }
+
     public void Initialize()
     {
         CreateSingleton();

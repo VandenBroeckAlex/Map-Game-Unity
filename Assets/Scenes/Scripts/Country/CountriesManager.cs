@@ -12,6 +12,12 @@ public class CountriesManager : MonoBehaviour
     [SerializeField] 
     public Dictionary<int,Country> countryList = new();
     public static CountriesManager instance;
+    private GameContext context;
+
+    public CountriesManager(GameContext context)
+    {
+        this.context = context;
+    }
 
 
     public void Initialize()

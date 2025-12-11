@@ -13,6 +13,8 @@ public class PopulationManager : MonoBehaviour
     private MarketManager _marketManager;
     private ProvincesManager _provincesManager;
     private CountriesManager _countriesManager;
+
+    private GameContext context;
     public int test_population_size = 100;
     public static List<JobType> jobTypes = new List<JobType>();
     

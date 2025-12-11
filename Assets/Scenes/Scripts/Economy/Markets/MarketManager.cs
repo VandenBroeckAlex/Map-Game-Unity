@@ -18,7 +18,7 @@ public class MarketManager : MonoBehaviour
 
     private CountriesManager _countriesManager;
     public static MarketManager instance { get; private set; }
-
+    private GameContext context;
 
 
     //[SerializeField] public Market worldMarket = new Market();
@@ -41,6 +41,10 @@ public class MarketManager : MonoBehaviour
         DateHandeler.onMonth -= PriceFluctuation;
     }
 
+    public MarketManager(GameContext context)
+    {
+        this.context = context;
+    }
    
 
     public void Initialize()

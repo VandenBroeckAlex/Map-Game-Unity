@@ -58,7 +58,12 @@ public class ResourceGatheringOperation  : IWorkspace, IProductionBuilding
 
     public void PayEmployees()
     {
-        throw new System.NotImplementedException();
+        foreach (KeyValuePair<int, int> kvp in workplace.GetPopAmmount())
+        {
+            //Get pop type through PopManager
+
+            // ammount  -> PopManager
+        }
     }
 
     public void SetWages()
