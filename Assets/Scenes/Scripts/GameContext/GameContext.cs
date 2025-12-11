@@ -1,16 +1,51 @@
+using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 
-public class GameContexte : MonoBehaviour
+public class GameContext : MonoBehaviour
 {
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+    
+    public CountriesManager countriesManager;
+    public ProvincesManager provincesManager;
+    public PopulationManager populationManager;
+    public MarketManager marketManager;
+    public UI_Time_manager UiTimeManager;
+    public UI_market_manager UI_Market_Manager;
+
+    public GameContext() 
     {
         
+        countriesManager = new CountriesManager(this);
+        provincesManager = new ProvincesManager(this);
+        populationManager = new PopulationManager(this);
+        marketManager = new MarketManager(this);
     }
 
-    // Update is called once per frame
-    void Update()
+
+
+
+    
+    public void Initialize()
     {
-        
+        countriesManager.Initialize();
+        provincesManager.Initialize();
+        populationManager.InitializePopulation();
+        marketManager.Initialize();
+    }
+
+
+    //Game context should listen to tick and call everything in order
+    public void OnTick()
+    {
+        TickScript.onTick += populationManager.PopBuy;
+        TickScript.onTick += populationManager.PopSell;
+    }
+
+
+    public void OnMonth()
+    {
+        DateHandeler.onMonth += populationManager.PopGrowth;
+        DateHandeler.onMonth += populationManager.ResetPopStockpile;
+        DateHandeler.onMonth += marketManager.PriceFluctuation;
     }
 }

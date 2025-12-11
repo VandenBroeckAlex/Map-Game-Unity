@@ -21,7 +21,7 @@ public class TickScript : MonoBehaviour
         if (instance == null)
         {
             instance = this;
-            DontDestroyOnLoad(gameObject);
+            
         }
         else
         {
@@ -34,7 +34,6 @@ public class TickScript : MonoBehaviour
     public void Initialize()
     {
         CreateSingleton();
-       
     }
 
     public void StartTickScript()

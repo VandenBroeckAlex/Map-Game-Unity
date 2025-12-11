@@ -30,10 +30,8 @@ public class MapEditorInitiator : MonoBehaviour
     {
         _countriesManager = Instantiate(_countriesManager);
         _mainCamera = Instantiate(_mainCamera);
-        _provincesManager = Instantiate(_provincesManager);
         _mapLoader = Instantiate(_mapLoader);
         _eventSystem = Instantiate(_eventSystem);
-        _populationManager = Instantiate(_populationManager);
         _edgeGraphData = Instantiate(_edgeGraphData);
         _spriteCreator = Instantiate(_spriteCreator);
         _uiDoc = Instantiate(_uiDoc);

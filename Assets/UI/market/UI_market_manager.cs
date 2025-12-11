@@ -19,19 +19,21 @@ public class UI_market_manager : MonoBehaviour
 
     void OnEnable()
     {
-        MarketManager.instance.OnMarketUpdated += RefreshUI;
+        //Make delegate call instead
+        //MarketManager.instance.OnMarketUpdated += RefreshUI;
     }
 
     void OnDisable()
     {
-        MarketManager.instance.OnMarketUpdated -= RefreshUI;
+        //Make delegate call instead
+        //MarketManager.instance.OnMarketUpdated -= RefreshUI;
     }
 
-    public void CacheReferences()
+    public void CacheReferences(PlayerManager p, MarketManager m, CountriesManager c  )
     {
-        _playerManager = PlayerManager.instance;
-        _marketManager = MarketManager.instance;
-        _countriesManager = CountriesManager.instance;
+        _playerManager = p;
+        _marketManager = m;
+        _countriesManager = c;
 
         marketNameText = transform.Find("Title/Title_box/T_Market_name")
             .GetComponent<TextMeshProUGUI>();

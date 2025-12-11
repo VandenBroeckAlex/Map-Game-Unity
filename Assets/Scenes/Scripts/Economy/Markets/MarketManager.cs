@@ -15,9 +15,6 @@ using static GoodDatabase;
 
 public class MarketManager : MonoBehaviour
 {
-
-    private CountriesManager _countriesManager;
-    public static MarketManager instance { get; private set; }
     private GameContext context;
 
 
@@ -31,15 +28,9 @@ public class MarketManager : MonoBehaviour
 
     public float priceSensitivity = 0.1f;
 
-    private void OnEnable()
-    { 
-        DateHandeler.onMonth += PriceFluctuation;
-    }
+ 
 
-    private void OnDisable()
-    {
-        DateHandeler.onMonth -= PriceFluctuation;
-    }
+
 
     public MarketManager(GameContext context)
     {
@@ -48,9 +39,7 @@ public class MarketManager : MonoBehaviour
    
 
     public void Initialize()
-    {
-        _countriesManager = CountriesManager.instance;
-        CreateSingleton();        
+    {      
         //good_definition_list = Load_goods();
         default_market_goods = CreateMarketGoodTemplate();
         //worldMarket = CreateMarket();
@@ -58,20 +47,7 @@ public class MarketManager : MonoBehaviour
 
         Debug.Log($"Their is {marketList.Count} markets in the list");
     }
-    private void CreateSingleton()
-    {
-        // Singleton pattern: only one instance allowed
-        if (instance == null)
-        {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
-        else
-        {
-            Debug.Log("An instance of market manager already exist");
-            Destroy(gameObject);
-        }
-    }
+    
 
     private List<MarketGood> CreateMarketGoodTemplate()
     {
@@ -218,11 +194,11 @@ public class MarketManager : MonoBehaviour
 
             //TODO change this !
             //country tax
-            float country_income_tax = _countriesManager.countryList[_market.countryId].Income_tax;
+            float country_income_tax = context.countriesManager.countryList[_market.countryId].Income_tax;
 
             int country_income = (int)(BrutCash * country_income_tax); //country_income_tax * province controle * admin capacity
 
-            _countriesManager.countryList[_market.countryId].ReceiveCash(country_income);
+            context.countriesManager.countryList[_market.countryId].ReceiveCash(country_income);
 
             // NetCash
             response.cashRecived = BrutCash - country_income;
@@ -232,7 +208,7 @@ public class MarketManager : MonoBehaviour
             Marketgood.stockpile += marketSellRequestList[i].goodSell.amountsell;
         }
 
-        foreach (KeyValuePair<int, Country> kv in _countriesManager.countryList)
+        foreach (KeyValuePair<int, Country> kv in context.countriesManager.countryList)
         {
             Country country = kv.Value;
             //Debug.Log($"{country.name} treasury = {country.treasury}");
@@ -243,7 +219,7 @@ public class MarketManager : MonoBehaviour
     }
 
 
-    public void ChangeMarketIncomeTax(int countryId, float tax)
+    private void ChangeMarketIncomeTax(int countryId, float tax)
     {
         Market market = marketList[countryId];
 
@@ -251,7 +227,7 @@ public class MarketManager : MonoBehaviour
     }
 
 
-    private void PriceFluctuation()
+    public void PriceFluctuation()
     {
         foreach (KeyValuePair<int, Market> kv in marketList)
         {
@@ -291,6 +267,8 @@ public class MarketManager : MonoBehaviour
     }
 
 
+ 
+
     public Market GetMarketByCountryId(int countryId)
     {
         return marketList[countryId];
@@ -304,12 +282,11 @@ public class MarketManager : MonoBehaviour
         return market;
     }
 
-   
 
     private void InitializeCountryMarket()
     {
         //foreach country in country manager
-        foreach(KeyValuePair<int,Country> kv in _countriesManager.countryList)
+        foreach(KeyValuePair<int,Country> kv in context.countriesManager.countryList)
         {
             CreateCountryMarket(kv.Key);
         }

@@ -13,7 +13,7 @@ using static RaycastScript;
 [SerializeField]
 public class ProvincesManager : MonoBehaviour
 {
-    public static ProvincesManager instance;
+
     private GameContext context;
 
     [SerializeField] 
@@ -72,33 +72,15 @@ public class ProvincesManager : MonoBehaviour
 
     public void Initialize()
     {
-        CreateSingleton();
         if (terrainMaterial == null)
-            terrainMaterial = Resources.Load<Material>("Materials/PoliticalMap");
+            terrainMaterial = Resources.Load<Material>("Materials/province_mat");
 
-        InitializeHandeler();
+        InitializeManager();
         InitializeLookupTex();
     }
 
-    public void CreateSingleton()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-
-
-        else
-        {
-            Destroy(gameObject);
-            Debug.Log("An instence of Province manager already exist");
-        }
-    }
-
-
-
    
-    public void InitializeHandeler()
+    public void InitializeManager()
     {
        
         RaycastScript.onProvincePlaneHit += GetProvinceId;
@@ -172,8 +154,8 @@ public class ProvincesManager : MonoBehaviour
     public int GetProvinceIdByColor(Color color)
     {
         
-        ProvincesManager bScript = GetComponent<ProvincesManager>();
-        Dictionary<int, Tile> allProvinces = bScript.provinces_list;
+    
+        Dictionary<int, Tile> allProvinces = provinces_list;
 
         foreach (var kvp in colorIDList)
         {
@@ -292,6 +274,7 @@ public class ProvincesManager : MonoBehaviour
     {
         // 1. Load province map
         Texture2D provinceMap = LoadProvinceMap(FilePath.ProvinceMapImg);
+        
         terrainMaterial.SetTexture("_ProvinceTex", provinceMap);
         
         // 2. Load province definitions

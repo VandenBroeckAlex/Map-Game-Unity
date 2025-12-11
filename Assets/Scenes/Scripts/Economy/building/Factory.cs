@@ -3,15 +3,15 @@ using System.Collections.Generic;
 using UnityEngine;
 using static Workplace;
 
-public class Factory : IWorkspace, IProductionBuilding, ITransformationBuilding
+public class Factory //: IWorkspace, IProductionBuilding, ITransformationBuilding
 {
-    
+    public Workplace workplace;
     public Production productionWorkplace;
     public Dictionary<string, int> inputGoods;
     public Dictionary<string, int> outputGoods;
 
     //Type of production
-    //Type of remuneration
+    //Type of remuneration 
 
 
 
@@ -31,7 +31,7 @@ public class Factory : IWorkspace, IProductionBuilding, ITransformationBuilding
     public virtual void Produce(Dictionary<string, int> goodsStockpile, int workerCount)
     {
         // Check Input
-        if (productionWorkplace.workplace.type == WorkplaceType.Factory)
+        if (workplace.type == WorkplaceType.Factory)
         {
             if (CanProduce(goodsStockpile, workerCount))
             {
@@ -76,10 +76,9 @@ public class Factory : IWorkspace, IProductionBuilding, ITransformationBuilding
 
     public void SellGood(int goodId, int ammount)
     {
-        
-        Market_object.Market market = MarketManager.instance.marketList[productionWorkplace.workplace.countryId];
+        throw new System.NotImplementedException();
     }
-    
+
     public void PayEmployees()
     {
         throw new System.NotImplementedException();

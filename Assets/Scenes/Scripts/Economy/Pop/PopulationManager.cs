@@ -4,15 +4,11 @@ using System.Linq;
 using System.Security.Cryptography;
 using UnityEngine;
 using static Market_object;
-using static MarketManager;
 using static Pop_objects;
 
 
 public class PopulationManager : MonoBehaviour
 {
-    private MarketManager _marketManager;
-    private ProvincesManager _provincesManager;
-    private CountriesManager _countriesManager;
 
     private GameContext context;
     public int test_population_size = 100;
@@ -32,31 +28,14 @@ public class PopulationManager : MonoBehaviour
 
     // ----------------------------------
 
-
-    private void OnEnable()
+    public PopulationManager(GameContext context)
     {
-        TickScript.onTick += PopBuy;
-        TickScript.onTick += PopSell;
-        DateHandeler.onMonth += PopGrowth;
-        DateHandeler.onMonth += ResetPopStockpile;
+        this.context = context;
     }
 
-    private void OnDisable()
-    {
-        TickScript.onTick += PopBuy;
-        DateHandeler.onMonth -= PopGrowth;
-        DateHandeler.onMonth -= ResetPopStockpile;
-    }
-
- 
-
-   
 
     public void InitializePopulation()
     {
-        _marketManager = MarketManager.instance;
-        _provincesManager = ProvincesManager.instance;
-        _countriesManager = CountriesManager.instance;
 
         List<GoodRequirement> StockPile = new List<GoodRequirement>();
 
@@ -81,11 +60,8 @@ public class PopulationManager : MonoBehaviour
     
     }
 
-    
-    
 
-
-    private void PopGrowth()
+    public void PopGrowth()
     {
         for (int i = 0; i < populationList.Count; i++)
         {
@@ -94,8 +70,8 @@ public class PopulationManager : MonoBehaviour
             {
                 int pcId = populationList[i].countryID;
                 int ppId = populationList[i].provinceId;
-                float growRate =  base_growth_rate + _countriesManager.countryList[pcId].stats.GetPopulationGrowth() + _provincesManager.provinces_list[ppId].stats.GetPopulationGrowth();
-                Debug.Log($"grow rate = {_countriesManager.countryList[pcId].stats.GetPopulationGrowth()}");
+                float growRate =  base_growth_rate + context.countriesManager.countryList[pcId].stats.GetPopulationGrowth() + context.provincesManager.provinces_list[ppId].stats.GetPopulationGrowth();
+                Debug.Log($"grow rate = {context.countriesManager.countryList[pcId].stats.GetPopulationGrowth()}");
                 int newPopulation = (int)Math.Round(populationList[i].size * growRate);
                 populationList[i].size += newPopulation;
                 Debug.Log(populationList[i].size);
@@ -108,7 +84,7 @@ public class PopulationManager : MonoBehaviour
         }
     }
 
-    private void PopBuy()
+    public void PopBuy()
     {
         List<MarketBuyRequest> PopBuyBatchRequest = new();
         for (int i = 0; i < populationList.Count; i++)
@@ -144,7 +120,7 @@ public class PopulationManager : MonoBehaviour
             
         }
         //call MarketManager with PopBuyBatchRequest
-        List<MarketResponse> market_awnser = _marketManager.Pop_Buy_batch(PopBuyBatchRequest);
+        List<MarketResponse> market_awnser = context.marketManager.Pop_Buy_batch(PopBuyBatchRequest);
 
         // market awnser with needs fill and money left
         // assign the right values to the right pop
@@ -168,9 +144,9 @@ public class PopulationManager : MonoBehaviour
         }
         
     }
-    
+
     //This should be removed
-    private void PopSell() 
+    public void PopSell() 
     { 
         List<MarketSellRequest> PopSellBatchRequest = new();
         for (int i = 0; i < populationList.Count; i++)
@@ -187,7 +163,7 @@ public class PopulationManager : MonoBehaviour
             PopSellBatchRequest.Add(PopRequest);
         }
         //call marketSell
-        List<MarketSellResponse> market_awnser = _marketManager.Pop_Sell(PopSellBatchRequest);
+        List<MarketSellResponse> market_awnser = context.marketManager.Pop_Sell(PopSellBatchRequest);
         //re-assign cash to pop
 
         for (int i = 0; i < market_awnser.Count; i++)       
@@ -202,7 +178,7 @@ public class PopulationManager : MonoBehaviour
         }
 
     }
-    private void ResetPopStockpile()
+    public void ResetPopStockpile()
     {
         for( int i=0; i < populationList.Count; i++)
         {
@@ -212,7 +188,6 @@ public class PopulationManager : MonoBehaviour
                 }
         }
     }
-
 
     public void PopHired(int popId, int ammount, int workplaceId)
     {
@@ -232,7 +207,7 @@ public class PopulationManager : MonoBehaviour
     }
     private int GetPopCountryByProvinceId(int provinceID)
     {
-        int countryID = _provincesManager.GetProvinceOwnerByProvinceId(provinceID);
+        int countryID = context.provincesManager.GetProvinceOwnerByProvinceId(provinceID);
         return countryID;
     }
 
