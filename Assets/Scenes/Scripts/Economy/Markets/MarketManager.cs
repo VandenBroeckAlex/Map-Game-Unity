@@ -19,7 +19,7 @@ public class MarketManager : MonoBehaviour
 
 
     //[SerializeField] public Market worldMarket = new Market();
-    List<Goods.Good> good_definition_list = GoodDatabase.good_definition_list;
+    List<Goods.Good> good_definition_list;
     List<MarketGood> default_market_goods = new List<MarketGood>();
 
     public Dictionary<int,Market> marketList = new Dictionary<int,Market>();
@@ -39,12 +39,12 @@ public class MarketManager : MonoBehaviour
    
 
     public void Initialize()
-    {      
-        //good_definition_list = Load_goods();
+    {
+        good_definition_list = GoodDatabase.good_definition_list;
         default_market_goods = CreateMarketGoodTemplate();
         //worldMarket = CreateMarket();
         InitializeCountryMarket();
-
+        Debug.Log($"Theirs is {default_market_goods.Count} marketGood");
         Debug.Log($"Their is {marketList.Count} markets in the list");
     }
     

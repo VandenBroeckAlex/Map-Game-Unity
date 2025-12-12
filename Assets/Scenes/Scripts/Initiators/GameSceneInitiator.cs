@@ -5,6 +5,7 @@ using Cysharp.Threading.Tasks;
 
 public class GameSceneInitiator : MonoBehaviour
 {
+  
 
     [SerializeField] private DateHandeler _dateHandeler;
     private GameContext _gameContext = new GameContext();    
@@ -23,6 +24,7 @@ public class GameSceneInitiator : MonoBehaviour
 
     private GameObject _root;
     private GameObject _ui;
+    private GameObject _gameContextObj;
     private async void Start()
     {
         BindObject();
@@ -39,6 +41,8 @@ public class GameSceneInitiator : MonoBehaviour
     {
         _root = new GameObject("GameRoot");
         _ui = new GameObject("Ui");
+        _gameContextObj = new GameObject("GameContext");
+        _gameContext = _gameContextObj.AddComponent<GameContext>();
         _tickScript = Instantiate(_tickScript, _root.transform);
         _mainCamera = Instantiate(_mainCamera, _root.transform);
         _mapLoader = Instantiate(_mapLoader, _root.transform);
@@ -53,11 +57,12 @@ public class GameSceneInitiator : MonoBehaviour
 
     private async UniTask InitializeObject()
     {
+        _tickScript.Initialize();
         _gameContext.Initialize();
         Debug.Log("GameContext have been initialized");
-          await UniTask.Yield();
-        _tickScript.Initialize();
+        await UniTask.Yield();       
         _UiTimeManager.Initialize();
+        _tickScript.StartTickScript();
     }
    
 }

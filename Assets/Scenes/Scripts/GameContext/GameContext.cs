@@ -2,9 +2,10 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+
 public class GameContext : MonoBehaviour
 {
-    
+
     public CountriesManager countriesManager;
     public ProvincesManager provincesManager;
     public PopulationManager populationManager;
@@ -27,10 +28,15 @@ public class GameContext : MonoBehaviour
     
     public void Initialize()
     {
+        GoodDatabase.Initialize();
+        Debug.Log($"Market Good count : {GoodDatabase.good_definition_list.Count}");
         countriesManager.Initialize();
         provincesManager.Initialize();
         populationManager.InitializePopulation();
         marketManager.Initialize();
+
+        OnTick();
+        OnMonth();
     }
 
 

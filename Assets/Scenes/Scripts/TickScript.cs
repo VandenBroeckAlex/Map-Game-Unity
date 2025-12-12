@@ -11,7 +11,7 @@ public class TickScript : MonoBehaviour
     public int curentTick = 3;
     private float gameSpeed = 0.1f;
     private bool timeIsRunning = true;
-    public bool isPaused = true;
+    public bool isPaused = false;
     public delegate void OnTick();
     public static OnTick onTick;
 

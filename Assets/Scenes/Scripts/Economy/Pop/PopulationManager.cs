@@ -41,23 +41,23 @@ public class PopulationManager : MonoBehaviour
 
         GoodRequirement good1 = new GoodRequirement();
         good1.Good_id = 1;
-        good1.MaxNeed = 500;
+        good1.MaxNeed = 100;
         good1.Stockpile = 0;
         StockPile.Add(good1);
 
         GoodRequirement good2 = new GoodRequirement();
         good2.Good_id = 2;
-        good2.MaxNeed = 500;
+        good2.MaxNeed = 100;
         good2.Stockpile = 0;
         StockPile.Add(good2);
 
 
         populationList.Clear();
-        Pop newPop = new Pop(1, 1000, 1, new PopJob("Miner", "poor"), Culture.French, Religion.Catholic, 10, StockPile);
+        Pop newPop = new Pop(1, 1000, 1, new PopJob("Miner", "poor"), Culture.French, Religion.Catholic, 10000, StockPile);
         newPop.countryID = GetPopCountryByProvinceId(1);
         populationList.Add(newPop);
 
-    
+        Debug.Log("The number of pop in the list is :" + populationList.Count);
     }
 
 
@@ -138,7 +138,7 @@ public class PopulationManager : MonoBehaviour
                 GoodRequirement popGood = pop.GoodList.FirstOrDefault(g => g.Good_id == good_id);
 
                 popGood.Stockpile += ammount_bought;
-                Debug.Log($"Pop have bougt {ammount_bought}/{popGood.MaxNeed}  wood, it have  {pop.cashAmount}$ left");
+                Debug.Log($"Pop have bougt {ammount_bought}/{popGood.MaxNeed - popGood.Stockpile}  wood, it have  {pop.cashAmount}$ left");
             }
             
         }
@@ -158,7 +158,7 @@ public class PopulationManager : MonoBehaviour
                 marketId = populationList[i].countryID
             };
             PopRequest.goodSell.goodId = 1;
-            PopRequest.goodSell.amountsell = (int)((populationList[i].size * base_production)/1000)*100;
+            PopRequest.goodSell.amountsell = (int)(((populationList[i].size * base_production)/1000)*100);
             Debug.Log($"Pop have sell an amount of {PopRequest.goodSell.amountsell} ");
             PopSellBatchRequest.Add(PopRequest);
         }
