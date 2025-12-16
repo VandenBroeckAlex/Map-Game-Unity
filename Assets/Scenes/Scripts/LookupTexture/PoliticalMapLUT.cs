@@ -22,7 +22,7 @@ public class PoliticalMapLUT
             if (!province.isLand) continue;
 
             LandTile landprovince = (LandTile)province;
-            Color32 ownerColor = CountriesManager.instance.GetCountryColorById(landprovince.ownerId);
+            Color32 ownerColor = GameContext.instance.countriesManager.GetCountryColorById(landprovince.ownerId);
 
             pixels[kv.Key] = ownerColor;
         }
@@ -62,7 +62,7 @@ public class PoliticalMapLUT
                 LandTile province = (LandTile)entry.Value;
                 int countryId = province.ownerId;
 
-                countryColor = CountriesManager.instance.GetCountryColorById(province.ownerId);
+                countryColor = GameContext.instance.countriesManager.GetCountryColorById(province.ownerId);
                 countryColor.a = 255;
             }
 

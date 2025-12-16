@@ -3,7 +3,8 @@
 public interface IWorkspace
 {
     void OnWorkerHired(int popId,int numberOfHired);
-    void LayOffWorker(PopulationManager populationManager);
+    void OnWorkerLeave(int popId,int numberOfLeaving);
+    void LayOffWorker();
     void PayEmployees();
     void SetWages();
     void Upgrade();

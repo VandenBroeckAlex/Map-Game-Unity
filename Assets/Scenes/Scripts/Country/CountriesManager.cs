@@ -11,7 +11,6 @@ public class CountriesManager : MonoBehaviour
 {
     [SerializeField] 
     public Dictionary<int,Country> countryList = new();
-    public static CountriesManager instance;
     private GameContext context;
 
     public CountriesManager(GameContext context)
@@ -22,24 +21,13 @@ public class CountriesManager : MonoBehaviour
 
     public void Initialize()
     {
-        CreateSingleton();
         InitializeDefaultCountry();
         //LoadCountry every country formable should be loaded
     }
 
   
-    private void CreateSingleton()
-    {
-        if (instance == null)
-        {
-            instance = this;
-        }
-        else
-        {
-            Destroy(gameObject);
-            Debug.Log("An instence of Country manager already exist");
-        }
-    }
+  
+    
 
     
 

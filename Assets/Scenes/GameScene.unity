@@ -1809,14 +1809,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b8460049c204b1c409522bf3183235db, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameSceneInitiator
-  _tickScript: {fileID: 2545935692942652980, guid: 205a0ce7410a3e9448f5946048ccb254, type: 3}
   _dateHandeler: {fileID: 6528071972719490794, guid: 205a0ce7410a3e9448f5946048ccb254, type: 3}
-  _countriesManager: {fileID: 8071967418151626349, guid: b6624e8083d6d7d4590ceb37e424226d, type: 3}
   _mainCamera: {fileID: 625860690538362140, guid: 0beb98def4558f846a3811b4d9c9be10, type: 3}
-  _provincesManager: {fileID: 4575083603229427490, guid: fc53f49b42a9e1240b6756e15dc60f02, type: 3}
-  _populationManager: {fileID: 1701386508811006925, guid: 4d9a1fe62d600f648a78ca7ced577160, type: 3}
-  _marketManager: {fileID: 4961263230647270431, guid: 98dd7f1f7c47a7e4195d0bfd17aec41f, type: 3}
-  _goods_loader: {fileID: 3000047746639309815, guid: 0ecff979e5bb4754d9deff402cfe4983, type: 3}
+  _tickScript: {fileID: 2545935692942652980, guid: 205a0ce7410a3e9448f5946048ccb254, type: 3}
   _mapLoader: {fileID: 5753140671205282071, guid: 2aeb2035c256d7049ba36f0d595695b9, type: 3}
   _eventSystem: {fileID: 3635645218352751054, guid: 9128896bd17fa0e4e8dea62380e2c9ec, type: 3}
   _edgeGraphData: {fileID: 0}

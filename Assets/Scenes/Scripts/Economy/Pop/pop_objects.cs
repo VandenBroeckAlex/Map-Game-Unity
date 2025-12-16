@@ -137,5 +137,6 @@ public class Pop_objects
         Catholic,
         Protestant
     }
+    //popjob : miners, farmers
 
 }

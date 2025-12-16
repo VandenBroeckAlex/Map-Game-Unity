@@ -5,7 +5,7 @@ using UnityEngine.EventSystems;
 
 public class GameContext : MonoBehaviour
 {
-
+    public static GameContext instance;
     public CountriesManager countriesManager;
     public ProvincesManager provincesManager;
     public PopulationManager populationManager;
@@ -15,19 +15,16 @@ public class GameContext : MonoBehaviour
 
     public GameContext() 
     {
-        
         countriesManager = new CountriesManager(this);
         provincesManager = new ProvincesManager(this);
         populationManager = new PopulationManager(this);
         marketManager = new MarketManager(this);
     }
 
-
-
-
     
     public void Initialize()
     {
+        CreateSingleton();
         GoodDatabase.Initialize();
         Debug.Log($"Market Good count : {GoodDatabase.good_definition_list.Count}");
         countriesManager.Initialize();
@@ -53,5 +50,20 @@ public class GameContext : MonoBehaviour
         DateHandeler.onMonth += populationManager.PopGrowth;
         DateHandeler.onMonth += populationManager.ResetPopStockpile;
         DateHandeler.onMonth += marketManager.PriceFluctuation;
+    }
+
+    private void CreateSingleton()
+    {
+        // Singleton pattern: only one instance allowed
+        if (instance == null)
+        {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
+        else
+        {
+            Debug.Log("An instance of market manager already exist");
+            Destroy(gameObject);
+        }
     }
 }

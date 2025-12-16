@@ -6,7 +6,7 @@ using Cysharp.Threading.Tasks;
 public class GameSceneInitiator : MonoBehaviour
 {
   
-
+   
     [SerializeField] private DateHandeler _dateHandeler;
     private GameContext _gameContext = new GameContext();    
  
@@ -64,5 +64,6 @@ public class GameSceneInitiator : MonoBehaviour
         _UiTimeManager.Initialize();
         _tickScript.StartTickScript();
     }
-   
+  
+
 }

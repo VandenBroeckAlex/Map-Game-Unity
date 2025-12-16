@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using static Goods;
@@ -31,9 +32,9 @@ public class Workplace
     public List<GoodRequirement> goodConstructionCost = new List<GoodRequirement>();
     public List<GoodRequirement> maintenanceCost = new List<GoodRequirement>();
 
-    private Dictionary<int, int> popAmmount = new Dictionary<int, int>();
+    private Dictionary<int, int> popAmmount = new Dictionary<int, int>();  // track wich popId own how many worker 
 
-    public List<WorkerRequirment> workersRequirement;
+    public List<WorkerRequirment> workersRequirement; // track workers by type
     public Dictionary<int, int> owner;
     public int level;
 
@@ -72,12 +73,10 @@ public class Workplace
     {
         public PopJob workerType;
         public IntCurentMax curentMax;
-
         public float GetEmploymentPercent()
         {
             return ((curentMax.max / curentMax.current) / curentMax.max) * 100;
         }
-
     }
 
 
@@ -96,12 +95,16 @@ public class Workplace
         return popAmmount;
     }
 
-    public void HireWorker(int popId, int numberOfHired)
+    public void HireWorker(int popId, int numberOfHired, PopJob type)
     {
         if (!popAmmount.ContainsKey(popId))
             popAmmount[popId] = 0;
+            
 
         popAmmount[popId] += numberOfHired;
+
+        WorkerRequirment wr = workersRequirement.Where(workersRequirement => workersRequirement.workerType == type).First();
+        wr.curentMax.current += numberOfHired;
     }
 
     public void LayOffWorker(int popId, int numberOfLayedOff)
@@ -121,5 +124,16 @@ public class Workplace
         }
     }
 
-
+    public int GetNumberOfProducer()
+    {
+        int producer = 0;
+        for (int i = 0; i < workersRequirement.Count; i++)
+        {
+            if (workersRequirement[i].workerType.type == "farmer")
+            {
+                producer += workersRequirement[i].curentMax.current;
+            }
+        }
+        return 0;
+    }
 }

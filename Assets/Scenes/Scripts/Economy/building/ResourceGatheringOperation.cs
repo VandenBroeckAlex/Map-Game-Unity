@@ -8,34 +8,41 @@ using static PopulationManager;
 public class ResourceGatheringOperation  : IWorkspace, IProductionBuilding
 {
     public Workplace workplace;
-    public Production productionWorkplace;
+    public Production production;
     public Goods outputGoods;
     public int rgoRequirment;
     public Production Production;
 
-    public ResourceGatheringOperation(Production _productionWorkplace,
+
+    public event Action<int, int, int> WorkersFired;
+
+    public ResourceGatheringOperation(Production _productionWorkplace, 
         Goods _outputGoods)
     {
-        productionWorkplace = _productionWorkplace;
+        production = _productionWorkplace;
         outputGoods = _outputGoods;
     }
 
-    public void OnWorkerHired(int popId, int numberOfHired)
+    public void OnWorkerHired(int popId, int numberOfHired, Pop_objects.PopJob type)
     {
-        workplace.HireWorker(popId, numberOfHired);
+        workplace.HireWorker(popId, numberOfHired, type);
+    }
+
+    public void OnWorkerLeave(int popId, int numberOfLeaving)
+    {
+        workplace.LayOffWorker(popId, numberOfLeaving);
     }
 
 
     //fire low skill labour first
 
-    public event Action<int, int, int> WorkersFired;
-    public void LayOffWorker(PopulationManager populationManager)
+    public void LayOffWorker()
     {
 
-        foreach(KeyValuePair<int, int> kvp in workplace.GetPopAmmount())
+        foreach(KeyValuePair<int, int[]> kvp in workplace.GetPopAmmount())
         {
             int id = kvp.Key;
-            int totalAmmount= kvp.Value;
+            int totalAmmount= kvp.Value[0];
 
             //10% per call
             int NumFired = Mathf.Max(1, Mathf.CeilToInt(totalAmmount * 0.1f));
@@ -53,16 +60,27 @@ public class ResourceGatheringOperation  : IWorkspace, IProductionBuilding
 
     public void OutputGoods()
     {
-        throw new System.NotImplementedException();
+        int numberOutputed = (workplace.GetNumberOfProducer() / 1000) * production.efficiency;// * (smallest numb inputGood);
+        // Market sell
+        // Add response
     }
 
+    // popId => ammount
     public void PayEmployees()
     {
-        foreach (KeyValuePair<int, int> kvp in workplace.GetPopAmmount())
-        {
-            //Get pop type through PopManager
+        List<int[]> info = new List<int[]>();
 
-            // ammount  -> PopManager
+        foreach (KeyValuePair<int, int[]> kvp in workplace.GetPopAmmount())
+        {
+            if( kvp.Value[1] == 0)
+            {
+
+                info.Add(new int[]{ kvp.Key, (int)((kvp.Value[0] / 1000) * workplace.poorStrataWage)});
+            }
+            else if (kvp.Value[1] == 2)
+            {
+                info.Add(new int[] { kvp.Key, (int)((kvp.Value[0] / 1000) * workplace.middleStrataWage)});
+            }
         }
     }
 
