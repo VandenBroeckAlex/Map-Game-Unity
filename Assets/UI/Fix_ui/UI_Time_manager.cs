@@ -1,7 +1,7 @@
 using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
-using static Goods;
+using static Good;
 
 public class UI_Time_manager : MonoBehaviour
 {

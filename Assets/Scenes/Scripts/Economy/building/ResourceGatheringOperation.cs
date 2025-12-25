@@ -2,25 +2,27 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static Market_object;
 using static PopulationManager;
+using static Workplace;
 
 
 public class ResourceGatheringOperation  : IWorkspace, IProductionBuilding
 {
     public Workplace workplace;
     public Production production;
-    public Goods outputGoods;
+    public Good outputGood;
     public int rgoRequirment;
     public Production Production;
 
 
-    public event Action<int, int, int> WorkersFired;
+    public event Action<int, int, int> WorkersFired; // delegate should be in manager
 
     public ResourceGatheringOperation(Production _productionWorkplace, 
-        Goods _outputGoods)
+        Good _outputGoods)
     {
         production = _productionWorkplace;
-        outputGoods = _outputGoods;
+        outputGood = _outputGoods;
     }
 
     public void OnWorkerHired(int popId, int numberOfHired, Pop_objects.PopJob type)
@@ -30,58 +32,46 @@ public class ResourceGatheringOperation  : IWorkspace, IProductionBuilding
 
     public void OnWorkerLeave(int popId, int numberOfLeaving)
     {
-        workplace.LayOffWorker(popId, numberOfLeaving);
+        workplace.LayOffWorkerByID(popId, numberOfLeaving);
     }
 
 
-    //fire low skill labour first
-
-    public void LayOffWorker()
+    //fire low skill labour first - first in last out ?
+    // first in first out 
+    //10% per call
+    public List<IdNum> LayOffWorker()
     {
+        List<IdNum> poplayedoff = new List<IdNum>();
 
-        foreach(KeyValuePair<int, int[]> kvp in workplace.GetPopAmmount())
-        {
-            int id = kvp.Key;
-            int totalAmmount= kvp.Value[0];
+        int numberToFire = (int)(workplace.GetNumberOfProducer() * 0.1f);
 
-            //10% per call
-            int NumFired = Mathf.Max(1, Mathf.CeilToInt(totalAmmount * 0.1f));
-
-
-            workplace.LayOffWorker(id, NumFired);
-            WorkersFired?.Invoke(id, NumFired, workplace.id);
-
-        }
-        
-
-        //Notify pop manager
+        return workplace.LayOfWorkerFIFO(numberToFire); 
     }
   
 
-    public void OutputGoods()
+    //add higher grade worker after
+    public MarketSellRequest SellRequest()
     {
+
+        
         int numberOutputed = (workplace.GetNumberOfProducer() / 1000) * production.efficiency;// * (smallest numb inputGood);
-        // Market sell
-        // Add response
+        GoodSellRequest gsr = new GoodSellRequest(outputGood.id, numberOutputed);
+        MarketSellRequest request = new MarketSellRequest(workplace.id,workplace.countryId, gsr);
+        return request;
     }
 
+
     // popId => ammount
-    public void PayEmployees()
+    public List<IdNum> PayEmployees()
     {
-        List<int[]> info = new List<int[]>();
+        return workplace.PayEmployees();
+    }
 
-        foreach (KeyValuePair<int, int[]> kvp in workplace.GetPopAmmount())
-        {
-            if( kvp.Value[1] == 0)
-            {
 
-                info.Add(new int[]{ kvp.Key, (int)((kvp.Value[0] / 1000) * workplace.poorStrataWage)});
-            }
-            else if (kvp.Value[1] == 2)
-            {
-                info.Add(new int[] { kvp.Key, (int)((kvp.Value[0] / 1000) * workplace.middleStrataWage)});
-            }
-        }
+    public List<IdNum>? PayOwners()
+    {
+        return workplace.PayOwner();
+
     }
 
     public void SetWages()
@@ -92,21 +82,28 @@ public class ResourceGatheringOperation  : IWorkspace, IProductionBuilding
     public void Upgrade()
     {
         throw new System.NotImplementedException();
+        // Higher Max employee, higher production efficiency ?
     }
 
     public void Degrade()
     {
         throw new System.NotImplementedException();
+        // Lower Max employee, lower production efficiency ?
     }
 
     public void DestroyBuiding()
     {
         throw new System.NotImplementedException();
+        //remove all employee  
+        // kepp/sell stockpile
+        //redistribute cashbuffer to owner
+        //remove owner
     }
 
     public void TakeLoan()
     {
         throw new System.NotImplementedException();
+        // for upgrade or construction(probably for pop), input good, first wages ?
     }
 
     public void BuyMaintenanceGood()
@@ -114,5 +111,11 @@ public class ResourceGatheringOperation  : IWorkspace, IProductionBuilding
         throw new System.NotImplementedException();
     }
 
-    
+    //TODO: this is ignoring cashBuffer max !
+    public void ReciveCash(int ammount)
+    {
+       workplace.cashBuffer += ammount;
+    }
+
+   
 }

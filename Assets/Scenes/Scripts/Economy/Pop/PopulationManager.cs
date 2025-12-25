@@ -5,6 +5,7 @@ using System.Security.Cryptography;
 using UnityEngine;
 using static Market_object;
 using static Pop_objects;
+using static Workplace;
 
 
 public class PopulationManager : MonoBehaviour
@@ -12,10 +13,10 @@ public class PopulationManager : MonoBehaviour
 
     private GameContext context;
     public int test_population_size = 100;
-    public static List<JobType> jobTypes = new List<JobType>();
+    public static List<PopJob> jobTypes = new List<PopJob>(); 
     
 
-    [SerializeField] public List<Pop> populationList = new();
+    [SerializeField] private List<Pop> populationList = new();
     // ------ Put those in a json and load them -------
     public float base_growth_rate = 0.004f;
     public float base_consumption = 1f;
@@ -91,7 +92,7 @@ public class PopulationManager : MonoBehaviour
         {
             Market_object.MarketBuyRequest PopRequest = new()
             {
-                popId = populationList[i].id,
+                Id = populationList[i].id,
                 GoodRequest = new(),
                 cashAmount = populationList[i].cashAmount,
                 marketId = populationList[i].countryID
@@ -103,12 +104,10 @@ public class PopulationManager : MonoBehaviour
                 //Debug.Log($"good id : {populationList[i].GoodList[j].Good_id} , Max need : {populationList[i].GoodList[j].MaxNeed} : stockpile :{populationList[i].GoodList[j].Stockpile}");
                 if (populationList[i].GoodList[j].MaxNeed != populationList[i].GoodList[j].Stockpile)
                 {
-                    
-                    Market_object.GoodBuyRequest request = new()
-                    {
-                        goodId = populationList[i].GoodList[j].Good_id,
-                        amountWanted = (populationList[i].GoodList[j].MaxNeed * (populationList[i].size / 1000)) - populationList[i].GoodList[j].Stockpile
-                    };
+                    int goodId = populationList[i].GoodList[j].Good_id;
+                    int amountWanted = (populationList[i].GoodList[j].MaxNeed * (populationList[i].size / 1000)) - populationList[i].GoodList[j].Stockpile;
+                    Market_object.GoodBuyRequest request = new(goodId,amountWanted);
+                   
                     PopRequest.GoodRequest.Add(request);
                 }  
             }
@@ -120,7 +119,7 @@ public class PopulationManager : MonoBehaviour
             
         }
         //call MarketManager with PopBuyBatchRequest
-        List<MarketResponse> market_awnser = context.marketManager.Pop_Buy_batch(PopBuyBatchRequest);
+        List<MarketBuyResponse> market_awnser = context.marketManager.BatchMarketBuy(PopBuyBatchRequest);
 
         // market awnser with needs fill and money left
         // assign the right values to the right pop
@@ -146,38 +145,50 @@ public class PopulationManager : MonoBehaviour
     }
 
     //This should be removed
-    public void PopSell() 
-    { 
-        List<MarketSellRequest> PopSellBatchRequest = new();
-        for (int i = 0; i < populationList.Count; i++)
-        {
-            Market_object.MarketSellRequest PopRequest = new()
+    //public void PopSell() 
+    //{ 
+    //    List<MarketSellRequest> PopSellBatchRequest = new();
+    //    for (int i = 0; i < populationList.Count; i++)
+    //    {
+    //            int Id = populationList[i].id,
+
+    //            int marketId = populationList[i].countryID
+    //        Market_object.MarketSellRequest PopRequest = new()
+           
+    //        PopRequest.goodSell.goodId = 1;
+    //        PopRequest.goodSell.amountsell = (int)(((populationList[i].size * base_production)/1000)*100);
+    //        Debug.Log($"Pop have sell an amount of {PopRequest.goodSell.amountsell} ");
+    //        PopSellBatchRequest.Add(PopRequest);
+    //    }
+    //    //call marketSell
+    //    List<MarketSellResponse> market_awnser = context.marketManager.Pop_Sell(PopSellBatchRequest);
+    //    //re-assign cash to pop
+
+    //    for (int i = 0; i < market_awnser.Count; i++)       
+    //    {
+    //       int pop_id = market_awnser[i].Id;
+    //       int pop_cash_recived = market_awnser[i].cashRecived;
+
+    //        Pop pop = populationList
+    //        .FirstOrDefault(p => p.id == market_awnser[i].Id);
+
+    //        pop.cashAmount += pop_cash_recived;
+    //    }
+
+    //}
+    public void PayPop(List<IdNum> info)
+    {
+        foreach (IdNum idnum in info) 
+        { 
+            Pop pop = populationList.Where( p=> p.id == idnum.id).FirstOrDefault();
+            if (pop != null) 
             {
-                popId = populationList[i].id,
-                goodSell = new(),
-                marketId = populationList[i].countryID
-            };
-            PopRequest.goodSell.goodId = 1;
-            PopRequest.goodSell.amountsell = (int)(((populationList[i].size * base_production)/1000)*100);
-            Debug.Log($"Pop have sell an amount of {PopRequest.goodSell.amountsell} ");
-            PopSellBatchRequest.Add(PopRequest);
+                pop.cashAmount += idnum.num;
+            }
         }
-        //call marketSell
-        List<MarketSellResponse> market_awnser = context.marketManager.Pop_Sell(PopSellBatchRequest);
-        //re-assign cash to pop
-
-        for (int i = 0; i < market_awnser.Count; i++)       
-        {
-           int pop_id = market_awnser[i].popId;
-           int pop_cash_recived = market_awnser[i].cashRecived;
-
-            Pop pop = populationList
-            .FirstOrDefault(p => p.id == market_awnser[i].popId);
-
-            pop.cashAmount += pop_cash_recived;
-        }
-
     }
+
+
     public void ResetPopStockpile()
     {
         for( int i=0; i < populationList.Count; i++)

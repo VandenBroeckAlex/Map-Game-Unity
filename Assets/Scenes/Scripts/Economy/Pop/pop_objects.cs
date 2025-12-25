@@ -25,7 +25,7 @@ public class Pop_objects
           set { _cashAmount = value; }
         }
 
-        private Dictionary<int, int> workplace; //id ammount
+        private Dictionary<int, int> workplace; //idBuilding ammount
 
         //private float education;
         //private float militency;
@@ -87,15 +87,8 @@ public class Pop_objects
     }
 
 
-    public enum JobType
-    {
-        Farmer,
-        Miner,
-        Priest,
-        Soldier,        
-    }
-
     //population strata 
+    //define in a json
     public class PopJob
     {
         public int iD;

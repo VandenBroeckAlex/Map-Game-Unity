@@ -1,8 +1,10 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
-using static Goods;
+using static Good;
+using static Market_object;
 
 public class Market_object 
 {
@@ -25,8 +27,45 @@ public class Market_object
             return owner_Income_tax;
         }
 
-        
-    
+        //public MarketSellResponse SellGood(MarketSellRequest sellRequest) 
+        //{
+        //    //create the response object
+        //    MarketSellResponse response = new MarketSellResponse();
+        //    //search for good
+        //    int goodId = sellRequest.goodSell.goodId;         
+
+        //    Market_object.MarketGood Marketgood = goods_list
+        //    .Where(good => good.good.id == goodId).FirstOrDefault();
+        //    //country tax
+
+        //    int BrutCash = Marketgood.price * sellRequest.goodSell.amountsell;
+        //    float country_income_tax = owner_Income_tax;
+        //    int country_income = (int)(BrutCash * country_income_tax); //country_income_tax * province controle * admin capacity
+        //    // NetCash
+        //    response.cashRecived = BrutCash - country_income;
+        //    //batch_response.Add(response);
+
+        //    //Marketgood.supply += marketSellRequestList[i].goodSell.amountsell;
+        //    //Marketgood.stockpile += marketSellRequestList[i].goodSell.amountsell;
+        //}
+
+        public void AddGood(int goodId, int ammount) 
+        {
+            Market_object.MarketGood Marketgood = goods_list
+           .Where(good => good.good.id == goodId).FirstOrDefault();
+
+            Marketgood.supply += ammount;
+            Marketgood.stockpile += ammount;
+        }
+
+        public void TakeGood(int goodId, int ammount)
+        {
+            Market_object.MarketGood Marketgood = goods_list
+           .Where(good => good.good.id == goodId).FirstOrDefault();
+
+            Marketgood.demand += ammount;
+            Marketgood.stockpile -= ammount;
+        }
     }
 
     [System.Serializable]
@@ -113,7 +152,7 @@ public class Market_object
 
     public class MarketBuyRequest
     {
-        public int popId;
+        public int Id;
         public int marketId;
         public List<GoodBuyRequest> GoodRequest; // Turn it into an array
         public int cashAmount;
@@ -121,10 +160,16 @@ public class Market_object
 
     public class MarketSellRequest
     {
-        public int popId;
+        public int Id;
         public int marketId;
-        //pop type
         public GoodSellRequest goodSell;
+
+        public MarketSellRequest(int id, int marketId, GoodSellRequest goodSell)
+        {
+            Id = id;
+            this.marketId = marketId;
+            this.goodSell = goodSell;
+        }
     }
 
 
@@ -132,22 +177,32 @@ public class Market_object
     {
         public int goodId;
         public int amountWanted;
+        public GoodBuyRequest(int goodId, int amountWanted)
+        {
+            this.goodId = goodId;
+            this.amountWanted = amountWanted;
+        }
     }
 
     public class GoodSellRequest
     {
         public int goodId;
         public int amountsell;
+        public GoodSellRequest(int goodId, int amountsell)
+        {
+            this.goodId = goodId;
+            this.amountsell = amountsell;
+        }
     }
 
     public class MarketSellResponse 
     {
-        public int popId;
+        public int Id;
         public int cashRecived;
     }
 
 
-    public class MarketResponse
+    public class MarketBuyResponse
     {
         public int popId; 
         public List<GoodResponse> goodsBought;

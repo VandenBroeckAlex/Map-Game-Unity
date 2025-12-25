@@ -1,6 +1,7 @@
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
+using static Market_object;
 
 
 public class GameContext : MonoBehaviour
@@ -21,10 +22,18 @@ public class GameContext : MonoBehaviour
         marketManager = new MarketManager(this);
     }
 
-    
-    public void Initialize()
+    private void Awake()
     {
         CreateSingleton();
+        
+        // Create managers here
+        countriesManager = new CountriesManager(this);
+        provincesManager = new ProvincesManager(this);
+        populationManager = new PopulationManager(this);
+        marketManager = new MarketManager(this);
+    }
+    public void Initialize()
+    {
         GoodDatabase.Initialize();
         Debug.Log($"Market Good count : {GoodDatabase.good_definition_list.Count}");
         countriesManager.Initialize();
@@ -40,6 +49,10 @@ public class GameContext : MonoBehaviour
     //Game context should listen to tick and call everything in order
     public void OnTick()
     {
+        // Avoid problem if called twice
+        TickScript.onTick -= populationManager.PopBuy;
+        TickScript.onTick -= populationManager.PopSell;
+
         TickScript.onTick += populationManager.PopBuy;
         TickScript.onTick += populationManager.PopSell;
     }
@@ -47,6 +60,11 @@ public class GameContext : MonoBehaviour
 
     public void OnMonth()
     {
+        // Avoid problem if called twice
+        DateHandeler.onMonth -= populationManager.PopGrowth;
+        DateHandeler.onMonth -= populationManager.ResetPopStockpile;
+        DateHandeler.onMonth -= marketManager.PriceFluctuation;
+
         DateHandeler.onMonth += populationManager.PopGrowth;
         DateHandeler.onMonth += populationManager.ResetPopStockpile;
         DateHandeler.onMonth += marketManager.PriceFluctuation;

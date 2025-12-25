@@ -9,14 +9,14 @@ public class Goods_loader : MonoBehaviour
 
 
     [SerializeField]
-    public static List<Goods.Good> allGoodsDefinition;
+    public static List<Good> allGoodsDefinition;
 
-    public static List<Goods.Good> Load_goods()
+    public static List<Good> Load_goods()
     {
         Debug.Log("Is initializing goods");
         string _FilePath = FilePath.Goods;
         string jsonText = File.ReadAllText(_FilePath);
-        List<Goods.Good>  good_list = JsonConvert.DeserializeObject<List<Goods.Good>>(jsonText);
+        List<Good>  good_list = JsonConvert.DeserializeObject<List<Good>>(jsonText);
         allGoodsDefinition = good_list;
         return good_list;
 

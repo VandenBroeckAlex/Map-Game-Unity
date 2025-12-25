@@ -1,22 +1,29 @@
 
 
+using System.Collections.Generic;
+using static Market_object;
+using static Workplace;
+
 public interface IWorkspace
 {
-    void OnWorkerHired(int popId,int numberOfHired);
+    void OnWorkerHired(int popId,int numberOfHired, Pop_objects.PopJob job);
     void OnWorkerLeave(int popId,int numberOfLeaving);
-    void LayOffWorker();
-    void PayEmployees();
+    List<IdNum> LayOffWorker();
+    List<IdNum> PayEmployees();
+    List<IdNum> PayOwners();
     void SetWages();
     void Upgrade();
     void Degrade();
     void DestroyBuiding();
     void TakeLoan();
     void BuyMaintenanceGood();
+
+    void ReciveCash(int ammount);
 }
 
 public interface IProductionBuilding
 {
-    void OutputGoods();
+    MarketSellRequest SellRequest();
 }
 
 public interface ITransformationBuilding

@@ -19,7 +19,7 @@ public class MarketManager : MonoBehaviour
 
 
     //[SerializeField] public Market worldMarket = new Market();
-    List<Goods.Good> good_definition_list;
+    List<Good> good_definition_list;
     List<MarketGood> default_market_goods = new List<MarketGood>();
 
     public Dictionary<int,Market> marketList = new Dictionary<int,Market>();
@@ -90,30 +90,30 @@ public class MarketManager : MonoBehaviour
     }
 
 
-    public List<MarketResponse> Pop_Buy_batch(List<MarketBuyRequest> PopRequestBatch)
+    public List<MarketBuyResponse> BatchMarketBuy(List<MarketBuyRequest> marketBuyRequestList)
     {
-        List<MarketResponse> marketResponse = new List<MarketResponse>();
+        List<MarketBuyResponse> marketResponse = new List<MarketBuyResponse>();
        
         
-        for (int i = 0; i < PopRequestBatch.Count; i++) 
+        for (int i = 0; i < marketBuyRequestList.Count; i++) 
         {
             //construction of response object
-            MarketResponse response = new MarketResponse();
+            MarketBuyResponse response = new MarketBuyResponse();
            
-            response.popId = PopRequestBatch[i].popId;
+            response.popId = marketBuyRequestList[i].Id;
             response.goodsBought = new List<GoodResponse>();
 
-            int market_id = PopRequestBatch[i].marketId;
+            int market_id = marketBuyRequestList[i].marketId;
             Market _market = marketList[market_id];
-            int cashAmount = PopRequestBatch[i].cashAmount;
+            int cashAmount = marketBuyRequestList[i].cashAmount;
             response.cashLeft = cashAmount;
 
 
-            for (int j = 0; j < PopRequestBatch[i].GoodRequest.Count; j++)
+            for (int j = 0; j < marketBuyRequestList[i].GoodRequest.Count; j++)
             {
                 GoodResponse goodResponse = new GoodResponse();
 
-                int goodId = PopRequestBatch[i].GoodRequest[j].goodId;
+                int goodId = marketBuyRequestList[i].GoodRequest[j].goodId;
 
                 goodResponse.goodId = goodId;
 
@@ -121,7 +121,7 @@ public class MarketManager : MonoBehaviour
                 .Where(good => good.good.id == goodId).FirstOrDefault();
            
 
-                int amountWanted = PopRequestBatch[i].GoodRequest[j].amountWanted;
+                int amountWanted = marketBuyRequestList[i].GoodRequest[j].amountWanted;
                 Debug.Log($"price : {Marketgood.price}, ammount wanted : {amountWanted} ");
                 int totalCost = Marketgood.price * amountWanted;
                 if(cashAmount == 0)
@@ -168,7 +168,7 @@ public class MarketManager : MonoBehaviour
     }
 
 
-    public List<MarketSellResponse> Pop_Sell(List<MarketSellRequest> marketSellRequestList)
+    public List<MarketSellResponse> BatchMarketSell(List<MarketSellRequest> marketSellRequestList)
     {
         List<MarketSellResponse> batch_response = new List<MarketSellResponse>();
 
@@ -176,7 +176,7 @@ public class MarketManager : MonoBehaviour
         {
             //create the response object
             MarketSellResponse response = new MarketSellResponse();
-            response.popId = marketSellRequestList[i].popId;
+            response.Id = marketSellRequestList[i].Id;
             int goodId = marketSellRequestList[i].goodSell.goodId;
 
 
@@ -204,14 +204,7 @@ public class MarketManager : MonoBehaviour
             response.cashRecived = BrutCash - country_income;
             batch_response.Add(response);
 
-            Marketgood.supply += marketSellRequestList[i].goodSell.amountsell;
-            Marketgood.stockpile += marketSellRequestList[i].goodSell.amountsell;
-        }
-
-        foreach (KeyValuePair<int, Country> kv in context.countriesManager.countryList)
-        {
-            Country country = kv.Value;
-            //Debug.Log($"{country.name} treasury = {country.treasury}");
+            _market.AddGood(Marketgood.good.id, marketSellRequestList[i].goodSell.amountsell);
         }
 
         OnMarketUpdated?.Invoke();//call refresh ui
@@ -267,7 +260,108 @@ public class MarketManager : MonoBehaviour
     }
 
 
- 
+    public MarketSellResponse MarketSell(MarketSellRequest sellRequest)
+    {
+        //create the response object
+        MarketSellResponse response = new MarketSellResponse();
+        response.Id = sellRequest.Id;
+        int goodId = sellRequest.goodSell.goodId;
+
+
+        //search for market
+        int market_id = sellRequest.marketId;
+        Market _market = marketList[market_id];
+
+        //search for good
+        Market_object.MarketGood Marketgood = _market.goods_list
+        .Where(good => good.good.id == goodId).FirstOrDefault();
+
+
+        //country tax
+        int BrutCash = Marketgood.price * sellRequest.goodSell.amountsell;
+
+        //TODO change this !
+        //country tax
+        float country_income_tax = context.countriesManager.countryList[_market.countryId].Income_tax;
+
+        int country_income = (int)(BrutCash * country_income_tax); //country_income_tax * province controle * admin capacity
+
+        context.countriesManager.countryList[_market.countryId].ReceiveCash(country_income);
+
+        // NetCash
+        response.cashRecived = BrutCash - country_income;
+
+        _market.AddGood(Marketgood.good.id, sellRequest.goodSell.amountsell);
+
+        return response;    
+    }
+
+
+    public MarketBuyResponse MarketBuy(MarketBuyRequest request)
+    {
+        MarketBuyResponse response = new MarketBuyResponse();
+
+        response.popId = request.Id;
+        response.goodsBought = new List<GoodResponse>();
+
+        int market_id = request.marketId;
+        Market _market = marketList[market_id];
+        int cashAmount = request.cashAmount;
+        response.cashLeft = cashAmount;
+
+
+        for (int j = 0; j < request.GoodRequest.Count; j++)
+        {
+            GoodResponse goodResponse = new GoodResponse();
+
+            int goodId = request.GoodRequest[j].goodId;
+
+            goodResponse.goodId = goodId;
+
+            Market_object.MarketGood Marketgood = _market.goods_list
+            .Where(good => good.good.id == goodId).FirstOrDefault();
+
+
+            int amountWanted = request.GoodRequest[j].amountWanted;
+            Debug.Log($"price : {Marketgood.price}, ammount wanted : {amountWanted} ");
+            int totalCost = Marketgood.price * amountWanted;
+            if (cashAmount == 0)
+            {
+                break;
+            }
+
+
+            if (totalCost <= cashAmount)
+            {
+                // Can afford the full amount
+                goodResponse.amountBought = amountWanted;
+                response.cashLeft -= totalCost;
+                response.goodsBought.Add(goodResponse);
+                Debug.Log("full amount");
+                Debug.Log("cash left =" + response.cashLeft);
+
+                _market.TakeGood(Marketgood.good.id, amountWanted);
+            }
+            else
+            {
+                // Can only afford partial amount
+                int amountAffordable = cashAmount / Marketgood.price;
+                goodResponse.amountBought = amountAffordable;
+                response.cashLeft = 0;
+                response.goodsBought.Add(goodResponse);
+                Debug.Log("partial amount");
+
+                Marketgood.demand += amountWanted;
+                Marketgood.stockpile -= amountAffordable;
+
+                break; // Exit loop early, no cash left
+            }
+        }
+        OnMarketUpdated?.Invoke();//call refresh ui
+        return response;
+    }
+
+    
 
     public Market GetMarketByCountryId(int countryId)
     {

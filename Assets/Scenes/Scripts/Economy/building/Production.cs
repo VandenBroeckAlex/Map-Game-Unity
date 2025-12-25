@@ -14,7 +14,7 @@ public class Production
     public Production(int _provinceId, int _workplaceId,
         List<GoodRequirement> _goodConstructionCost,
         List<GoodRequirement> _maintenanceCost,
-        List<WorkerRequirment> _workers,
+        List<WorkerTypeCurrentMax> _workers,
         float wageMultiplier,
         int _cashBuffer,
         int _cashBufferMax,
