@@ -4,13 +4,14 @@ using System.Collections.Generic;
 using static Market_object;
 using static Workplace;
 
-public interface IWorkspace
+public interface IWorkplace
 {
+    int getWorkplaceId();
     void OnWorkerHired(int popId,int numberOfHired, Pop_objects.PopJob job);
     void OnWorkerLeave(int popId,int numberOfLeaving);
     List<IdNum> LayOffWorker();
     List<IdNum> PayEmployees();
-    List<IdNum> PayOwners();
+    List<IdNum>? PayOwners();
     void SetWages();
     void Upgrade();
     void Degrade();

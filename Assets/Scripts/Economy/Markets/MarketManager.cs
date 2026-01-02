@@ -100,7 +100,7 @@ public class MarketManager : MonoBehaviour
             //construction of response object
             MarketBuyResponse response = new MarketBuyResponse();
            
-            response.popId = marketBuyRequestList[i].Id;
+            response.id = marketBuyRequestList[i].Id;
             response.goodsBought = new List<GoodResponse>();
 
             int market_id = marketBuyRequestList[i].marketId;
@@ -204,7 +204,7 @@ public class MarketManager : MonoBehaviour
             response.cashRecived = BrutCash - country_income;
             batch_response.Add(response);
 
-            _market.AddGood(Marketgood.good.id, marketSellRequestList[i].goodSell.amountsell);
+            _market.AddGoodStockpile(Marketgood.good.id, marketSellRequestList[i].goodSell.amountsell);
         }
 
         OnMarketUpdated?.Invoke();//call refresh ui
@@ -291,7 +291,7 @@ public class MarketManager : MonoBehaviour
         // NetCash
         response.cashRecived = BrutCash - country_income;
 
-        _market.AddGood(Marketgood.good.id, sellRequest.goodSell.amountsell);
+        _market.AddGoodStockpile(Marketgood.good.id, sellRequest.goodSell.amountsell);
 
         return response;    
     }
@@ -301,7 +301,7 @@ public class MarketManager : MonoBehaviour
     {
         MarketBuyResponse response = new MarketBuyResponse();
 
-        response.popId = request.Id;
+        response.id = request.Id;
         response.goodsBought = new List<GoodResponse>();
 
         int market_id = request.marketId;
@@ -340,7 +340,7 @@ public class MarketManager : MonoBehaviour
                 Debug.Log("full amount");
                 Debug.Log("cash left =" + response.cashLeft);
 
-                _market.TakeGood(Marketgood.good.id, amountWanted);
+                _market.SubstractGoodStockpile(Marketgood.good.id, amountWanted);
             }
             else
             {

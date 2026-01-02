@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-public class CountryStats
+public class CountryModdifiers
 {
    
 

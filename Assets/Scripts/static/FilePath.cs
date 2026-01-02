@@ -13,4 +13,9 @@ public class FilePath
     public static string TilesInfos => Path.Combine(Application.persistentDataPath, "Tiles/TilesInfos.json");
 
     public static string CountryDef = Path.Combine(Application.persistentDataPath, "Country/CountryDef.json");
+
+
+    //-------- Path for test file ______
+    public static string TestCountryDef = Path.Combine(Application.persistentDataPath, "Tests/CountryDef.json");
+
 }

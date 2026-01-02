@@ -21,19 +21,23 @@ public class CountriesManager : MonoBehaviour
 
     public void Initialize()
     {
-        InitializeDefaultCountry();
+        string jsonPath = FilePath.CountryDef;
+        InitializeDefaultCountry(jsonPath);
         //LoadCountry every country formable should be loaded
     }
 
-  
-  
-    
-
-    
-
-    private void InitializeDefaultCountry()
+    public void TestInitialize(string jsonPath)
     {
-        string jsonPath = FilePath.CountryDef;
+        InitializeDefaultCountry(jsonPath);
+    }
+  
+    
+
+    
+
+    private void InitializeDefaultCountry(string jsonPath)
+    {
+        
         if (File.Exists(jsonPath))
         {
             string jsonText = File.ReadAllText(jsonPath);
@@ -45,7 +49,8 @@ public class CountriesManager : MonoBehaviour
                     _c.id,
                     _c.name,
                     new Color32((byte)_c.color[0], (byte)_c.color[1], (byte)_c.color[2], 255),
-                    _c.treasury
+                    _c.treasury,
+                    _c.tag
                 );
 
                 countryList.Add(_c.id, country);
@@ -64,8 +69,6 @@ public class CountriesManager : MonoBehaviour
         Modifier modifier = new Modifier("pop_growth",4,ModifierType.Multiplicative);
 
         countryList[0].stats.modifiers.AddModifier(modifier);
-            
-
     } 
    
     public Color GetCountryColorById(int _id)
@@ -85,6 +88,11 @@ public class CountriesManager : MonoBehaviour
     public Country GetCountryById(int _id)
     {
         return countryList.Where(c => c.Key.Equals(_id)).FirstOrDefault().Value;
+    }
+
+    public int NumberOfCountry()
+    {
+        return countryList.Count;
     }
 
     public class CountryDef

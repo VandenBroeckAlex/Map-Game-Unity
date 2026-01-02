@@ -184,7 +184,7 @@ public class Workplace
         return info;
     }
 
-    //distribute surplus to owner
+    //distribute surplus to owner   if owner have too much after buying all good it will give it to bank
     public List<IdNum>? PayOwner()
     {
         if (cashBuffer > cashBufferMax)

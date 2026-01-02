@@ -1,12 +1,15 @@
+using System;
 using System.Collections.Generic;
+using System.Linq;
 using static Market_object;
+using static Pop_objects;
 using static Workplace;
 
 
 public class BuildingManager 
 {
     private GameContext context;
-    List<IWorkspace> workplaces;
+    List<IWorkplace> workplacesList;
     // list for workplace beeing build ?
 
     public BuildingManager(GameContext context)
@@ -17,14 +20,14 @@ public class BuildingManager
 
     public void Initialize()
     {
-        workplaces = new List<IWorkspace>();
+        workplacesList = new List<IWorkplace>();
     }
      
 
     public void WorkplaceProduce()
     {
         
-        foreach (var workplace in workplaces)
+        foreach (var workplace in workplacesList)
         {
             if (workplace is IProductionBuilding production)
             {
@@ -33,7 +36,6 @@ public class BuildingManager
                 workplace.ReciveCash(response.cashRecived);
             }
         }
-        //
     }
 
 
@@ -41,18 +43,17 @@ public class BuildingManager
  
     public void WorkplaceBuyInputGoods()
     {
-        foreach (var workplace in workplaces)
+        foreach (var workplace in workplacesList)
         {
             if (workplace is ITransformationBuilding transfoBuilding)
             {
-
+                
             }
-        }
-            
+        }   
     }
     public void WorkplacePayEmployee()
     {
-        foreach (var workplace in workplaces)
+        foreach (var workplace in workplacesList)
         {
           List<IdNum> response = workplace.PayEmployees();
             if (response is not null) 
@@ -65,20 +66,26 @@ public class BuildingManager
 
     public void WorkplacePayOwner()
     {
-        foreach (var workplace in workplaces)
+        foreach (var workplace in workplacesList)
         {
             List<IdNum> response = workplace.PayOwners();
             if(response is not null)
                 context.populationManager.PayPop(response);
         }
     }
-    public void WorkplaceHire()
+    public void WorkplaceHire(int workplaceId, int popId, int nummberOfHired, PopJob type)
     {
+        IWorkplace workplace = workplacesList.Where(w => workplaceId == w.getWorkplaceId()).FirstOrDefault();
 
+        if (workplace == null)
+        {
+            throw new Exception("Population manager outputed a non existant workplace Id : BuildingManager.WorkplaceHire()");
+        }
+        workplace.OnWorkerHired(popId,nummberOfHired,type);
     }
     public void WorkplaceFire()
     {
-
+         
     }
     public void BuildWorkplace()
     {

@@ -7,7 +7,7 @@ using static PopulationManager;
 using static Workplace;
 
 
-public class ResourceGatheringOperation  : IWorkspace, IProductionBuilding
+public class ResourceGatheringOperation  : IWorkplace, IProductionBuilding
 {
     public Workplace workplace;
     public Production production;
@@ -62,7 +62,7 @@ public class ResourceGatheringOperation  : IWorkspace, IProductionBuilding
 
 
     // popId => ammount
-    public List<IdNum> PayEmployees()
+    public List<IdNum>? PayEmployees()
     {
         return workplace.PayEmployees();
     }
@@ -71,7 +71,6 @@ public class ResourceGatheringOperation  : IWorkspace, IProductionBuilding
     public List<IdNum>? PayOwners()
     {
         return workplace.PayOwner();
-
     }
 
     public void SetWages()
@@ -111,11 +110,15 @@ public class ResourceGatheringOperation  : IWorkspace, IProductionBuilding
         throw new System.NotImplementedException();
     }
 
-    //TODO: this is ignoring cashBuffer max !
+    
+
     public void ReciveCash(int ammount)
     {
        workplace.cashBuffer += ammount;
     }
 
-   
+    public int getWorkplaceId()
+    {
+        return workplace.id;
+    }
 }

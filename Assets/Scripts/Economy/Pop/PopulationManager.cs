@@ -126,7 +126,7 @@ public class PopulationManager : MonoBehaviour
         for (int i = 0; i < market_awnser.Count; i++)
         {
             Pop pop = populationList
-            .FirstOrDefault(p => p.id == market_awnser[i].popId);
+            .FirstOrDefault(p => p.id == market_awnser[i].id);
             pop.cashAmount = market_awnser[i].cashLeft;
         
             for (int j = 0; j < market_awnser[i].goodsBought.Count; j++) 

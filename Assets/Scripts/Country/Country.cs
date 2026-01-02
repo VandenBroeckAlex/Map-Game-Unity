@@ -15,18 +15,20 @@ public class Country
     public Color color;
     public int treasury;
     public int income; // the sum of all income last month
+    public string tag;
 
     public float Income_tax = 0.1f;
 
-    public CountryStats stats;
+    public CountryModdifiers stats;
 
-    public Country(int ID, string NAME, Color COLOR, int TREASURY )
+    public Country(int ID, string NAME, Color COLOR, int TREASURY,string TAG )
     {
         id = ID;
         name = NAME;
         color = COLOR;
         treasury = TREASURY;
-        stats = new CountryStats();
+        stats = new CountryModdifiers();
+        tag = TAG;
     }
 
     ///public float expenses;

@@ -49,7 +49,7 @@ public class Market_object
         //    //Marketgood.stockpile += marketSellRequestList[i].goodSell.amountsell;
         //}
 
-        public void AddGood(int goodId, int ammount) 
+        public void AddGoodStockpile(int goodId, int ammount) 
         {
             Market_object.MarketGood Marketgood = goods_list
            .Where(good => good.good.id == goodId).FirstOrDefault();
@@ -58,7 +58,7 @@ public class Market_object
             Marketgood.stockpile += ammount;
         }
 
-        public void TakeGood(int goodId, int ammount)
+        public void SubstractGoodStockpile(int goodId, int ammount)
         {
             Market_object.MarketGood Marketgood = goods_list
            .Where(good => good.good.id == goodId).FirstOrDefault();
@@ -148,13 +148,13 @@ public class Market_object
 
     } 
 
-    // business object
 
+    // business object
     public class MarketBuyRequest
     {
         public int Id;
         public int marketId;
-        public List<GoodBuyRequest> GoodRequest; // Turn it into an array
+        public List<GoodBuyRequest> GoodRequest; 
         public int cashAmount;
     }
 
@@ -204,7 +204,7 @@ public class Market_object
 
     public class MarketBuyResponse
     {
-        public int popId; 
+        public int id; 
         public List<GoodResponse> goodsBought;
         public int cashLeft;
     }

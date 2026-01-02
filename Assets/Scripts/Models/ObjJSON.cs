@@ -1,5 +1,5 @@
 using System.Collections.Generic;
-using static UnityEngine.RuleTile.TilingRuleOutput;
+
 
 public class ObjJSON
 {

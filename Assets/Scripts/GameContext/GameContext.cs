@@ -51,10 +51,7 @@ public class GameContext : MonoBehaviour
     {
         // Avoid problem if called twice
         TickScript.onTick -= populationManager.PopBuy;
-        TickScript.onTick -= populationManager.PopSell;
-
         TickScript.onTick += populationManager.PopBuy;
-        TickScript.onTick += populationManager.PopSell;
     }
 
 
