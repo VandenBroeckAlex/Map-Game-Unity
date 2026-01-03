@@ -10,6 +10,8 @@ public class WorkplaceManager
 {
     private GameContext context;
     List<IWorkplace> workplacesList;
+    private int IdIncrement = 0;
+
     // list for workplace beeing build ?
 
     public WorkplaceManager(GameContext context)
@@ -112,6 +114,29 @@ public class WorkplaceManager
     public void OnMonth()
     {
 
+    }
+
+    //TODO  all workplace will be decleared in a json
+    public void CreateBasicRGOWorkplace(int provinceId, int countryID)
+    {
+        //TODO All those stats should be defined in a json
+
+        List<GoodRequirement> constructionCost = new List<GoodRequirement>();
+        List<GoodRequirement> maintenanceCost = new List<GoodRequirement>();
+        List<IdNum> owner = new List<IdNum>();
+        List<WorkerTypeCurrentMax> workerTypeCurrentMaxs = new List<WorkerTypeCurrentMax>();
+        int basicEfficiency = 1;
+        int cashbufferMax = 100000;
+
+        Workplace workplace = new Workplace(provinceId,IdIncrement,countryID,constructionCost,maintenanceCost, owner, workerTypeCurrentMaxs, 100);
+        Production production = new Production(cashbufferMax, basicEfficiency);
+
+        //get province Rgo
+        List<Good> listGood = context.marketManager.GetGoodDefinition();
+
+        ResourceGatheringOperation RGOworkplace = new ResourceGatheringOperation(workplace,production, listGood[0]);
+
+       IdIncrement++;
     }
 }
 

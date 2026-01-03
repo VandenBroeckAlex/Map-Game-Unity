@@ -281,7 +281,7 @@ public class PopulationManager : MonoBehaviour
         return countryID;
     }
 
-    private void PopSearchWork()
+    public void PopSearchWork()
     {
         // if unemployed and workplace with space => get employed
         for (int i = 0; i < populationList.Count; i++) 
@@ -292,9 +292,29 @@ public class PopulationManager : MonoBehaviour
             if (unemployedNum > 0) 
             {
                 //get workplace in pop province
-                List<IWorkplace> workplace = context.workplaceManager.GetWorkplaceByProvinceId(pop.provinceId);
+                List<IWorkplace> workplaceList = context.workplaceManager.GetWorkplaceByProvinceId(pop.provinceId);
 
+                foreach(IWorkplace workplace in workplaceList)
+                {
+                    int availableWork = workplace.GetWorkAvailableByJobType(pop.job);
 
+                    if (availableWork > 0) 
+                    {
+                        int workplaceId = workplace.GetWorkplaceId();
+                        if (availableWork >= unemployedNum)
+                        {
+                            PopHired(pop.id, unemployedNum, workplace.GetWorkplaceId());
+                            context.workplaceManager.WorkplaceHire(workplaceId, pop.id, unemployedNum, pop.job);
+                            break;
+                        }
+                        else
+                        {
+                            unemployedNum -= availableWork;
+                            PopHired(pop.id, availableWork, workplace.GetWorkplaceId());
+                            context.workplaceManager.WorkplaceHire(workplaceId, pop.id, availableWork, pop.job);
+                        }
+                    }
+                }
             }
 
         }

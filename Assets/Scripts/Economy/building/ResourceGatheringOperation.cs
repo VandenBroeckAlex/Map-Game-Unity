@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static Market_object;
 using static PopulationManager;
@@ -18,9 +19,10 @@ public class ResourceGatheringOperation  : IWorkplace, IProductionBuilding
 
     public event Action<int, int, int> WorkersFired; // delegate should be in manager
 
-    public ResourceGatheringOperation(Production _productionWorkplace, 
+    public ResourceGatheringOperation(Workplace _workplace,Production _productionWorkplace, 
         Good _outputGoods)
     {
+        workplace = _workplace;
         production = _productionWorkplace;
         outputGood = _outputGoods;
     }
@@ -120,5 +122,19 @@ public class ResourceGatheringOperation  : IWorkplace, IProductionBuilding
     public int GetWorkplaceId()
     {
         return workplace.id;
+    }
+
+    public int GetWorkAvailableByJobType(Pop_objects.PopJob popJob)
+    {
+       WorkerTypeCurrentMax val = workplace.workersRequirement.Where(wr => wr.workerType.iD == popJob.iD).FirstOrDefault();
+        
+        if(val is null)
+        {
+            return 0;
+        }
+        else
+        {
+            return val.curentMax.max - val.curentMax.current;
+        }
     }
 }

@@ -89,6 +89,10 @@ public class MarketManager : MonoBehaviour
         return list;
     }
 
+    public List<Good> GetGoodDefinition()
+    {
+        return good_definition_list;
+    }
 
     public List<MarketBuyResponse> BatchMarketBuy(List<MarketBuyRequest> marketBuyRequestList)
     {

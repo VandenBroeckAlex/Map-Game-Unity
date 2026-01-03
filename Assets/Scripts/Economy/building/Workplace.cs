@@ -24,7 +24,6 @@ public class Workplace
     public int id;
     public int countryId;
     private int provinceId;
-    private int workplaceId;
     public string name;
     public WorkplaceType type;
     public int constructionCost; // IC cost / Time
@@ -60,7 +59,7 @@ public class Workplace
             {
                 countryId = _countryId;
                 provinceId = _provinceId;
-                workplaceId = _workplaceId;
+                id = _workplaceId;
                 goodConstructionCost = _goodConstructionCost;
                 maintenanceCost = _maintenanceCost;
                 owner = _owner;
@@ -77,7 +76,7 @@ public class Workplace
 
     public int GetWorkplaceId()
     {
-        return workplaceId;
+        return id;
     }
 
     public Dictionary<int, PopJobAssignment> GetPopAmmount()
@@ -222,6 +221,7 @@ public class Workplace
         return null;
     }
 
+    //TODO revise this (get by type or smth)
     public int GetNumberOfProducer()
     {
         int producer = 0;

@@ -54,6 +54,13 @@ public class GameContext : MonoBehaviour
         // Avoid problem if called twice
         TickScript.onTick -= populationManager.PopListBuy;
         TickScript.onTick += populationManager.PopListBuy;
+
+        TickScript.onTick -= populationManager.PopSearchWork;
+        TickScript.onTick += populationManager.PopSearchWork;
+
+        TickScript.onTick -= workplaceManager.OnTick;
+        TickScript.onTick += workplaceManager.OnTick;
+
     }
 
 

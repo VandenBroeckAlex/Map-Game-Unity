@@ -2,13 +2,14 @@
 
 using System.Collections.Generic;
 using static Market_object;
+using static Pop_objects;
 using static Workplace;
 
 public interface IWorkplace
 {
     int GetWorkplaceId();
-    int 
-    void OnWorkerHired(int popId,int numberOfHired, Pop_objects.PopJob job);
+    int GetWorkAvailableByJobType(PopJob popJob);
+    void OnWorkerHired(int popId,int numberOfHired, PopJob job);
     void OnWorkerLeave(int popId,int numberOfLeaving);
     List<IdNum> LayOffWorker();
     List<IdNum> PayEmployees();
