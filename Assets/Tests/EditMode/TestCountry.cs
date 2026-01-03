@@ -57,12 +57,24 @@ public class TestCountry
 
         Country country = _countryManager.GetCountryById(1);
 
-        Assert.AreEqual(country.id, 1, $"The returned country have the wrong id. Expected 1, Recived {country.id}");
-        Assert.AreEqual(country.name, "France", $"The returned country have the wrong name. Expected France, Recived {country.name}");
+        Assert.AreEqual(country.id, 1, $"The returned country have the wrong id. Expected 1, Received {country.id}");
+        Assert.AreEqual(country.name, "France", $"The returned country have the wrong name. Expected France, Received {country.name}");
         Color countryColor = new Color32((byte)0, (byte)30, (byte)179, 255);
-        Assert.AreEqual(country.color, countryColor, $"The returned country have the wrong color. Expected {countryColor}, Recived {country.color}");
-        Assert.AreEqual(country.tag, "FRA", $"The returned country have the wrong Tag. Expected \"FRA\", Recived {country.tag}");
-
+        Assert.AreEqual(country.color, countryColor, $"The returned country have the wrong color. Expected {countryColor}, Received {country.color}");
+        Assert.AreEqual(country.tag, "FRA", $"The returned country have the wrong Tag. Expected \"FRA\", Received {country.tag}");
     }
 
+    [Test]
+    public void CountryManager_GetCountryById_ReturnError()
+    {
+        GameContext context = new GameContext();
+        CountriesManager _countryManager = new CountriesManager(context);
+
+        string jsonPath = FilePath.TestCountryDef;
+        _countryManager.TestInitialize(jsonPath);
+
+        Country country = _countryManager.GetCountryById(10);
+
+        Assert.AreEqual(country, null, $"Expected null, Received {country}");
+    }
 }

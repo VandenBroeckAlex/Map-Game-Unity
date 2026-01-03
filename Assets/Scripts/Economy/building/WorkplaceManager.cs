@@ -6,13 +6,13 @@ using static Pop_objects;
 using static Workplace;
 
 
-public class BuildingManager 
+public class WorkplaceManager 
 {
     private GameContext context;
     List<IWorkplace> workplacesList;
     // list for workplace beeing build ?
 
-    public BuildingManager(GameContext context)
+    public WorkplaceManager(GameContext context)
     {
         this.context = context;
     }
@@ -75,7 +75,7 @@ public class BuildingManager
     }
     public void WorkplaceHire(int workplaceId, int popId, int nummberOfHired, PopJob type)
     {
-        IWorkplace workplace = workplacesList.Where(w => workplaceId == w.getWorkplaceId()).FirstOrDefault();
+        IWorkplace workplace = workplacesList.Where(w => workplaceId == w.GetWorkplaceId()).FirstOrDefault();
 
         if (workplace == null)
         {
@@ -90,6 +90,12 @@ public class BuildingManager
     public void BuildWorkplace()
     {
 
+    }
+
+
+    public List<IWorkplace> GetWorkplaceByProvinceId(int id)
+    {
+        return workplacesList.Where(w => w.GetWorkplaceId() == id).ToList();
     }
 
 

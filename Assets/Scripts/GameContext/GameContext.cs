@@ -11,6 +11,7 @@ public class GameContext : MonoBehaviour
     public ProvincesManager provincesManager;
     public PopulationManager populationManager;
     public MarketManager marketManager;
+    public WorkplaceManager workplaceManager;
     public UI_Time_manager UiTimeManager;
     public UI_market_manager UI_Market_Manager;
 
@@ -20,6 +21,7 @@ public class GameContext : MonoBehaviour
         provincesManager = new ProvincesManager(this);
         populationManager = new PopulationManager(this);
         marketManager = new MarketManager(this);
+        workplaceManager = new WorkplaceManager(this);
     }
 
     private void Awake()
@@ -31,11 +33,11 @@ public class GameContext : MonoBehaviour
         provincesManager = new ProvincesManager(this);
         populationManager = new PopulationManager(this);
         marketManager = new MarketManager(this);
+        workplaceManager = new WorkplaceManager(this);
     }
     public void Initialize()
     {
         GoodDatabase.Initialize();
-        Debug.Log($"Market Good count : {GoodDatabase.good_definition_list.Count}");
         countriesManager.Initialize();
         provincesManager.Initialize();
         populationManager.InitializePopulation();
@@ -50,8 +52,8 @@ public class GameContext : MonoBehaviour
     public void OnTick()
     {
         // Avoid problem if called twice
-        TickScript.onTick -= populationManager.PopBuy;
-        TickScript.onTick += populationManager.PopBuy;
+        TickScript.onTick -= populationManager.PopListBuy;
+        TickScript.onTick += populationManager.PopListBuy;
     }
 
 
@@ -69,7 +71,6 @@ public class GameContext : MonoBehaviour
 
     private void CreateSingleton()
     {
-        // Singleton pattern: only one instance allowed
         if (instance == null)
         {
             instance = this;

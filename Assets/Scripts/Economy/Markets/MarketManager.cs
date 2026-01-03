@@ -122,11 +122,12 @@ public class MarketManager : MonoBehaviour
            
 
                 int amountWanted = marketBuyRequestList[i].GoodRequest[j].amountWanted;
-                Debug.Log($"price : {Marketgood.price}, ammount wanted : {amountWanted} ");
+                //TODO Debug.Log($"price : {Marketgood.price}, ammount wanted : {amountWanted} ");
                 int totalCost = Marketgood.price * amountWanted;
                 if(cashAmount == 0)
                 {
                     break;
+                    //popo
                 }
 
 

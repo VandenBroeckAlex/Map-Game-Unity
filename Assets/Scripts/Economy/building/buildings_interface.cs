@@ -6,7 +6,8 @@ using static Workplace;
 
 public interface IWorkplace
 {
-    int getWorkplaceId();
+    int GetWorkplaceId();
+    int 
     void OnWorkerHired(int popId,int numberOfHired, Pop_objects.PopJob job);
     void OnWorkerLeave(int popId,int numberOfLeaving);
     List<IdNum> LayOffWorker();

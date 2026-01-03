@@ -1,9 +1,11 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using static helpers_math;
 using static Market_object;
+using static Workplace;
 
 public class Pop_objects 
 {
@@ -13,6 +15,7 @@ public class Pop_objects
     {
         public int id { get; }
         public int size;
+        public List<IdNum> workplace;
         public int provinceId { get; }
         public int countryID { get; set; }
         public PopJob job { get; }
@@ -25,7 +28,7 @@ public class Pop_objects
           set { _cashAmount = value; }
         }
 
-        private Dictionary<int, int> workplace; //idBuilding ammount
+        
 
         //private float education;
         //private float militency;
@@ -64,25 +67,55 @@ public class Pop_objects
             return true;
         }
     
+        public int GetUnemployedNumber()
+        {
+            int unemployed = size;
+            foreach(IdNum val in workplace)
+            {
+                unemployed -= val.num;
+            }
+
+            if(unemployed < 0)
+            {
+                new InvalidOperationException("Their is more employed pop than pop size");
+            }
+
+            return unemployed;
+        }
+
         public void FiredFromWorkplace(int workplaceId,int ammount)
         {
-            int workerNumber = workplace[workplaceId];
+            IdNum workerInWP =  workplace.Where(w => w.id == workplaceId).FirstOrDefault();
+            if(workerInWP != null)
+                new InvalidOperationException("Pop is fired from a workplace Pop don't know about");
+
+            int workerNumber = workerInWP.num;
 
             if (workerNumber == 0) 
             {
-                workplace.Remove(workplaceId);
+                workplace.Remove(workerInWP);
             }
             if(workerNumber < 0)
             {
                 new InvalidOperationException("Workplace and pop data is De-Sync");
             }
 
-            workplace[workplaceId] =- ammount;
+            workerInWP.num -= ammount;
         }
 
         public void HireInWorkplace(int workplaceId, int ammount) 
-        { 
-            workplace[workplaceId] =+ ammount;
+        {
+            IdNum workerInWP = workplace.Where(w => w.id == workplaceId).FirstOrDefault();
+
+            if(workerInWP is null)
+            {
+                IdNum _workerInWP = new IdNum(workplaceId, ammount);
+                workplace.Add(_workerInWP);
+            }
+            else
+            {
+                workerInWP.num += ammount;
+            }
         }
     }
 

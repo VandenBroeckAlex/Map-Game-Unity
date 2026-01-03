@@ -117,7 +117,7 @@ public class ResourceGatheringOperation  : IWorkplace, IProductionBuilding
        workplace.cashBuffer += ammount;
     }
 
-    public int getWorkplaceId()
+    public int GetWorkplaceId()
     {
         return workplace.id;
     }
