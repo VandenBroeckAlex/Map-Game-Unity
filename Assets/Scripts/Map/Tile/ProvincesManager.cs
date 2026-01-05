@@ -99,6 +99,7 @@ public class ProvincesManager
                 provinces_list.Add(Ltile.id, _newTile);
 
                 //TODO add RGO workplace
+                context.workplaceManager.CreateGrainFarm(Ltile.id);
             }
             if (provinceEntry is WaterTile Wtile)
             {

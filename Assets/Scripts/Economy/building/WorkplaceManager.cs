@@ -90,9 +90,29 @@ public class WorkplaceManager
     {
          
     }
-    public void BuildWorkplace()
+    
+    public void BuildWorkplace(string type)
     {
 
+    }
+
+    public void CreateGrainFarm(int provinceId)
+    {
+        int countryId = context.provincesManager.GetProvinceOwnerByProvinceId(provinceId);
+
+        List<GoodRequirement> goodRequirements = new List<GoodRequirement>();
+
+        GoodRequirement req = new GoodRequirement(1,0 ,10000);
+
+        goodRequirements.Add(req);
+
+        Workplace workplace = new Workplace(provinceId, IdIncrement, countryId, goodRequirements, goodRequirements, new List<IdNum>(),1);
+        
+        Production prod = new Production(100,100);
+        
+        ResourceGatheringOperation farm = new ResourceGatheringOperation(workplace,prod,5);
+
+        IdIncrement++;
     }
 
 
@@ -129,7 +149,7 @@ public class WorkplaceManager
         int basicEfficiency = 1;
         int cashbufferMax = 100000;
 
-        Workplace workplace = new Workplace(provinceId,IdIncrement,countryID,constructionCost,maintenanceCost, owner, workerTypeCurrentMaxs, 100);
+        Workplace workplace = new Workplace(provinceId,IdIncrement,countryID,constructionCost,maintenanceCost, owner,100);
         Production production = new Production(cashbufferMax, basicEfficiency);
 
         //get province Rgo

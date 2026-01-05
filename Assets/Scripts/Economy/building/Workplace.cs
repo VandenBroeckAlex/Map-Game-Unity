@@ -57,7 +57,6 @@ public class Workplace
         List<GoodRequirement> _goodConstructionCost, 
         List<GoodRequirement> _maintenanceCost,
         List<IdNum> _owner,
-        List<WorkerTypeCurrentMax> _workers,
         float wageMultiplier)
             {
                 countryId = _countryId;
@@ -66,7 +65,7 @@ public class Workplace
                 goodConstructionCost = _goodConstructionCost;
                 maintenanceCost = _maintenanceCost;
                 owner = _owner;
-                workersRequirement = _workers;
+                workersRequirement = new List<WorkerTypeCurrentMax>();
                 poorStrataWage = (int)(poorStrataWage * wageMultiplier);
                 middleStrataWage = (int)(middleStrataWage * wageMultiplier);
             }
