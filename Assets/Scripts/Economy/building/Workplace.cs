@@ -26,7 +26,10 @@ public class Workplace
     private int provinceId;
     public string name;
     public WorkplaceType type;
+
     public int constructionCost; // IC cost / Time
+    // currentmax construction cost ?
+    //beeing buid every tick?
 
     public List<GoodRequirement> goodConstructionCost = new List<GoodRequirement>();
     public List<GoodRequirement> maintenanceCost = new List<GoodRequirement>();

@@ -54,8 +54,6 @@ public class ResourceGatheringOperation  : IWorkplace, IProductionBuilding
     //add higher grade worker after
     public MarketSellRequest SellRequest()
     {
-
-        
         int numberOutputed = (workplace.GetNumberOfProducer() / 1000) * production.efficiency;// * (smallest numb inputGood);
         GoodSellRequest gsr = new GoodSellRequest(outputGood.id, numberOutputed);
         MarketSellRequest request = new MarketSellRequest(workplace.id,workplace.countryId, gsr);

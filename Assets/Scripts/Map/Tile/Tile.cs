@@ -57,7 +57,10 @@ namespace MyGame.Data
         public int type {  get; set; }
         [JsonProperty(Order = 11)]
         public bool isCoast {  get; set; }
-  
+
+        //arable_resources -> agricultural workspace possible to build in tile or climat rule set
+        //resources -> mining resource present 
+
 
         public LandTile(int givenID)
             : base(givenID)

@@ -13,7 +13,7 @@ using static GoodDatabase;
 
 
 
-public class MarketManager : MonoBehaviour
+public class MarketManager
 {
     private GameContext context;
 

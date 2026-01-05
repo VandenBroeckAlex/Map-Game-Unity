@@ -7,7 +7,7 @@ using static ObjJSON;
 using System.IO;
 
 
-public class CountriesManager : MonoBehaviour
+public class CountriesManager 
 {
     [SerializeField] 
     public Dictionary<int,Country> countryList = new();

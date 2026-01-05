@@ -8,6 +8,7 @@ public class MapEditorInitiator : MonoBehaviour
     [SerializeField] private CountriesManager _countriesManager;
     [SerializeField] private Camera _mainCamera;
     [SerializeField] private ProvincesManager _provincesManager;
+    [SerializeField] private GameContext _gameContext;
 
     [SerializeField] private MapLoader _mapLoader;
     [SerializeField] private EventSystem _eventSystem;
@@ -28,7 +29,7 @@ public class MapEditorInitiator : MonoBehaviour
 
     private void BindObject()
     {
-        _countriesManager = Instantiate(_countriesManager);
+        _gameContext = Instantiate(_gameContext); // !
         _mainCamera = Instantiate(_mainCamera);
         _mapLoader = Instantiate(_mapLoader);
         _eventSystem = Instantiate(_eventSystem);

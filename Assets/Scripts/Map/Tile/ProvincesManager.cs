@@ -11,7 +11,7 @@ using static RaycastScript;
 
 
 [SerializeField]
-public class ProvincesManager : MonoBehaviour
+public class ProvincesManager 
 {
 
     private GameContext context;
@@ -97,6 +97,8 @@ public class ProvincesManager : MonoBehaviour
                 _newTile.neighbors = Ltile.neighbors;
                 _newTile.spriteColor = Ltile.spriteColor;
                 provinces_list.Add(Ltile.id, _newTile);
+
+                //TODO add RGO workplace
             }
             if (provinceEntry is WaterTile Wtile)
             {

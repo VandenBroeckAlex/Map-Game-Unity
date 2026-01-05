@@ -54,6 +54,7 @@ public class Pop_objects
             religion = RELIGION;
             cashAmount = CASHAMOUNT;
             GoodList =  STOCKPILE;
+            workplace = new List<IdNum>();
         }
         public bool HaveBasicNeed()
         {
@@ -70,6 +71,11 @@ public class Pop_objects
         public int GetUnemployedNumber()
         {
             int unemployed = size;
+            if(workplace is null)
+            {
+                return size;
+            }
+
             foreach(IdNum val in workplace)
             {
                 unemployed -= val.num;

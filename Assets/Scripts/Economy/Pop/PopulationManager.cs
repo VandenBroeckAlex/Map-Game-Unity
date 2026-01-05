@@ -8,7 +8,7 @@ using static Pop_objects;
 using static Workplace;
 
 
-public class PopulationManager : MonoBehaviour
+public class PopulationManager
 {
 
     private GameContext context;

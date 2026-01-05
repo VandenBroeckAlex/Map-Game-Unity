@@ -23,6 +23,7 @@ public class WorkplaceManager
     public void Initialize()
     {
         workplacesList = new List<IWorkplace>();
+        
     }
      
 
