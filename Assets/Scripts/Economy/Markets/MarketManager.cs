@@ -328,7 +328,6 @@ public class MarketManager
 
 
             int amountWanted = request.GoodRequest[j].amountWanted;
-            Debug.Log($"price : {Marketgood.price}, ammount wanted : {amountWanted} ");
             int totalCost = Marketgood.price * amountWanted;
             if (cashAmount == 0)
             {

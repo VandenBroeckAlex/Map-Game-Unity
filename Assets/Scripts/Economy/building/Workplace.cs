@@ -248,6 +248,12 @@ public class Workplace
         {
             return ((curentMax.max / curentMax.current) / curentMax.max) * 100;
         }
+
+        public WorkerTypeCurrentMax(PopJob _workerType)
+        {
+            workerType = _workerType;
+            curentMax = new IntCurentMax(0,1000);
+        }
     }
 
     // track wich popId own how many worker + type of pop

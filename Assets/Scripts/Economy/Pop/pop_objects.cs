@@ -123,6 +123,16 @@ public class Pop_objects
                 workerInWP.num += ammount;
             }
         }
+    
+        //public class Builder
+        //{
+        //    Pop pop;
+        //    public Builder WithId(int id) 
+        //    {
+        //        pop.id = id;
+        //        return this;
+        //    }
+        //}
     }
 
 

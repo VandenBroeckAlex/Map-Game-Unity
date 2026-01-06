@@ -7,7 +7,7 @@ public class MapEditorInitiator : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     [SerializeField] private CountriesManager _countriesManager;
     [SerializeField] private Camera _mainCamera;
-    [SerializeField] private ProvincesManager _provincesManager;
+    [SerializeField] private TileManager _provincesManager;
     [SerializeField] private GameContext _gameContext;
 
     [SerializeField] private MapLoader _mapLoader;

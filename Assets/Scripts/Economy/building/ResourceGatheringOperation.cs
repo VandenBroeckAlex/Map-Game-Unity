@@ -12,7 +12,7 @@ public class ResourceGatheringOperation  : IWorkplace, IProductionBuilding
 {
     public Workplace workplace;
     public Production production;
-    public Good outputGood;
+    public int outputGoodId;
     public int rgoRequirment;
     public Production Production;
 
@@ -20,11 +20,11 @@ public class ResourceGatheringOperation  : IWorkplace, IProductionBuilding
     public event Action<int, int, int> WorkersFired; // delegate should be in manager
 
     public ResourceGatheringOperation(Workplace _workplace,Production _productionWorkplace, 
-        Good _outputGoods)
+        int _outputGoodId)
     {
         workplace = _workplace;
         production = _productionWorkplace;
-        outputGood = _outputGoods;
+        outputGoodId = _outputGoodId;
     }
 
     public void OnWorkerHired(int popId, int numberOfHired, Pop_objects.PopJob type)
@@ -55,10 +55,11 @@ public class ResourceGatheringOperation  : IWorkplace, IProductionBuilding
     public MarketSellRequest SellRequest()
     {
         int numberOutputed = (workplace.GetNumberOfProducer() / 1000) * production.efficiency;// * (smallest numb inputGood);
-        GoodSellRequest gsr = new GoodSellRequest(outputGood.id, numberOutputed);
+        GoodSellRequest gsr = new GoodSellRequest(outputGoodId, numberOutputed);
         MarketSellRequest request = new MarketSellRequest(workplace.id,workplace.countryId, gsr);
         return request;
     }
+
 
 
     // popId => ammount
@@ -68,6 +69,7 @@ public class ResourceGatheringOperation  : IWorkplace, IProductionBuilding
     }
 
 
+    
     public List<IdNum>? PayOwners()
     {
         return workplace.PayOwner();
@@ -134,5 +136,10 @@ public class ResourceGatheringOperation  : IWorkplace, IProductionBuilding
         {
             return val.curentMax.max - val.curentMax.current;
         }
+    }
+
+    public int GetProvinceId()
+    {
+        return workplace.GetProvinceId();
     }
 }

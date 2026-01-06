@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Security.Cryptography;
+using Unity.Jobs.LowLevel.Unsafe;
+using Unity.VisualScripting.YamlDotNet.Serialization;
 using UnityEngine;
 using static Market_object;
 using static Pop_objects;
@@ -15,6 +17,7 @@ public class PopulationManager
     public int test_population_size = 100;
     public static List<PopJob> jobTypes = new List<PopJob>(); 
     
+    private int nextPopId = 0;
 
     [SerializeField] private List<Pop> populationList = new();
     // ------ Put those in a json and load them -------
@@ -23,7 +26,7 @@ public class PopulationManager
     public float base_production = 0.11f;
     // ----------------------------------
 
-    // ----------------------------------
+
 
 
 
@@ -35,29 +38,29 @@ public class PopulationManager
     }
 
 
-    public void InitializePopulation()
+    public void InitizlizePopJob()
     {
+        PopJobDeserializer deserializer = new PopJobDeserializer();
+        jobTypes = deserializer.Deserialize();
+        Debug.Log($"Num of job type = {jobTypes.Count}");
+    }
 
+    public void InitializePopulation()
+    {                    
         List<GoodRequirement> StockPile = new List<GoodRequirement>();
 
-        GoodRequirement good1 = new GoodRequirement();
-        good1.Good_id = 1;
-        good1.MaxNeed = 100;
-        good1.Stockpile = 0;
+        GoodRequirement good1 = new GoodRequirement(1,0,100);
         StockPile.Add(good1);
 
-        GoodRequirement good2 = new GoodRequirement();
-        good2.Good_id = 2;
-        good2.MaxNeed = 100;
-        good2.Stockpile = 0;
+        GoodRequirement good2 = new GoodRequirement(2,0,100);
         StockPile.Add(good2);
 
 
         populationList.Clear();
-        for (int i = 0; i < 1000; i++) 
+        for (int i = 0; i < 4; i++) 
         {
-            Pop newPop = new Pop(1, 1000, 1, new PopJob("Miner", "poor"), Culture.French, Religion.Catholic, 999999999, StockPile);
-            newPop.countryID = GetPopCountryByProvinceId(1);
+            Pop newPop = new Pop(ID :i, SIZE : 100,PROVINCEID : 4, jobTypes[0] , Culture.French, Religion.Catholic, 10000, StockPile);
+            newPop.countryID = GetPopCountryByProvinceId(4);
             populationList.Add(newPop);
         }
         Debug.Log("The number of pop in the list is :" + populationList.Count);
@@ -261,6 +264,7 @@ public class PopulationManager
 
     public void PopHired(int popId, int ammount, int workplaceId)
     {
+        Debug.Log($"Pop hired call with : popId - {popId}, ammount - {ammount}, workplaceId - {workplaceId}");
         Pop pop = GetPopById(popId);
         pop.HireInWorkplace(workplaceId,ammount);
     }
@@ -283,20 +287,22 @@ public class PopulationManager
 
     public void PopSearchWork()
     {
+        Debug.Log("Pop search work called");
         // if unemployed and workplace with space => get employed
         for (int i = 0; i < populationList.Count; i++) 
         {
             Pop pop = populationList[i];
             int unemployedNum = pop.GetUnemployedNumber();
-
+            Debug.Log($"Pop Unemployed Number = {unemployedNum}");
             if (unemployedNum > 0) 
             {
                 //get workplace in pop province
                 List<IWorkplace> workplaceList = context.workplaceManager.GetWorkplaceByProvinceId(pop.provinceId);
-
+                Debug.Log($"number of workplace in pop province = {workplaceList.Count()}");
                 foreach(IWorkplace workplace in workplaceList)
                 {
                     int availableWork = workplace.GetWorkAvailableByJobType(pop.job);
+                    Debug.Log($"Available Work : {availableWork}");
 
                     if (availableWork > 0) 
                     {
@@ -322,6 +328,10 @@ public class PopulationManager
         // future: check for different workplace wages
     }
 
+    public void CreatePop()
+    {
+        int id = nextPopId++;
+    }
 
     //--------- For UI ---------
     public List<Pop> SelectPopulationByCountry(int countryId)

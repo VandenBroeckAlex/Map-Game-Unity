@@ -8,7 +8,7 @@ public class GameContext : MonoBehaviour
 {
     public static GameContext instance;
     public CountriesManager countriesManager;
-    public ProvincesManager provincesManager;
+    public TileManager provincesManager;
     public PopulationManager populationManager;
     public MarketManager marketManager;
     public WorkplaceManager workplaceManager;
@@ -18,7 +18,7 @@ public class GameContext : MonoBehaviour
     public GameContext() 
     {
         countriesManager = new CountriesManager(this);
-        provincesManager = new ProvincesManager(this);
+        provincesManager = new TileManager(this);
         populationManager = new PopulationManager(this);
         marketManager = new MarketManager(this);
         workplaceManager = new WorkplaceManager(this);
@@ -30,7 +30,7 @@ public class GameContext : MonoBehaviour
         
         // Create managers here
         countriesManager = new CountriesManager(this);
-        provincesManager = new ProvincesManager(this);
+        provincesManager = new TileManager(this);
         populationManager = new PopulationManager(this);
         marketManager = new MarketManager(this);
         workplaceManager = new WorkplaceManager(this);
@@ -38,8 +38,10 @@ public class GameContext : MonoBehaviour
     public void Initialize()
     {
         GoodDatabase.Initialize();
+        populationManager.InitizlizePopJob();
         countriesManager.Initialize();
         provincesManager.Initialize();
+        Debug.Log("initialize population");
         populationManager.InitializePopulation();
         marketManager.Initialize();
 

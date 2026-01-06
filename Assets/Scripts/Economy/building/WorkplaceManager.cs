@@ -4,7 +4,8 @@ using System.Linq;
 using static Market_object;
 using static Pop_objects;
 using static Workplace;
-
+using UnityEngine;
+using Unity.Jobs.LowLevel.Unsafe;
 
 public class WorkplaceManager 
 {
@@ -17,6 +18,7 @@ public class WorkplaceManager
     public WorkplaceManager(GameContext context)
     {
         this.context = context;
+        workplacesList = new List<IWorkplace>();
     }
 
 
@@ -98,6 +100,7 @@ public class WorkplaceManager
 
     public void CreateGrainFarm(int provinceId)
     {
+        Debug.Log($"Create Grain Farm in province {provinceId}");
         int countryId = context.provincesManager.GetProvinceOwnerByProvinceId(provinceId);
 
         List<GoodRequirement> goodRequirements = new List<GoodRequirement>();
@@ -110,15 +113,21 @@ public class WorkplaceManager
         
         Production prod = new Production(100,100);
         
-        ResourceGatheringOperation farm = new ResourceGatheringOperation(workplace,prod,5);
+        ResourceGatheringOperation farm = new ResourceGatheringOperation(workplace,prod,_outputGoodId : 5);
 
+
+        WorkerTypeCurrentMax workerType = new WorkerTypeCurrentMax(PopulationManager.jobTypes[0]);
+
+        workplace.workersRequirement.Add(workerType);
+
+        workplacesList.Add(farm);
         IdIncrement++;
     }
 
 
     public List<IWorkplace> GetWorkplaceByProvinceId(int id)
     {
-        return workplacesList.Where(w => w.GetWorkplaceId() == id).ToList();
+        return workplacesList.Where(w => w.GetProvinceId() == id).ToList();
     }
 
 
@@ -155,7 +164,7 @@ public class WorkplaceManager
         //get province Rgo
         List<Good> listGood = context.marketManager.GetGoodDefinition();
 
-        ResourceGatheringOperation RGOworkplace = new ResourceGatheringOperation(workplace,production, listGood[0]);
+        ResourceGatheringOperation RGOworkplace = new ResourceGatheringOperation(workplace,production, listGood[0].id);
 
        IdIncrement++;
     }

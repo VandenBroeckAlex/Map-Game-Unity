@@ -1,17 +1,14 @@
 using MyGame.Data;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using UnityEditor;
 using UnityEngine;
 using static RaycastScript;
 
 
 [SerializeField]
-public class ProvincesManager 
+public class TileManager 
 {
 
     private GameContext context;
@@ -65,7 +62,7 @@ public class ProvincesManager
 
 
 
-    public ProvincesManager(GameContext context)
+    public TileManager(GameContext context)
     {
         this.context = context;
     }
@@ -84,7 +81,9 @@ public class ProvincesManager
     {
        
         RaycastScript.onProvincePlaneHit += GetProvinceId;
+
         LoadJsonTileInfo();
+
         Debug.Log($"number of province in json {provinces.Count}");
         //faire une fonction du serializing values in manager
         foreach (var provinceEntry in provinces)

@@ -8,6 +8,7 @@ using static Workplace;
 public interface IWorkplace
 {
     int GetWorkplaceId();
+    int GetProvinceId();
     int GetWorkAvailableByJobType(PopJob popJob);
     void OnWorkerHired(int popId,int numberOfHired, PopJob job);
     void OnWorkerLeave(int popId,int numberOfLeaving);

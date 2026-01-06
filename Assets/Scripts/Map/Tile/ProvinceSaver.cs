@@ -57,7 +57,7 @@ public class ProvinceSaver : MonoBehaviour
         LoadJsonDataMapPosition();  
 
         // Get all provinces from the ProvincesManager
-        var ProvinceHandler = GameObject.Find("/ProvincesManager").GetComponent<ProvincesManager>();
+        var ProvinceHandler = GameObject.Find("/ProvincesManager").GetComponent<TileManager>();
         Dictionary<int, Tile> allProvinces = ProvinceHandler.provinces_list;
 
     
