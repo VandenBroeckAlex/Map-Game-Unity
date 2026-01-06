@@ -138,7 +138,8 @@ public class WorkplaceManager
 
     public void OnDaily()
     {
-
+        WorkplaceProduce();
+        WorkplacePayEmployee();
     }
 
     public void OnMonth()

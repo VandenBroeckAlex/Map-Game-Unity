@@ -59,7 +59,7 @@ public class PopulationManager
         populationList.Clear();
         for (int i = 0; i < 4; i++) 
         {
-            Pop newPop = new Pop(ID :i, SIZE : 100,PROVINCEID : 4, jobTypes[0] , Culture.French, Religion.Catholic, 10000, StockPile);
+            Pop newPop = new Pop(ID :i, SIZE : 100,PROVINCEID : 4, jobTypes[0] , Culture.French, Religion.Catholic, CASHAMOUNT : 10000, StockPile);
             newPop.countryID = GetPopCountryByProvinceId(4);
             populationList.Add(newPop);
         }
@@ -175,11 +175,11 @@ public class PopulationManager
             //get need
             for (int j = 0; j < populationList[i].GoodList.Count; j++)
             {
-                //Debug.Log($"good id : {populationList[i].GoodList[j].Good_id} , Max need : {populationList[i].GoodList[j].MaxNeed} : stockpile :{populationList[i].GoodList[j].Stockpile}");
-                if (populationList[i].GoodList[j].MaxNeed != populationList[i].GoodList[j].Stockpile)
+               Debug.Log($"good id : {populationList[i].GoodList[j].Good_id} , Max need : {populationList[i].GoodList[j].MaxNeed} : stockpile :{populationList[i].GoodList[j].Stockpile}");
+                if (populationList[i].GoodList[j].MaxNeed >= populationList[i].GoodList[j].Stockpile)
                 {
                     int goodId = populationList[i].GoodList[j].Good_id;
-                    int amountWanted = (populationList[i].GoodList[j].MaxNeed * (populationList[i].size / 1000)) - populationList[i].GoodList[j].Stockpile;
+                    int amountWanted = (populationList[i].GoodList[j].MaxNeed * (populationList[i].size)) - populationList[i].GoodList[j].Stockpile; // ! sometime max ammount is multiplicated by size sometime not
                     Market_object.GoodBuyRequest request = new(goodId, amountWanted);
 
                     PopRequest.GoodRequest.Add(request);

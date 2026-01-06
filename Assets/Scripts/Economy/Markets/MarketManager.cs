@@ -329,6 +329,8 @@ public class MarketManager
 
             int amountWanted = request.GoodRequest[j].amountWanted;
             int totalCost = Marketgood.price * amountWanted;
+
+            Debug.Log($"good price {Marketgood.price}, amount wanted {amountWanted}, total cost : {totalCost}");
             if (cashAmount == 0)
             {
                 break;
@@ -338,6 +340,7 @@ public class MarketManager
             if (totalCost <= cashAmount)
             {
                 // Can afford the full amount
+               
                 goodResponse.amountBought = amountWanted;
                 response.cashLeft -= totalCost;
                 response.goodsBought.Add(goodResponse);
