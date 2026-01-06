@@ -41,7 +41,6 @@ public class GameContext : MonoBehaviour
         populationManager.InitizlizePopJob();
         countriesManager.Initialize();
         provincesManager.Initialize();
-        Debug.Log("initialize population");
         populationManager.InitializePopulation();
         marketManager.Initialize();
 
@@ -63,6 +62,8 @@ public class GameContext : MonoBehaviour
         TickScript.onTick -= workplaceManager.OnTick;
         TickScript.onTick += workplaceManager.OnTick;
 
+        TickScript.onTick -= workplaceManager.OnDaily;
+        TickScript.onTick += workplaceManager.OnDaily;
     }
 
 

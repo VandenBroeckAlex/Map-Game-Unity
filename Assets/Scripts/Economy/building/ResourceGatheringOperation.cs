@@ -65,6 +65,7 @@ public class ResourceGatheringOperation  : IWorkplace, IProductionBuilding
     // popId => ammount
     public List<IdNum>? PayEmployees()
     {
+        Debug.Log("RGO workplace call pay employee");
         return workplace.PayEmployees();
     }
 

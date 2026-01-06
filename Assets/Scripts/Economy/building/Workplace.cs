@@ -26,7 +26,7 @@ public class Workplace
     private int provinceId;
     public string name;
     public WorkplaceType type;
-
+    //list of pop type that can work here
     public int constructionCost; // IC cost / Time
     // currentmax construction cost ?
     //beeing buid every tick?
@@ -45,8 +45,8 @@ public class Workplace
     public int cashBufferMax;
     public int efficiency;
 
-    public int poorStrataWage = 1;
-    public int middleStrataWage = 2;
+    public int poorStrataWage = 100;
+    public int middleStrataWage = 200;
 
     public bool isOpen;
     public bool isUnderConstruction;
@@ -68,6 +68,7 @@ public class Workplace
                 workersRequirement = new List<WorkerTypeCurrentMax>();
                 poorStrataWage = (int)(poorStrataWage * wageMultiplier);
                 middleStrataWage = (int)(middleStrataWage * wageMultiplier);
+                cashBuffer = 1000;
             }
 
 
@@ -146,14 +147,17 @@ public class Workplace
 
     }
 
-    public List<IdNum>? PayEmployees()
+    public List<IdNum> PayEmployees()
     {
+        Debug.Log($"workplace call pay employee it have {popAmmount.Count()} pop ammount and a cashBuffer of {cashBuffer}");
         List<IdNum> info = new List<IdNum>();
         if (cashBuffer == 0)
             return null;
         foreach (KeyValuePair<int, PopJobAssignment> kvp in popAmmount)
         {
-            if (kvp.Value.typeId == 0 && cashBuffer > 0)
+            Debug.Log($"type id {kvp.Value.typeId}");
+
+            if (kvp.Value.typeId == 1 && cashBuffer > 0)
             {
                 int salary = (int)((kvp.Value.numWorker) * poorStrataWage);
                 if(cashBuffer < salary)
@@ -165,7 +169,7 @@ public class Workplace
                 IdNum idNum = new IdNum(kvp.Key, salary);
                 info.Add(idNum);
             }
-            else if (kvp.Value.typeId == 2 && cashBuffer > 0)
+            else if (kvp.Value.typeId == 4 && cashBuffer > 0)
             {
                 int salary = (int)((kvp.Value.numWorker) * middleStrataWage);
                 if (cashBuffer < salary)

@@ -37,7 +37,7 @@ public class WorkplaceManager
             if (workplace is IProductionBuilding production)
             {
                 MarketSellResponse response = context.marketManager.MarketSell(production.SellRequest());
-               
+                Debug.Log($"RGO workplace have produce an ammount of {production.SellRequest().goodSell.amountsell} and earned {response.cashRecived}£");
                 workplace.ReciveCash(response.cashRecived);
             }
         }
@@ -58,13 +58,18 @@ public class WorkplaceManager
     }
     public void WorkplacePayEmployee()
     {
+        Debug.Log("workplace manager call pay employee");
         foreach (var workplace in workplacesList)
         {
           List<IdNum> response = workplace.PayEmployees();
-            if (response is not null) 
+
+            if (response is not null)
             {
+                Debug.Log($"RGO response is {response.Count()} long ");
                 context.populationManager.PayPop(response);
-            }          
+            }
+            else
+                Debug.Log("workplace reponse is null");
         }
     }
 

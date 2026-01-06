@@ -57,9 +57,9 @@ public class PopulationManager
 
 
         populationList.Clear();
-        for (int i = 0; i < 4; i++) 
+        for (int i = 0; i < 1; i++) 
         {
-            Pop newPop = new Pop(ID :i, SIZE : 100,PROVINCEID : 4, jobTypes[0] , Culture.French, Religion.Catholic, CASHAMOUNT : 10000, StockPile);
+            Pop newPop = new Pop(ID :i, SIZE : 100,PROVINCEID : 4, jobTypes[0] , Culture.French, Religion.Catholic, CASHAMOUNT : 0, StockPile);
             newPop.countryID = GetPopCountryByProvinceId(4);
             populationList.Add(newPop);
         }
@@ -243,9 +243,15 @@ public class PopulationManager
         foreach (IdNum idnum in info) 
         { 
             Pop pop = populationList.Where( p=> p.id == idnum.id).FirstOrDefault();
+
             if (pop != null) 
             {
+                Debug.Log($"pop {pop.id}, have recived {idnum.num} $");
                 pop.cashAmount += idnum.num;
+            }
+            else
+            {
+                Debug.Log($"pop {idnum.id} is null, it should have recived a cash ammount of {idnum.num}");
             }
         }
     }
@@ -333,6 +339,13 @@ public class PopulationManager
         int id = nextPopId++;
     }
 
+    public void DebugPopCash()
+    {
+        foreach (Pop pop in populationList)
+        {
+            Debug.Log($"pop {pop.id} : cash ammount : {pop.cashAmount}");
+        }
+    }
     //--------- For UI ---------
     public List<Pop> SelectPopulationByCountry(int countryId)
     {
