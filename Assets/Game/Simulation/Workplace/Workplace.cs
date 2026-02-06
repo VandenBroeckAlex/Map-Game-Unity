@@ -5,7 +5,7 @@ using System.Linq;
 using UnityEditor.PackageManager;
 using UnityEngine;
 using static Good;
-using static Pop_objects;
+using static Pop;
 
 
 public enum WorkplaceType

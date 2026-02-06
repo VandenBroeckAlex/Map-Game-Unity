@@ -27,7 +27,7 @@ public class ResourceGatheringOperation  : IWorkplace, IProductionBuilding
         outputGoodId = _outputGoodId;
     }
 
-    public void OnWorkerHired(int popId, int numberOfHired, Pop_objects.PopJob type)
+    public void OnWorkerHired(int popId, int numberOfHired, Pop.PopJob type)
     {
         workplace.HireWorker(popId, numberOfHired, type);
     }
@@ -125,7 +125,7 @@ public class ResourceGatheringOperation  : IWorkplace, IProductionBuilding
         return workplace.id;
     }
 
-    public int GetWorkAvailableByJobType(Pop_objects.PopJob popJob)
+    public int GetWorkAvailableByJobType(Pop.PopJob popJob)
     {
        WorkerTypeCurrentMax val = workplace.workersRequirement.Where(wr => wr.workerType.iD == popJob.iD).FirstOrDefault();
         
