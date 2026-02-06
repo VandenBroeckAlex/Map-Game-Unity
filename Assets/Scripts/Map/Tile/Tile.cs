@@ -19,6 +19,7 @@ namespace MyGame.Data
         public string name { get; set; } = "";
         public float[] spriteColor { get; set; } = new float[3];
         public List<int> neighbors {  get; set; } = new List<int>();
+        
         public int superficy {  get; set; }
         public bool isLand {  get; set; }
         public bool isPassable {  get; set; }

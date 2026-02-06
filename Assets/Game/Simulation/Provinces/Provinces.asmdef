@@ -1,0 +1,16 @@
+{
+    "name": "Provinces",
+    "rootNamespace": "",
+    "references": [
+        "GUID:b929e3ee8bbd08644a08bb8304461126"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

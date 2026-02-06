@@ -1,5 +1,3 @@
-using Mono.Cecil;
-
 public class Modifier
 {
     public string id;             // "pop_growth", "movement_speed", "tax_income", "morale"

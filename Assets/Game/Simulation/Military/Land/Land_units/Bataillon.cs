@@ -1,4 +1,4 @@
-using System.Collections;
+using System;
 using System.Collections.Generic;
 
 
@@ -51,7 +51,7 @@ public class Bataillon
         if (manPower.max == 0)
             return 0;
 
-        return Mathf.RoundToInt((manPower.current / manPower.max) * 100f);
+        return Convert.ToInt32((manPower.current / manPower.max) * 100f);
     }
 
   
