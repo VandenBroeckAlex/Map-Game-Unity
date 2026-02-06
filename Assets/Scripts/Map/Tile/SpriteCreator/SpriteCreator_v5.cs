@@ -49,7 +49,7 @@ public class SpriteCreator_v5 : MonoBehaviour
 
 
 
-    private void Awake()
+    public void CreateSprite()
     {
 
         pathSave = FilePath.ProvincesSplit;
@@ -61,14 +61,7 @@ public class SpriteCreator_v5 : MonoBehaviour
         jsonSavePathEdgeInfo = FilePath.MapEdge;
         Directory.CreateDirectory(pathSave);
 
-        if (MainMenuControler.recalculateMapChoice 
-            || !File.Exists(jsonSavePathMapInfo) 
-            || FileUtils.IsFolderEmpty(pathSave)
-            || !File.Exists(jsonSavePathSpritsInfo)
-            || !File.Exists(jsonSavePathColorId)
-            || !File.Exists(jsonSavePathTileInfo)
-            )
-        {
+       
             BaseImg = FileUtils.LoadBaseImage(baseImagePath);
 
             if (BaseImg == null)
@@ -154,11 +147,8 @@ public class SpriteCreator_v5 : MonoBehaviour
             AutoCoastalTile();
 
             ExportJson(color_id, tileInfos, spriteInfos,_edgeData);
-        }
-        else
-        {
-            Debug.Log("The map has NOT been recalculated.");
-        }
+        
+        
 
     }
 

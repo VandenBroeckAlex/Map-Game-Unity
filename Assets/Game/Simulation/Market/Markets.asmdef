@@ -1,0 +1,16 @@
+{
+    "name": "Markets",
+    "rootNamespace": "",
+    "references": [
+        "GUID:5d3fa135af8ee4c49b50aa09af7f7983"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

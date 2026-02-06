@@ -1,0 +1,18 @@
+{
+    "name": "Workplace",
+    "rootNamespace": "",
+    "references": [
+        "GUID:e9a602c551904cb45afc7710f130d840",
+        "GUID:f5c033ff822f6dd4fa0d275e6f6b825f",
+        "GUID:e2b7932a83406e44cafbe715a628ce58"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

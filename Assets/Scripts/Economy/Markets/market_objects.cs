@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static Good;
-using static Market_object;
 
 public class Market_object 
 {
@@ -149,7 +147,6 @@ public class Market_object
     } 
 
 
-    // business object
     public class MarketBuyRequest
     {
         public int Id;
@@ -171,7 +168,6 @@ public class Market_object
             this.goodSell = goodSell;
         }
     }
-
 
     public class GoodBuyRequest
     {

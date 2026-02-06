@@ -1,7 +1,7 @@
 using System;
 
 [System.Serializable]
-public class FloatCurentMax 
+public class FloatCurentMax
 {
     public float current;
     public float max;

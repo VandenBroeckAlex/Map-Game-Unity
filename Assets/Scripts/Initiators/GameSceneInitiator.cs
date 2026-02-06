@@ -19,7 +19,7 @@ public class GameSceneInitiator : MonoBehaviour
     //[SerializeField] private UI_market_manager _uI_Market_Manager;
     [SerializeField] private UI_Time_manager _UiTimeManager;
     [SerializeField] private UI_market_manager _UI_Market_Manager;
-
+    [SerializeField] private SpriteCreator_v5 _spriteCreator; //TO REMOVE
     //[SerializeField] private ProvinceUIController _editProvUI;
 
     private GameObject _root;
@@ -48,6 +48,7 @@ public class GameSceneInitiator : MonoBehaviour
         _mapLoader = Instantiate(_mapLoader, _root.transform);
         _eventSystem = Instantiate(_eventSystem, _root.transform);
         _UiTimeManager = Instantiate(_UiTimeManager, _ui.transform);
+       // _spriteCreator = Instantiate(_spriteCreator, _root.transform);
         // optional others
        // _uI_Market_Manager  = Instantiate(_uI_Market_Manager, _root.transform);
         //_edgeGraphData = Instantiate(_edgeGraphData, _root.transform);
@@ -57,6 +58,7 @@ public class GameSceneInitiator : MonoBehaviour
 
     private async UniTask InitializeObject()
     {
+        _spriteCreator.CreateSprite();
         _tickScript.Initialize();
         _gameContext.Initialize();
         Debug.Log("GameContext have been initialized");
