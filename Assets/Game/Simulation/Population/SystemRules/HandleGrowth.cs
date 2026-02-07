@@ -1,4 +1,3 @@
-using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 
@@ -14,7 +13,6 @@ public class HandleGrowth
                 float growRate = base_growth_rate + (1 * countryGrowthModdifier) + provinceGrowthModdifier;
                 int newPopulation = (int)Math.Round(populationList[i].size * growRate);
                 populationList[i].size += newPopulation;
- 
             }
         }
         return populationList;

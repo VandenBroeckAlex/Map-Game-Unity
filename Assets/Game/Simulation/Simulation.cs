@@ -5,5 +5,5 @@ public class Simulation
     MarketSystem marketSystem = new MarketSystem();
 
     CountriesManager countriesManager = new CountriesManager();
-    ProvincesSystem ProvincesSystem = new ProvincesSystem();
+    ProvincesSystem provincesSystem = new ProvincesSystem();
 }
