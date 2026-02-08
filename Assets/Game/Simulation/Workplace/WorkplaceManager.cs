@@ -1,23 +1,20 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static Market_object;
 using static Pop;
 using static Workplace;
-using UnityEngine;
 using Unity.Jobs.LowLevel.Unsafe;
 
 public class WorkplaceManager 
 {
-    private GameContext context;
+
     List<IWorkplace> workplacesList;
     private int IdIncrement = 0;
 
     // list for workplace beeing build ?
 
-    public WorkplaceManager(GameContext context)
+    public WorkplaceManager()
     {
-        this.context = context;
         workplacesList = new List<IWorkplace>();
     }
 
@@ -36,9 +33,8 @@ public class WorkplaceManager
         {
             if (workplace is IProductionBuilding production)
             {
-                MarketSellResponse response = context.marketManager.MarketSell(production.SellRequest());
-                Debug.Log($"RGO workplace have produce an ammount of {production.SellRequest().goodSell.amountsell} and earned {response.cashRecived}£");
-                workplace.ReciveCash(response.cashRecived);
+                //Enqueu sell request
+                //MarketSellResponse response = context.marketManager.MarketSell(production.SellRequest());
             }
         }
     }
@@ -58,18 +54,17 @@ public class WorkplaceManager
     }
     public void WorkplacePayEmployee()
     {
-        Debug.Log("workplace manager call pay employee");
         foreach (var workplace in workplacesList)
         {
           List<IdNum> response = workplace.PayEmployees();
 
             if (response is not null)
             {
-                Debug.Log($"RGO response is {response.Count()} long ");
+
                 context.populationManager.PayPop(response);
             }
             else
-                Debug.Log("workplace reponse is null");
+
         }
     }
 
@@ -80,7 +75,10 @@ public class WorkplaceManager
         {
             List<IdNum> response = workplace.PayOwners();
             if(response is not null)
-                context.populationManager.PayPop(response);
+            {
+                //Enqueu request
+            }
+               
         }
     }
     public void WorkplaceHire(int workplaceId, int popId, int nummberOfHired, PopJob type)

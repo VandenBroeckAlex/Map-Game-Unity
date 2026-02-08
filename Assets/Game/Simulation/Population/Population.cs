@@ -7,8 +7,6 @@ using System.Linq;
 public class Pop
 {
 
-
-    
     public int id { get; }
     public int size;
     public List<IdNum> workplace;

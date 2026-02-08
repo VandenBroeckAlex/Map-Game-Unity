@@ -4,10 +4,7 @@ using static TickSystem;
 
 public class GameTime 
 {
-
-
-
-
+    public event Action OnTick;
     public event Action OnMonth;
     public event Action<string> OnDateChanged;
 
@@ -22,10 +19,15 @@ public class GameTime
     private byte weekDay = 0;
     private string strMonth = "";
 
-    public GameTime(TickSystem tickSystem)
+    public GameTime(TickSystem tickSystem, byte day, int month, int year, byte weekDay)
     {
         this.tickSystem = tickSystem;
         tickSystem.OnTick += HandleTick;
+
+        this.day = day;
+        this.month = month;
+        this.year = year;
+        this.weekDay = weekDay;
     }
 
     public void Dispose()
@@ -34,8 +36,9 @@ public class GameTime
     }
     private void HandleTick()
     {
+        OnTick.Invoke();
         AdvanceDay();
-        OnDateChanged?.Invoke(GetDateString());
+
     }
 
     private void AdvanceDay()

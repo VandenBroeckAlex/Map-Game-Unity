@@ -3,8 +3,6 @@ using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using static Market_object;
-using static PopulationManager;
 using static Workplace;
 
 
@@ -41,39 +39,42 @@ public class ResourceGatheringOperation  : IWorkplace, IProductionBuilding
     //fire low skill labour first - first in last out ?
     // first in first out 
     //10% per call
-    public List<IdNum> LayOffWorker()
+    public void LayOffWorker()
     {
         List<IdNum> poplayedoff = new List<IdNum>();
 
         int numberToFire = (int)(workplace.GetNumberOfProducer() * 0.1f);
 
-        return workplace.LayOfWorkerFIFO(numberToFire); 
+        //Enqueue command 
+        //return workplace.LayOfWorkerFIFO(numberToFire); 
     }
-  
+
 
     //add higher grade worker after
-    public MarketSellRequest SellRequest()
+    public void SellRequest()
     {
         int numberOutputed = (workplace.GetNumberOfProducer() / 1000) * production.efficiency;// * (smallest numb inputGood);
         GoodSellRequest gsr = new GoodSellRequest(outputGoodId, numberOutputed);
         MarketSellRequest request = new MarketSellRequest(workplace.id,workplace.countryId, gsr);
-        return request;
+        //Enqueue request
     }
 
 
 
     // popId => ammount
-    public List<IdNum>? PayEmployees()
+    public void PayEmployees()
     {
         Debug.Log("RGO workplace call pay employee");
-        return workplace.PayEmployees();
+        //Enqueue request
+        //return workplace.PayEmployees();
     }
 
 
-    
-    public List<IdNum>? PayOwners()
+
+    public void PayOwners()
     {
-        return workplace.PayOwner();
+        //return workplace.PayOwner();
+        //Enqueue request
     }
 
     public void SetWages()
@@ -125,7 +126,7 @@ public class ResourceGatheringOperation  : IWorkplace, IProductionBuilding
         return workplace.id;
     }
 
-    public int GetWorkAvailableByJobType(Pop.PopJob popJob)
+    public int GetWorkAvailableByJobType(PopJob popJob)
     {
        WorkerTypeCurrentMax val = workplace.workersRequirement.Where(wr => wr.workerType.iD == popJob.iD).FirstOrDefault();
         
@@ -142,5 +143,12 @@ public class ResourceGatheringOperation  : IWorkplace, IProductionBuilding
     public int GetProvinceId()
     {
         return workplace.GetProvinceId();
+    }
+
+
+
+    public void OnWorkerHired(int popId, int numberOfHired, PopJob job)
+    {
+        throw new NotImplementedException();
     }
 }

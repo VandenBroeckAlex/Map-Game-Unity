@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Good;
-using static Goods_loader;
+
 
 public class Good 
 {
@@ -23,12 +23,3 @@ public enum GoodType
 }
 
 
-public static class GoodDatabase
-{
-    public static List<Good> good_definition_list = new List<Good>();
-
-    public static void Initialize()
-    {
-        good_definition_list = Load_goods();
-    }
-}
