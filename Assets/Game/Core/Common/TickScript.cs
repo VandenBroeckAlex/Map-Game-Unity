@@ -1,62 +1,60 @@
-
-using System.Collections;
+using System;
 using System.Diagnostics;
 
-
-public class TickScript
+public class TickSystem
 {
-    const double TickDuration = 1.0 / 60.0;
-    bool isPaused = true;
-    Stopwatch stopwatch;
-    double lastTime;
-    double accumulatedTime;
-    long tick;
+    public event Action OnTick;
 
-    public TickScript()
+    public long Tick { get; private set; }
+
+    private readonly Stopwatch stopwatch = new Stopwatch();
+
+    private double tickDuration = 1.0 / 60.0;
+    private double accumulatedTime;
+    private double lastTime;
+    private double timeScale = 1.0;
+    private bool isPaused = true;
+
+    public TickSystem(double tickRate = 60.0)
     {
-        stopwatch = Stopwatch.StartNew();
-        lastTime = stopwatch.Elapsed.TotalSeconds;
-        accumulatedTime = 0.0;
-        tick = 0;
+        tickDuration = 1.0 / tickRate;
+    }
+
+    public void Start()
+    {
+        isPaused = false;
+        accumulatedTime = 0;
+        lastTime = 0;
+        stopwatch.Restart();
+    }
+
+    public void Pause()
+    {
+        isPaused = true;
+        stopwatch.Stop();
+    }
+
+    public void SetSpeed(double scale)
+    {
+        timeScale = scale;
     }
 
     public void Update()
     {
+        if (isPaused)
+            return;
+
         double currentTime = stopwatch.Elapsed.TotalSeconds;
-        double deltaTime = currentTime - lastTime;
+        double deltaTime = (currentTime - lastTime) * timeScale;
         lastTime = currentTime;
 
         accumulatedTime += deltaTime;
 
-        while (accumulatedTime >= TickDuration)
+        while (accumulatedTime >= tickDuration)
         {
-            SimulateTick(tick);
-            tick++;
-            accumulatedTime -= TickDuration;
+            Tick++;
+            OnTick?.Invoke();
+            accumulatedTime -= tickDuration;
         }
     }
-
-    void SimulateTick(long tick)
-    {
-        // deterministic simulation here
-    }
-public void PauseGame()
-    {
-        isPaused = true;
-    }
-    public void OneSpeed()
-    {
-        isPaused = false;
-        TickDuration = 5f;
-    }
-    public void TwoSpeed()
-    {
-        isPaused = false;
-        TickDuration =3f;
-    }
-    public void ThreeSpeed()
-    {
-        isPaused = false;
-        TickDuration = 1f;
-    }
-}}
+}

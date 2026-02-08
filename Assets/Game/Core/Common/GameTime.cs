@@ -1,5 +1,5 @@
 using System;
-using static TickScript;
+using static TickSystem;
 
 
 public class GameTime 
@@ -8,51 +8,56 @@ public class GameTime
 
 
 
-    public delegate void OnMonth();
-    public static OnMonth onMonth;
+    public event Action OnMonth;
+    public event Action<string> OnDateChanged;
 
-    public delegate void OnDateChanged(string date);
-    public static event OnDateChanged onDateChanged;
+    private readonly TickSystem tickSystem;
 
-    private string[] strWeekDayList = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
-    private string[] strMonthsList = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
-    public byte monthDay;
+    private readonly string[] strWeekDayList = { "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday" };
+    private readonly string[] strMonthsList = { "January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December" };
+    
+    public byte day;
     private int month = 1;
     private int year = 1814;
     private byte weekDay = 0;
     private string strMonth = "";
 
-
-    private void OnEnable()
+    public GameTime(TickSystem tickSystem)
     {
-        TickScript.onTick += HandleDate;
+        this.tickSystem = tickSystem;
+        tickSystem.OnTick += HandleTick;
     }
 
-    private void OnDisable()
+    public void Dispose()
     {
-        TickScript.onTick -= HandleDate;
+        tickSystem.OnTick -= HandleTick;
+    }
+    private void HandleTick()
+    {
+        AdvanceDay();
+        OnDateChanged?.Invoke(GetDateString());
     }
 
-
-    private void HandleDate()
+    private void AdvanceDay()
     {
+        day++;
         HandleMonthDayChange();
         string _string = GetDateString();
-        onDateChanged?.Invoke(_string);
+        OnDateChanged?.Invoke(_string);
     }
 
     public string GetDateString()
     {
-        return $"{GetStrMonth()} {monthDay}, {year}";
+        return $"{GetStrMonth()} {day}, {year}";
     }
 
     private void HandleMonthDayChange()
     {
-        monthDay++;
+        
 
-        if (monthDay == 2)
+        if (day == 2)
         {
-            onMonth?.Invoke();
+            OnMonth?.Invoke();
         }
 
         switch (month)
@@ -103,27 +108,27 @@ public class GameTime
     }
     private void TwentyNineDaysMonth()
     {
-        if (monthDay > 29)
+        if (day > 29)
         {
-            monthDay = 1;
+            day = 1;
             month++;
         }
 
     }
     private void ThirtyDaysMonth()
     {
-        if (monthDay > 30)
+        if (day > 30)
         {
-            monthDay = 1;
+            day = 1;
             month++;
         }
 
     }
     private void ThirtyOneDaysMonth()
     {
-        if (monthDay > 31)
+        if (day > 31)
         {
-            monthDay = 1;
+            day = 1;
 
             if (month != 12)
             {
