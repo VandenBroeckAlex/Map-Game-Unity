@@ -17,7 +17,7 @@ public class Simulation
     public Simulation()
     {
         _intentBuffer = new IntentBuffer();
-        _populationSystem = new PopulationSystem(_intentBuffer);
+        //_populationSystem = new PopulationSystem(_intentBuffer);
         _marketSystem = new MarketSystem();
         _countriesManager = new CountriesManager();
         _provincesSystem = new ProvincesSystem();
