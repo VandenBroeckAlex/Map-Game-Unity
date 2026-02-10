@@ -147,13 +147,12 @@ public class Workplace
 
     public List<IdNum> PayEmployees()
     {
-        Debug.Log($"workplace call pay employee it have {popAmmount.Count()} pop ammount and a cashBuffer of {cashBuffer}");
         List<IdNum> info = new List<IdNum>();
         if (cashBuffer == 0)
             return null;
         foreach (KeyValuePair<int, PopJobAssignment> kvp in popAmmount)
         {
-            Debug.Log($"type id {kvp.Value.typeId}");
+
 
             if (kvp.Value.typeId == 1 && cashBuffer > 0)
             {

@@ -10,7 +10,7 @@ public class LandBattleEngine : MonoBehaviour
     private void OnEnable()
     {
         // The battle manager will call that
-        TickScript.onTick += BattleTurn;
+        //TickScript.onTick += BattleTurn;
     }
 
     // ------ Army info -------

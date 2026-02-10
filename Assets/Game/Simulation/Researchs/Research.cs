@@ -7,7 +7,7 @@ public class Research
 
     public void ApplyResearch(Country country, Research r)
     {
-        country.stats.modifiers.AddModifier(new Modifier(modifierID, r.modifierValue, ModifierType.Multiplicative));
+        //country.stats.modifiers.AddModifier(new Modifier(modifierID, r.modifierValue, ModifierType.Multiplicative));
 
     }
 }

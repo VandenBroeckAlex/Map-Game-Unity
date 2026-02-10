@@ -6,7 +6,7 @@ using UnityEngine;
 using static Workplace;
 
 
-public class ResourceGatheringOperation  : IWorkplace, IProductionBuilding
+public class ResourceGatheringOperation 
 {
     public Workplace workplace;
     public Production production;
@@ -25,7 +25,7 @@ public class ResourceGatheringOperation  : IWorkplace, IProductionBuilding
         outputGoodId = _outputGoodId;
     }
 
-    public void OnWorkerHired(int popId, int numberOfHired, Pop.PopJob type)
+    public void OnWorkerHired(int popId, int numberOfHired, PopJob type)
     {
         workplace.HireWorker(popId, numberOfHired, type);
     }
@@ -145,10 +145,4 @@ public class ResourceGatheringOperation  : IWorkplace, IProductionBuilding
         return workplace.GetProvinceId();
     }
 
-
-
-    public void OnWorkerHired(int popId, int numberOfHired, PopJob job)
-    {
-        throw new NotImplementedException();
-    }
 }

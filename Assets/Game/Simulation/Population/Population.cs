@@ -12,7 +12,7 @@ public class Pop
     public List<IdNum> workplace;
     public int provinceId { get; }
     public int countryID { get; set; }
-    public PopJob job { get; }
+    public int jobId { get; }
     public Culture culture { get; }
     public Religion religion { get; }
     private int _cashAmount;
@@ -39,12 +39,12 @@ public class Pop
 
 
     //constructor
-    public Pop(int ID, int SIZE, int PROVINCEID, PopJob JOB, Culture CULTURE, Religion RELIGION, int CASHAMOUNT, List<GoodRequirement> STOCKPILE)
+    public Pop(int ID, int SIZE, int PROVINCEID, int JOBID, Culture CULTURE, Religion RELIGION, int CASHAMOUNT, List<GoodRequirement> STOCKPILE)
     {
         id = ID;
         size = SIZE;
         provinceId = PROVINCEID;
-        job = JOB;
+        jobId = JOBID;
         culture = CULTURE;
         religion = RELIGION;
         cashAmount = CASHAMOUNT;

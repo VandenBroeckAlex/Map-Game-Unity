@@ -33,10 +33,11 @@ public class CountryLoader
 
             foreach (var _c in countryDef)
             {
+                int[] color = { _c.color[0], _c.color[1], _c.color[2], 255 };
                 Country country = new Country(
                     _c.id,
                     _c.name,
-                    new Color32((byte)_c.color[0], (byte)_c.color[1], (byte)_c.color[2], 255),
+                    color,
                     _c.treasury,
                     _c.tag
                 );

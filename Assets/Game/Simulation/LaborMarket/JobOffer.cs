@@ -5,5 +5,4 @@ public class JobOffer
     int popType;
     int openPositions;
     int wage;
-
 }
