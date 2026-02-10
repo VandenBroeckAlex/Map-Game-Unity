@@ -8,10 +8,12 @@ public class Good
 { 
     public int id;
     public string name;
+    public int type;
     public int basePrice;
     public int weight; // For transport, if needed
+    public int baseProductionModdifier;
     public string iconPath;
-    public int type;
+    public string color;
 }
 
 

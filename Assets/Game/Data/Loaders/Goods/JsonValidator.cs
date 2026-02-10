@@ -22,22 +22,28 @@ public class JsonValidator
     {
         bool jsonIsValid = true;
 
-        var root = JObject.Parse(jsonText);
-        foreach (var property in root.Properties())
-        {
-            if (!validKeys.Contains(property.Name))
-            {
-                int line = ((IJsonLineInfo)property).LineNumber;
-                string suggestion = FindClosest(property.Name, validKeys);
+        JArray root = JArray.Parse(jsonText);
 
-                Console.WriteLine(
-                    $"Line {line}: Unknown key '{property.Name}'. " +
-                    (suggestion != null ? $"Did you mean '{suggestion}'?" : "")
-                );
-                jsonIsValid = false;
+        foreach (JObject item in root)
+        {
+            foreach (var property in item.Properties())
+            {
+                if (!validKeys.Contains(property.Name))
+                {
+                    int line = ((IJsonLineInfo)property).LineNumber;
+                    string suggestion = FindClosest(property.Name, validKeys);
+
+                    Debug.LogError(
+                        $"Line {line}: Unknown key '{property.Name}'. " +
+                        (suggestion != null ? $"Did you mean '{suggestion}'?" : "")
+                    );
+
+                    jsonIsValid = false;
+                }
             }
 
-            JToken typeToken = root["type"];
+
+            JToken typeToken = item["type"];
             if (typeToken != null)
             {
                 string typeValue = typeToken.Value<string>();
@@ -51,13 +57,16 @@ public class JsonValidator
                         $"Line {line}: Type '{typeValue}' is invalid. " +
                         (suggestion != null ? $"Did you mean '{suggestion}'?" : "")
                     );
+
                     jsonIsValid = false;
                 }
             }
-
         }
+
         return jsonIsValid;
     }
+
+
 
     string FindClosest(string input, IEnumerable<string> options)
     {

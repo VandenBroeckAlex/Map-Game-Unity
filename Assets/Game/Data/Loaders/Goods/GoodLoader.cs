@@ -16,7 +16,7 @@ public class GoodLoader
     {
         public string name;
         public int basePrice;
-        public float baseProductionModdifier;
+        public int baseProductionModdifier;
         public string type;
         public string color;
         public string iconPath;
@@ -61,13 +61,13 @@ public class GoodLoader
             good.name = _good.name;
             good.basePrice = _good.basePrice;
             good.type = goodType.FirstOrDefault(x => x.Value == _good.type).Key;
+            good.baseProductionModdifier = _good.baseProductionModdifier;
+            good.color = _good.color;   
+            good.iconPath = _good.iconPath;
 
+            goodArray[id] = good;
             id++;
         }
         return goodArray;
     }
-
- 
-
-
 }

@@ -6,7 +6,8 @@
         "UnityEditor.TestRunner",
         "SimPopulations",
         "Goods",
-        "HelperObject"
+        "HelperObject",
+        "Loaders"
     ],
     "includePlatforms": [
         "Editor"
