@@ -13,7 +13,7 @@ public class FilePath
     public static string SpritesInfos => Path.Combine(Application.persistentDataPath, "Tiles/SpritesInfos.json");
     public static string TilesInfos => Path.Combine(Application.persistentDataPath, "Tiles/TilesInfos.json");
 
-    public static string CountryDef = Path.Combine(Application.persistentDataPath, "Country/CountryDef.json");
+    public static string CountryDef => Path.Combine(Application.persistentDataPath, "Country/CountryDef.json");
 
 
     //-------- Path for test file ______
