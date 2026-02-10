@@ -44,6 +44,7 @@ public class GoodLoaderTest
         Assert.AreEqual("icons/wood", goodList[0].iconPath);
         Assert.AreEqual("#b65344", goodList[0].color);
     }
+
     [Test]
     public static void GoodLoader_Load_goods_NumberGoodRecived_True()
     {
@@ -77,7 +78,7 @@ public class GoodLoaderTest
             ]";
         Dictionary<int, string> type = new Dictionary<int, string>();
 
-        type[0] = "Raw";
+        type[2] = "Raw";
 
         Good[] goodList = loader.Load_goods(json, type);
 
@@ -86,6 +87,10 @@ public class GoodLoaderTest
         if (goodList.Length != 3)
         {
             Assert.Fail($"Expected GoodList length = 3, received: {goodList.Length}");
+        }
+        if (goodList[0].type != 2) 
+        {
+            Assert.Fail($"Expected GoodType to be : 2, recived: {goodList[0].type}");
         }
     }
 }
