@@ -1,6 +1,5 @@
 public class PopJob
 {
-    public int iD;
     public string type { get; }
     public string strata { get; }
 

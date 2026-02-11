@@ -88,10 +88,11 @@ public class Workplace
     public void HireWorker(int popId, int numberOfHired, PopJob type)
     {
         if (!popAmmount.ContainsKey(popId))
-            popAmmount[popId] = new PopJobAssignment(popId, numberOfHired, type.iD);
+            //To refactor
+            //popAmmount[popId] = new PopJobAssignment(popId, numberOfHired, type.iD);
 
 
-        popAmmount[popId].numWorker += numberOfHired;
+            popAmmount[popId].numWorker += numberOfHired;
 
         WorkerTypeCurrentMax wr = workersRequirement.Where(workersRequirement => workersRequirement.workerType == type).First();
         wr.curentMax.current += numberOfHired;
@@ -123,20 +124,22 @@ public class Workplace
         {
             if(pop.Value.numWorker > numLeft)
             {
-                WorkerTypeCurrentMax wr = workersRequirement.Where(workersRequirement => workersRequirement.workerType.iD == pop.Value.typeId).First();
-                wr.curentMax.current -= numLeft;
-                IdNum idNum = new(pop.Key, numLeft);
-                idNums.Add(idNum);
-                return idNums;
+                //To refactor
+                //WorkerTypeCurrentMax wr = workersRequirement.Where(workersRequirement => workersRequirement.workerType.iD == pop.Value.typeId).First();
+                //wr.curentMax.current -= numLeft;
+                //IdNum idNum = new(pop.Key, numLeft);
+                //idNums.Add(idNum);
+                //return idNums;
             }
             else if (pop.Value.numWorker <= numLeft)
             {
-                WorkerTypeCurrentMax wr = workersRequirement.Where(workersRequirement => workersRequirement.workerType.iD == pop.Value.typeId).First();
-                numLeft -= pop.Value.numWorker;
-                wr.curentMax.current -= pop.Value.numWorker;
-                IdNum idNum = new(pop.Key, pop.Value.numWorker);
-                idNums.Add(idNum);
-                popAmmount.Remove(pop.Key);
+                //To refactor
+                //WorkerTypeCurrentMax wr = workersRequirement.Where(workersRequirement => workersRequirement.workerType.iD == pop.Value.typeId).First();
+                //numLeft -= pop.Value.numWorker;
+                //wr.curentMax.current -= pop.Value.numWorker;
+                //IdNum idNum = new(pop.Key, pop.Value.numWorker);
+                //idNums.Add(idNum);
+                //popAmmount.Remove(pop.Key);
             }
         }
         // if still numLeft  close workplace

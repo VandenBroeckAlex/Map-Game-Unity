@@ -126,19 +126,20 @@ public class ResourceGatheringOperation
         return workplace.id;
     }
 
-    public int GetWorkAvailableByJobType(PopJob popJob)
-    {
-       WorkerTypeCurrentMax val = workplace.workersRequirement.Where(wr => wr.workerType.iD == popJob.iD).FirstOrDefault();
-        
-        if(val is null)
-        {
-            return 0;
-        }
-        else
-        {
-            return val.curentMax.max - val.curentMax.current;
-        }
-    }
+    //To refactor
+    //public int GetWorkAvailableByJobType(PopJob popJob)
+    //{
+    //   WorkerTypeCurrentMax val = workplace.workersRequirement.Where(wr => wr.workerType.iD == popJob.iD).FirstOrDefault();
+
+    //    if(val is null)
+    //    {
+    //        return 0;
+    //    }
+    //    else
+    //    {
+    //        return val.curentMax.max - val.curentMax.current;
+    //    }
+    //}
 
     public int GetProvinceId()
     {
