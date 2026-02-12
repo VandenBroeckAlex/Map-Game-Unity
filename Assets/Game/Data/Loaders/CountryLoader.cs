@@ -11,10 +11,25 @@ public class CountryLoader
 
     public Dictionary<int, Country> countryList = new();
 
-    public void LoadCountry()
+    public Dictionary<int, Country> DeserializeCountries(string json)
     {
-        string jsonPath = FilePath.CountryDef;
-        InitializeDefaultCountry(jsonPath);
+        Dictionary<int, Country> _countryList = new();
+        var countryDef = JsonConvert.DeserializeObject<List<DefCountry>>(json);
+
+        foreach (var _c in countryDef)
+        {
+            int[] color = { _c.color[0], _c.color[1], _c.color[2], 255 };
+            Country country = new Country(
+                _c.id,
+                _c.name,
+                color,
+                _c.treasury,
+                _c.tag
+            );
+
+            _countryList.Add(_c.id, country);
+        };
+        return countryList;
     }
 
     public void TestInitialize(string jsonPath)

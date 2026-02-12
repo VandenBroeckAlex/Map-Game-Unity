@@ -7,7 +7,8 @@
         "SimPopulations",
         "Goods",
         "HelperObject",
-        "Loaders"
+        "Loaders",
+        "Country"
     ],
     "includePlatforms": [
         "Editor"
