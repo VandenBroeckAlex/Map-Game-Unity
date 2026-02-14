@@ -1,8 +1,8 @@
+using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
-using NUnit.Framework;
 using UnityEngine;
-using UnityEngine.TestTools;
+using static CountryLoader;
 
 
 public class CountryLoaderTest
@@ -36,9 +36,12 @@ public class CountryLoaderTest
             ""flag"": ""path""
           }]";
 
+       
+     
         CountryLoader countryLoader = new CountryLoader();
         Dictionary<int,Country> result = countryLoader.DeserializeCountries(json);
-    
+        Debug.Log(result.Count);
+
         Assert.IsNotNull(result);
         Assert.AreEqual(3, result.Count);
         Assert.AreEqual("Belgium", result[0].name);
