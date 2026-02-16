@@ -13,8 +13,8 @@ public class Pop
     public int provinceId { get; }
     public int countryID { get; set; }
     public int jobId { get; }
-    public Culture culture { get; }
-    public Religion religion { get; }
+    public int cultureId { get; }
+    public int religionId { get; }
     private int _cashAmount;
     private int _savings;
     public int cashAmount
@@ -39,14 +39,14 @@ public class Pop
 
 
     //constructor
-    public Pop(int ID, int SIZE, int PROVINCEID, int JOBID, Culture CULTURE, Religion RELIGION, int CASHAMOUNT, List<GoodRequirement> STOCKPILE)
+    public Pop(int ID, int SIZE, int PROVINCEID, int JOBID, int CULTURE, int RELIGION, int CASHAMOUNT, List<GoodRequirement> STOCKPILE)
     {
         id = ID;
         size = SIZE;
         provinceId = PROVINCEID;
         jobId = JOBID;
-        culture = CULTURE;
-        religion = RELIGION;
+        cultureId = CULTURE;
+        religionId = RELIGION;
         cashAmount = CASHAMOUNT;
         GoodList = STOCKPILE;
         workplace = new List<IdNum>();

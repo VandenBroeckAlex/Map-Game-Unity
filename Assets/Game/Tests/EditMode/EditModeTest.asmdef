@@ -8,7 +8,8 @@
         "Goods",
         "HelperObject",
         "Loaders",
-        "Country"
+        "Country",
+        "MarketTransactions"
     ],
     "includePlatforms": [
         "Editor"

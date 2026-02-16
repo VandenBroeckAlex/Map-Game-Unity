@@ -11,7 +11,7 @@ namespace UnitTest.population
             GoodRequirement gr = new GoodRequirement(1, 500, 500);
             List<GoodRequirement> goodReq = new List<GoodRequirement>();
             goodReq.Add(gr);
-            Pop pop = new Pop(0, 1000, 1, 1, Culture.French, Religion.Catholic, 100, goodReq);
+            Pop pop = new Pop(0, 1000, 1, 1, 1, 1, 100, goodReq);
             return pop;
         }
 

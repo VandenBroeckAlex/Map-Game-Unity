@@ -23,7 +23,7 @@ public class IntentBuffer : IIntentBuffer
 
     public void Enqueue<T>(T intent)
     {
-        if(!_buffers.TryGetValue(typeof(T), out var list))
+        if (!_buffers.TryGetValue(typeof(T), out var list))
         {
             list = new List<T>();
             _buffers[typeof(T)] = list;

@@ -1,6 +1,7 @@
 
 
 using System.Collections.Generic;
+using static MarketTransactionsObj;
 
 
 
@@ -26,7 +27,7 @@ public interface IWorkplace
 
 public interface IProductionBuilding
 {
-    MarketSellRequest SellRequest();
+   MarketSellRequest SellRequest();
 }
 
 public interface ITransformationBuilding

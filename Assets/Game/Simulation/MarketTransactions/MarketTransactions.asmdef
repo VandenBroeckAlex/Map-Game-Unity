@@ -1,3 +1,16 @@
 {
-	"name": "MarketTransactions"
+    "name": "MarketTransactions",
+    "rootNamespace": "",
+    "references": [
+        "GUID:84f7458110e3bca45b0283e2d22d03a8"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }
