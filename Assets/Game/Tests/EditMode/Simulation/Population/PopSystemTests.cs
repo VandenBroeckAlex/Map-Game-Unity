@@ -46,7 +46,6 @@ public class PopSystemTests
     {
         List<Pop> poplist = new List<Pop>();
         poplist.Add(CreatePop());
-        Debug.Log(poplist[0].id);
         List<MarketBuyResponse> marketResponses = new List<MarketTransactionsObj.MarketBuyResponse>();
 
         MarketBuyResponse marketResponse = new MarketBuyResponse();
@@ -66,4 +65,19 @@ public class PopSystemTests
         Assert.AreEqual(poplist[0].GoodList[0].Stockpile, 500);
     }
 
+    [Test]
+    public void PopSystem_HandlePopResetStockpile()
+    {
+        Pop pop = CreatePop();
+        pop.GoodList[0].Stockpile = 500;
+
+        List<Pop> popList = new List<Pop>();
+        popList.Add(pop);
+        popList.Add(CreatePop());
+        popList = HandlePopulationResetStockpile.ResetStockpile(popList);
+
+        Assert.IsNotNull(popList);
+        Assert.AreEqual(2, popList.Count);
+        Assert.AreEqual(0, popList[0].GoodList[0].Stockpile);
+    }
 }
