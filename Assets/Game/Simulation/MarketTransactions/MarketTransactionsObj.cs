@@ -4,12 +4,12 @@ using UnityEngine;
 public class MarketTransactionsObj
 {
 
-    public struct PopBuyRequest : IEvent 
+    public struct MarketBuyRequest : IEvent 
     {
         public int marketId;
-        public int popId;
+        public int Id;
         public List<GoodRequest> GoodRequest;
-        public int cashAmmount;
+        public int cashAmount;
     }
 
     public struct MarketSellRequest : IEvent

@@ -4,15 +4,15 @@ using System.Linq;
 
 public static class HandlePopBuy
 {
-     public static List<PopBuyRequest> PopulationBuyRequest(List<Pop> _popList)
+     public static List<MarketBuyRequest> PopulationBuyRequest(List<Pop> _popList)
     {
-        List <PopBuyRequest> result = new List<PopBuyRequest> ();
+        List <MarketBuyRequest> result = new List<MarketBuyRequest> ();
         foreach (var pop in _popList)
         {
-            PopBuyRequest request = new PopBuyRequest();
+            MarketBuyRequest request = new MarketBuyRequest();
             List<GoodRequest> goodRequestsList = new List<GoodRequest>();
-            request.popId = pop.id;
-            request.cashAmmount = pop.cashAmount;
+            request.Id = pop.id;
+            request.cashAmount = pop.cashAmount;
             request.marketId = pop.countryID;
             foreach (GoodRequirement good in pop.GoodList)
             {               

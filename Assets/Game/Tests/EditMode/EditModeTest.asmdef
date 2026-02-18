@@ -9,7 +9,8 @@
         "HelperObject",
         "Loaders",
         "Country",
-        "MarketTransactions"
+        "MarketTransactions",
+        "Markets"
     ],
     "includePlatforms": [
         "Editor"

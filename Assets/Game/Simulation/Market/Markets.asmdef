@@ -2,7 +2,8 @@
     "name": "Markets",
     "rootNamespace": "",
     "references": [
-        "GUID:5d3fa135af8ee4c49b50aa09af7f7983"
+        "GUID:5d3fa135af8ee4c49b50aa09af7f7983",
+        "GUID:f5c033ff822f6dd4fa0d275e6f6b825f"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

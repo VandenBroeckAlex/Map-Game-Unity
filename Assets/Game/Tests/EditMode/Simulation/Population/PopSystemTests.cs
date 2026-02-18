@@ -19,13 +19,13 @@ public class PopSystemTests
         List<Pop> poplist = new List<Pop>();
         poplist.Add(CreatePop());
 
-        List<MarketTransactionsObj.PopBuyRequest> result = HandlePopBuy.PopulationBuyRequest(poplist);
+        List<MarketTransactionsObj.MarketBuyRequest> result = HandlePopBuy.PopulationBuyRequest(poplist);
         Assert.IsNotNull(result);
         Assert.AreEqual(1, result.Count);
         Assert.AreEqual(result[0].GoodRequest.Count, 1);
         Assert.AreEqual(result[0].GoodRequest[0].goodId , 1);
         Assert.AreEqual(result[0].GoodRequest[0].amount, 500);
-        Assert.AreEqual(result[0].cashAmmount, 100);
+        Assert.AreEqual(result[0].cashAmount, 100);
         Assert.AreEqual(result[0].marketId, 1);
     }
     [Test]
@@ -37,7 +37,7 @@ public class PopSystemTests
         poplist.Add(CreatePop());
         poplist.Add(CreatePop());
 
-        List<PopBuyRequest> result = HandlePopBuy.PopulationBuyRequest(poplist);
+        List<MarketBuyRequest> result = HandlePopBuy.PopulationBuyRequest(poplist);
         Assert.IsNotNull(result);
         Assert.AreEqual(4, result.Count);
     }

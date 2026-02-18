@@ -8,10 +8,10 @@ public class PopulationSystem
     HandleGet getter = new HandleGet();
 
 
-    EventBinding<PopBuyRequest> testEventBinding;
+    EventBinding<MarketBuyRequest> testEventBinding;
 
     private readonly List<Pop> _popList;
-    public PopulationSystem(List<Pop> popList, EventBinding<PopBuyRequest> testEventBinding)
+    public PopulationSystem(List<Pop> popList, EventBinding<MarketBuyRequest> testEventBinding)
     {
         _popList = popList;
         this.testEventBinding = testEventBinding;
