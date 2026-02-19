@@ -7,7 +7,7 @@ public class MarketTransactionsObj
     public struct MarketBuyRequest : IEvent 
     {
         public int marketId;
-        public int Id;
+        public int id;
         public List<GoodRequest> GoodRequest;
         public int cashAmount;
     }
@@ -49,7 +49,7 @@ public class MarketTransactionsObj
 
     public struct MarketSellResponseEvent : IEvent
     {
-        public int Id;
+        public int id;
         public int cashRecived;
     }
 

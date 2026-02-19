@@ -11,7 +11,7 @@ public static class HandlePopBuy
         {
             MarketBuyRequest request = new MarketBuyRequest();
             List<GoodRequest> goodRequestsList = new List<GoodRequest>();
-            request.Id = pop.id;
+            request.id = pop.id;
             request.cashAmount = pop.cashAmount;
             request.marketId = pop.countryID;
             foreach (GoodRequirement good in pop.GoodList)

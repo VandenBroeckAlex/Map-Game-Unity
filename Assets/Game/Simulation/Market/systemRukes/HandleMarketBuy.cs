@@ -14,7 +14,7 @@ public class HandleMarketBuy
             //construction of response object
             MarketBuyResponse response = new MarketBuyResponse();
 
-            response.id = request.Id;
+            response.id = request.id;
             response.goodsBought = new List<GoodRequest>();
 
             int market_id = request.marketId;
@@ -69,8 +69,6 @@ public class HandleMarketBuy
 
                     break; // Exit loop early, no cash left
                 }
-
-
             }
             response.cashLeft = cashAmount;
             marketResponses.Add(response);
