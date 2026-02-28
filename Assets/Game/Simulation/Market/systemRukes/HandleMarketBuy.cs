@@ -39,7 +39,7 @@ public class HandleMarketBuy
                 if (cashAmount == 0)
                 {
                     break;
-                    //popo
+                   
                 }
 
 
@@ -54,6 +54,7 @@ public class HandleMarketBuy
 
                     Marketgood.demand += amountWanted;
                     Marketgood.stockpile -= amountWanted;
+
                 }
                 else
                 {

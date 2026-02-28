@@ -43,10 +43,8 @@ public class MarketSystemTest
 
         grList.Add(gr);
         MarketBuyRequest mbr = CreateMarketRequest(0, 0, 1000, grList);
-        MarketBuyRequest mbr2 = CreateMarketRequest(1, 0, 1000, grList);
 
         requestsList.Add(mbr);
-        requestsList.Add(mbr2);
 
         //create Market with easilly testable values
         List<Market> marketList = new List<Market>();

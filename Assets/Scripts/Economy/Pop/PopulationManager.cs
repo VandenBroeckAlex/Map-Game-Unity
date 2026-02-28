@@ -76,7 +76,7 @@ public class PopulationManager
             {
                 int pcId = populationList[i].countryID;
                 int ppId = populationList[i].provinceId;
-                float growRate =  base_growth_rate + ( 1 * context.countriesManager.countryList[pcId].stats.GetPopulationGrowth()) + context.provincesManager.provinces_list[ppId].stats.GetPopulationGrowth();
+                float growRate = 0; // base_growth_rate + ( 1 * context.countriesManager.countryList[pcId].stats.GetPopulationGrowth()) + context.provincesManager.provinces_list[ppId].stats.GetPopulationGrowth();
                 Debug.Log($"grow rate = {context.countriesManager.countryList[pcId].stats.GetPopulationGrowth()}");
                 int newPopulation = (int)Math.Round(populationList[i].size * growRate);
                 populationList[i].size += newPopulation;
