@@ -5,6 +5,8 @@ public class LandTile : Tile
     public int rgo { get; set; }
     public bool isCoast { get; set; }
     public int climateId { get; set; }
+
+    public int provinceId { get; set; }
     //private Moddifier: List<moddifier>
 
     //arable_resources -> agricultural workspace possible to build in tile or climat rule set

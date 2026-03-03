@@ -25,5 +25,6 @@ public class DefTile
         public string rgoTag;
         public bool isCoast;
         public string climatTag;
+        public string provinceTag;
     }
 }

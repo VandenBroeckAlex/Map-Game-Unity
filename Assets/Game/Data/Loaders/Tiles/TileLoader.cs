@@ -17,7 +17,7 @@ public class TileLoader
         )
     {
         JArray listTile = JArray.Parse(json);
-        Dictionary<int, Tile> provincesList = new Dictionary<int, Tile>();
+        Dictionary<int, Tile> TileList = new Dictionary<int, Tile>();
         int idIterator = 0;
         foreach (JObject tile in listTile)
         {
@@ -35,6 +35,7 @@ public class TileLoader
                 landTile.isLand = lTD.isLand;
                 landTile.isPassable = lTD.isPassable;
                 landTile.isCoast = lTD.isCoast;
+               
                 if (TerrainTypeTagId.TryGetValue(lTD.typeTag, out int typeId)){
                     landTile.type = typeId;
                 }
@@ -82,7 +83,19 @@ public class TileLoader
                         $"Unknown climate tag '{lTD.climatTag}' while creating tile '{lTD.name}'('tile name')."
                         );
                 }
-                    provincesList.Add(idIterator, landTile);
+                if (ProvinceTagId.TryGetValue(lTD.provinceTag, out int provinceId))
+                {
+                    landTile.provinceId = provinceId;
+                }
+                else
+                {
+                    throw new InvalidDataException(
+                        $"Unknown province tag '{lTD.provinceTag}' while creating tile '{lTD.name}'('tile name')."
+                        );
+                }
+
+                    TileList.Add(idIterator, landTile);
+            
             }
             else
             {
@@ -106,10 +119,10 @@ public class TileLoader
                     $"Unknown terrain tag '{wTD.typeTag}' while creating tile '{wTD.name}'.");
                 }
 
-                provincesList.Add(idIterator,waterTile);
+                TileList.Add(idIterator,waterTile);
             }
             idIterator++;
         }
-        return provincesList;
+        return TileList;
     }
 }
