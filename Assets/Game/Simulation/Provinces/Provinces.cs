@@ -4,10 +4,11 @@ using UnityEngine.Tilemaps;
 
 public class Province
 {
+    public int id;
+    public string tag;
     public int ownerId;
     public string name;
-    public List<Tile> tiles;
-    bool isOccupied;
+    public bool isOccupied;
     //Modifier
 }
    

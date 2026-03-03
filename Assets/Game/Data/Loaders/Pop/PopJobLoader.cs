@@ -40,7 +40,7 @@ public class PopJobLoader
             //if strataId null push it to strataDict
             if(strataId == 0)
             {
-                strataDict.Add(dictId, popJob.strata);
+                strataDict.Add(dictId, popJob.strata); 
                 strataId = dictId;
                 dictId++;
             }

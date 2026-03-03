@@ -24,12 +24,12 @@ namespace MyGame.Data
         public bool isLand {  get; set; }
         public bool isPassable {  get; set; }
 
-        public ProvinceStats stats;
+        //public ProvinceStats stats;
 
         public Tile(int GivenID )
         {
             id = GivenID;
-            stats = new ProvinceStats();
+           
         }
 
     }
@@ -58,9 +58,9 @@ namespace MyGame.Data
         public int type {  get; set; }
         [JsonProperty(Order = 11)]
         public bool isCoast {  get; set; }
-
+        
         //arable_resources -> agricultural workspace possible to build in tile or climat rule set
-        //resources -> mining resource present 
+        //resources -> mining resource if present 
 
 
         public LandTile(int givenID)
