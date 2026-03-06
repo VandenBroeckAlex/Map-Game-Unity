@@ -10,7 +10,8 @@
         "Loaders",
         "Country",
         "MarketTransactions",
-        "Markets"
+        "Markets",
+        "Provinces"
     ],
     "includePlatforms": [
         "Editor"

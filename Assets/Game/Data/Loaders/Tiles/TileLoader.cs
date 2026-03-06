@@ -1,8 +1,6 @@
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
-using UnityEngine;
-using UnityEngine.Tilemaps;
 using static DefTile;
 
 public class TileLoader

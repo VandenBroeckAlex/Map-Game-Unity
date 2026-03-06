@@ -1,9 +1,7 @@
 using System.Collections.Generic;
-using static IdNum;
 
-namespace A_VDB.Definition
-{
-    class DefPopulation
+
+    public class DTOPopulation
     {
         public int id;
         public int size;
@@ -16,4 +14,4 @@ namespace A_VDB.Definition
         public int _cashAmount;
         public int _savings;
     }
-}
+

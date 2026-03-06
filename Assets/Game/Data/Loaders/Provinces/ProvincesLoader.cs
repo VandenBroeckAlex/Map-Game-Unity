@@ -1,17 +1,19 @@
 
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
-using Newtonsoft.Json;
 
 public class ProvincesLoader
 {
     private struct ProvinceData
     {
         public string tag;
-         public string countryownerTag;
-         public string name;
-         public bool isOccupied;
+        public string ownerTag;
+        public string name;
+        public bool isOccupied;
+        public string occupierTag;
         //Moddifiers
     }
 
@@ -33,13 +35,14 @@ public class ProvincesLoader
             province.name = provinceData.name;
             province.isOccupied = provinceData.isOccupied;
             
-            if (countryTagId.TryGetValue(provinceData.countryownerTag, out int value))
+            if (countryTagId.TryGetValue(provinceData.ownerTag, out int value))
             {
                 int countryId = value;
             }
             else
             {
-                //Todo Raise an error here
+                throw new InvalidDataException(
+               $"Unknown job tag '{provinceData.ownerTag}' while creating pop '{provinceData.name}'.");
             }
             provincesList.Add(province);
             idIterator++;
