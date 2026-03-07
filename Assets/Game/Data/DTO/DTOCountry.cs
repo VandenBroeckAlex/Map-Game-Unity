@@ -1,8 +1,7 @@
 namespace A_VDB.Definition
 {
-    public class DefCountry
+    public class DTOCountry
     {
-        public int id;
         public int playerId;
         public string name;
         public int[] color;

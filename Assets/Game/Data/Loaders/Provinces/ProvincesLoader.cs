@@ -7,25 +7,16 @@ using System.Linq;
 
 public class ProvincesLoader
 {
-    private struct ProvinceData
-    {
-        public string tag;
-        public string ownerTag;
-        public string name;
-        public bool isOccupied;
-        public string occupierTag;
-        //Moddifiers
-    }
-
+   
 
     public List<Province> LoadProvince(string jsonText, Dictionary<string, int> countryTagId)
     {
         int idIterator = 0;
-        List<ProvinceData> ProvinceDataList = JsonConvert.DeserializeObject<List<ProvinceData>>(jsonText);
+        List<DTOProvince> ProvinceDataList = JsonConvert.DeserializeObject<List<DTOProvince>>(jsonText);
         List<Province> provincesList = new List<Province>();
         Dictionary<string, int> provinceTagId = new Dictionary<string, int>();
 
-        foreach (ProvinceData provinceData in ProvinceDataList)
+        foreach (DTOProvince provinceData in ProvinceDataList)
         {
             Province province = new Province();
             province.id = idIterator;
@@ -42,7 +33,7 @@ public class ProvincesLoader
             else
             {
                 throw new InvalidDataException(
-               $"Unknown job tag '{provinceData.ownerTag}' while creating pop '{provinceData.name}'.");
+               $"Unknown country tag '{provinceData.ownerTag}' while creating province '{provinceData.name}'.");
             }
             provincesList.Add(province);
             idIterator++;

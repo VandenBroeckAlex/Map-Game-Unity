@@ -19,7 +19,7 @@ public class GoodLoader
     }
 
 
-    public static List<Good> allGoodsDefinition;
+    public static Good[] allGoodsDefinition;
     public Dictionary<int, string> goodType;
 
 
