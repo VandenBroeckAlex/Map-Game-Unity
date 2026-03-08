@@ -1,0 +1,38 @@
+[
+  {
+    "type": "Serfs",
+    "strata": "Lowest Strata"
+  },
+  {
+    "strata": "Lower Strata",
+    "type": "Miners"
+  },
+  {
+    "strata": "Lower Strata",
+    "type": "Laborer"
+  },
+  {
+    "type": "Farmer",
+    "strata": "Lower Strata"
+  },
+  {
+    "type": "Soldier",
+    "strata": "Lower Strata"
+  },
+  {
+    "type": "Artisan",
+    "strata": "Middle Strata"
+  },
+  {
+    "type": "Clergy",
+    "strata": "Middle Strata"
+  },
+  {
+    "type": "Bourgeois",
+    "strata": "Upper Strata"
+  },
+  {
+    "type": "Nobility",
+    "strata": "High Aristocracy"
+  }
+]

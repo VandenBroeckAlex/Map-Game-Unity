@@ -1,0 +1,50 @@
+[
+  {
+    "name": "Sheep",
+    "basePrice": 200,
+    "baseProductionModdifier": 1,
+    "type": "Raw",
+    "iconPath": "icons/sheep",
+    "color": "#fbfcc2"
+  },
+  {
+    "name": "Cow",
+    "basePrice": 100,
+    "baseProductionModdifier": 1,
+    "type": "Raw",
+    "iconPath": "icons/tools",
+    "color": "#cc9350"
+  },
+  {
+    "name": "Fish",
+    "basePrice": 100,
+    "baseProductionModdifier": 1,
+    "type": "Raw",
+    "iconPath": "icons/tools",
+    "color": "#53ab9d"
+  },
+  {
+    "name": "Horses",
+    "basePrice": 100,
+    "baseProductionModdifier": 1,
+    "type": "Raw",
+    "iconPath": "icons/horses",
+    "color": "#ef6344"
+  },
+  {
+    "name": "Grain",
+    "basePrice": 100,
+    "baseProductionModdifier": 1,
+    "type": "Raw",
+    "iconPath": "icons/tools",
+    "color": "#efc144"
+  },
+  {
+    "name": "Wood",
+    "basePrice": 100,
+    "baseProductionModdifier": 1,
+    "type": "Raw",
+    "iconPath": "icons/wood",
+    "color": "#b65344"
+  }
+]
