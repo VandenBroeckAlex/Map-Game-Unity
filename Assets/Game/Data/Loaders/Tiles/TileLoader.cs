@@ -1,17 +1,18 @@
 using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine;
 using static DefTile;
 
 public class TileLoader
 {
     public Dictionary<int,Tile> DeserializeTiles(
         string json, 
-        Dictionary<string,int>RgoTagId,
-        Dictionary<string, int> TerrainTypeTagId, 
-        Dictionary<string, int> countryTagId, 
-        Dictionary<string, int> ProvinceTagId,
-        Dictionary<string, int> ClimateTag
+        Dictionary<string,int> RgoTag,
+        string[] TerrainTypeTag,
+        string[] countryTag,
+        string[] ProvinceTag,
+        string[] ClimateTag
         )
     {
         JArray listTile = JArray.Parse(json);
@@ -33,66 +34,56 @@ public class TileLoader
                 landTile.isLand = lTD.isLand;
                 landTile.isPassable = lTD.isPassable;
                 landTile.isCoast = lTD.isCoast;
-               
-                if (TerrainTypeTagId.TryGetValue(lTD.typeTag, out int typeId)){
-                    landTile.type = typeId;
-                }
-                else
+
+                int typeId = GetIdByTag(lTD.typeTag, TerrainTypeTag);
+                if (typeId == -1)
                 {
                     throw new InvalidDataException(
                     $"Unknown terrain tag '{lTD.typeTag}' while creating tile '{lTD.name}'.");
                 }
-                if (countryTagId.TryGetValue(lTD.ownerTag, out int countryId)){
-                    landTile.ownerId = countryId;
-                }
-                else
+
+                int countryId = GetIdByTag(lTD.ownerTag, countryTag);
+                if (countryId == -1)
                 {
                     throw new InvalidDataException(
                          $"Unknown country tag '{lTD.ownerTag}' while creating tile '{lTD.name}'."
                         );
                 }
-                if (countryTagId.TryGetValue(lTD.occupierTag, out int occupierId))
+                int occupierId = GetIdByTag(lTD.ownerTag, countryTag);
+                if (countryId == -1)
                 {
-                    landTile.ownerId = occupierId;
+                    throw new InvalidDataException(
+                         $"Unknown country tag '{lTD.ownerTag}' while creating tile '{lTD.name}'."
+                        );
+                }
+
+                if (RgoTag.TryGetValue(lTD.rgoTag, out int rgoTag))
+                {
+                    landTile.rgo = rgoTag;
                 }
                 else
                 {
                     throw new InvalidDataException(
-                         $"Unknown occupier tag '{lTD.occupierTag}' while creating tile '{lTD.name}'."
+                        $"Unknown RGO tag '{lTD.rgoTag}' while creating tile '{lTD.name}'('tile name')."
                         );
                 }
-                if (RgoTagId.TryGetValue(lTD.rgoTag, out int rgoId))
-                {
-                    landTile.rgo  = rgoId;
-                }
-                else
-                {
-                    throw new InvalidDataException(
-                         $"Unknown rgo tag '{lTD.rgoTag}' while creating tile '{lTD.name}'."
-                        );
-                }
-                if(ClimateTag.TryGetValue(lTD.climatTag, out int climateId))
-                {
-                    landTile.climateId = climateId;
-                }
-                else
+
+                int climateId = GetIdByTag(lTD.climatTag, ClimateTag);
+                if (climateId == -1)
                 {
                     throw new InvalidDataException(
                         $"Unknown climate tag '{lTD.climatTag}' while creating tile '{lTD.name}'('tile name')."
                         );
                 }
-                if (ProvinceTagId.TryGetValue(lTD.provinceTag, out int provinceId))
-                {
-                    landTile.provinceId = provinceId;
-                }
-                else
+
+                int provinceId = GetIdByTag(lTD.provinceTag, ProvinceTag);
+                if (provinceId == -1)
                 {
                     throw new InvalidDataException(
                         $"Unknown province tag '{lTD.provinceTag}' while creating tile '{lTD.name}'('tile name')."
                         );
                 }
-
-                    TileList.Add(idIterator, landTile);
+                TileList.Add(idIterator, landTile);
             
             }
             else
@@ -106,12 +97,8 @@ public class TileLoader
                 waterTile.superficy = wTD.superficy;
                 waterTile.isLand = wTD.isLand;
                 waterTile.isPassable = wTD.isPassable;
-
-                if (TerrainTypeTagId.TryGetValue(wTD.typeTag, out int typeId))
-                {
-                    waterTile.type = typeId;
-                }
-                else
+                waterTile.type = GetIdByTag(wTD.typeTag, TerrainTypeTag);
+                if (waterTile.type == -1)
                 {
                     throw new InvalidDataException(
                     $"Unknown terrain tag '{wTD.typeTag}' while creating tile '{wTD.name}'.");
@@ -122,5 +109,16 @@ public class TileLoader
             idIterator++;
         }
         return TileList;
+    }
+    private int GetIdByTag(string givenTag, string[] data) 
+    {
+        for (int i = 0; i < data.Length; i++)
+        {
+            if (data[i] == givenTag)
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 }

@@ -11,11 +11,13 @@ public class GoodLoader
     private struct GoodData
     {
         public string name;
+        public string tag;
         public int basePrice;
         public int baseProductionModdifier;
         public string type;
         public string color;
         public string iconPath;
+        public bool isRGO;
     }
 
 
@@ -23,15 +25,19 @@ public class GoodLoader
     public Dictionary<int, string> goodType;
 
 
-    public  Good[]  Deserialize_goods(string _FilePath)
+    public GoodLoadedData Deserialize_goods(string _FilePath)
     {
         string jsonText = File.ReadAllText(_FilePath);
         return Load_goods(jsonText, goodType);
     }
 
+    public class GoodLoadedData
+    {
+        public Good[] goodList;
+        public Dictionary<string,int> rgoTag;
+    }
 
-
-    public Good[] Load_goods(string jsonText, Dictionary<int, string> goodType)
+    public GoodLoadedData Load_goods(string jsonText, Dictionary<int, string> goodType)
     {
         
         HashSet<string> validType = new HashSet<string>();
@@ -44,6 +50,8 @@ public class GoodLoader
 
         List<GoodData>  good_list = JsonConvert.DeserializeObject<List<GoodData>>(jsonText);
         Good[] goodArray = new Good[good_list.Count];
+        Dictionary<string, int> rgoTag = new Dictionary<string, int>();
+
         int id = 0;
 
         JsonValidator validator = new JsonValidator();
@@ -62,8 +70,17 @@ public class GoodLoader
             good.iconPath = _good.iconPath;
 
             goodArray[id] = good;
+
+            if(_good.isRGO == true)
+            {
+                rgoTag[_good.tag] = good.id;
+            }
+
             id++;
         }
-        return goodArray;
+        GoodLoadedData result = new GoodLoadedData();
+        result.goodList = goodArray;
+        result.rgoTag = rgoTag;
+        return result;
     }
 }
