@@ -1,38 +1,38 @@
 [
   {
     "type": "Serfs",
-    "strata": "Lowest Strata"
+    "strata": "Lower"
   },
   {
-    "strata": "Lower Strata",
+    "strata": "Lower",
     "type": "Miners"
   },
   {
-    "strata": "Lower Strata",
+    "strata": "Lower",
     "type": "Laborer"
   },
   {
     "type": "Farmer",
-    "strata": "Lower Strata"
+    "strata": "Lower"
   },
   {
     "type": "Soldier",
-    "strata": "Lower Strata"
+    "strata": "Lower"
   },
   {
     "type": "Artisan",
-    "strata": "Middle Strata"
+    "strata": "Middle"
   },
   {
     "type": "Clergy",
-    "strata": "Middle Strata"
+    "strata": "Middle"
   },
   {
     "type": "Bourgeois",
-    "strata": "Upper Strata"
+    "strata": "Upper"
   },
   {
     "type": "Nobility",
-    "strata": "High Aristocracy"
+    "strata": "Aristocracy"
   }
 ]

@@ -3,10 +3,13 @@ using System.Collections.Generic;
 using System.IO;
 
 
-public struct RunTimePopJob
+public struct RunTimePopJob : IHaveTag
 {
-    public string type;
+    public string type { get; set; }
+
     public int strata;
+
+    public string tag { get; set; }
 }
 
 public struct PopJobDeserializeResult

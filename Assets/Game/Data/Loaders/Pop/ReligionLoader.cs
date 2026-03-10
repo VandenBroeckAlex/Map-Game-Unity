@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 public class ReligionLoader
 {
-    public struct RunTimeReligion
+    public struct RunTimeReligion : IHaveTag
     {
-        public string tag;
+        public string tag { get; set; }
         public string name;
     }
 

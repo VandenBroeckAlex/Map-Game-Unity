@@ -8,9 +8,6 @@ using System.IO;
 public class CountryLoader
 {
     
-    
-
-
     public Dictionary<int, Country> countryList = new();
 
     public Dictionary<int, Country> DeserializeCountries(string json)

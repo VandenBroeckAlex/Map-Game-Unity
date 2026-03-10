@@ -1,10 +1,10 @@
 using UnityEngine;
 using NUnit.Framework;
 
-public class BootstrapLoader
+public class BootstrapLoaderTest
 {
     [Test]
-    public void BootstrapLoaderTest()
+    public void BootstrapLoaderTest_True()
     {
         LoaderBootstrap lbs = new LoaderBootstrap();
 

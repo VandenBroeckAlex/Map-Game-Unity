@@ -28,28 +28,29 @@ public class LoaderBootstrap
         // 4) export a redy sim object
 
 
-        string goodDefJson = GetJsonDefFromFile(definitionPath,"GoodDef");
+        string goodDefJson = GetJsonDefFromFile(definitionPath,"GoodType");
         string[] goodsTypes = goodTypeLoader.Deserialize_goodsType(goodDefJson);
          
         string cultureDefJson = GetJsonDefFromFile(definitionPath,"cultureDef");
         RunTimeCulture[] cultureDef = cultureLoader.DeserializeCultures(cultureDefJson);
 
         //Todo deserialize strata
-        string stratadefJson = GetJsonDefFromFile(definitionPath, "strata");
+        string stratadefJson = GetJsonDefFromFile(definitionPath, "PopStrataDef");
         string[] strata = strataLoder.DeserializeStrata(stratadefJson);
 
-        string PopJobDefJson = GetJsonDefFromFile(definitionPath,"GoodDef");
+        string PopJobDefJson = GetJsonDefFromFile(definitionPath,"PopJobDef");
         RunTimePopJob[] pjdr = popJobLoader.Deserialize_PopJob(PopJobDefJson, strata);
 
         string ReligionDefJson = GetJsonDefFromFile(definitionPath,"ReligionDef");
         ReligionLoader.RunTimeReligion[] religionsDef = religionLoader.DeserializeReligions(ReligionDefJson);
+    
+    
     }
 
     public string GetJsonDefFromFile(string dataPath,string fileName)
     {
         string filePath = Path.Combine(
          dataPath,
-         "Def",
          $"{fileName}.json"
      );
 

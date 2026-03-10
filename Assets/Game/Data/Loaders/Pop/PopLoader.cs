@@ -2,13 +2,14 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
+using static CultureLoader;
 
 public class PopLoader
 {
     public List<Pop> Deserialize_Pop(string json,
-        Dictionary<string, int> popJobTagId,
-        Dictionary<string, int> culturesTagId,
-        Dictionary<string, int> religionsTagId,
+        RunTimePopJob[] popJobTagId,
+        RunTimeCulture[] culturesTagId,
+        ReligionLoader.RunTimeReligion[] religionsTagId,
         Dictionary<string, int> goodTagID
         )
     {
@@ -17,27 +18,32 @@ public class PopLoader
 
         foreach (DTOPopulation op in data) 
         {
-            if(!popJobTagId.TryGetValue(op.job, out int jobId))
+            int jobId = GetIdByTag(popJobTagId, op.job);
+            int cultureId = GetIdByTag(culturesTagId, op.job);
+            int religionId = GetIdByTag(religionsTagId, op.job);
+            if (jobId == -1)
             {
                 throw new InvalidDataException(
                 $"Unknown job tag '{op.job}' while creating pop '{op.id}'.");
             }
-           if(!culturesTagId.TryGetValue(op.culture, out int cultureId))
+
+           if(cultureId == -1)
            {
                 throw new InvalidDataException(
                 $"Unknown culture tag '{op.culture}' while creating pop '{op.id}'.");
            }
-            if (!religionsTagId.TryGetValue(op.religion, out int religionId))
+            
+            if (religionId == -1)
             {
                 throw new InvalidDataException(
-                $"Unknown culture tag '{op.culture}' while creating pop '{op.id}'.");
+                $"Unknown religion tag '{op.religion}' while creating pop '{op.id}'.");
             }
 
             GoodRequirement gr = new GoodRequirement(0,0,10);
             List<GoodRequirement> grList = new List<GoodRequirement>();
 
             grList.Add( gr );
-
+            
             Pop pop = new Pop(
                 op.id,
                 op.size,
@@ -51,5 +57,28 @@ public class PopLoader
         }
 
         return result;
+    }
+
+    private int GetIdByTag<T>(T[] data, string givenTag) where T : IHaveTag
+    {
+        for (int i = 0; i < data.Length; i++) 
+        { 
+            if(data[i].tag == givenTag)
+            {
+                return i;
+            }
+        }
+        return -1;
+    }
+    private int GetPopJobIdByTag(dynamic data, string givenTag)
+    {
+        for (int i = 0; i < data.Length; i++)
+        {
+            if (data[i].type == givenTag)
+            {
+                return i;
+            }
+        }
+        return -1;
     }
 }
