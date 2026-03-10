@@ -16,9 +16,9 @@ public class GoodTypeLoaderTest
             ""Military"",
             ]";
 
-        Dictionary<int,string> result = loader.Deserialize_goodsType(json);
+        string[] result = loader.Deserialize_goodsType(json);
 
-        Assert.AreEqual(4, result.Count);
+        Assert.AreEqual(4, result.Length);
         Assert.AreEqual("Raw", result[0]);
         Assert.AreEqual("Manifactured", result[1]);
         Assert.AreEqual("Luxury", result[2]);

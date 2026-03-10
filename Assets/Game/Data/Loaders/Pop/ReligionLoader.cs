@@ -9,19 +9,11 @@ public class ReligionLoader
         public string name;
     }
 
-    public Dictionary<int, RunTimeReligion> DeserializeReligions(string json)
+    public  RunTimeReligion[] DeserializeReligions(string json)
     {
 
-        RunTimeReligion[] cultures = JsonConvert.DeserializeObject<RunTimeReligion[]>(json);
+        RunTimeReligion[] religionsData = JsonConvert.DeserializeObject<RunTimeReligion[]>(json);
 
-        Dictionary<int, RunTimeReligion> result = new Dictionary<int, RunTimeReligion>();
-
-        int index = 0;
-        foreach (RunTimeReligion c in cultures)
-        {
-            result[index] = c;
-            index++;
-        }
-        return result;
+        return religionsData;
     }
 }

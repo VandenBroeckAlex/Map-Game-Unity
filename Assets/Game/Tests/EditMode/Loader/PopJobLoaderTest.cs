@@ -10,23 +10,26 @@ public class PopJobLoaderTest
         string json = @"
             [{
                 ""type"": ""Serfs"",
-                ""strata"": ""Lowest Strata""
+                ""strata"": ""Lowest""
               },
               {
                 ""type"": ""Mecanics"",
-                ""strata"": ""middle Strata""
+                ""strata"": ""Middle""
               },{
                 ""type"": ""Bourgeois"",
-                ""strata"": ""Higher Strata""
+                ""strata"": ""Higher""
               },
             ]";
 
-        PopJobDeserializeResult result = loader.Deserialize_PopJob(json);
-        Dictionary<int, RunTimePopJob> popJob = result.popJob;
+        string[] strata = { "Lowest","Middle","Higher"};
+
+        RunTimePopJob[] popJob = loader.Deserialize_PopJob(json, strata);
+        
+        int lowestplaceInStrataArray = 0;
 
         Assert.IsNotNull(popJob);
-        Assert.AreEqual(3, popJob.Count);
+        Assert.AreEqual(3, popJob.Length);
         Assert.AreEqual("Serfs", popJob[0].type);
-        Assert.AreEqual("Lowest Strata", result.strata[1]);
+        Assert.AreEqual(lowestplaceInStrataArray, popJob[0].strata);
     }
 }

@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Linq;
+using System.IO;
+
 
 public struct RunTimePopJob
 {
@@ -10,52 +11,47 @@ public struct RunTimePopJob
 
 public struct PopJobDeserializeResult
 {
-    public Dictionary<int, string> strata;
-    public Dictionary<int, RunTimePopJob> popJob;
+    public RunTimePopJob[] popJob;
 }
 
 public class PopJobLoader
 {
     public struct PopJobData
     {
-        public string strata;
         public string type;
+        public string strata;
     }
     //
     //Strata should be decleared in an other json 
-    public PopJobDeserializeResult Deserialize_PopJob(string json)
+    public RunTimePopJob[] Deserialize_PopJob(string json, string[] strata)
     {
-        Dictionary<int, string> strataDict = new Dictionary<int, string>();
-        Dictionary<int, RunTimePopJob> runTimePopJob = new Dictionary<int, RunTimePopJob>();
+
+        List<RunTimePopJob> popJobList = new List<RunTimePopJob>();
+
         PopJobData[] data = JsonConvert.DeserializeObject<PopJobData[]>(json);
 
-        //check if strata already in strata
-        //check if type already in PopJob
-        int i = 0;
-        int dictId = 1;
-        foreach (PopJobData popJob in data) 
+        foreach(PopJobData dataItem in data)
         {
-            int strataId = strataDict.FirstOrDefault(x => x.Value == popJob.strata).Key;
-
-            //if strataId null push it to strataDict
-            if(strataId == 0)
+            RunTimePopJob rtpj = new RunTimePopJob();
+            rtpj.type = dataItem.type;
+            bool strataExist = false;
+            for (int i = 0; i < strata.Length; i++) 
             {
-                strataDict.Add(dictId, popJob.strata); 
-                strataId = dictId;
-                dictId++;
+                if (strata[i] == dataItem.strata)
+                {
+                    rtpj.strata = i;
+                    popJobList.Add(rtpj);
+                    strataExist = true;
+                    break;
+                } 
             }
-            RunTimePopJob _popJob = new RunTimePopJob();
-            _popJob.type = popJob.type;
-            _popJob.strata = strataId;
-
-            runTimePopJob.Add(i,_popJob);
-
-            i++;
+            if (!strataExist)
+            {
+                throw new InvalidDataException(
+                $"Unknown strata  '{dataItem.strata}' while creating job '{dataItem.type}'.");
+            }
         }
-        PopJobDeserializeResult result = new PopJobDeserializeResult();
-        result.popJob = runTimePopJob;
-        result.strata = strataDict;
-        return result;
+        return popJobList.ToArray();
     }
    
 

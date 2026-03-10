@@ -9,18 +9,10 @@ public class CultureLoader
         public string name;
     }
 
-    public Dictionary<int,RunTimeCulture> DeserializeCultures(string json){
+    public RunTimeCulture[] DeserializeCultures(string json){
 
         RunTimeCulture[] cultures = JsonConvert.DeserializeObject<RunTimeCulture[]>(json);
-
-        Dictionary<int, RunTimeCulture> result = new Dictionary<int, RunTimeCulture>();
-
-        int index = 0;
-        foreach (RunTimeCulture c in cultures) 
-        { 
-            result[index] = c;
-            index++;
-        }
-        return result;
+    
+        return cultures;
     }
 }

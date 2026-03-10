@@ -1,9 +1,17 @@
-using System.Collections.Generic;
+
 using System.IO;
 using UnityEngine;
+using static CultureLoader;
+
 
 public class LoaderBootstrap
 {
+    private string definitionPath = Path.Combine(
+         Application.dataPath,
+         "Game",
+         "StreamingAssets",
+         "BaseGame",
+         "Def");
     public void InitializeSimulation()
     {
         // 1) validate json
@@ -13,31 +21,34 @@ public class LoaderBootstrap
         PopJobLoader popJobLoader = new PopJobLoader();
         ReligionLoader religionLoader = new ReligionLoader();
         GoodTypeLoader goodTypeLoader = new GoodTypeLoader();
+        StrataLoader strataLoder = new StrataLoader();
         // 3) load scenario data
         PopLoader popLoader = new PopLoader();
         GoodLoader goodLoader = new GoodLoader();
         // 4) export a redy sim object
 
 
-        string goodDefJson = GetJsonDefFromFile("GoodDef");
-        Dictionary<int,string> goodsType = goodTypeLoader.Deserialize_goodsType(goodDefJson);
-    
-        string cultureDefJson = GetJsonDefFromFile("cultureDef");
-        Dictionary<int,CultureLoader.RunTimeCulture> cultureDef = cultureLoader.DeserializeCultures(cultureDefJson);
+        string goodDefJson = GetJsonDefFromFile(definitionPath,"GoodDef");
+        string[] goodsTypes = goodTypeLoader.Deserialize_goodsType(goodDefJson);
+         
+        string cultureDefJson = GetJsonDefFromFile(definitionPath,"cultureDef");
+        RunTimeCulture[] cultureDef = cultureLoader.DeserializeCultures(cultureDefJson);
 
-        string PopJobDefJson = GetJsonDefFromFile("GoodDef");
-        PopJobDeserializeResult pjdr = popJobLoader.Deserialize_PopJob(PopJobDefJson);
+        //Todo deserialize strata
+        string stratadefJson = GetJsonDefFromFile(definitionPath, "strata");
+        string[] strata = strataLoder.DeserializeStrata(stratadefJson);
 
-        string ReligionDefJson = GetJsonDefFromFile("ReligionDef");
-        Dictionary<int,ReligionLoader.RunTimeReligion> religionsDef = religionLoader.DeserializeReligions(ReligionDefJson);
+        string PopJobDefJson = GetJsonDefFromFile(definitionPath,"GoodDef");
+        RunTimePopJob[] pjdr = popJobLoader.Deserialize_PopJob(PopJobDefJson, strata);
+
+        string ReligionDefJson = GetJsonDefFromFile(definitionPath,"ReligionDef");
+        ReligionLoader.RunTimeReligion[] religionsDef = religionLoader.DeserializeReligions(ReligionDefJson);
     }
-    public string GetJsonDefFromFile(string fileName)
+
+    public string GetJsonDefFromFile(string dataPath,string fileName)
     {
         string filePath = Path.Combine(
-         Application.dataPath, 
-         "Game",
-         "StreamingAssets",
-         "BaseGame",
+         dataPath,
          "Def",
          $"{fileName}.json"
      );
