@@ -10,7 +10,7 @@ public class PopLoader
         RunTimePopJob[] popJobTagId,
         RunTimeCulture[] culturesTagId,
         ReligionLoader.RunTimeReligion[] religionsTagId,
-        Dictionary<string, int> goodTagID
+        string[] goodTagID
         )
     {
         List<Pop> result = new List<Pop> ();
@@ -38,6 +38,9 @@ public class PopLoader
                 throw new InvalidDataException(
                 $"Unknown religion tag '{op.religion}' while creating pop '{op.id}'.");
             }
+
+          
+
 
             GoodRequirement gr = new GoodRequirement(0,0,10);
             List<GoodRequirement> grList = new List<GoodRequirement>();
@@ -70,15 +73,16 @@ public class PopLoader
         }
         return -1;
     }
-    private int GetPopJobIdByTag(dynamic data, string givenTag)
+
+    private int GetIdByString(string str, string[] array, int popId)
     {
-        for (int i = 0; i < data.Length; i++)
+        for (int i = 0; i < array.Length; i++)
         {
-            if (data[i].type == givenTag)
+            if (array[i] == str)
             {
                 return i;
             }
         }
-        return -1;
+        throw new InvalidDataException($"Unknown good tag '{str}' while creating pop '{popId}'.");
     }
 }

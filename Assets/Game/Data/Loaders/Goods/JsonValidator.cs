@@ -11,13 +11,16 @@ public class JsonValidator
     HashSet<string> validKeys = new HashSet<string>
     {
         "name",
+        "tag",
         "basePrice",
         "baseProductionModdifier",
         "type",
         "color",
-        "iconPath"
+        "iconPath",
+        "isRGO"
     };
 
+    //Get json path for error message
     public bool ValidateGoods(string jsonText, HashSet<string> validTypes)
     {
         bool jsonIsValid = true;

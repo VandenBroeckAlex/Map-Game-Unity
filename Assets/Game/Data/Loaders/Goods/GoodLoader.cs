@@ -22,7 +22,7 @@ public class GoodLoader
 
 
     public static Good[] allGoodsDefinition;
-    public Dictionary<int, string> goodType;
+    string[] goodType;
 
 
     public GoodLoadedData Deserialize_goods(string _FilePath)
@@ -37,15 +37,10 @@ public class GoodLoader
         public Dictionary<string,int> rgoTag;
     }
 
-    public GoodLoadedData Load_goods(string jsonText, Dictionary<int, string> goodType)
+    public GoodLoadedData Load_goods(string jsonText, string[] goodType)
     {
         
-        HashSet<string> validType = new HashSet<string>();
-
-        foreach (KeyValuePair<int, string> kvp in goodType)
-        {
-            validType.Add(kvp.Value);
-        }
+        HashSet<string> validType =  new HashSet<string>(goodType);
 
 
         List<GoodData>  good_list = JsonConvert.DeserializeObject<List<GoodData>>(jsonText);
@@ -64,7 +59,21 @@ public class GoodLoader
             good.id = id;
             good.name = _good.name;
             good.basePrice = _good.basePrice;
-            good.type = goodType.FirstOrDefault(x => x.Value == _good.type).Key;
+
+            bool isFound = false;
+            for(int i = 0; i < goodType.Length; i++)
+            {
+                if(goodType[i] == _good.type)
+                {
+                    good.type = i;
+                    isFound = true;
+                }
+            }
+            if(isFound == false)
+            {
+                throw new InvalidDataException(
+                $"Unknown good type '{_good.type}' while creating good '{good.name}'.");
+            }
             good.baseProductionModdifier = _good.baseProductionModdifier;
             good.color = _good.color;   
             good.iconPath = _good.iconPath;

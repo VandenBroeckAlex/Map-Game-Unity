@@ -2,6 +2,7 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using UnityEngine;
+using static GoodLoader;
 
 public class GoodLoaderTest
 {
@@ -13,18 +14,21 @@ public class GoodLoaderTest
             [
               {
                 ""name"": ""Wood"",
+                ""tag"": ""Wood"",
                 ""basePrice"": 100,
                 ""baseProductionModdifier"": 1,
                 ""type"": ""Raw"",
                 ""iconPath"": ""icons/wood"",
-                ""color"": ""#b65344""
+                ""color"": ""#b65344"",
+                ""isRGO"":""true""
               }
             ]";
-        Dictionary<int,string> type = new Dictionary<int,string>();
 
+        string[] type = new string[1];
         type[0] = "Raw";
 
-        Good[] goodList = loader.Load_goods(json, type);
+        GoodLoadedData data = loader.Load_goods(json, type);
+        Good[] goodList = data.goodList;
 
         Assert.IsNotNull(goodList);
   
@@ -53,34 +57,45 @@ public class GoodLoaderTest
             [
               {
                 ""name"": ""Wood"",
+                ""tag"": ""Wood"",
                 ""basePrice"": 100,
                 ""baseProductionModdifier"": 1,
                 ""type"": ""Raw"",
                 ""iconPath"": ""icons/wood"",
-                ""color"": ""#b65344""
+                ""color"": ""#b65344"",
+                ""isRGO"":""true""
               },
               {
                 ""name"": ""Grain"",
+                ""tag"": ""Grain"",
                 ""basePrice"": 100,
                 ""baseProductionModdifier"": 1,
                 ""type"": ""Raw"",
                 ""iconPath"": ""icons/wood"",
-                ""color"": ""#b65344""
+                ""color"": ""#b65344"",
+                ""isRGO"":""true""
               },
                {
                 ""name"": ""Horses"",
+                ""tag"": ""Horses"",
                 ""basePrice"": 100,
                 ""baseProductionModdifier"": 1,
                 ""type"": ""Raw"",
                 ""iconPath"": ""icons/wood"",
-                ""color"": ""#b65344""
+                ""color"": ""#b65344"",
+                ""isRGO"":""true""
               },
             ]";
-        Dictionary<int, string> type = new Dictionary<int, string>();
 
+        string[] type = new string[3];
+
+        type[0] = "Manifactured";
+        type[1] = "Luxury";
         type[2] = "Raw";
 
-        Good[] goodList = loader.Load_goods(json, type);
+        GoodLoadedData data = loader.Load_goods(json, type);
+
+        Good[] goodList = data.goodList;
 
         Assert.IsNotNull(goodList);
 

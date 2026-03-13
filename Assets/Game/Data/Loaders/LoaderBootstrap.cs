@@ -1,4 +1,5 @@
 
+using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using static CultureLoader;
@@ -12,6 +13,13 @@ public class LoaderBootstrap
          "StreamingAssets",
          "BaseGame",
          "Def");
+
+    private string runtimePath = Path.Combine(
+         Application.dataPath,
+         "Game",
+         "StreamingAssets",
+         "BaseGame");
+
     public void InitializeSimulation()
     {
         // 1) validate json
@@ -28,26 +36,31 @@ public class LoaderBootstrap
         // 4) export a redy sim object
 
 
-        string goodDefJson = GetJsonDefFromFile(definitionPath,"GoodType");
+        string goodDefJson = GetJsonFromFile(definitionPath,"GoodType");
         string[] goodsTypes = goodTypeLoader.Deserialize_goodsType(goodDefJson);
          
-        string cultureDefJson = GetJsonDefFromFile(definitionPath,"cultureDef");
+        string cultureDefJson = GetJsonFromFile(definitionPath,"cultureDef");
         RunTimeCulture[] cultureDef = cultureLoader.DeserializeCultures(cultureDefJson);
 
         //Todo deserialize strata
-        string stratadefJson = GetJsonDefFromFile(definitionPath, "PopStrataDef");
+        string stratadefJson = GetJsonFromFile(definitionPath, "PopStrataDef");
         string[] strata = strataLoder.DeserializeStrata(stratadefJson);
 
-        string PopJobDefJson = GetJsonDefFromFile(definitionPath,"PopJobDef");
+        string PopJobDefJson = GetJsonFromFile(definitionPath,"PopJobDef");
         RunTimePopJob[] pjdr = popJobLoader.Deserialize_PopJob(PopJobDefJson, strata);
 
-        string ReligionDefJson = GetJsonDefFromFile(definitionPath,"ReligionDef");
+        string ReligionDefJson = GetJsonFromFile(definitionPath,"ReligionDef");
         ReligionLoader.RunTimeReligion[] religionsDef = religionLoader.DeserializeReligions(ReligionDefJson);
-    
-    
+
+        string goodJson = GetJsonFromFile(definitionPath, "GoodDef");
+        goodLoader.Load_goods(goodJson, goodsTypes);
+
+        string popFilePath = Path.Combine(runtimePath, "Population");
+        string runTimePopJson = GetJsonFromFile(popFilePath,"population");
+        List<Pop> listPop = popLoader.Deserialize_Pop(runTimePopJson, pjdr, cultureDef, religionsDef, goodsTypes);
     }
 
-    public string GetJsonDefFromFile(string dataPath,string fileName)
+    public string GetJsonFromFile(string dataPath,string fileName)
     {
         string filePath = Path.Combine(
          dataPath,

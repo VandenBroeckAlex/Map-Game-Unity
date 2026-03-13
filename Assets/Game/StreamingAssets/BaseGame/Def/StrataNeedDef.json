@@ -1,0 +1,24 @@
+{
+  "Lower": {
+    "Sheep": 500,
+    "Grain": 10000,
+    "Wood": 1000
+  },
+  "Middle": {
+    "Sheep": 2000,
+    "Grain": 50000,
+    "Cow" : 500
+  },
+  "Upper": {
+    "Sheep": 5000,
+    "Grain": 80000,
+    "Cow" : 1000,
+    "Horses" : 200
+  },
+  "Aristocracy": {
+    "Sheep": 50000,
+    "Grain": 800000,
+    "Cow" : 10000,
+    "Horses" : 5000
+  }
+}

@@ -9,7 +9,7 @@ public class TileLoader
     public Dictionary<int,Tile> DeserializeTiles(
         string json, 
         Dictionary<string,int> RgoTag,
-        string[] TerrainTypeTag,
+        string[] TerrainTypeTag, // land or water terrain ?
         string[] countryTag,
         string[] ProvinceTag,
         string[] ClimateTag
