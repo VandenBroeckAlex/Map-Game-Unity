@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using static CultureLoader;
+using static StrataNeedLoader;
 
 
 public class LoaderBootstrap
@@ -30,9 +31,12 @@ public class LoaderBootstrap
         ReligionLoader religionLoader = new ReligionLoader();
         GoodTypeLoader goodTypeLoader = new GoodTypeLoader();
         StrataLoader strataLoder = new StrataLoader();
+
         // 3) load scenario data
-        PopLoader popLoader = new PopLoader();
+        
         GoodLoader goodLoader = new GoodLoader();
+        StrataNeedLoader strataNeedLoader = new StrataNeedLoader();
+        PopLoader popLoader = new PopLoader();
         // 4) export a redy sim object
 
 
@@ -53,7 +57,10 @@ public class LoaderBootstrap
         ReligionLoader.RunTimeReligion[] religionsDef = religionLoader.DeserializeReligions(ReligionDefJson);
 
         string goodJson = GetJsonFromFile(definitionPath, "GoodDef");
-        goodLoader.Load_goods(goodJson, goodsTypes);
+        GoodLoader.GoodLoadedData goodData = goodLoader.Load_goods(goodJson, goodsTypes);
+
+        string strataNeedsJson = GetJsonFromFile(definitionPath, "StrataNeedDef");
+        Dictionary<string, GoodNeedMax[]> strataNeeds = strataNeedLoader.DeserializeStrataNeeds(strataNeedsJson, strata, goodData.goodList);
 
         string popFilePath = Path.Combine(runtimePath, "Population");
         string runTimePopJson = GetJsonFromFile(popFilePath,"population");

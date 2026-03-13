@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using NUnit.Framework;
 using System.Collections.Generic;
+using System.IO;
 
 public class StrataNeedLoader
 {
@@ -9,23 +10,61 @@ public class StrataNeedLoader
         public int goodId; 
         public int Max;
     }
-    public Dictionary<string, List<GoodNeedMax>> Deserialize_goodsType(string json, string[] strataList, Good[] goods)
+    public Dictionary<string, GoodNeedMax[]> DeserializeStrataNeeds(string json, string[] strataList, Good[] goods)
     {
         Dictionary<string, Dictionary<string, int>> strataNeedData = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, int>>>(json);
 
-        GoodNeedMax[] result = new GoodNeedMax[strataList.Length];
+        Dictionary<string, GoodNeedMax[]> strataNeeds = new Dictionary<string, GoodNeedMax[]>();
 
-        for (int i=0; i < strataList.Length; i++)
+        for (int i = 0; i < strataList.Length; i++)
         {
-            Dictionary<string, int> a = strataNeedData[strataList[i]];
+            if (strataNeedData.TryGetValue(strataList[i], out Dictionary<string, int> strataNeed)){
 
-            GoodNeedMax data = new GoodNeedMax();
-            
+            }
+            else
+            {
+                throw new InvalidDataException(
+                 $" Needs for Strata ${strataList[i]} not found in StrataNeedDef.json");
+            }
+
+           GoodNeedMax[] result = new GoodNeedMax[strataNeed.Count];
+
+            int indexer = 0;
+            foreach (var kvp in strataNeed)
+            {
+                GoodNeedMax data = new GoodNeedMax();
+                data.goodId = FindGoodID(kvp.Key, goods);
+                data.Max = kvp.Value;
+                result[indexer] = data;
+                indexer++;
+            }
+
+
+            strataNeeds[strataList[i]] = result;
 
         }
         // strata : [int,int],[int,int],[int,int]
 
-        return strataNeedData;
+        return strataNeeds;
     }
 
+    private int FindGoodID(string goodNameToFind,Good[] goods)
+    {
+        foreach (var good in goods) 
+        { 
+            string goodName = good.name.Trim().ToLower();
+            string _goodNameToFind = goodNameToFind.Trim().ToLower();
+
+            if(goodName == _goodNameToFind)
+            {
+                return good.id;
+            }
+           
+        }
+        throw new InvalidDataException(
+            $"Could not find {goodNameToFind} from StrataNeedDef.json in GoodDef.json." +
+            $"The Good list include {goods.Length} goods" +
+            $""
+            );
+    }
 }
