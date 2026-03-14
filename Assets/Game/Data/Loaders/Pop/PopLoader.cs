@@ -28,8 +28,8 @@ public class PopLoader
         foreach (DTOPopulation op in data) 
         {
             int jobId = GetIdByTag(popJobTagId, op.job);
-            int cultureId = GetIdByTag(culturesTagId, op.job);
-            int religionId = GetIdByTag(religionsTagId, op.job);
+            int cultureId = GetIdByTag(culturesTagId, op.culture);
+            int religionId = GetIdByTag(religionsTagId, op.religion);
             if (jobId == -1)
             {
                 throw new InvalidDataException(

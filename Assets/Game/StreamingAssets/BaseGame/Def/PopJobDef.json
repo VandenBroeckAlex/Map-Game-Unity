@@ -1,7 +1,8 @@
 [
   {
     "type": "Serfs",
-    "strata": "Lower"
+    "strata": "Lower",
+    "tag" : "serf"
   },
   {
     "strata": "Lower",

@@ -23,6 +23,7 @@ public class PopJobLoader
     {
         public string type;
         public string strata;
+        public string tag;
     }
     //
     //Strata should be decleared in an other json 
@@ -37,6 +38,8 @@ public class PopJobLoader
         {
             RunTimePopJob rtpj = new RunTimePopJob();
             rtpj.type = dataItem.type;
+            rtpj.tag = dataItem.tag;
+
             bool strataExist = false;
             for (int i = 0; i < strata.Length; i++) 
             {
