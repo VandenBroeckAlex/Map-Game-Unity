@@ -39,7 +39,8 @@ public class CountryLoaderTest
        
      
         CountryLoader countryLoader = new CountryLoader();
-        Dictionary<int,Country> result = countryLoader.DeserializeCountries(json);
+        CountryLoaderData _result = countryLoader.DeserializeCountries(json);
+        Dictionary<int, Country> result = _result.countryDictionnary;
         Debug.Log(result.Count);
 
         Assert.IsNotNull(result);

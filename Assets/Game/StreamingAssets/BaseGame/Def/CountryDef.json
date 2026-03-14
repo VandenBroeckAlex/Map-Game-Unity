@@ -1,0 +1,34 @@
+[
+  {
+    "id": 0,
+    "name": "Belgium",
+    "color": [ 255, 191, 0 ],
+    "treasury": 10,
+    "tag": "BEL",
+    "flag" :  "path"
+  },
+  {
+    "id": 1,
+    "name": "France",
+    "color": [ 0, 30, 179 ],
+    "treasury": 100,
+    "tag": "FRA",
+    "flag": "path"
+  },
+  {
+    "id": 2,
+    "name": "Germany",
+    "color": [ 107, 107, 107 ],
+    "treasury": 500,
+    "tag": "GER",
+    "flag": "path"
+  },
+  {
+    "id": 3,
+    "name": "Italy",
+    "color": [ 76, 130, 49 ],
+    "treasury": 30,
+    "tag": "ITA",
+    "flag": "path" 
+  }
+]

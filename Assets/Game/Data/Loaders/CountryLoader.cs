@@ -8,11 +8,20 @@ using System.IO;
 public class CountryLoader
 {
     
-    public Dictionary<int, Country> countryList = new();
+   
 
-    public Dictionary<int, Country> DeserializeCountries(string json)
+    public class CountryLoaderData
+    {
+        public Dictionary<int, Country> countryDictionnary;
+        public Dictionary<string, int> countryReversedDictionnary;
+    }
+
+
+    public CountryLoaderData DeserializeCountries(string json)
     {
         Dictionary<int, Country> _countryList = new();
+        Dictionary<string, int> reversed = new();
+
         List<Country> countryDef = JsonConvert.DeserializeObject<List<Country>>(json);
         
         foreach (Country _c in countryDef)
@@ -27,8 +36,15 @@ public class CountryLoader
             );
 
             _countryList.Add(_c.id, country);
-        };
-        return _countryList;
+            reversed.Add(_c.tag, _c.id);
+        }
+        ;
+
+        CountryLoaderData cld = new CountryLoaderData();
+        cld.countryDictionnary = _countryList;
+        cld.countryReversedDictionnary = reversed;
+
+        return cld;
     }
      
     public void TestInitialize(string jsonPath)
@@ -39,7 +55,7 @@ public class CountryLoader
 
     private void InitializeDefaultCountry(string jsonPath)
     {
-
+        Dictionary<int,Country> countryList = new Dictionary<int, Country>();
         if (File.Exists(jsonPath))
         {
             string jsonText = File.ReadAllText(jsonPath);

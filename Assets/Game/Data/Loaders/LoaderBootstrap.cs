@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
+using static CountryLoader;
 using static CultureLoader;
 using static StrataNeedLoader;
 
@@ -36,6 +37,10 @@ public class LoaderBootstrap
         
         GoodLoader goodLoader = new GoodLoader();
         StrataNeedLoader strataNeedLoader = new StrataNeedLoader();
+
+        CountryLoader countryLoader = new CountryLoader();
+        ProvincesLoader provincesLoader = new ProvincesLoader();
+
         PopLoader popLoader = new PopLoader();
         // 4) export a redy sim object
 
@@ -62,9 +67,17 @@ public class LoaderBootstrap
         string strataNeedsJson = GetJsonFromFile(definitionPath, "StrataNeedDef");
         Dictionary<string, GoodNeedMax[]> strataNeeds = strataNeedLoader.DeserializeStrataNeeds(strataNeedsJson, strata, goodData.goodList);
 
+        //deserialize country
+        string countryDefJson = GetJsonFromFile(definitionPath, "CountryDef");
+        CountryLoaderData countryData = countryLoader.DeserializeCountries(countryDefJson);
+
+        string provincePath = Path.Combine(runtimePath, "Provinces");
+        string provinceJson = GetJsonFromFile(provincePath, "Provinces");
+        List <Province> listProvince = provincesLoader.LoadProvince(provinceJson, countryData.countryReversedDictionnary);
+
         string popFilePath = Path.Combine(runtimePath, "Population");
         string runTimePopJson = GetJsonFromFile(popFilePath,"population");
-        List<Pop> listPop = popLoader.Deserialize_Pop(runTimePopJson, pjdr, cultureDef, religionsDef, goodsTypes);
+        List<Pop> listPop = popLoader.Deserialize_Pop(runTimePopJson, pjdr, cultureDef, religionsDef, goodsTypes, listProvince);
     }
 
     public string GetJsonFromFile(string dataPath,string fileName)

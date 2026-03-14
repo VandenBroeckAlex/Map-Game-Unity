@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using static CultureLoader;
 
 public class PopLoader
@@ -10,12 +11,20 @@ public class PopLoader
         RunTimePopJob[] popJobTagId,
         RunTimeCulture[] culturesTagId,
         ReligionLoader.RunTimeReligion[] religionsTagId,
-        string[] goodTagID
+        string[] goodTagID,
+        List<Province> listProvince
         )
     {
         List<Pop> result = new List<Pop> ();
         DTOPopulation[] data = JsonConvert.DeserializeObject<DTOPopulation[]>(json);
 
+        if(data is null || data.Length == 0)
+        {
+            throw new InvalidDataException("Population.json is empty");
+        }
+
+        // check for pop that share religion culture type and living place
+        int indexer = 0;
         foreach (DTOPopulation op in data) 
         {
             int jobId = GetIdByTag(popJobTagId, op.job);
@@ -24,39 +33,48 @@ public class PopLoader
             if (jobId == -1)
             {
                 throw new InvalidDataException(
-                $"Unknown job tag '{op.job}' while creating pop '{op.id}'.");
+                $"Unknown job tag '{op.job}' while creating pop '{op.job}', culture '{op.culture}', religion '{op.religion}' in {op.provinceTag}.");
             }
 
            if(cultureId == -1)
            {
                 throw new InvalidDataException(
-                $"Unknown culture tag '{op.culture}' while creating pop '{op.id}'.");
+                $"Unknown culture tag '{op.culture}' while creating pop '{op.job}', culture '{op.culture}', religion '{op.religion}' in {op.provinceTag}.");
            }
             
             if (religionId == -1)
             {
                 throw new InvalidDataException(
-                $"Unknown religion tag '{op.religion}' while creating pop '{op.id}'.");
+                $"Unknown religion tag '{op.religion}'while creating pop '{op.job}', culture '{op.culture}', religion '{op.religion}' in {op.provinceTag}.");
             }
-
-          
 
 
             GoodRequirement gr = new GoodRequirement(0,0,10);
             List<GoodRequirement> grList = new List<GoodRequirement>();
 
             grList.Add( gr );
-            
+
+            Province province= listProvince.Where(p => p.tag == op.provinceTag).FirstOrDefault();
+
+            if (province == null) 
+            { 
+                throw new InvalidDataException($"Can't find province tag {op.provinceTag} while creating population(province: {op.provinceTag},type: {op.job},culture: {op.culture},religion: {op.religion})");
+            }
+
+            int _provinceTag = province.id;
+
+
             Pop pop = new Pop(
-                op.id,
+                indexer,
                 op.size,
-                op.provinceId,
+                _provinceTag,
                 jobId,
                 cultureId,
                 religionId,
                 op._cashAmount,
                 grList
                 );
+            indexer++;
         }
 
         return result;
