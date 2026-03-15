@@ -10,8 +10,8 @@ public class ProvinceLoaderTest
     public void ProvinceLoader_Deserialize_ResultInfo_true()
     {
         ProvincesLoader loader = new ProvincesLoader();
-        Dictionary<string,int> countryTagId = new Dictionary<string,int>();
-        countryTagId["Bel"] = 0;
+        string[] countryTagId = new string[1];
+        countryTagId[0] = "Bel";
         // data + tagId
         string json = @"
                    [{
@@ -23,7 +23,8 @@ public class ProvinceLoaderTest
 
           }]";
 
-        List<Province> result = loader.LoadProvince(json, countryTagId);
+        ProvincesLoader.ProvinceData _result = loader.LoadProvince(json, countryTagId);
+        List<Province> result = _result.provincesList;
         Assert.IsNotNull(result);
         Assert.AreEqual(1, result.Count);
         Assert.AreEqual(0, result[0].ownerId);
@@ -36,8 +37,8 @@ public class ProvinceLoaderTest
     public void ProvinceLoader_Deserialize_ThrowError()
     {
         ProvincesLoader loader = new ProvincesLoader();
-        Dictionary<string, int> countryTagId = new Dictionary<string, int>();
-        countryTagId["Bel"] = 0;
+        string[] countryTagId = new string[2];
+        countryTagId[0] = "Bel";
         // data + tagId
         string json = @"
                    [{
@@ -68,8 +69,8 @@ public class ProvinceLoaderTest
     public void ProvinceLoader_Deserialize_ProvincesCount_true()
     {
         ProvincesLoader loader = new ProvincesLoader();
-        Dictionary<string, int> countryTagId = new Dictionary<string, int>();
-        countryTagId["Bel"] = 0;
+        string[] countryTagId = new string[2];
+        countryTagId[0] = "Bel";
         // data + tagId
         string json = @"
                    [{
@@ -89,7 +90,8 @@ public class ProvinceLoaderTest
 
           }]";
 
-        List<Province> result =  loader.LoadProvince(json, countryTagId);
+        ProvincesLoader.ProvinceData _result = loader.LoadProvince(json, countryTagId);
+        List<Province> result = _result.provincesList;
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);
         Assert.AreEqual(0, result[0].ownerId);

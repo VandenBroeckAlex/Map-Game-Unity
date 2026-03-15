@@ -40,11 +40,11 @@ public class CountryLoaderTest
      
         CountryLoader countryLoader = new CountryLoader();
         CountryLoaderData _result = countryLoader.DeserializeCountries(json);
-        Dictionary<int, Country> result = _result.countryDictionnary;
-        Debug.Log(result.Count);
+        Country[] result = _result.countries;
+        Debug.Log(result.Length);
 
         Assert.IsNotNull(result);
-        Assert.AreEqual(3, result.Count);
+        Assert.AreEqual(3, result.Length);
         Assert.AreEqual("Belgium", result[0].name);
         Assert.AreEqual(1, result[0].treasury);
         Assert.AreEqual("BEL", result[0].tag);

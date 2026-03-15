@@ -12,18 +12,22 @@ public class CountryLoader
 
     public class CountryLoaderData
     {
-        public Dictionary<int, Country> countryDictionnary;
-        public Dictionary<string, int> countryReversedDictionnary;
+        public Country[] countries;
+        public string[] countriesTag;
     }
 
 
     public CountryLoaderData DeserializeCountries(string json)
     {
-        Dictionary<int, Country> _countryList = new();
-        Dictionary<string, int> reversed = new();
+       
+        
 
         List<Country> countryDef = JsonConvert.DeserializeObject<List<Country>>(json);
-        
+
+        string[] tags = new string[countryDef.Count];
+        Country[] countryList = new Country[countryDef.Count];
+
+        int indexer = 0;
         foreach (Country _c in countryDef)
         {
             int[] color = { _c.color[0], _c.color[1], _c.color[2], 255 };
@@ -35,14 +39,15 @@ public class CountryLoader
                 _c.tag
             );
 
-            _countryList.Add(_c.id, country);
-            reversed.Add(_c.tag, _c.id);
+            countryList[indexer] = country;
+            tags[indexer] = _c.tag;
+            indexer++;
         }
         ;
 
         CountryLoaderData cld = new CountryLoaderData();
-        cld.countryDictionnary = _countryList;
-        cld.countryReversedDictionnary = reversed;
+        cld.countries = countryList;
+        cld.countriesTag = tags;
 
         return cld;
     }

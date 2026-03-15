@@ -2,8 +2,9 @@ using UnityEngine;
 
 public class DTOTerrainType
 {
-    string tag;
-    string name;
+    public string tag;
+    public string name;
+    public bool isLandType;
     //icon/img
     //list moddifiers
 

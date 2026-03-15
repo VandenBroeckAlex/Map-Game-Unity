@@ -9,7 +9,7 @@ public class DefTile
         public string name;
         public string typeTag;
         public float[] spriteColor;
-        public List<int> neighbors;
+        //public List<int> neighbors;
         public int superficy;
         public bool isLand;
         public bool isPassable;

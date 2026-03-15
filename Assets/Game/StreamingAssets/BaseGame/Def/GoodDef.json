@@ -1,50 +1,62 @@
 [
   {
     "name": "Sheep",
+    "tag" : "she",
     "basePrice": 200,
     "baseProductionModdifier": 1,
     "type": "Raw",
     "iconPath": "icons/sheep",
-    "color": "#fbfcc2"
+    "color": "#fbfcc2",
+    "isRGO":true
   },
   {
     "name": "Cow",
+    "tag" : "cow",
     "basePrice": 100,
     "baseProductionModdifier": 1,
     "type": "Raw",
     "iconPath": "icons/tools",
-    "color": "#cc9350"
+    "color": "#cc9350",
+    "isRGO":true
   },
   {
     "name": "Fish",
+    "tag" : "fis",
     "basePrice": 100,
     "baseProductionModdifier": 1,
     "type": "Raw",
     "iconPath": "icons/tools",
-    "color": "#53ab9d"
+    "color": "#53ab9d",
+    "isRGO":true
   },
   {
     "name": "Horses",
+    "tag" : "hor",
     "basePrice": 100,
     "baseProductionModdifier": 1,
     "type": "Raw",
     "iconPath": "icons/horses",
-    "color": "#ef6344"
+    "color": "#ef6344",
+    "isRGO":true
   },
   {
     "name": "Grain",
+    "tag" : "grain",
     "basePrice": 100,
     "baseProductionModdifier": 1,
     "type": "Raw",
     "iconPath": "icons/tools",
-    "color": "#efc144"
+    "color": "#efc144",
+    "isRGO":true
   },
   {
     "name": "Wood",
+    "tag" : "grain",
     "basePrice": 100,
     "baseProductionModdifier": 1,
     "type": "Raw",
     "iconPath": "icons/wood",
-    "color": "#b65344"
+    "color": "#b65344",
+    "isRGO":true
   }
 ]

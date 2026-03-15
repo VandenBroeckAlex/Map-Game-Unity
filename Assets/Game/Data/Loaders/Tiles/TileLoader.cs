@@ -29,7 +29,7 @@ public class TileLoader
                 LandTileDTO lTD = tile.ToObject<LandTileDTO>();
                 landTile.name = lTD.name;
                 landTile.spriteColor = lTD.spriteColor;
-                landTile.neighbors = lTD.neighbors;
+                //landTile.neighbors = lTD.neighbors;
                 landTile.superficy = lTD.superficy;
                 landTile.isLand = lTD.isLand;
                 landTile.isPassable = lTD.isPassable;
@@ -93,7 +93,7 @@ public class TileLoader
 
                 waterTile.name = wTD.name;
                 waterTile.spriteColor = wTD.spriteColor;
-                waterTile.neighbors = wTD.neighbors;
+                //waterTile.neighbors = wTD.neighbors;
                 waterTile.superficy = wTD.superficy;
                 waterTile.isLand = wTD.isLand;
                 waterTile.isPassable = wTD.isPassable;

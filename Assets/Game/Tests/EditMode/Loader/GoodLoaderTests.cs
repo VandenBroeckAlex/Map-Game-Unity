@@ -63,7 +63,7 @@ public class GoodLoaderTest
                 ""type"": ""Raw"",
                 ""iconPath"": ""icons/wood"",
                 ""color"": ""#b65344"",
-                ""isRGO"":""true""
+                ""isRGO"":""true"",
               },
               {
                 ""name"": ""Grain"",
@@ -73,7 +73,7 @@ public class GoodLoaderTest
                 ""type"": ""Raw"",
                 ""iconPath"": ""icons/wood"",
                 ""color"": ""#b65344"",
-                ""isRGO"":""true""
+                ""isRGO"":""true"",
               },
                {
                 ""name"": ""Horses"",
@@ -83,7 +83,7 @@ public class GoodLoaderTest
                 ""type"": ""Raw"",
                 ""iconPath"": ""icons/wood"",
                 ""color"": ""#b65344"",
-                ""isRGO"":""true""
+                ""isRGO"":""true"",
               },
             ]";
 
@@ -107,5 +107,8 @@ public class GoodLoaderTest
         {
             Assert.Fail($"Expected GoodType to be : 2, recived: {goodList[0].type}");
         }
+
+        Assert.AreEqual(data.rgoTag.Count, 3);
+        Assert.IsTrue(data.rgoTag.TryGetValue("Wood", out int val));
     }
 }

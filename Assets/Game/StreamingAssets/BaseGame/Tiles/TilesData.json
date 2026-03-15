@@ -1,0 +1,33 @@
+    [{
+        
+    "tag"  :"par",
+    "name" : "Paris",
+    "typeTag" : "pla",
+    "spriteColor" : [0.1,0.2,0.3],
+    "superficy" : 25,
+    "isLand": true,
+    "isPassable": true,
+    "ownerTag": "FRA",
+    "occupierTag": "",
+    "rgoTag": "she",
+    "isCoast":  true,
+    "climatTag": "temp",
+    "provinceTag":   "IDF"
+ },
+ {
+        
+    "tag"  :"cre",
+    "name" : "Créteil",
+    "typeTag" : "pla",
+    "spriteColor" : [0.1,0.2,0.3],
+    "superficy" : 25,
+    "isLand": true,
+    "isPassable": true,
+    "ownerTag": "FRA",
+    "occupierTag": "",
+    "rgoTag": "she",
+    "isCoast":  true,
+    "climatTag": "temp",
+    "provinceTag":   "IDF"
+ }
+]
