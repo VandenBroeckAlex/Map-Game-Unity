@@ -2,7 +2,7 @@ using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
-using static DefTile;
+using static DTOTile;
 
 public class TileLoader
 {

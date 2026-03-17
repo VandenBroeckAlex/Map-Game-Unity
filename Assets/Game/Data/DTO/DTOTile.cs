@@ -1,7 +1,7 @@
 using System.Collections.Generic;
 
 
-public class DefTile
+public class DTOTile
 {
     public class TileDTO
     {

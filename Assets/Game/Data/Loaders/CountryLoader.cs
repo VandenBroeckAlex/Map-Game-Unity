@@ -80,9 +80,5 @@ public class CountryLoader
                 indexer++;
             }
         }
-        else
-        {
-            //Debug.LogError($"json not found at " + jsonPath);
-        }
     }
 }
