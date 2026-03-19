@@ -1,0 +1,25 @@
+[{
+    "name" : "coal mine",
+    "type" : "mining",
+    "constructionIC" : 400,
+    "maintenanceCost" : 10,
+    "workersType" : {
+        "miners" : 900,
+        "machinists" : 50,
+        "clerks" : 20,
+        "engineer" : 20},
+    "efficiency" : 100,
+    "output" :"coal"
+},
+{
+    "name" : "grain fields",
+    "type" : "crops",
+    "constructionIC" : 100,
+    "maintenanceCost" : 5,
+    "workersType" : {
+        "peasants" : 1000
+    },
+    "efficiency" : 100,
+    "output" :"grain",
+    "climate" : ["temperate","contienental"]
+}]

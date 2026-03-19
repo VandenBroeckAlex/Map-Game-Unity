@@ -2,15 +2,20 @@
 
 public class DTOWorkplace
 {
+    public class DTONnumPerTag
+    {
+        public string tag;
+        public int num;
+    }
     public class WorkplaceDTO
     {
         public string countryTag;
         public string name;
         public string type;
         public int constructionCost;
-        //goodConstructionCost
-        //goodmaintenanceCost
-        // string in job assignment
+        public DTONnumPerTag[] goodConstructionCost;
+        public DTONnumPerTag[] goodmaintenanceCost;
+        public DTONnumPerTag[] jobAssignment;
     }
     public class ProductionWorkplaceDTO : WorkplaceDTO
     {

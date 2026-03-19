@@ -1,14 +1,11 @@
-using System;
+
 using System.Collections.Generic;
 using UnityEngine;
-using System.Text.Json;
-using System.Text.Json.Serialization;
 using Newtonsoft.Json;
-using Unity.VisualScripting.Antlr3.Runtime.Misc;
+
 
 namespace MyGame.Data
-{
-    //base tile
+{    //base tile
 
     //make land and water inherit from it
     [SerializeField]
@@ -18,18 +15,18 @@ namespace MyGame.Data
         public int id { get; set; }
         public string name { get; set; } = "";
         public float[] spriteColor { get; set; } = new float[3];
-        public List<int> neighbors {  get; set; } = new List<int>();
-        
-        public int superficy {  get; set; }
-        public bool isLand {  get; set; }
-        public bool isPassable {  get; set; }
+        public List<int> neighbors { get; set; } = new List<int>();
+
+        public int superficy { get; set; }
+        public bool isLand { get; set; }
+        public bool isPassable { get; set; }
 
         //public ProvinceStats stats;
 
-        public Tile(int GivenID )
+        public Tile(int GivenID)
         {
             id = GivenID;
-           
+
         }
 
     }
@@ -49,16 +46,16 @@ namespace MyGame.Data
     public class LandTile : Tile
     {
         [JsonProperty(Order = 7)]
-        public int ownerId {  get; set; }
+        public int ownerId { get; set; }
         [JsonProperty(Order = 8)]
-        public int occupierID {  get; set; }
+        public int occupierID { get; set; }
         [JsonProperty(Order = 9)]
-        public int rgo {  get; set; }
+        public int rgo { get; set; }
         [JsonProperty(Order = 10)]
-        public int type {  get; set; }
+        public int type { get; set; }
         [JsonProperty(Order = 11)]
-        public bool isCoast {  get; set; }
-        
+        public bool isCoast { get; set; }
+
         //arable_resources -> agricultural workspace possible to build in tile or climat rule set
         //resources -> mining resource if present 
 
@@ -67,7 +64,7 @@ namespace MyGame.Data
             : base(givenID)
         {
             isLand = true;
-            isPassable = true; 
+            isPassable = true;
         }
     }
 
