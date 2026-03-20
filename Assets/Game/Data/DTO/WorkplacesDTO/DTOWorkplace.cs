@@ -1,5 +1,7 @@
 
 
+using System.Collections.Generic;
+
 public class DTOWorkplace
 {
     public class DTONnumPerTag
@@ -13,9 +15,9 @@ public class DTOWorkplace
         public string name;
         public string type;
         public int constructionCost;
-        public DTONnumPerTag[] goodConstructionCost;
-        public DTONnumPerTag[] goodmaintenanceCost;
-        public DTONnumPerTag[] jobAssignment;
+        public Dictionary<string,int> goodConstructionCost;
+        public Dictionary<string, int> goodmaintenanceCost;
+        public Dictionary<string, int> jobAssignment;
     }
     public class ProductionWorkplaceDTO : WorkplaceDTO
     {
@@ -45,6 +47,54 @@ public class DTOWorkplace
     public class InfrastructureBuildingDTO : ProductionWorkplaceDTO 
     {
         public string inputGood;
+    }
+    //military
+}
+
+
+
+
+
+public class DTOWorkplaceDef
+{
+ 
+    public class WorkplaceDTODef
+    {
+        public string name;
+        public string type;
+        public int constructionCost;
+        public Dictionary<string, int> goodConstructionCost;
+        public Dictionary<string, int> goodmaintenanceCost;
+        public Dictionary<string, int> jobAssignment;
+    }
+    public class ProductionWorkplaceDTODef : WorkplaceDTODef
+    {
+        public int efficiency; //how much of output produce if all input 100%
+        public int defaultCashBufferMax;
+    }
+
+    public class CropRgoDtoDef : ProductionWorkplaceDTODef
+    {
+        public string outputGood;
+        public string climateType;
+    }
+    public class MineralRgoDtoDef : ProductionWorkplaceDTODef
+    {
+        public string outputGood;
+    }
+
+    public class FactoryBuildingDTODef : ProductionWorkplaceDTODef
+    {
+        public string outputGood;
+        public Dictionary<string,int> inputGood; //string + number
+    }
+    public class ServiceBuildingDTODef : ProductionWorkplaceDTODef
+    {
+        public string outputedService;
+    }
+    public class InfrastructureBuildingDTODef : ProductionWorkplaceDTODef
+    {
+        public Dictionary<string,int> inputGood;
     }
     //military
 }
