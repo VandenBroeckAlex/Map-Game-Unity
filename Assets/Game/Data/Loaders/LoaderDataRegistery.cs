@@ -76,6 +76,48 @@ public class LoaderDataRegistery
     //religionDef
     //strataNeeds
     //provinceTags
+
+    public Dictionary<int, int> GetWorkersDictionary(Dictionary<string, int> workers)
+    {
+        Dictionary<int, int> result = new Dictionary<int, int>();
+        foreach (KeyValuePair<string, int> kvp in workers)
+        {
+            int id = GetIdByTag(popJobs, kvp.Key);
+            if (id < 0)
+            {
+                //throw new InvalidDataException(
+                //$"the pop tag: {kvp.Key} is not valid. " +
+                //$"While creating workplace definition");
+            }
+            else
+            {
+                result[id] = kvp.Value;
+            }
+        }
+        return result;
+    }
+
+    public Dictionary<int, int> GetGoodDictionary(Dictionary<string, int> goods)
+    {
+        Dictionary<int, int> result = new Dictionary<int, int>();
+        foreach (KeyValuePair<string, int> kvp in goods)
+        {
+            int id = GetGoodIdByTagId(kvp.Key);
+            if (id < 0)
+            {
+                //throw new InvalidDataException(
+                //$"the pop tag: {kvp.Key} is not valid. " +
+                //$"While creating workplace definition");
+            }
+            else
+            {
+                result[id] = kvp.Value;
+            }
+        }
+        return result;
+
+    }
+
     private int GetIdByString(string tag, string[] list)
     {
 
@@ -101,23 +143,4 @@ public class LoaderDataRegistery
         return -1;
     }
 
-    public Dictionary<int, int> GetWorkersDictionary(Dictionary<string, int> workers)
-    {
-        Dictionary<int, int> result = new Dictionary<int, int>();
-        foreach (KeyValuePair<string, int> kvp in workers)
-        {
-            int id = GetIdByTag(popJobs, kvp.Key);
-            if (id < 0)
-            {
-                //throw new InvalidDataException(
-                //$"the pop tag: {kvp.Key} is not valid. " +
-                //$"While creating workplace definition");
-            }
-            else
-            {
-                result[id] = kvp.Value;
-            }
-        }
-        return result;
-    }
 }

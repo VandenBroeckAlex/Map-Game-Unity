@@ -9,7 +9,13 @@ public class GoodLoaderTest
     [Test]
     public static void GoodLoader_Load_goods_True()
     {
-        GoodLoader loader = new GoodLoader();
+        LoaderDataRegistery registery = new LoaderDataRegistery();
+        string[] type = new string[1];
+        type[0] = "Raw";
+
+        registery.goodTypes = type;
+
+        GoodLoader loader = new GoodLoader(registery);
         string json = @"
             [
               {
@@ -24,10 +30,9 @@ public class GoodLoaderTest
               }
             ]";
 
-        string[] type = new string[1];
-        type[0] = "Raw";
+  
 
-        GoodLoadedData data = loader.Load_goods(json, type);
+        GoodLoadedData data = loader.Load_goods(json);
         Good[] goodList = data.goodList;
 
         Assert.IsNotNull(goodList);
@@ -52,7 +57,17 @@ public class GoodLoaderTest
     [Test]
     public static void GoodLoader_Load_goods_NumberGoodRecived_True()
     {
-        GoodLoader loader = new GoodLoader();
+        string[] type = new string[3];
+
+        type[0] = "Manifactured";
+        type[1] = "Luxury";
+        type[2] = "Raw";
+
+        LoaderDataRegistery registery = new LoaderDataRegistery();
+
+        registery.goodTypes = type;
+
+        GoodLoader loader = new GoodLoader(registery);
         string json = @"
             [
               {
@@ -87,13 +102,9 @@ public class GoodLoaderTest
               },
             ]";
 
-        string[] type = new string[3];
+    
 
-        type[0] = "Manifactured";
-        type[1] = "Luxury";
-        type[2] = "Raw";
-
-        GoodLoadedData data = loader.Load_goods(json, type);
+        GoodLoadedData data = loader.Load_goods(json);
 
         Good[] goodList = data.goodList;
 

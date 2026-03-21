@@ -22,7 +22,7 @@ public class WorkplaceLoader
         Dictionary<int, int> maintenanceCost; // good id num
         Dictionary<int, int> workers; //popjob id - num
         
-        public DefinitionWorkplace(string name,string type,int ic, Dictionary<int, int> workers)
+        protected DefinitionWorkplace(string name,string type,int ic, Dictionary<int, int> workers)
         {
             this.name = name;
             this.type = type;
@@ -31,9 +31,8 @@ public class WorkplaceLoader
         }
     }
 
-    public class DefinitionCropWorkplace
+    public class DefinitionCropWorkplace : DefinitionWorkplace
     {
-        public DefinitionWorkplace workplace;
         public int efficiency;
         public int output; //good id
         public int[] climat; // climate id
@@ -46,18 +45,17 @@ public class WorkplaceLoader
             int ouputId,
             Dictionary<int, int> workers,
             int[] climat
-            )
+            ) : base(name,type, icCost, workers)
         {
-            DefinitionWorkplace workplace = new DefinitionWorkplace(name, type, icCost, workers);
-            this.workplace = workplace;
+
             this.efficiency = efficiency;
             this.output = ouputId;
             this.climat = climat;
         }
     }
-    public class DefinitionMiningWorkplace
+    public class DefinitionMiningWorkplace : DefinitionWorkplace
     {
-        public DefinitionWorkplace workplace;
+
         public int efficiency;
         public int output; //good id
 
@@ -68,10 +66,8 @@ public class WorkplaceLoader
             int efficiency,
             int ouputId,
             Dictionary<int,int> workers
-            )
+            ) : base(name, type, icCost, workers)
         {
-            DefinitionWorkplace workplace = new DefinitionWorkplace(name, type, icCost, workers);
-            this.workplace = workplace;
             this.efficiency = efficiency;
             this.output = ouputId;
 
@@ -79,25 +75,54 @@ public class WorkplaceLoader
 
     }
 
-    public class DefinitionFactoryWorkplace
+    public class DefinitionFactoryWorkplace : DefinitionWorkplace
     {
         public DefinitionWorkplace workplace;
         public int efficiency; 
         public int output; //good id
         public Dictionary<int,int> input; //good id - num
+
+        public DefinitionFactoryWorkplace(
+            string name,
+            string type,
+            int icCost,
+            int efficiency,
+            int ouputId,
+            Dictionary<int, int> workers,
+            Dictionary<int, int> input
+            ) : base(name, type, icCost, workers)
+        {
+            this.efficiency = efficiency;
+            this.output = ouputId;
+            this.input = input;
+        }
     }
-    public class DefinitionServiceWorkplace
+    
+    public class DefinitionServiceWorkplace : DefinitionWorkplace
     {
-        public DefinitionWorkplace workplace;
+        public DefinitionServiceWorkplace(
+            string name,
+            string type,
+            int icCost,
+            int efficiency,
+            int ouputId,
+            Dictionary<int, int> workers,
+            Dictionary<int, int> input
+            ) : base(name, type, icCost, workers)
+        {
+            this.output = output;
+            this.input = input;
+        }
         public int efficiency;
         public int output; //good id
         public Dictionary<int, int> input; //good id - num
         //formula xA + xB = zC
     }
-    public void DeserializeWorkplaces(string json, RunTimePopJob[] validPopJobs, Dictionary<string, int> validRgoTag)
+    public List<DefinitionWorkplace> DeserializeWorkplaces(string json)
     {
-        JArray listWorkplaces = JArray.Parse(json);
 
+        JArray listWorkplaces = JArray.Parse(json);
+        List< DefinitionWorkplace> result = new List< DefinitionWorkplace >();
         foreach (JObject item in listWorkplaces) 
         { 
             if(item != null) continue;
@@ -110,11 +135,13 @@ public class WorkplaceLoader
             switch (type) 
             {
                 case "mining":
-                    
+                    result.Add(CreateMinigWorkplaceDef(item));
                     break;
                 case "crop":
+                    result.Add(CreateCropWorkplaceDef(item));
                     break;
                 case "factory":
+                    result.Add(CreateFactoryWorkplace(item));
                     break;
                 case "infra":
                     break;
@@ -127,6 +154,7 @@ public class WorkplaceLoader
                     break;
             }
         }
+        return result;
     }
     
 
@@ -177,7 +205,27 @@ public class WorkplaceLoader
         return mWorkplace;
     }
 
+    private DefinitionFactoryWorkplace CreateFactoryWorkplace(JObject workplace) 
+    {
+        FactoryBuildingDTODef dto = workplace.ToObject<FactoryBuildingDTODef>();
 
+        int outputId = _registery.GetGoodIdByTagId(dto.outputGood);
+
+        Dictionary<int, int> workers = _registery.GetWorkersDictionary(dto.jobAssignment);
+
+        Dictionary<int,int> inputGoods = _registery.GetGoodDictionary(dto.inputGood);
+
+        DefinitionFactoryWorkplace mWorkplace = new DefinitionFactoryWorkplace(
+            dto.name,
+            dto.type,
+            dto.constructionCost,
+            dto.efficiency,
+            outputId,
+            workers,
+            inputGoods
+            );
+        return mWorkplace;
+    }
 
   
 }

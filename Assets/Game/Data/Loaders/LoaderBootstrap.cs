@@ -9,6 +9,7 @@ using static CultureLoader;
 using static ProvincesLoader;
 using static StrataNeedLoader;
 using static TerrainTypeLoader;
+using static WorkplaceLoader;
 
 
 public class LoaderBootstrap
@@ -76,7 +77,7 @@ public class LoaderBootstrap
         registery.religionsDef = religionsDef;
 
         string goodJson = GetJsonFromFile(definitionPath, "GoodDef");
-        GoodLoader.GoodLoadedData goodData = goodLoader.Load_goods(goodJson, goodsTypes);
+        GoodLoader.GoodLoadedData goodData = goodLoader.Load_goods(goodJson);
         registery.goodList = goodData.goodList;
 
         string strataNeedsJson = GetJsonFromFile(definitionPath, "StrataNeedDef");
@@ -108,6 +109,11 @@ public class LoaderBootstrap
         string popFilePath = Path.Combine(runtimePath, "Population");
         string runTimePopJson = GetJsonFromFile(popFilePath,"population");
         List<Pop> listPop = popLoader.Deserialize_Pop(runTimePopJson, popJobs, cultureDef, religionsDef, goodsTypes, provinceData.provincesList);
+
+        string workplaceDefFilePath = Path.Combine(runtimePath, "Workplaces");
+        string workplacesDefJson = GetJsonFromFile(workplaceDefFilePath, "workplacesDef");
+        WorkplaceLoader workplaceLoader = new WorkplaceLoader(registery);
+        List<DefinitionWorkplace> workplaceDefinition = workplaceLoader.DeserializeWorkplaces(workplacesDefJson);
     }
 
     public string GetJsonFromFile(string dataPath,string fileName)
