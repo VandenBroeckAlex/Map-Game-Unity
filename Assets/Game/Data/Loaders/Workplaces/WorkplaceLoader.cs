@@ -9,6 +9,11 @@ using static ProvincesLoader;
 
 public class WorkplaceLoader
 {
+    LoaderDataRegistery _registery;
+    public WorkplaceLoader( LoaderDataRegistery registery)
+    {
+        _registery = registery;
+    }
     public class DefinitionWorkplace
     {
         string name;
@@ -32,6 +37,23 @@ public class WorkplaceLoader
         public int efficiency;
         public int output; //good id
         public int[] climat; // climate id
+
+        public DefinitionCropWorkplace(
+            string name,
+            string type,
+            int icCost,
+            int efficiency,
+            int ouputId,
+            Dictionary<int, int> workers,
+            int[] climat
+            )
+        {
+            DefinitionWorkplace workplace = new DefinitionWorkplace(name, type, icCost, workers);
+            this.workplace = workplace;
+            this.efficiency = efficiency;
+            this.output = ouputId;
+            this.climat = climat;
+        }
     }
     public class DefinitionMiningWorkplace
     {
@@ -106,23 +128,16 @@ public class WorkplaceLoader
             }
         }
     }
-    private DefinitionMiningWorkplace CreateMinigWorkplaceDef(JObject workplace, Dictionary<string, int> validRgoTag, RunTimePopJob[] validPopJobs)
+    
+
+    private DefinitionMiningWorkplace CreateMinigWorkplaceDef(JObject workplace)
     {
         MineralRgoDtoDef dto = workplace.ToObject<MineralRgoDtoDef>();
+        
         // check string to id
-        int outputId = 0;
-        if (validRgoTag.ContainsKey(dto.outputGood))
-        {
-             outputId = validRgoTag[dto.outputGood];
-        }
-        else
-        {
-            throw new InvalidDataException(
-               $"the good: {dto.outputGood} is not valid. " +
-               $"Creating workplace definition : {dto.name} , type : {dto.type}");
-        }
+        int outputId = _registery.GetGoodIdByTagId(dto.outputGood);
 
-        Dictionary<int, int> workers = GetWorkersDictionary(validPopJobs, dto.jobAssignment);
+        Dictionary<int, int> workers = _registery.GetWorkersDictionary(dto.jobAssignment);
 
         DefinitionMiningWorkplace mWorkplace = new DefinitionMiningWorkplace(
             dto.name,
@@ -135,47 +150,34 @@ public class WorkplaceLoader
         return mWorkplace;
     }
 
-    
-    private Dictionary<int, int> GetWorkersDictionary(RunTimePopJob[] validPopJobs, Dictionary<string, int> workers)
+    private DefinitionCropWorkplace CreateCropWorkplaceDef(JObject workplace)
     {
-        Dictionary<int,int> result = new Dictionary<int,int>();
-        foreach (KeyValuePair<string, int> kvp in workers)
+        CropRgoDtoDef dto = workplace.ToObject<CropRgoDtoDef>();
+
+        int outputId = _registery.GetGoodIdByTagId(dto.outputGood);
+
+        Dictionary<int, int> workers = _registery.GetWorkersDictionary(dto.jobAssignment);
+
+        int[] climat = new int[dto.climateType.Length];
+
+        for (int i = 0; i< climat.Length; i++)
         {
-            int id = GetIdByTag(validPopJobs, kvp.Key);
-            if(id < 0)
-            {
-                throw new InvalidDataException(
-              $"the pop tag: {kvp.Key} is not valid. " +
-              $"While creating workplace definition");
-            }
-            else
-            {
-                result[id] = kvp.Value;
-            }
+            climat[i] = _registery.GetClimateTagId(dto.climateType[i]);
         }
-        return result;
+
+        DefinitionCropWorkplace mWorkplace = new DefinitionCropWorkplace(
+            dto.name,
+            dto.type,
+            dto.constructionCost,
+            dto.efficiency,
+            outputId,
+            workers,
+            climat
+            );
+        return mWorkplace;
     }
-    private int GetIdByString(string str, string[] array)
-    {
-        for (int i = 0; i < array.Length; i++)
-        {
-            if (array[i] == str)
-            {
-                return i;
-            }
-        }
-        //TODO
-        throw new InvalidDataException($"");
-    }
-    private int GetIdByTag<T>(T[] data, string givenTag) where T : IHaveTag
-    {
-        for (int i = 0; i < data.Length; i++)
-        {
-            if (data[i].tag == givenTag)
-            {
-                return i;
-            }
-        }
-        return -1;
-    }
+
+
+
+  
 }

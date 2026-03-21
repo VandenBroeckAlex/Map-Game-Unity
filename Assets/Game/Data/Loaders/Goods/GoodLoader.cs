@@ -8,6 +8,15 @@ using System.Linq;
 
 public class GoodLoader  
 {
+    public static Good[] allGoodsDefinition;
+    string[] goodType;
+    LoaderDataRegistery _registery;
+
+    public GoodLoader(LoaderDataRegistery registery)
+    {
+        _registery = registery;
+    }
+
     private struct GoodData
     {
         public string name;
@@ -19,10 +28,6 @@ public class GoodLoader
         public string iconPath;
         public bool isRGO;
     }
-
-
-    public static Good[] allGoodsDefinition;
-    string[] goodType;
 
 
     public GoodLoadedData Deserialize_goods(string _FilePath)
@@ -49,9 +54,9 @@ public class GoodLoader
 
         int id = 0;
 
-        JsonValidator validator = new JsonValidator();
+        GoodJsonValidator validator = new GoodJsonValidator();
 
-        bool isValid = validator.ValidateGoods(jsonText, validType);
+        bool isValid = validator.ValidateGoods(jsonText, validType,"goodDef.json");
 
         foreach (GoodData _good in good_list) 
         { 
@@ -59,21 +64,17 @@ public class GoodLoader
             good.id = id;
             good.name = _good.name;
             good.basePrice = _good.basePrice;
-
+            good.tag = _good.tag;
             bool isFound = false;
-            for(int i = 0; i < goodType.Length; i++)
-            {
-                if(goodType[i] == _good.type)
-                {
-                    good.type = i;
-                    isFound = true;
-                }
-            }
-            if(isFound == false)
+
+            int typeID = _registery.GetGoodTypeTagId(_good.type);
+            if(typeID > 0)
             {
                 throw new InvalidDataException(
                 $"Unknown good type '{_good.type}' while creating good '{good.name}'.");
             }
+
+            good.type = typeID;
             good.baseProductionModdifier = _good.baseProductionModdifier;
             good.color = _good.color;   
             good.iconPath = _good.iconPath;

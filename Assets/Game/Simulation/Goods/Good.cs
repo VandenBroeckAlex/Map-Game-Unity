@@ -8,6 +8,7 @@ public class Good
 { 
     public int id;
     public string name;
+    public string tag;
     public int type;
     public int basePrice;
     public int weight; // For transport, if needed

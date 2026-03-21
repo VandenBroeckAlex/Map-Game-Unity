@@ -5,7 +5,7 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 
-public class JsonValidator
+public class GoodJsonValidator
 {
 
     HashSet<string> validKeys = new HashSet<string>
@@ -21,7 +21,7 @@ public class JsonValidator
     };
 
     //Get json path for error message
-    public bool ValidateGoods(string jsonText, HashSet<string> validTypes)
+    public bool ValidateGoods(string jsonText, HashSet<string> validTypes, string jsonPath)
     {
         bool jsonIsValid = true;
 
@@ -37,7 +37,7 @@ public class JsonValidator
                     string suggestion = FindClosest(property.Name, validKeys);
 
                     Debug.LogError(
-                        $"Line {line}: Unknown key '{property.Name}'. " +
+                        $"In {jsonPath} line {line}: Unknown key '{property.Name}'. " +
                         (suggestion != null ? $"Did you mean '{suggestion}'?" : "")
                     );
 
