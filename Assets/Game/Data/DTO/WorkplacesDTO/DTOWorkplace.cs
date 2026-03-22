@@ -17,7 +17,7 @@ public class DTOWorkplace
         public int constructionCost;
         public Dictionary<string,int> goodConstructionCost;
         public Dictionary<string, int> goodmaintenanceCost;
-        public Dictionary<string, int> jobAssignment;
+        public Dictionary<string, int> workersType;
     }
     public class ProductionWorkplaceDTO : WorkplaceDTO
     {
@@ -65,7 +65,7 @@ public class DTOWorkplaceDef
         public int constructionCost;
         public Dictionary<string, int> goodConstructionCost;
         public Dictionary<string, int> goodmaintenanceCost;
-        public Dictionary<string, int> jobAssignment;
+        public Dictionary<string, int> workersType;
     }
     public class ProductionWorkplaceDTODef : WorkplaceDTODef
     {
@@ -76,7 +76,7 @@ public class DTOWorkplaceDef
     public class CropRgoDtoDef : ProductionWorkplaceDTODef
     {
         public string outputGood;
-        public string[] climateType;
+        public string[] valid_climate;
     }
     public class MineralRgoDtoDef : ProductionWorkplaceDTODef
     {

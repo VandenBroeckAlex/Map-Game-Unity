@@ -1,7 +1,9 @@
 
 using Newtonsoft.Json.Linq;
 using PlasticGui.WorkspaceWindow.Home;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using static DTOTile;
 using static DTOWorkplaceDef;
@@ -120,43 +122,42 @@ public class WorkplaceLoader
     }
     public List<DefinitionWorkplace> DeserializeWorkplaces(string json)
     {
-
         JArray listWorkplaces = JArray.Parse(json);
-        List< DefinitionWorkplace> result = new List< DefinitionWorkplace >();
-        foreach (JObject item in listWorkplaces) 
-        { 
-            if(item != null) continue;
+        List<DefinitionWorkplace> result = new List<DefinitionWorkplace>();
+
+        foreach (JToken token in listWorkplaces)
+        {
+
+            if (token is not JObject item) continue;
 
 
             string type = item["type"]?.Value<string>();
-            //throw if null
-            type.ToLower();
 
-            switch (type) 
+            if (string.IsNullOrEmpty(type))
+            {
+                continue;
+            }
+
+            type = type.ToLower();
+
+            switch (type)
             {
                 case "mining":
                     result.Add(CreateMinigWorkplaceDef(item));
                     break;
-                case "crop":
+                case "crops": 
                     result.Add(CreateCropWorkplaceDef(item));
                     break;
                 case "factory":
                     result.Add(CreateFactoryWorkplace(item));
                     break;
-                case "infra":
-                    break;
-                case "serv":
-                    break;
-                case "mil":
-                    break;
                 default:
-                    //throw error
-                    break;
+                    throw new Exception($"Couldn't find type: {type}");
             }
         }
         return result;
     }
-    
+
 
     private DefinitionMiningWorkplace CreateMinigWorkplaceDef(JObject workplace)
     {
@@ -165,7 +166,7 @@ public class WorkplaceLoader
         // check string to id
         int outputId = _registery.GetGoodIdByTagId(dto.outputGood);
 
-        Dictionary<int, int> workers = _registery.GetWorkersDictionary(dto.jobAssignment);
+        Dictionary<int, int> workers = _registery.GetWorkersDictionary(dto.workersType);
 
         DefinitionMiningWorkplace mWorkplace = new DefinitionMiningWorkplace(
             dto.name,
@@ -184,13 +185,13 @@ public class WorkplaceLoader
 
         int outputId = _registery.GetGoodIdByTagId(dto.outputGood);
 
-        Dictionary<int, int> workers = _registery.GetWorkersDictionary(dto.jobAssignment);
+        Dictionary<int, int> workers = _registery.GetWorkersDictionary(dto.workersType);
 
-        int[] climat = new int[dto.climateType.Length];
+        int[] climat = new int[dto.valid_climate.Length];
 
         for (int i = 0; i< climat.Length; i++)
         {
-            climat[i] = _registery.GetClimateTagId(dto.climateType[i]);
+            climat[i] = _registery.GetClimateTagId(dto.valid_climate[i]);
         }
 
         DefinitionCropWorkplace mWorkplace = new DefinitionCropWorkplace(
@@ -211,7 +212,7 @@ public class WorkplaceLoader
 
         int outputId = _registery.GetGoodIdByTagId(dto.outputGood);
 
-        Dictionary<int, int> workers = _registery.GetWorkersDictionary(dto.jobAssignment);
+        Dictionary<int, int> workers = _registery.GetWorkersDictionary(dto.workersType);
 
         Dictionary<int,int> inputGoods = _registery.GetGoodDictionary(dto.inputGood);
 
