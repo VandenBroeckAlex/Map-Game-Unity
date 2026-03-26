@@ -30,6 +30,10 @@ public class LoaderBootstrap
     public void InitializeSimulation()
     {
         LoaderDataRegistery registery = new LoaderDataRegistery();
+        // TODO handler choice
+        IResolutionErrorHandler errorHandler = new ThrowErrorHandler();
+
+     
 
         // 1) validate json
         GoodJsonValidator validator = new GoodJsonValidator();
@@ -56,11 +60,11 @@ public class LoaderBootstrap
 
 
         string goodDefJson = GetJsonFromFile(definitionPath,"GoodType");
-        string[] goodsTypes = goodTypeLoader.Deserialize_goodsType(goodDefJson);
+        string[] goodsTypes = goodTypeLoader.Deserialize_goodsType(goodDefJson, errorHandler);
         registery.goodTypes = goodsTypes;
 
         string cultureDefJson = GetJsonFromFile(definitionPath,"cultureDef");
-        RunTimeCulture[] cultureDef = cultureLoader.DeserializeCultures(cultureDefJson);
+        RunTimeCulture[] cultureDef = cultureLoader.DeserializeCultures(cultureDefJson, errorHandler);
         registery.cultures = cultureDef;
 
         //Todo deserialize strata

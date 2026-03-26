@@ -11,7 +11,8 @@
         "Country",
         "MarketTransactions",
         "Markets",
-        "Provinces"
+        "Provinces",
+        "DataResolutionHandler"
     ],
     "includePlatforms": [
         "Editor"

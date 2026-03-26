@@ -8,7 +8,7 @@ public class DTOTile
         public string tag;
         public string name;
         public string typeTag;
-        public float[] spriteColor;
+        public string spriteColor;
         //public List<int> neighbors;
         public int superficy;
         public bool isLand;

@@ -1,4 +1,5 @@
 using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
@@ -28,7 +29,7 @@ public class TileLoader
                 LandTile landTile = new LandTile(idIterator);
                 LandTileDTO lTD = tile.ToObject<LandTileDTO>();
                 landTile.name = lTD.name;
-                landTile.spriteColor = lTD.spriteColor;
+                landTile.spriteColor = Convert.ToInt32(lTD.spriteColor, 16);
                 //landTile.neighbors = lTD.neighbors;
                 landTile.superficy = lTD.superficy;
                 landTile.isLand = lTD.isLand;
@@ -92,7 +93,7 @@ public class TileLoader
                 WaterTile waterTile = new WaterTile(idIterator);
 
                 waterTile.name = wTD.name;
-                waterTile.spriteColor = wTD.spriteColor;
+                waterTile.spriteColor = Convert.ToInt32(wTD.spriteColor, 16);
                 //waterTile.neighbors = wTD.neighbors;
                 waterTile.superficy = wTD.superficy;
                 waterTile.isLand = wTD.isLand;
@@ -121,4 +122,6 @@ public class TileLoader
         }
         return -1;
     }
+   
 }
+

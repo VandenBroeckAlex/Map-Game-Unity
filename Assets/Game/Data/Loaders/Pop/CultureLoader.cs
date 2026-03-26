@@ -1,3 +1,4 @@
+using log4net.Core;
 using Newtonsoft.Json;
 using System.Collections.Generic;
 
@@ -10,10 +11,15 @@ public class CultureLoader
      
     }
 
-    public RunTimeCulture[] DeserializeCultures(string json){
+    public RunTimeCulture[] DeserializeCultures(string json, IResolutionErrorHandler errorHandler)
+    {
 
         RunTimeCulture[] cultures = JsonConvert.DeserializeObject<RunTimeCulture[]>(json);
-    
+        
+        if (cultures.Length == 0) {
+            errorHandler.RaiseError("There is no culture in cultureDef.json");
+        }
+        
         return cultures;
     }
 }

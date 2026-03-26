@@ -7,7 +7,7 @@ using System.Collections.Generic;
         public int id { get; set; }
         public string name { get; set; } = "";
         public int type;
-        public float[] spriteColor { get; set; } = new float[3];
+        public int spriteColor { get; set; }
         public List<int> neighbors { get; set; } = new List<int>();
         public int superficy { get; set; }
         public bool isLand { get; set; }

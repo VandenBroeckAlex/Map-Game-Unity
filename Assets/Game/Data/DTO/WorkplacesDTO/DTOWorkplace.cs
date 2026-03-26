@@ -76,7 +76,7 @@ public class DTOWorkplaceDef
     public class CropRgoDtoDef : ProductionWorkplaceDTODef
     {
         public string outputGood;
-        public string[] valid_climate;
+        public string[] climate;
     }
     public class MineralRgoDtoDef : ProductionWorkplaceDTODef
     {

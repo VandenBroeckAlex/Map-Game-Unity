@@ -187,11 +187,11 @@ public class WorkplaceLoader
 
         Dictionary<int, int> workers = _registery.GetWorkersDictionary(dto.workersType);
 
-        int[] climat = new int[dto.valid_climate.Length];
+        int[] climat = new int[dto.climate.Length];
 
         for (int i = 0; i< climat.Length; i++)
         {
-            climat[i] = _registery.GetClimateTagId(dto.valid_climate[i]);
+            climat[i] = _registery.GetClimateTagId(dto.climate[i]);
         }
 
         DefinitionCropWorkplace mWorkplace = new DefinitionCropWorkplace(
