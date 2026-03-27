@@ -9,7 +9,7 @@ public class DTOTile
         public string name;
         public string typeTag;
         public string spriteColor;
-        //public List<int> neighbors;
+        public int[] neighbors;
         public int superficy;
         public bool isLand;
         public bool isPassable;

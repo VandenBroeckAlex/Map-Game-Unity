@@ -59,68 +59,68 @@ public class LoaderBootstrap
         // 4) export a redy sim object
 
 
-        string goodDefJson = GetJsonFromFile(definitionPath,"GoodType");
+        string goodDefJson = GetJsonStringFromFile(definitionPath,"GoodType");
         string[] goodsTypes = goodTypeLoader.Deserialize_goodsType(goodDefJson, errorHandler);
         registery.goodTypes = goodsTypes;
 
-        string cultureDefJson = GetJsonFromFile(definitionPath,"cultureDef");
+        string cultureDefJson = GetJsonStringFromFile(definitionPath,"cultureDef");
         RunTimeCulture[] cultureDef = cultureLoader.DeserializeCultures(cultureDefJson, errorHandler);
         registery.cultures = cultureDef;
 
         //Todo deserialize strata
-        string stratadefJson = GetJsonFromFile(definitionPath, "PopStrataDef");
+        string stratadefJson = GetJsonStringFromFile(definitionPath, "PopStrataDef");
         string[] strata = strataLoder.DeserializeStrata(stratadefJson);
         registery.popStrata = strata;
 
-        string PopJobDefJson = GetJsonFromFile(definitionPath,"PopJobDef");
+        string PopJobDefJson = GetJsonStringFromFile(definitionPath,"PopJobDef");
         RunTimePopJob[] popJobs = popJobLoader.Deserialize_PopJob(PopJobDefJson, strata);
         registery.popJobs = popJobs;
 
-        string ReligionDefJson = GetJsonFromFile(definitionPath,"ReligionDef");
+        string ReligionDefJson = GetJsonStringFromFile(definitionPath,"ReligionDef");
         ReligionLoader.RunTimeReligion[] religionsDef = religionLoader.DeserializeReligions(ReligionDefJson);
         registery.religionsDef = religionsDef;
 
-        string goodJson = GetJsonFromFile(definitionPath, "GoodDef");
+        string goodJson = GetJsonStringFromFile(definitionPath, "GoodDef");
         GoodLoader.GoodLoadedData goodData = goodLoader.Load_goods(goodJson);
         registery.goodList = goodData.goodList;
 
-        string strataNeedsJson = GetJsonFromFile(definitionPath, "StrataNeedDef");
+        string strataNeedsJson = GetJsonStringFromFile(definitionPath, "StrataNeedDef");
         Dictionary<string, GoodNeedMax[]> strataNeeds = strataNeedLoader.DeserializeStrataNeeds(strataNeedsJson, strata, goodData.goodList);
         registery.strataNeeds = strataNeeds;
 
         //deserialize country
-        string countryDefJson = GetJsonFromFile(definitionPath, "CountryDef");
+        string countryDefJson = GetJsonStringFromFile(definitionPath, "CountryDef");
         CountryLoaderData countryData = countryLoader.DeserializeCountries(countryDefJson);
         registery.countriesTag = countryData.countriesTag;
 
         string provincePath = Path.Combine(runtimePath, "Provinces");
-        string provinceJson = GetJsonFromFile(provincePath, "Provinces");
+        string provinceJson = GetJsonStringFromFile(provincePath, "Provinces");
         ProvinceData provinceData = provincesLoader.LoadProvince(provinceJson, countryData.countriesTag);
         registery.provincesTag = provinceData.provinceTag;
 
         string tileDataPath = Path.Combine(runtimePath, "Tiles");
-        string terrainTypesJson = GetJsonFromFile(tileDataPath, "TerrainTypes");
+        string terrainTypesJson = GetJsonStringFromFile(tileDataPath, "TerrainTypes");
         TerrainTypesData terrainTypes = terrainTypeLoader.DeserializeTerrainTypeDef(terrainTypesJson);
         registery.terrainTypesTags = terrainTypes.tags;
 
-        string climateTypeJson = GetJsonFromFile(tileDataPath, "ClimateType");
+        string climateTypeJson = GetJsonStringFromFile(tileDataPath, "ClimateType");
         ClimateTypeData climateTypesData = climateTypeLoader.deserializeClimateType(climateTypeJson);
         registery.climateTypesTags = climateTypesData.climateTypesTags;
 
-        string tileDataJson = GetJsonFromFile(tileDataPath, "TilesData");
+        string tileDataJson = GetJsonStringFromFile(tileDataPath, "TilesData");
         Dictionary<int,Tile> tiles = tileLoader.DeserializeTiles(tileDataJson, goodData.rgoTag, terrainTypes.tags,countryData.countriesTag, provinceData.provinceTag, climateTypesData.climateTypesTags);
 
         string popFilePath = Path.Combine(runtimePath, "Population");
-        string runTimePopJson = GetJsonFromFile(popFilePath,"population");
+        string runTimePopJson = GetJsonStringFromFile(popFilePath,"population");
         List<Pop> listPop = popLoader.Deserialize_Pop(runTimePopJson, popJobs, cultureDef, religionsDef, goodsTypes, provinceData.provincesList);
 
         string workplaceDefFilePath = Path.Combine(runtimePath, "Workplaces");
-        string workplacesDefJson = GetJsonFromFile(workplaceDefFilePath, "workplacesDef");
+        string workplacesDefJson = GetJsonStringFromFile(workplaceDefFilePath, "workplacesDef");
         WorkplaceLoader workplaceLoader = new WorkplaceLoader(registery);
         List<DefinitionWorkplace> workplaceDefinition = workplaceLoader.DeserializeWorkplaces(workplacesDefJson);
     }
 
-    public string GetJsonFromFile(string dataPath,string fileName)
+    public string GetJsonStringFromFile(string dataPath,string fileName)
     {
         string filePath = Path.Combine(
          dataPath,

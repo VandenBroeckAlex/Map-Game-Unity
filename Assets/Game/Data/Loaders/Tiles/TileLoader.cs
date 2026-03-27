@@ -16,6 +16,9 @@ public class TileLoader
         string[] ClimateTag
         )
     {
+        // <int,int> <Hex, id> for neighbor
+        Dictionary<int,int> TileColorIntToId = new Dictionary<int,int>();
+
         JArray listTile = JArray.Parse(json);
         Dictionary<int, Tile> TileList = new Dictionary<int, Tile>();
         int idIterator = 0;
@@ -29,7 +32,11 @@ public class TileLoader
                 LandTile landTile = new LandTile(idIterator);
                 LandTileDTO lTD = tile.ToObject<LandTileDTO>();
                 landTile.name = lTD.name;
-                landTile.spriteColor = Convert.ToInt32(lTD.spriteColor, 16);
+                string hex = lTD.spriteColor;
+                hex = hex.Replace("#", "");
+                uint argb = uint.Parse(hex, System.Globalization.NumberStyles.HexNumber);
+                landTile.spriteColor = (int)argb;
+                TileColorIntToId[landTile.spriteColor] = idIterator;
                 //landTile.neighbors = lTD.neighbors;
                 landTile.superficy = lTD.superficy;
                 landTile.isLand = lTD.isLand;
@@ -93,7 +100,10 @@ public class TileLoader
                 WaterTile waterTile = new WaterTile(idIterator);
 
                 waterTile.name = wTD.name;
-                waterTile.spriteColor = Convert.ToInt32(wTD.spriteColor, 16);
+                string hex = wTD.spriteColor;
+                hex = hex.Replace("#", "");
+                uint argb = uint.Parse(hex, System.Globalization.NumberStyles.HexNumber);
+                TileColorIntToId[waterTile.spriteColor] = idIterator;
                 //waterTile.neighbors = wTD.neighbors;
                 waterTile.superficy = wTD.superficy;
                 waterTile.isLand = wTD.isLand;
@@ -109,6 +119,9 @@ public class TileLoader
             }
             idIterator++;
         }
+
+        //TileList = ResolveNeighbor(TileList, TileColorIntToId);
+
         return TileList;
     }
     private int GetIdByTag(string givenTag, string[] data) 
@@ -122,6 +135,13 @@ public class TileLoader
         }
         return -1;
     }
-   
+ 
+    //private Dictionary<int,Tile> ResolveNeighbor(Dictionary<int, Tile> tileList, Dictionary<int, int> TileColorIntToId)
+    //{
+    //    foreach (var kvp in tileList) 
+    //    {
+    //        foreach(string )
+    //    }
+    //}
 }
 
