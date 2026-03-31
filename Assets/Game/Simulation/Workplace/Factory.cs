@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using static Workplace;
+using static WorkplaceLoader;
 
 public class Factory //: IWorkspace, IProductionBuilding, ITransformationBuilding
 {
@@ -114,4 +115,17 @@ public class Factory //: IWorkspace, IProductionBuilding, ITransformationBuildin
         throw new System.NotImplementedException();
     }
 }
- 
+
+
+public class FactoryV2 : DefinitionFactoryWorkplace
+{
+    private int id;
+    private int provinceId;
+
+    public Dictionary<int, int> workersEmployed;
+    public int cash;
+    public Dictionary<int, int> inputStokpile;
+    public FactoryV2(string name, string type, int icCost, int efficiency, int ouputId, Dictionary<int, int> workers, Dictionary<int, int> input) : base(name, type, icCost, efficiency, ouputId, workers, input)
+    {
+    }
+} 

@@ -6,6 +6,7 @@ using System.Collections.Generic;
     {
         public int id { get; set; }
         public string name { get; set; } = "";
+        public string tag;
         public int type;
         public int spriteColor { get; set; }
         public List<int> neighbors { get; set; } = new List<int>();

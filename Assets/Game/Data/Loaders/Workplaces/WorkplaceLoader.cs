@@ -1,13 +1,9 @@
 
 using Newtonsoft.Json.Linq;
-using PlasticGui.WorkspaceWindow.Home;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
-using System.IO;
-using static DTOTile;
 using static DTOWorkplaceDef;
-using static ProvincesLoader;
+
 
 public class WorkplaceLoader
 {
@@ -21,9 +17,10 @@ public class WorkplaceLoader
         string name;
         string type;
         int constructionIC;
+        Dictionary<int, int> constructionCost; // good id num
         Dictionary<int, int> maintenanceCost; // good id num
         Dictionary<int, int> workers; //popjob id - num
-        
+        //conditions
         protected DefinitionWorkplace(string name,string type,int ic, Dictionary<int, int> workers)
         {
             this.name = name;
@@ -112,7 +109,7 @@ public class WorkplaceLoader
             Dictionary<int, int> input
             ) : base(name, type, icCost, workers)
         {
-            this.output = output;
+            this.output = ouputId;
             this.input = input;
         }
         public int efficiency;

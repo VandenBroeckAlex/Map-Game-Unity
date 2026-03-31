@@ -32,10 +32,8 @@ public class TileLoader
                 LandTile landTile = new LandTile(idIterator);
                 LandTileDTO lTD = tile.ToObject<LandTileDTO>();
                 landTile.name = lTD.name;
-                string hex = lTD.spriteColor;
-                hex = hex.Replace("#", "");
-                uint argb = uint.Parse(hex, System.Globalization.NumberStyles.HexNumber);
-                landTile.spriteColor = (int)argb;
+                landTile.tag = lTD.tag;
+                landTile.spriteColor = HexToInt(lTD.spriteColor);
                 TileColorIntToId[landTile.spriteColor] = idIterator;
                 //landTile.neighbors = lTD.neighbors;
                 landTile.superficy = lTD.superficy;
@@ -100,9 +98,8 @@ public class TileLoader
                 WaterTile waterTile = new WaterTile(idIterator);
 
                 waterTile.name = wTD.name;
-                string hex = wTD.spriteColor;
-                hex = hex.Replace("#", "");
-                uint argb = uint.Parse(hex, System.Globalization.NumberStyles.HexNumber);
+                waterTile.tag = wTD.tag;
+                waterTile.spriteColor = HexToInt(wTD.spriteColor);
                 TileColorIntToId[waterTile.spriteColor] = idIterator;
                 //waterTile.neighbors = wTD.neighbors;
                 waterTile.superficy = wTD.superficy;
@@ -115,7 +112,7 @@ public class TileLoader
                     $"Unknown terrain tag '{wTD.typeTag}' while creating tile '{wTD.name}'.");
                 }
 
-                TileList.Add(idIterator,waterTile);
+                TileList.Add(idIterator, waterTile);
             }
             idIterator++;
         }
@@ -124,6 +121,15 @@ public class TileLoader
 
         return TileList;
     }
+
+    private static int HexToInt(string color)
+    {
+        string hex = color;
+        hex = hex.Replace("#", "");
+        uint argb = uint.Parse(hex, System.Globalization.NumberStyles.HexNumber);
+        return (int)argb;
+    }
+
     private int GetIdByTag(string givenTag, string[] data) 
     {
         for (int i = 0; i < data.Length; i++)
