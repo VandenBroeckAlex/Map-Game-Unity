@@ -1,8 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
-using static Workplace;
-using static WorkplaceLoader;
+using static WorkplacesDefinitions;
 
 public class Factory //: IWorkspace, IProductionBuilding, ITransformationBuilding
 {
