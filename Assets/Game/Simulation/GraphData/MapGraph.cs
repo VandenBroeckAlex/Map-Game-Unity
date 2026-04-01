@@ -1,13 +1,23 @@
-using NUnit.Framework;
 using System.Collections.Generic;
-using UnityEngine;
+
 
 public class MapGraph
 {
-    private List<MapGraphData> map;
+    //make it an array
+    private List<MapGraphNode> map;
 
-    MapGraph (List<MapGraphData> map)
+    public MapGraph (List<MapGraphNode> map)
     {
         this.map = map;
     }
+
+    public IList<MapGraphNode> mapNodes
+    {
+        get 
+        { 
+            return map.AsReadOnly ();
+        }
+
+    }
+
 }
