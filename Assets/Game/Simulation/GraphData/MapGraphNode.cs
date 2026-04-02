@@ -1,28 +1,34 @@
+using System;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Numerics;
 
 public class MapGraphNode
 {
-    private int _provinceId;
-    Dictionary<int, int> _neighboreDistance;
-
-    public MapGraphNode(int provinceId)
+    public struct Neighbor
     {
-        _provinceId = provinceId;
-        _neighboreDistance = new Dictionary<int, int>();
+        public MapGraphNode Node; // Direct reference (fast!)
+        public int Distance;
     }
+
+    
+    
+    public int ProvinceId;
+    public Vector2 Position;
+    public List<Neighbor> neighbors = new List<Neighbor>();
+    
 
     public int GetProvinceId()
     {
         return _provinceId;
     }
-    public Dictionary<int, int> GetNeighboresDistance()
+    public List<ValueTuple<int, int>> GetNeighbores()
     {
         return _neighboreDistance;
     }
 
-    public void AddNeighbor(int provinceId, int distance)
+    public void AddNeighbor(Neighbor neighbore)
     {
-        _neighboreDistance[provinceId] = distance;
+        neighbors.Add(neighbore);
     }
+
 }

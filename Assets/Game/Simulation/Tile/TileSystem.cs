@@ -2,5 +2,5 @@ using System.Collections.Generic;
 
 public class TileSystem
 {
-    List<Tile> listTile  = new List<Tile>();
+    Dictionary<int,Tile> listTile  = new Dictionary<int, Tile>();
 }
