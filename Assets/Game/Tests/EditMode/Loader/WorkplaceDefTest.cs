@@ -56,7 +56,7 @@ public class WorkplaceDefTest
     }
 ]";
     
-        List<DefinitionWorkplace> result = workplaceLoader.DeserializeWorkplaces(json);
+        List<WorkplacesDefinitions.DefinitionWorkplace> result = workplaceLoader.DeserializeWorkplaces(json);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);
@@ -114,7 +114,7 @@ public class WorkplaceDefTest
     }
 ]";
 
-        List<DefinitionWorkplace> result = workplaceLoader.DeserializeWorkplaces(json);
+        List<WorkplacesDefinitions.DefinitionWorkplace> result = workplaceLoader.DeserializeWorkplaces(json);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);

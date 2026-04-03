@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.IO;
 using UnityEngine;
 using static DTOTile;
-
+using static ColorUtilities;
 public class TileLoader
 {
     public Dictionary<int,Tile> DeserializeTiles(
@@ -21,7 +21,7 @@ public class TileLoader
 
         JArray listTile = JArray.Parse(json);
         Dictionary<int, Tile> TileList = new Dictionary<int, Tile>();
-        int idIterator = 0;
+   
         foreach (JObject tile in listTile)
         {
             if (tile == null) continue; // safety
@@ -29,12 +29,13 @@ public class TileLoader
 
             if (isLand)
             {
-                LandTile landTile = new LandTile(idIterator);
+                
                 LandTileDTO lTD = tile.ToObject<LandTileDTO>();
+                LandTile landTile = new LandTile(HexToInt(lTD.spriteColor));
                 landTile.name = lTD.name;
                 landTile.tag = lTD.tag;
                 landTile.spriteColor = HexToInt(lTD.spriteColor);
-                TileColorIntToId[landTile.spriteColor] = idIterator;
+                TileColorIntToId[landTile.spriteColor] = HexToInt(lTD.spriteColor);
                 //landTile.neighbors = lTD.neighbors;
                 landTile.superficy = lTD.superficy;
                 landTile.isLand = lTD.isLand;
@@ -89,18 +90,18 @@ public class TileLoader
                         $"Unknown province tag '{lTD.provinceTag}' while creating tile '{lTD.name}'('tile name')."
                         );
                 }
-                TileList.Add(idIterator, landTile);
+                TileList.Add(HexToInt(lTD.spriteColor), landTile);
             
             }
             else
             {
                 WaterTileDTO wTD = tile.ToObject<WaterTileDTO>();
-                WaterTile waterTile = new WaterTile(idIterator);
+                WaterTile waterTile = new WaterTile(HexToInt(wTD.spriteColor));
 
                 waterTile.name = wTD.name;
                 waterTile.tag = wTD.tag;
                 waterTile.spriteColor = HexToInt(wTD.spriteColor);
-                TileColorIntToId[waterTile.spriteColor] = idIterator;
+                TileColorIntToId[waterTile.spriteColor] = HexToInt(wTD.spriteColor);
                 //waterTile.neighbors = wTD.neighbors;
                 waterTile.superficy = wTD.superficy;
                 waterTile.isLand = wTD.isLand;
@@ -112,22 +113,13 @@ public class TileLoader
                     $"Unknown terrain tag '{wTD.typeTag}' while creating tile '{wTD.name}'.");
                 }
 
-                TileList.Add(idIterator, waterTile);
+                TileList.Add(HexToInt(wTD.spriteColor), waterTile);
             }
-            idIterator++;
         }
 
         //TileList = ResolveNeighbor(TileList, TileColorIntToId);
 
         return TileList;
-    }
-
-    private static int HexToInt(string color)
-    {
-        string hex = color;
-        hex = hex.Replace("#", "");
-        uint argb = uint.Parse(hex, System.Globalization.NumberStyles.HexNumber);
-        return (int)argb;
     }
 
     private int GetIdByTag(string givenTag, string[] data) 
@@ -142,12 +134,6 @@ public class TileLoader
         return -1;
     }
  
-    //private Dictionary<int,Tile> ResolveNeighbor(Dictionary<int, Tile> tileList, Dictionary<int, int> TileColorIntToId)
-    //{
-    //    foreach (var kvp in tileList) 
-    //    {
-    //        foreach(string )
-    //    }
-    //}
+
 }
 

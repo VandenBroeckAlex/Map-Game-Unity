@@ -12,7 +12,8 @@
         "MarketTransactions",
         "Markets",
         "Provinces",
-        "DataResolutionHandler"
+        "DataResolutionHandler",
+        "Workplace"
     ],
     "includePlatforms": [
         "Editor"

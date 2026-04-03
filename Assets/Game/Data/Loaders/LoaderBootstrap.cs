@@ -117,7 +117,7 @@ public class LoaderBootstrap
         string workplaceDefFilePath = Path.Combine(runtimePath, "Workplaces");
         string workplacesDefJson = GetJsonStringFromFile(workplaceDefFilePath, "workplacesDef");
         WorkplaceLoader workplaceLoader = new WorkplaceLoader(registery);
-        List<DefinitionWorkplace> workplaceDefinition = workplaceLoader.DeserializeWorkplaces(workplacesDefJson);
+        List<WorkplacesDefinitions.DefinitionWorkplace> workplaceDefinition = workplaceLoader.DeserializeWorkplaces(workplacesDefJson);
     }
 
     public string GetJsonStringFromFile(string dataPath,string fileName)

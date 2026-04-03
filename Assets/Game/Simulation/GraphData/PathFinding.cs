@@ -4,6 +4,10 @@ using UnityEngine;
 
 public class Pathfinding
 {
+
+    float _mapWidth;
+    public Pathfinding(float mapWidth) {  this._mapWidth = mapWidth; }
+
     public List<MapGraphNode> FindPath(MapGraphNode start, MapGraphNode target)
     {
         // Nodes to be evaluated
@@ -21,7 +25,7 @@ public class Pathfinding
         while (openSet.Count > 0)
         {
             // 1. Get the node in openSet with the lowest fScore (Standard A*)
-            MapGraphNode current = GetLowestFScore(openSet, gScore, target);
+            MapGraphNode current = GetLowestFScore(openSet, gScore, target,_mapWidth);
 
             if (current == target)
                 return ReconstructPath(cameFrom, current);
@@ -29,7 +33,7 @@ public class Pathfinding
             openSet.Remove(current);
             closedSet.Add(current);
 
-            foreach (var neighborEntry in current.neighbors)
+            foreach (var neighborEntry in current.GetNeighbores())
             {
                 MapGraphNode neighbor = neighborEntry.Node;
                 if (closedSet.Contains(neighbor)) continue;
@@ -64,14 +68,14 @@ public class Pathfinding
         // Standard Euclidean distance using the adjusted dx
         return Mathf.Sqrt(dx * dx + dy * dy);
     }
-    private MapGraphNode GetLowestFScore(List<MapGraphNode> openSet, Dictionary<MapGraphNode, float> gScore, MapGraphNode target)
+    private MapGraphNode GetLowestFScore(List<MapGraphNode> openSet, Dictionary<MapGraphNode, float> gScore, MapGraphNode target, float mapWidth)
     {
         MapGraphNode bestNode = openSet[0];
         float minF = float.MaxValue;
 
         foreach (var node in openSet)
         {
-            float f = gScore[node] + GetWrappedHeuristic(node, target);
+            float f = gScore[node] + GetWrappedHeuristic(node.position, target.position, mapWidth);
             if (f < minF)
             {
                 minF = f;
