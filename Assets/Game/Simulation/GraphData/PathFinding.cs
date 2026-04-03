@@ -35,11 +35,11 @@ public class Pathfinding
 
             foreach (var neighborEntry in current.GetNeighbores())
             {
-                MapGraphNode neighbor = neighborEntry.Node;
+                MapGraphNode neighbor = neighborEntry.node;
                 if (closedSet.Contains(neighbor)) continue;
 
                 // distance between current and neighbor
-                float tentativeGScore = gScore[current] + neighborEntry.Distance;
+                float tentativeGScore = gScore[current] + neighborEntry.distance;
 
                 if (!openSet.Contains(neighbor))
                     openSet.Add(neighbor);

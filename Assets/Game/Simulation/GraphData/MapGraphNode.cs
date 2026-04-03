@@ -11,21 +11,22 @@ public class MapGraphNode
     //passage right
     public struct Neighbor
     {
-        public MapGraphNode Node; // Direct reference (faster)
-        public int Distance;
+        public MapGraphNode node; // Direct reference (faster)
+        public int distance;
     }
 
-    public MapGraphNode(int id, int terrainType,Vector2 postion)
-    {
-
-    }
-    
-    
     private int _tileId;
     private int _terrainTypeId;
     public Vector2 position;
     private List<Neighbor> _neighbors = new List<Neighbor>();
-    
+
+    public MapGraphNode(int id, int terrainType, Vector2 postion)
+    {
+        _tileId = id;
+        _terrainTypeId = terrainType;
+        this.position = postion;
+
+    }
 
     public int GetProvinceId()
     {
@@ -43,9 +44,11 @@ public class MapGraphNode
     {
         _terrainTypeId = terrainId;
     }
-    public void AddNeighbor(Neighbor neighbore)
+    public void AddNeighbor(MapGraphNode node, int distance)
     {
+
+    Neighbor neighbore = new Neighbor();
         _neighbors.Add(neighbore);
     }
 
-}
+  }
