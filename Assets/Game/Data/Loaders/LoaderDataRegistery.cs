@@ -23,6 +23,8 @@ public class LoaderDataRegistery
     public RunTimeReligion[] religionsDef;
     public Dictionary<string, GoodNeedMax[]> strataNeeds;
     public string[] provinceTag;
+    public Dictionary<int, Tile> tiles;
+    public List<MapGraphNode> mapGraphNodes;
 
     public int GetPopStrataTagId(string popStrataTag)
     {

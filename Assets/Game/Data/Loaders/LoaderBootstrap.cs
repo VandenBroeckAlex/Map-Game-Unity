@@ -14,6 +14,7 @@ using static WorkplaceLoader;
 
 public class LoaderBootstrap
 {
+    public LoaderDataRegistery registery = new LoaderDataRegistery();
     private string definitionPath = Path.Combine(
          Application.dataPath,
          "Game",
@@ -29,7 +30,7 @@ public class LoaderBootstrap
 
     public void InitializeSimulation()
     {
-        LoaderDataRegistery registery = new LoaderDataRegistery();
+        
         // TODO handler choice
         IResolutionErrorHandler errorHandler = new ThrowErrorHandler();
 
@@ -56,6 +57,8 @@ public class LoaderBootstrap
         TileLoader tileLoader = new TileLoader();
 
         PopLoader popLoader = new PopLoader();
+
+        GraphDataLoder graphDataLoder = new GraphDataLoder();
         // 4) export a redy sim object
 
 
@@ -118,6 +121,10 @@ public class LoaderBootstrap
         string workplacesDefJson = GetJsonStringFromFile(workplaceDefFilePath, "workplacesDef");
         WorkplaceLoader workplaceLoader = new WorkplaceLoader(registery);
         List<WorkplacesDefinitions.DefinitionWorkplace> workplaceDefinition = workplaceLoader.DeserializeWorkplaces(workplacesDefJson);
+
+        registery = graphDataLoder.Load(registery, errorHandler);
+
+      
     }
 
     public string GetJsonStringFromFile(string dataPath,string fileName)

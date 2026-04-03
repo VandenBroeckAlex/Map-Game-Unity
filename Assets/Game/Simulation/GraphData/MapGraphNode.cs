@@ -40,7 +40,7 @@ public class MapGraphNode
     {
         return _terrainTypeId;
     }
-    public void setTerrainId(int terrainId)
+    public void SetTerrainId(int terrainId)
     {
         _terrainTypeId = terrainId;
     }
@@ -48,6 +48,8 @@ public class MapGraphNode
     {
 
     Neighbor neighbore = new Neighbor();
+        neighbore.distance = distance;
+        neighbore.node = node;
         _neighbors.Add(neighbore);
     }
 

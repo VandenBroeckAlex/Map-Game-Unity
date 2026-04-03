@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class DTOGraphData
 {
-    string id;
-    Dictionary<string,int> neighbors;
-    int[] pivot;
+    public string id;
+    public Dictionary<string,int> neighbors;
+    public int[] pivot;
 }

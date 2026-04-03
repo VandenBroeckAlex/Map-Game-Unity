@@ -1,33 +1,77 @@
-    [{
-        
-    "tag"  :"par",
-    "name" : "Paris",
-    "typeTag" : "pla",
-    "spriteColor" : "#ff59ff",
-    "superficy" : 25,
+[
+  {
+    "tag": "MER",
+    "name": "la mer",
+    "typeTag": "MER",
+    "spriteColor": "#5159FF",
+    "superficy": 1805,
+    "isLand": false,
+    "isPassable": true,
+    "ownerTag": "",
+    "occupierTag": "",
+    "rgoTag": "cow",
+    "isCoast": false,
+    "climatTag": "temp",
+    "provinceTag": ""
+  },
+  {
+    "tag": "B",
+    "name": "",
+    "typeTag": "pla",
+    "spriteColor": "#65F18C",
+    "superficy": 169,
     "isLand": true,
     "isPassable": true,
-    "ownerTag": "FRA",
+    "ownerTag": "BEL",
     "occupierTag": "",
-    "rgoTag": "she",
-    "isCoast":  true,
+    "rgoTag": "cow",
+    "isCoast": true,
     "climatTag": "temp",
-    "provinceTag":   "IDF"
- },
- {
-        
-    "tag"  :"cre",
-    "name" : "Créteil",
-    "typeTag" : "pla",
-    "spriteColor" : "#3e59ff",
-    "superficy" : 25,
+    "provinceTag": "IDF"
+  },
+  {
+    "tag": "C",
+    "name": "",
+    "typeTag": "pla",
+    "spriteColor": "#F17A65",
+    "superficy": 159,
     "isLand": true,
     "isPassable": true,
-    "ownerTag": "FRA",
+    "ownerTag": "BEL",
     "occupierTag": "",
-    "rgoTag": "she",
-    "isCoast":  true,
+    "rgoTag": "cow",
+    "isCoast": true,
     "climatTag": "temp",
-    "provinceTag":   "IDF"
- }
+    "provinceTag": "IDF"
+  },
+  {
+    "tag": "D",
+    "name": "",
+    "typeTag": "pla",
+    "spriteColor": "#9B8C51",
+    "superficy": 215,
+    "isLand": true,
+    "isPassable": true,
+    "ownerTag": "BEL",
+    "occupierTag": "",
+    "rgoTag": "cow",
+    "isCoast": true,
+    "climatTag": "temp",
+    "provinceTag": "IDF"
+  },
+  {
+    "tag": "E",
+    "name": "",
+    "typeTag": "pla",
+    "spriteColor": "#67504C",
+    "superficy": 152,
+    "isLand": true,
+    "isPassable": true,
+    "ownerTag": "BEL",
+    "occupierTag": "",
+    "rgoTag": "cow",
+    "isCoast": true,
+    "climatTag": "temp",
+    "provinceTag": "IDF"
+  }
 ]

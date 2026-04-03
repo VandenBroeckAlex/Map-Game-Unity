@@ -10,6 +10,6 @@ public class BootstrapLoaderTest
 
         lbs.InitializeSimulation();
 
-
+        int listCount = lbs.registery.mapGraphNodes.Count;
      }
 }

@@ -13,7 +13,8 @@
         "Markets",
         "Provinces",
         "DataResolutionHandler",
-        "Workplace"
+        "Workplace",
+        "GraphData"
     ],
     "includePlatforms": [
         "Editor"

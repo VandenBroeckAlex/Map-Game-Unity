@@ -1,14 +1,16 @@
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
+using UnityEngine.Android;
 using static ColorUtilities;
 
 public class GraphDataLoder
 {
-    List<MapGraphNode> mapGraph;
-    public void Load(LoaderDataRegistery _registery, IResolutionErrorHandler _errorHandler)
+    List<MapGraphNode> mapGraph = new List<MapGraphNode>();
+    public LoaderDataRegistery Load(LoaderDataRegistery _registery, IResolutionErrorHandler _errorHandler)
     {
-        string filePath = GamePaths.GetTileData("TilesGraph");
+        string filePath = GamePaths.GetTileData("TileGraph");
 
         if (File.Exists(filePath))
         {
@@ -46,9 +48,13 @@ public class GraphDataLoder
                         //TODO ERROR
                     }
                 }
-            }
-            //id resolution pass
+            } 
+
+            _registery.mapGraphNodes = mapGraph;
+            return _registery;
         }
+       //TODO ERROR
+       throw new FileNotFoundException();
     }
 
     public MapGraphNode GetNodeByHex(string hex)
