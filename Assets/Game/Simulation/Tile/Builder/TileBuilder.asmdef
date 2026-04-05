@@ -1,7 +1,11 @@
 {
-    "name": "Goods",
+    "name": "TileBuilder",
     "rootNamespace": "",
-    "references": [],
+    "references": [
+        "GUID:b929e3ee8bbd08644a08bb8304461126",
+        "GUID:fce2619a8ca22704ba1cddaf25aaff17",
+        "GUID:817fddbe7884ae8408eef4d18ec3f9d3"
+    ],
     "includePlatforms": [],
     "excludePlatforms": [],
     "allowUnsafeCode": false,

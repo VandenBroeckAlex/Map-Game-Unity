@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IDataLoader
 {
-    void Load(LoaderDataRegistery registry, IResolutionErrorHandler errorHandler);
+    void Load(DataRegistery registry, IResolutionErrorHandler errorHandler);
 }

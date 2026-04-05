@@ -23,7 +23,7 @@ public class PopJobLoaderTest
 
         string[] strata = { "Lowest","Middle","Higher"};
 
-        RunTimePopJob[] popJob = loader.Deserialize_PopJob(json, strata);
+        PopJob[] popJob = loader.Deserialize_PopJob(json, strata);
         
         int lowestplaceInStrataArray = 0;
 

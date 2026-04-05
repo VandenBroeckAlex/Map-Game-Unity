@@ -2,12 +2,11 @@ using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
 using System.IO;
-using UnityEngine;
 using static DTOTile;
 using static ColorUtilities;
 public class TileLoader
 {
-    public Dictionary<int,Tile> DeserializeTiles(
+    public Dictionary<int, Tile> DeserializeTiles(
         string json, 
         Dictionary<string,int> RgoTag,
         string[] TerrainTypeTag, // land or water terrain ?

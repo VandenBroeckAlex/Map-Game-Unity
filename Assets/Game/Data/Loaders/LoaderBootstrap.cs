@@ -14,7 +14,7 @@ using static WorkplaceLoader;
 
 public class LoaderBootstrap
 {
-    public LoaderDataRegistery registery = new LoaderDataRegistery();
+    public DataRegistery registery = new DataRegistery();
     private string definitionPath = Path.Combine(
          Application.dataPath,
          "Game",
@@ -67,7 +67,7 @@ public class LoaderBootstrap
         registery.goodTypes = goodsTypes;
 
         string cultureDefJson = GetJsonStringFromFile(definitionPath,"cultureDef");
-        RunTimeCulture[] cultureDef = cultureLoader.DeserializeCultures(cultureDefJson, errorHandler);
+        Culture[] cultureDef = cultureLoader.DeserializeCultures(cultureDefJson, errorHandler);
         registery.cultures = cultureDef;
 
         //Todo deserialize strata
@@ -76,11 +76,11 @@ public class LoaderBootstrap
         registery.popStrata = strata;
 
         string PopJobDefJson = GetJsonStringFromFile(definitionPath,"PopJobDef");
-        RunTimePopJob[] popJobs = popJobLoader.Deserialize_PopJob(PopJobDefJson, strata);
+        PopJob[] popJobs = popJobLoader.Deserialize_PopJob(PopJobDefJson, strata);
         registery.popJobs = popJobs;
 
         string ReligionDefJson = GetJsonStringFromFile(definitionPath,"ReligionDef");
-        ReligionLoader.RunTimeReligion[] religionsDef = religionLoader.DeserializeReligions(ReligionDefJson);
+        Religion[] religionsDef = religionLoader.DeserializeReligions(ReligionDefJson);
         registery.religionsDef = religionsDef;
 
         string goodJson = GetJsonStringFromFile(definitionPath, "GoodDef");
@@ -112,7 +112,7 @@ public class LoaderBootstrap
 
         string tileDataJson = GetJsonStringFromFile(tileDataPath, "TilesData");
         Dictionary<int,Tile> tiles = tileLoader.DeserializeTiles(tileDataJson, goodData.rgoTag, terrainTypes.tags,countryData.countriesTag, provinceData.provinceTag, climateTypesData.climateTypesTags);
-
+        registery.tiles = tiles;
         string popFilePath = Path.Combine(runtimePath, "Population");
         string runTimePopJson = GetJsonStringFromFile(popFilePath,"population");
         List<Pop> listPop = popLoader.Deserialize_Pop(runTimePopJson, popJobs, cultureDef, religionsDef, goodsTypes, provinceData.provincesList);

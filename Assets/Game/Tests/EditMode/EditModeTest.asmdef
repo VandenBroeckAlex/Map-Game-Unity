@@ -14,7 +14,8 @@
         "Provinces",
         "DataResolutionHandler",
         "Workplace",
-        "GraphData"
+        "GraphData",
+        "NewAssembly"
     ],
     "includePlatforms": [
         "Editor"

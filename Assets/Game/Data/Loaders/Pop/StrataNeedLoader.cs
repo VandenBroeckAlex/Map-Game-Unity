@@ -5,11 +5,7 @@ using System.IO;
 
 public class StrataNeedLoader
 {
-    public class GoodNeedMax
-    {
-        public int goodId; 
-        public int Max;
-    }
+  
     public Dictionary<string, GoodNeedMax[]> DeserializeStrataNeeds(string json, string[] strataList, Good[] goods)
     {
         Dictionary<string, Dictionary<string, int>> strataNeedData = JsonConvert.DeserializeObject<Dictionary<string, Dictionary<string, int>>>(json);

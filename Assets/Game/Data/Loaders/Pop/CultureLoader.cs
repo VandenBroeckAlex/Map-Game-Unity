@@ -4,17 +4,10 @@ using System.Collections.Generic;
 
 public class CultureLoader
 {
-    public struct RunTimeCulture : IHaveTag
-    {
-        public string tag { get; set;}
-        public string name;
-     
-    }
-
-    public RunTimeCulture[] DeserializeCultures(string json, IResolutionErrorHandler errorHandler)
+    public Culture[] DeserializeCultures(string json, IResolutionErrorHandler errorHandler)
     {
 
-        RunTimeCulture[] cultures = JsonConvert.DeserializeObject<RunTimeCulture[]>(json);
+        Culture[] cultures = JsonConvert.DeserializeObject<Culture[]>(json);
         
         if (cultures.Length == 0) {
             errorHandler.RaiseError("There is no culture in cultureDef.json");

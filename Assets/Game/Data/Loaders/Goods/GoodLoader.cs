@@ -10,9 +10,9 @@ public class GoodLoader
 {
     public static Good[] allGoodsDefinition;
     string[] goodType;
-    LoaderDataRegistery _registery;
+    DataRegistery _registery;
 
-    public GoodLoader(LoaderDataRegistery registery)
+    public GoodLoader(DataRegistery registery)
     {
         _registery = registery;
     }

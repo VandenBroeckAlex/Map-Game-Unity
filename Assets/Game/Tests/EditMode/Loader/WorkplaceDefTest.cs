@@ -7,16 +7,16 @@ public class WorkplaceDefTest
     [Test]
     public void WorkplaceDefinitionLoader_workplaceDef_True()
     {
-        LoaderDataRegistery registery = new LoaderDataRegistery();
+        DataRegistery registery = new DataRegistery();
 
         Good[] goodArray = new Good[1];
         Good good = new Good();
         good.tag = "grain";
         goodArray[0] = good;
 
-        RunTimePopJob[] popJobs = new RunTimePopJob[2];
-        RunTimePopJob popJob = new RunTimePopJob();
-        popJob.tag = "farmer";
+        PopJob[] popJobs = new PopJob[2];
+        PopJob popJob = new PopJob("miners", 0, "miners");
+       
         popJobs[0] = popJob;
 
         registery.goodList = goodArray;
@@ -65,15 +65,15 @@ public class WorkplaceDefTest
 
     public void WorkplaceDefinitionLoader_workplaceDef_false()
     {
-        LoaderDataRegistery registery = new LoaderDataRegistery();
+        DataRegistery registery = new DataRegistery();
 
         Good[] goodArray = new Good[1];
         Good good = new Good();
         good.tag = "grain";
         goodArray[0] = good;
 
-        RunTimePopJob[] popJobs = new RunTimePopJob[2];
-        RunTimePopJob popJob = new RunTimePopJob();
+        PopJob[] popJobs = new PopJob[2];
+        PopJob popJob = new PopJob("miners", 0, "miners");
         popJob.tag = "farmer";
         popJobs[0] = popJob;
 

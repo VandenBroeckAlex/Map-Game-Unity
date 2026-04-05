@@ -8,9 +8,9 @@ using static CultureLoader;
 public class PopLoader
 {
     public List<Pop> Deserialize_Pop(string json,
-        RunTimePopJob[] popJobTagId,
-        RunTimeCulture[] culturesTagId,
-        ReligionLoader.RunTimeReligion[] religionsTagId,
+        PopJob[] popJobTagId,
+        Culture[] culturesTagId,
+        Religion[] religionsTagId,
         string[] goodTagID,
         List<Province> listProvince
         )

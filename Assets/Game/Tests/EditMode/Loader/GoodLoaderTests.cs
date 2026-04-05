@@ -9,7 +9,7 @@ public class GoodLoaderTest
     [Test]
     public static void GoodLoader_Load_goods_True()
     {
-        LoaderDataRegistery registery = new LoaderDataRegistery();
+        DataRegistery registery = new DataRegistery();
         string[] type = new string[1];
         type[0] = "Raw";
 
@@ -63,7 +63,7 @@ public class GoodLoaderTest
         type[1] = "Luxury";
         type[2] = "Raw";
 
-        LoaderDataRegistery registery = new LoaderDataRegistery();
+        DataRegistery registery = new DataRegistery();
 
         registery.goodTypes = type;
 

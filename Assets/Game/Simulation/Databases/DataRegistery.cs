@@ -1,14 +1,8 @@
-using NUnit.Framework;
 using System.Collections.Generic;
-using Unity.VisualScripting.YamlDotNet.Core.Tokens;
-using UnityEngine;
-using static ClimateTypeLoader;
-using static CultureLoader;
-using static ReligionLoader;
-using static StrataNeedLoader;
-using static TerrainTypeLoader;
 
-public class LoaderDataRegistery
+
+
+public class DataRegistery
 {
     public string[] popStrata { get; set; }
     public string[] goodTypes { get; set; }
@@ -18,9 +12,10 @@ public class LoaderDataRegistery
     public string[] provincesTag { get; set; }
     public string[] terrainTypesTags { get; set; }
     public string[] climateTypesTags { get; set; }
-    public RunTimeCulture[] cultures;
-    public RunTimePopJob[] popJobs;
-    public RunTimeReligion[] religionsDef;
+    public Dictionary<string, int> RgoTag = new Dictionary<string, int>();
+    public Culture[] cultures;
+    public PopJob[] popJobs;
+    public Religion[] religionsDef;
     public Dictionary<string, GoodNeedMax[]> strataNeeds;
     public string[] provinceTag;
     public Dictionary<int, Tile> tiles;
@@ -119,7 +114,7 @@ public class LoaderDataRegistery
         return result;
 
     }
-
+    /*------------------------------*/
     private int GetIdByString(string tag, string[] list)
     {
 

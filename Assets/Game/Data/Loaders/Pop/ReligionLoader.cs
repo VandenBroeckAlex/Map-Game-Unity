@@ -3,16 +3,12 @@ using System.Collections.Generic;
 
 public class ReligionLoader
 {
-    public struct RunTimeReligion : IHaveTag
-    {
-        public string tag { get; set; }
-        public string name;
-    }
+  
 
-    public  RunTimeReligion[] DeserializeReligions(string json)
+    public Religion[] DeserializeReligions(string json)
     {
 
-        RunTimeReligion[] religionsData = JsonConvert.DeserializeObject<RunTimeReligion[]>(json);
+        Religion[] religionsData = JsonConvert.DeserializeObject<Religion[]>(json);
 
         return religionsData;
     }

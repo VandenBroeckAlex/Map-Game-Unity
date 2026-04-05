@@ -122,16 +122,6 @@ public class Pop
 }
 
 
-public enum Culture
-{
-    French,
-    German
-}
-public enum Religion
-{
-    Catholic,
-    Protestant
-}
-//popjob : miners, farmers
+
 
 

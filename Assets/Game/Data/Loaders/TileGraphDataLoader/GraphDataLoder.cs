@@ -8,7 +8,7 @@ using static ColorUtilities;
 public class GraphDataLoder
 {
     List<MapGraphNode> mapGraph = new List<MapGraphNode>();
-    public LoaderDataRegistery Load(LoaderDataRegistery _registery, IResolutionErrorHandler _errorHandler)
+    public DataRegistery Load(DataRegistery _registery, IResolutionErrorHandler _errorHandler)
     {
         string filePath = GamePaths.GetTileData("TileGraph");
 
@@ -21,13 +21,22 @@ public class GraphDataLoder
             foreach (DTOGraphData nodeData in dtoGraphData)
             {
                 int id = HexToInt(nodeData.id);
-                int terrainType = _registery.tiles[id].type;
+                int terrainType = 0;
+                if(_registery.tiles.TryGetValue(id,out Tile tile))
+                {
+                    terrainType = tile.type;
+                }
+                else
+                {
+                    throw new InvalidDataException($"Cound not find a tile with color : {nodeData.id} while creating Tile graph");
+                }
 
-                MapGraphNode mpg = new MapGraphNode(
-                    id,
-                    terrainType,
-                    new System.Numerics.Vector2(nodeData.pivot[0], nodeData.pivot[1])
-                    );
+
+                    MapGraphNode mpg = new MapGraphNode(
+                        id,
+                        terrainType,
+                        new System.Numerics.Vector2(nodeData.pivot[0], nodeData.pivot[1])
+                        );
                 mapGraph.Add(mpg);
             }
 

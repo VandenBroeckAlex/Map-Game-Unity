@@ -233,10 +233,10 @@ public class Workplace
         int producer = 0;
         for (int i = 0; i < workersRequirement.Count; i++)
         {
-            if (workersRequirement[i].workerType.strata == "poor")
-            {
-                producer += workersRequirement[i].curentMax.current;
-            }
+            //if (workersRequirement[i].workerType.strata == "poor")
+            //{
+            //    producer += workersRequirement[i].curentMax.current;
+            //}
         }
         return 0;
     }

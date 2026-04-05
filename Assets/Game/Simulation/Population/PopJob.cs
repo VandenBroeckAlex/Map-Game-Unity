@@ -1,11 +1,12 @@
-public class PopJob
+public class PopJob : IHaveTag
 {
     public string type { get; }
-    public string strata { get; }
-
-    public PopJob(string type, string defaultStrata)
+    public int strata { get; }
+    public string tag { get; set; }
+    public PopJob(string type, int strata, string tag)
     {
         this.type = type;
-        strata = defaultStrata;
+        this.strata = strata;
+        this.tag = tag;
     }
 }

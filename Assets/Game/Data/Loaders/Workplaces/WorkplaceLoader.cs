@@ -7,8 +7,8 @@ using static WorkplacesDefinitions;
 
 public class WorkplaceLoader
 {
-    LoaderDataRegistery _registery;
-    public WorkplaceLoader( LoaderDataRegistery registery)
+    DataRegistery _registery;
+    public WorkplaceLoader( DataRegistery registery)
     {
         _registery = registery;
     }
