@@ -12,9 +12,12 @@ public class PopLoader
         Culture[] culturesTagId,
         Religion[] religionsTagId,
         string[] goodTagID,
-        List<Province> listProvince
+        List<Province> listProvince,
+        DataRegistery _registery,
+        IResolutionErrorHandler _errorHandler
         )
     {
+        
         List<Pop> result = new List<Pop> ();
         DTOPopulation[] data = JsonConvert.DeserializeObject<DTOPopulation[]>(json);
 

@@ -111,11 +111,11 @@ public class LoaderBootstrap
         registery.climateTypesTags = climateTypesData.climateTypesTags;
 
         string tileDataJson = GetJsonStringFromFile(tileDataPath, "TilesData");
-        Dictionary<int,Tile> tiles = tileLoader.DeserializeTiles(tileDataJson, goodData.rgoTag, terrainTypes.tags,countryData.countriesTag, provinceData.provinceTag, climateTypesData.climateTypesTags);
+        Dictionary<int,Tile> tiles = tileLoader.DeserializeTiles(tileDataJson, goodData.rgoTag, terrainTypes.tags,countryData.countriesTag, provinceData.provinceTag, climateTypesData.climateTypesTags,registery,errorHandler);
         registery.tiles = tiles;
         string popFilePath = Path.Combine(runtimePath, "Population");
         string runTimePopJson = GetJsonStringFromFile(popFilePath,"population");
-        List<Pop> listPop = popLoader.Deserialize_Pop(runTimePopJson, popJobs, cultureDef, religionsDef, goodsTypes, provinceData.provincesList);
+        List<Pop> listPop = popLoader.Deserialize_Pop(runTimePopJson, popJobs, cultureDef, religionsDef, goodsTypes, provinceData.provincesList,registery, errorHandler);
 
         string workplaceDefFilePath = Path.Combine(runtimePath, "Workplaces");
         string workplacesDefJson = GetJsonStringFromFile(workplaceDefFilePath, "workplacesDef");

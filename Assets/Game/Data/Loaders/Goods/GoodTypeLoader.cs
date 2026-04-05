@@ -14,7 +14,7 @@ public class GoodTypeLoader
 
         if(goodTypes.Length == 0)
         {
-            errorHandler.HandleMissingId<int>("", "No good type in GoodTypeDef.json");
+            errorHandler.RaiseError("[CRITICAL] : No good type in GoodTypeDef.json");
         }
 
 

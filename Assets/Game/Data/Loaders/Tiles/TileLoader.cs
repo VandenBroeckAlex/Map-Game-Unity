@@ -12,7 +12,9 @@ public class TileLoader
         string[] TerrainTypeTag, // land or water terrain ?
         string[] countryTag,
         string[] ProvinceTag,
-        string[] ClimateTag
+        string[] ClimateTag,
+        DataRegistery _registery,
+        IResolutionErrorHandler _errorHandler
         )
     {
 
@@ -31,66 +33,29 @@ public class TileLoader
             {
                 
                 LandTileDTO lTD = tile.ToObject<LandTileDTO>();
-                LandTile landTile = new LandTile(HexToInt(lTD.spriteColor));
-                landTile.name = lTD.name;
-                landTile.tag = lTD.tag;
-                landTile.spriteColor = HexToInt(lTD.spriteColor);
-                TileColorIntToId[landTile.spriteColor] = HexToInt(lTD.spriteColor);
-                //landTile.neighbors = lTD.neighbors;
-                landTile.superficy = lTD.superficy;
-                landTile.isLand = lTD.isLand;
-                landTile.isPassable = lTD.isPassable;
-                landTile.isCoast = lTD.isCoast;
 
-                landTile.type = GetIdByTag(lTD.typeTag, TerrainTypeTag);
-                if (landTile.type == -1)
+                LandTileBuilder tileBuilder = new LandTileBuilder()
+                    .WithID(HexToInt(lTD.spriteColor))
+                    .WithName(lTD.name)
+                    .WithTag(lTD.tag)
+                    .WithSpriteColor(lTD.spriteColor)
+                    .WithSuperficy(lTD.superficy)
+                    .WithIsPassble(lTD.isLand)
+                    .WithCoast(lTD.isCoast)
+                    .WithType(lTD.typeTag)
+                    .WithOwner(lTD.ownerTag)
+                    .WithRGO(lTD.rgoTag)
+                    .WithClimateId(lTD.climatTag)
+                    .WithProvince(lTD.provinceTag);
+                
+
+                if(lTD.ownerTag != "")
                 {
-                    throw new InvalidDataException(
-                    $"Unknown terrain tag '{lTD.typeTag}' while creating tile '{lTD.name}'.");
+                    tileBuilder.WithOccupier(lTD.occupierTag);
                 }
-      
-                landTile.ownerId = GetIdByTag(lTD.ownerTag, countryTag);
-                if (landTile.ownerId == -1)
-                {
-                    throw new InvalidDataException(
-                         $"Unknown country tag '{lTD.ownerTag}' while creating tile '{lTD.name}'."
-                        );
-                }
-            
-                landTile.occupierID = GetIdByTag(lTD.ownerTag, countryTag);
-                if (landTile.occupierID == -1)
-                {
-                    throw new InvalidDataException(
-                         $"Unknown country tag '{lTD.ownerTag}' while creating tile '{lTD.name}'."
-                        );
-                }
-              
-                if (RgoTag.TryGetValue(lTD.rgoTag, out int rgoTag))
-                {
-                    landTile.rgo = rgoTag;
-                }
-                else
-                {
-                    throw new InvalidDataException(
-                        $"Unknown RGO tag '{lTD.rgoTag}' while creating tile '{lTD.name}'('tile name')."
-                        );
-                }
-             
-                int climateId = GetIdByTag(lTD.climatTag, ClimateTag);
-                if (climateId == -1)
-                {
-                    throw new InvalidDataException(
-                        $"Unknown climate tag '{lTD.climatTag}' while creating tile '{lTD.name}'('tile name')."
-                        );
-                }
-                landTile.climateId = climateId;
-                int provinceId = GetIdByTag(lTD.provinceTag, ProvinceTag);
-                if (provinceId == -1)
-                {
-                    throw new InvalidDataException(
-                        $"Unknown province tag '{lTD.provinceTag}' while creating tile '{lTD.name}' : ('tile name')."
-                        );
-                }
+
+               
+                 LandTile landTile = tileBuilder.Build(_registery, _errorHandler);
                 TileDictionnary.Add(HexToInt(lTD.spriteColor), landTile);
             
             }

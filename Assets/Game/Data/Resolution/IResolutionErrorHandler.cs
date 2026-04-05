@@ -1,9 +1,11 @@
-using System.Collections.Generic;
-using UnityEngine;
+
 
 public interface IResolutionErrorHandler
 {
-    int HandleMissingId<T>(string id, string context);
+    int HandleMissingId(string context);
     void RaiseError(string context);
+
+    void Beggin(string context);
+    void End();
 }
 

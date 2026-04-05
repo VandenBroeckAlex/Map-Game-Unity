@@ -1,10 +1,12 @@
 {
-    "name": "TileBuilder",
+    "name": "TileLoader",
     "rootNamespace": "",
     "references": [
         "GUID:b929e3ee8bbd08644a08bb8304461126",
-        "GUID:fce2619a8ca22704ba1cddaf25aaff17",
+        "GUID:609e57f772e8afc46bde2cbdabe81d06",
         "GUID:817fddbe7884ae8408eef4d18ec3f9d3",
+        "GUID:0f971180378e6b744a18e34548374e08",
+        "GUID:fce2619a8ca22704ba1cddaf25aaff17",
         "GUID:6bdb26e8e76d1564eaaeb937fd20c593"
     ],
     "includePlatforms": [],

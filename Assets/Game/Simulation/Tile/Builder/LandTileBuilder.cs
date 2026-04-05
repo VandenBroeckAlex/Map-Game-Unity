@@ -1,7 +1,6 @@
 
 
 using System.Collections.Generic;
-using System.IO;
 using static ColorUtilities;
 public class LandTileBuilder
 {
@@ -80,7 +79,7 @@ public class LandTileBuilder
         this.provinceId = province; return this;
     }
 
-    public LandTile Build(DataRegistery _regi)
+    public LandTile Build(DataRegistery _regi, IResolutionErrorHandler _errorHandler)
     {
         LandTile landTile = new LandTile(HexToInt(this.spriteColor));
         landTile.name = this.name;
@@ -93,27 +92,41 @@ public class LandTileBuilder
         landTile.isPassable = this.isPassable;
         landTile.isCoast = this.isCoast;
 
-        landTile.type = _regi.GetTerrainTypes(this.type);
-        if (landTile.type == -1)
+        int type = _regi.GetTerrainTypes(this.type);
+        //TODO if -1 do not replace value
+        if (type != -1)
         {
-            throw new InvalidDataException(
+            landTile.type = type;
+        }
+        else
+        {
+            _errorHandler.HandleMissingId(
             $"Unknown terrain tag '{this.type}' while creating tile '{this.name}'.");
         }
 
-        landTile.ownerId = _regi.GetCountryTagId(this.ownerId);
-        if (landTile.ownerId == -1)
+        int ownerId= _regi.GetCountryTagId(this.ownerId);
+        if (ownerId == -1)
         {
-            throw new InvalidDataException(
-                 $"Unknown country tag '{this.ownerId}' while creating tile '{this.name}'."
-                );
+            landTile.ownerId= ownerId;
+        }
+        else
+        {
+            _errorHandler.HandleMissingId(
+               $"Unknown country tag '{this.ownerId}' while creating tile '{this.name}'."
+              );
         }
 
-        landTile.occupierID = _regi.GetCountryTagId(this.occupierID);
-        if (landTile.occupierID == -1)
+        int occupierID = _regi.GetCountryTagId(this.occupierID);
+        if (occupierID == -1)
         {
-            throw new InvalidDataException(
-                 $"Unknown country tag '{this.occupierID}' while creating tile '{this.name}'."
-                );
+            landTile.occupierID = occupierID;
+          
+        }
+        else
+        {
+            _errorHandler.HandleMissingId(
+               $"Unknown country tag '{this.occupierID}' while creating tile '{this.name}'."
+              );
         }
 
 
@@ -123,28 +136,36 @@ public class LandTileBuilder
         }
         else
         {
-            throw new InvalidDataException(
+            _errorHandler.HandleMissingId(
                 $"Unknown RGO tag '{this.rgo}' while creating tile '{this.name}'('tile name')."
                 );
         }
 
         int climateId = _regi.GetClimateTagId(this.climateId);
-        if (climateId == -1)
+        if (climateId != -1)
         {
-            throw new InvalidDataException(
+            landTile.climateId = climateId;
+            
+        }
+        else
+        {
+            _errorHandler.HandleMissingId(
                 $"Unknown climate tag '{this.climateId}' while creating tile '{this.name}'('tile name')."
                 );
         }
-        landTile.climateId = climateId;
+            
         int provinceId = _regi.GetProvinceID(this.provinceId);
-        if (provinceId == -1)
+        if (provinceId != -1)
         {
-            throw new InvalidDataException(
-                $"Unknown province tag '{this.provinceId}' while creating tile '{this.name}' : ('tile name')."
-                );
+            landTile.provinceId = provinceId;
         }
-        return landTile;
+        else
+        {
+            _errorHandler.HandleMissingId(
+                            $"Unknown province tag '{this.provinceId}' while creating tile '{this.name}' : ('tile name')."
+                            );
+        }
+            return landTile;
     }
 
-    //LazyBuild
 }
