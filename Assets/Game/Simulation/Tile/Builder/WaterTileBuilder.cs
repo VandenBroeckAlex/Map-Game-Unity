@@ -53,30 +53,12 @@ public class WaterTileBuilder
     {
         this.isPassable = isPassble; return this;
     }
-    public WaterTileBuilder WithOwner(string owner)
-    {
-        this.ownerId = owner; return this;
-    }
-    public WaterTileBuilder WithOccupier(string occupier)
-    {
-        this.occupierID = occupier; return this;
-    }
-    public WaterTileBuilder WithRGO(string rgo)
-    {
-        this.rgo = rgo; return this;
-    }
-    public WaterTileBuilder WithCoast(bool coast)
-    {
-        this.isCoast = coast; return this;
-    }
+
     public WaterTileBuilder WithClimateId(string climateId)
     {
         this.climateId = climateId; return this;
     }
-    public WaterTileBuilder WithProvince(string province)
-    {
-        this.provinceId = province; return this;
-    }
+ 
 
     public WaterTile Build(DataRegistery _regi, IResolutionErrorHandler _errorHandler)
     {
@@ -84,27 +66,23 @@ public class WaterTileBuilder
         waterTile.name = this.name;
         waterTile.tag = this.tag;
         waterTile.spriteColor = HexToInt(this.spriteColor);
-
-        //landTile.neighbors = lTD.neighbors;
+        //waterTile.neighbors = lTD.neighbors;
         waterTile.superficy = this.superficy;
         waterTile.isLand = this.isLand;
         waterTile.isPassable = this.isPassable;
 
+        if (waterTile.type != -1)
+        {
+            waterTile.type = _regi.GetTerrainTypes(this.type);
+        }
+        else
+        {
+            _errorHandler.HandleMissingId(
+                       $"Unknown terrain tag '{this.type}' while creating tile '{this.name}'.");
+        }
 
-        waterTile.type = _regi.GetTerrainTypes(this.type);
-        if (waterTile.type == -1)
-        {
-            _errorHandler.HandleMissingId(
-            $"Unknown terrain tag '{this.type}' while creating tile '{this.name}'.");
-        }
-        int provinceId = _regi.GetProvinceID(this.provinceId);
-        if (provinceId == -1)
-        {
-            _errorHandler.HandleMissingId(
-                $"Unknown province tag '{this.provinceId}' while creating tile '{this.name}' : ('tile name')."
-                );
-        }
-        return waterTile;
+
+            return waterTile;
     }
 
 }

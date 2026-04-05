@@ -62,23 +62,19 @@ public class TileLoader
             else
             {
                 WaterTileDTO wTD = tile.ToObject<WaterTileDTO>();
-                WaterTile waterTile = new WaterTile(HexToInt(wTD.spriteColor));
+                
 
-                waterTile.name = wTD.name;
-                waterTile.tag = wTD.tag;
-                waterTile.spriteColor = HexToInt(wTD.spriteColor);
-                TileColorIntToId[waterTile.spriteColor] = HexToInt(wTD.spriteColor);
-                //waterTile.neighbors = wTD.neighbors;
-                waterTile.superficy = wTD.superficy;
-                waterTile.isLand = wTD.isLand;
-                waterTile.isPassable = wTD.isPassable;
-                waterTile.type = GetIdByTag(wTD.typeTag, TerrainTypeTag);
-                if (waterTile.type == -1)
-                {
-                    throw new InvalidDataException(
-                    $"Unknown terrain tag '{wTD.typeTag}' while creating tile '{wTD.name}'.");
-                }
+                WaterTileBuilder builder = new WaterTileBuilder()
+                    .WithName(wTD.name)
+                    .WithTag(wTD.tag)
+                    .WithSpriteColor(wTD.spriteColor)
+                    .WithSuperficy(wTD.superficy)
+                    .WithIsPassble(wTD.isPassable)
+                    .WithType(wTD.typeTag);
+                
+                WaterTile waterTile = builder.Build(_registery, _errorHandler);
 
+               // TileColorIntToId[waterTile.spriteColor] = HexToInt(wTD.spriteColor);
                 TileDictionnary.Add(HexToInt(wTD.spriteColor), waterTile);
             }
         }
