@@ -8,13 +8,26 @@ using static ColorUtilities;
 public class GraphDataLoder
 {
     List<MapGraphNode> mapGraph = new List<MapGraphNode>();
-    public DataRegistery Load(DataRegistery _registery, IResolutionErrorHandler _errorHandler)
+    public DataRegistery Load(string json, DataRegistery _registery, IResolutionErrorHandler _errorHandler)
     {
         string filePath = GamePaths.GetTileData("TileGraph");
-
-        if (File.Exists(filePath))
+        string jsonText;
+        if (json != "")
         {
-            string jsonText = File.ReadAllText(filePath);
+            jsonText = json;
+        }
+        else
+        {
+            if (File.Exists(filePath))
+            {
+                jsonText = File.ReadAllText(filePath);
+            }
+            else
+            {
+                throw new FileNotFoundException();
+            }
+        }
+
             DTOGraphData[] dtoGraphData = JsonConvert.DeserializeObject<DTOGraphData[]>(jsonText);
 
             //resolve hex to id
@@ -22,7 +35,7 @@ public class GraphDataLoder
             {
                 int id = HexToInt(nodeData.id);
                 int terrainType = 0;
-                if(_registery.tiles.TryGetValue(id,out Tile tile))
+                if (_registery.tiles.TryGetValue(id, out Tile tile))
                 {
                     terrainType = tile.type;
                 }
@@ -32,39 +45,38 @@ public class GraphDataLoder
                 }
 
 
-                    MapGraphNode mpg = new MapGraphNode(
-                        id,
-                        terrainType,
-                        new System.Numerics.Vector2(nodeData.pivot[0], nodeData.pivot[1])
-                        );
+                MapGraphNode mpg = new MapGraphNode(
+                    id,
+                    terrainType,
+                    new System.Numerics.Vector2(nodeData.pivot[0], nodeData.pivot[1])
+                    );
                 mapGraph.Add(mpg);
             }
 
-            foreach(DTOGraphData nodeData in dtoGraphData)
+            foreach (DTOGraphData nodeData in dtoGraphData)
             {
                 MapGraphNode node = GetNodeByHex(nodeData.id);
-                foreach (KeyValuePair<string,int> kvp in nodeData.neighbors)
+                foreach (KeyValuePair<string, int> kvp in nodeData.neighbors)
                 {
                     MapGraphNode neighbore = GetNodeByHex(kvp.Key);
 
-                    if (neighbore != null) 
+                    if (neighbore != null)
                     {
-                        
-                        node.AddNeighbor(neighbore,kvp.Value);
+
+                        node.AddNeighbor(neighbore, kvp.Value);
                     }
                     else
                     {
                         //TODO ERROR
                     }
                 }
-            } 
+            }
 
             _registery.mapGraphNodes = mapGraph;
             return _registery;
         }
-       //TODO ERROR
-       throw new FileNotFoundException();
-    }
+       
+    
 
     public MapGraphNode GetNodeByHex(string hex)
     {
@@ -80,3 +92,4 @@ public class GraphDataLoder
         return null;
     }
 }
+

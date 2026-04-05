@@ -8,11 +8,6 @@ public class TileLoader
 {
     public Dictionary<int, Tile> DeserializeTiles(
         string json, 
-        Dictionary<string,int> RgoTag,
-        string[] TerrainTypeTag, // land or water terrain ?
-        string[] countryTag,
-        string[] ProvinceTag,
-        string[] ClimateTag,
         DataRegistery _registery,
         IResolutionErrorHandler _errorHandler
         )
@@ -35,7 +30,7 @@ public class TileLoader
                 LandTileDTO lTD = tile.ToObject<LandTileDTO>();
 
                 LandTileBuilder tileBuilder = new LandTileBuilder()
-                    .WithID(HexToInt(lTD.spriteColor))
+                    .WithID(lTD.spriteColor)
                     .WithName(lTD.name)
                     .WithTag(lTD.tag)
                     .WithSpriteColor(lTD.spriteColor)

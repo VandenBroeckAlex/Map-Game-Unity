@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using static ColorUtilities;
 public class LandTileBuilder
 {
-    public int id { get; set; }
+    public string id { get; set; }
     public string name { get; set; } = "Default";
     public string tag = "Default";
     public string type = "Default";
@@ -14,14 +14,14 @@ public class LandTileBuilder
     public bool isLand { get; set; } = true;
     public bool isPassable { get; set; } = true;
     public string ownerId { get; set; } = "Default";
-    public string occupierID { get; set; }
+    public string occupierID { get; set; } = "";
     public string rgo { get; set; } = "Default";
     public bool isCoast { get; set; } = false;
     public string climateId { get; set; } = "Default";
 
     public string provinceId { get; set; } = "Default";
 
-    public LandTileBuilder WithID(int id)
+    public LandTileBuilder WithID(string id)
     {
         this.id = id; return this;
     }
@@ -104,8 +104,8 @@ public class LandTileBuilder
             $"Unknown terrain tag '{this.type}' while creating tile '{this.name}'.");
         }
 
-        int ownerId= _regi.GetCountryTagId(this.ownerId);
-        if (ownerId == -1)
+        int ownerId = _regi.GetCountryTagId(this.ownerId);
+        if (ownerId != -1)
         {
             landTile.ownerId= ownerId;
         }
@@ -116,17 +116,20 @@ public class LandTileBuilder
               );
         }
 
-        int occupierID = _regi.GetCountryTagId(this.occupierID);
-        if (occupierID == -1)
+        if (!string.IsNullOrWhiteSpace(this.occupierID))
         {
-            landTile.occupierID = occupierID;
-          
-        }
-        else
-        {
-            _errorHandler.HandleMissingId(
-               $"Unknown country tag '{this.occupierID}' while creating tile '{this.name}'."
-              );
+            int occupierID = _regi.GetCountryTagId(this.occupierID);
+            if (occupierID != -1)
+            {
+                landTile.occupierID = occupierID;
+
+            }
+            else
+            {
+                _errorHandler.HandleMissingId(
+                   $"Unknown country tag '{this.occupierID}' while creating tile '{this.name}' occupier."
+                  );
+            }
         }
 
 

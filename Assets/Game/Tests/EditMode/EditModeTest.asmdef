@@ -15,7 +15,11 @@
         "DataResolutionHandler",
         "Workplace",
         "GraphData",
-        "NewAssembly"
+        "DataRegistery",
+        "PopLoader",
+        "TileBuilder",
+        "LoaderHelpers",
+        "Tiles"
     ],
     "includePlatforms": [
         "Editor"

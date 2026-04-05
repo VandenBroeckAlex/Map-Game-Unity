@@ -1,24 +1,28 @@
+using System;
 using System.Collections.Generic;
 
 
 
 public class DataRegistery
 {
-    public string[] popStrata { get; set; }
-    public string[] goodTypes { get; set; }
+    public string[] popStrata { get; set; } = new string[] { "Default"};
+    public string[] goodTypes { get; set; } = new string[] { "Default" };
     public Good[] goodList { get; set; }
-    public Dictionary<string, int> rgoTag { get; set; }
-    public string[] countriesTag { get; set; }
-    public string[] provincesTag { get; set; }
-    public string[] terrainTypesTags { get; set; }
-    public string[] climateTypesTags { get; set; }
-    public Dictionary<string, int> RgoTag = new Dictionary<string, int>();
+  
+    public string[] countriesTag { get; set; } = new string[] { "Default" };
+    public string[] provincesTag { get; set; } = new string[] { "Default" };
+    public string[] terrainTypesTags { get; set; } = new string[] { "Default" };
+    public string[] climateTypesTags { get; set; } = new string[] { "Default" };
+    public Dictionary<string, int> RgoTag = new Dictionary<string, int> 
+    {
+        { "Default", 0 },
+    };
     public Culture[] cultures;
     public PopJob[] popJobs;
     public Religion[] religionsDef;
     public Dictionary<string, GoodNeedMax[]> strataNeeds;
-    public string[] provinceTag;
-    public Dictionary<int, Tile> tiles;
+    public string[] provinceTag = new string[] { "Default" };
+    public Dictionary<int, Tile> tiles = new Dictionary<int,Tile>();
     public List<MapGraphNode> mapGraphNodes;
 
     public int GetPopStrataTagId(string popStrataTag)
@@ -42,9 +46,9 @@ public class DataRegistery
     }
     public int GetRgoTagId(string tag)
     {
-        if (rgoTag.ContainsKey(tag))
+        if (RgoTag.ContainsKey(tag))
         {
-            return rgoTag[tag];
+            return RgoTag[tag];
         }
         else
         {
@@ -120,7 +124,7 @@ public class DataRegistery
 
         for (int i = 0; i < list.Length; i++)
         {
-            if (list[i] == tag)
+            if (list[i].Equals( tag))
             {
                 return i;
             }

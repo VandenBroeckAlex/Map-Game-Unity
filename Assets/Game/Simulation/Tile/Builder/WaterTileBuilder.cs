@@ -10,7 +10,7 @@ public class WaterTileBuilder
     public string spriteColor { get; set; } = "#000000";
     public List<int> neighbors { get; set; } = new List<int>();
     public int superficy { get; set; } = 1;
-    public bool isLand { get; set; } = true;
+    public bool isLand { get; set; } = false;
     public bool isPassable { get; set; } = true;
     public string ownerId { get; set; } = "Default";
     public string occupierID { get; set; }
