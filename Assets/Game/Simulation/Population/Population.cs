@@ -39,7 +39,7 @@ public class Pop
 
 
     //constructor
-    public Pop(int ID, int SIZE, int PROVINCEID, int JOBID, int CULTURE, int RELIGION, int CASHAMOUNT, List<GoodRequirement> STOCKPILE)
+    public Pop(int ID, int SIZE, int PROVINCEID, int JOBID, int CULTURE, int RELIGION, int CASHAMOUNT, List<IdNum> workplace)
     {
         id = ID;
         size = SIZE;
@@ -48,8 +48,8 @@ public class Pop
         cultureId = CULTURE;
         religionId = RELIGION;
         cashAmount = CASHAMOUNT;
-        GoodList = STOCKPILE;
-        workplace = new List<IdNum>();
+
+        this.workplace = workplace;
     }
     public bool HaveBasicNeed()
     {

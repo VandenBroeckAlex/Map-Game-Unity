@@ -58,10 +58,7 @@ public class GraphLoaderTest
         IResolutionErrorHandler _errorHandle = new ThrowErrorHandler();
         string[] presentHex = new string[] { "#5159FF", "#65F18C", "#F17A65", "#9B8C51" };
 
-        foreach(string tag in _registery.countriesTag)
-        {
-            Debug.Log(tag);
-        }
+     
    
 
         foreach(string hex in presentHex)
