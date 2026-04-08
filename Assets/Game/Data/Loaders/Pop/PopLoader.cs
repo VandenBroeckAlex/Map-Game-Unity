@@ -52,8 +52,8 @@ public class PopLoader
             }
 
 
-            GoodRequirement gr = new GoodRequirement(0,0,10);
-            List<GoodRequirement> grList = new List<GoodRequirement>();
+            IdNum gr = new IdNum(0,10);
+            List<IdNum> grList = new List<IdNum>();
 
             grList.Add( gr );
 

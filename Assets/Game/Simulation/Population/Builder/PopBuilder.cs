@@ -8,7 +8,7 @@ public class PopBuilder
     public List<IdNum> workplaces = new List<IdNum>();
     public int provinceId { get; set; } = 0;
     public int countryID { get; set; } = 0;
-    public int jobId { get; } = 0;
+    public int jobId { get; set; } = 0;
     public int cultureId { get; set; } = 0;
     public int religionId { get; set; } = 0;
     private int _cashAmount = 0;
