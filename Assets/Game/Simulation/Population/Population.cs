@@ -39,7 +39,7 @@ public class Pop
 
 
     //constructor
-    public Pop(int ID, int SIZE, int PROVINCEID, int JOBID, int CULTURE, int RELIGION, int CASHAMOUNT, List<IdNum> workplace)
+    public Pop(int ID, int SIZE, int PROVINCEID, int JOBID, int CULTURE, int RELIGION, int CASHAMOUNT,List<GoodRequirement> GOODREQ,List<IdNum> workplace)
     {
         id = ID;
         size = SIZE;
@@ -48,14 +48,14 @@ public class Pop
         cultureId = CULTURE;
         religionId = RELIGION;
         cashAmount = CASHAMOUNT;
-
+        GoodList = GOODREQ;
         this.workplace = workplace;
     }
     public bool HaveBasicNeed()
     {
         for (int i = 0; i < GoodList.Count; i++)
         {
-            if (GoodList[i].Stockpile != GoodList[i].MaxNeed)
+            if (GoodList[i].stockpile != GoodList[i].maxNeed)
             {
                 return false;
             }

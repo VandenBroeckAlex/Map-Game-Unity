@@ -11,7 +11,8 @@ namespace UnitTest.population
             GoodRequirement gr = new GoodRequirement(1, 500, 500);
             List<GoodRequirement> goodReq = new List<GoodRequirement>();
             goodReq.Add(gr);
-            Pop pop = new Pop(0, 1000, 1, 1, 1, 1, 100, goodReq);
+            List<IdNum> workplaces = new List<IdNum>();
+            Pop pop = new Pop(0, 1000, 1, 1, 1, 1, 100, goodReq, workplaces);
             return pop;
         }
 
@@ -41,7 +42,7 @@ namespace UnitTest.population
                 //Arrange - go get variables
                 Pop pop = CreatePop();
                 //Act 
-                pop.GoodList[0].Stockpile = 0;
+                pop.GoodList[0].stockpile = 0;
                 bool result = pop.HaveBasicNeed();
 
                 //Assert 

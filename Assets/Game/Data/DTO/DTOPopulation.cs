@@ -5,6 +5,7 @@ using System.Collections.Generic;
     {
         public int size;
         public List<IdNum> workplace;
+        public List<DTOGoodRequirement> GoodRequirement;
         public string provinceTag;
         public string countryTag;
         public string job;

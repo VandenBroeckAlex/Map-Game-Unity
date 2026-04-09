@@ -72,10 +72,41 @@ public class DataRegistery
     {
         return GetIdByString(tag, climateTypesTags);
     }
-    //cultures
-    //popJobs
-    //religionDef
-    //strataNeeds
+    
+    public int GetCultureId(string tag)
+    {
+        return GetIdByTag(tag, cultures);
+    }
+
+    public int GetPopJobId(string tag)
+    {
+        return GetIdByTag(tag, popJobs);
+    }
+    public int GetReligionId(string tag)
+    {
+        return GetIdByTag(tag, religionsDef);
+    }
+    //     public Dictionary<string, GoodNeedMax[]> strataNeeds;
+
+    public GoodNeedMax[] GetGoodNeedsPerStrata(int jobId)
+    {
+        PopJob popJob = popJobs[jobId];
+        string strata = popStrata[popJob.strata];
+        string strataTag = strata;
+        if (strataNeeds.TryGetValue(strataTag, out var goodNeeds))
+        {
+            return goodNeeds;
+        }
+        else
+        {
+            return null;
+        }
+
+    }
+    public int GetProvinceId(string tag)
+    {
+       return GetIdByString(tag, provinceTag);
+    }
     //provinceTags
 
     public Dictionary<int, int> GetWorkersDictionary(Dictionary<string, int> workers)
@@ -83,7 +114,7 @@ public class DataRegistery
         Dictionary<int, int> result = new Dictionary<int, int>();
         foreach (KeyValuePair<string, int> kvp in workers)
         {
-            int id = GetIdByTag(popJobs, kvp.Key);
+            int id = GetIdByTag(kvp.Key, popJobs);
             if (id < 0)
             {
                 //throw new InvalidDataException(
@@ -132,7 +163,7 @@ public class DataRegistery
         return -1;
     }
 
-    private int GetIdByTag<T>(T[] data, string givenTag) where T : IHaveTag
+    private int GetIdByTag<T>(string givenTag,T[] data) where T : IHaveTag
     {
         for (int i = 0; i < data.Length; i++)
         {

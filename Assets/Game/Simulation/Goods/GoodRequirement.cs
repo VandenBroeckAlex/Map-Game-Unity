@@ -4,13 +4,13 @@ using UnityEngine;
 
 public class GoodRequirement 
 {
-    public int Good_id;
-    public int Stockpile;
-    public int MaxNeed;
+    public int good_id;
+    public int stockpile;
+    public int maxNeed;
     public GoodRequirement(int _good_id, int _stockpile, int _maxNeed)
     {
-        Good_id = _good_id;
-        Stockpile = _stockpile;
-        MaxNeed = _maxNeed;
+        good_id = _good_id;
+        stockpile = _stockpile;
+        maxNeed = _maxNeed;
     }
 }

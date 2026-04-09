@@ -17,10 +17,10 @@ public static class HandlePopBuy
             foreach (GoodRequirement good in pop.GoodList)
             {               
                 GoodRequest goodRequest = new GoodRequest();
-                goodRequest.amount = good.MaxNeed - good.Stockpile;
+                goodRequest.amount = good.maxNeed - good.stockpile;
                 if (goodRequest.amount > 0)
                 {
-                    goodRequest.goodId = good.Good_id;
+                    goodRequest.goodId = good.good_id;
                     goodRequestsList.Add(goodRequest);
                 }
             }
@@ -41,8 +41,8 @@ public static class HandlePopBuy
                 pop.cashAmount = marketBuyResponse.cashLeft;
                 foreach(GoodRequest goodBought in marketBuyResponse.goodsBought)
                 {
-                   GoodRequirement goodReq = pop.GoodList.Where(g => g.Good_id == goodBought.goodId).FirstOrDefault();
-                   goodReq.Stockpile += goodBought.amount;
+                   GoodRequirement goodReq = pop.GoodList.Where(g => g.good_id == goodBought.goodId).FirstOrDefault();
+                   goodReq.stockpile += goodBought.amount;
                 }
             }
         }

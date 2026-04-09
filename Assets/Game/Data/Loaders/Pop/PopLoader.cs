@@ -52,8 +52,8 @@ public class PopLoader
             }
 
 
-            IdNum gr = new IdNum(0,10);
-            List<IdNum> grList = new List<IdNum>();
+            GoodRequirement gr = new GoodRequirement(0,0,1000);
+            List<GoodRequirement> grList = new List<GoodRequirement>();
 
             grList.Add( gr );
 
@@ -75,7 +75,8 @@ public class PopLoader
                 cultureId,
                 religionId,
                 op._cashAmount,
-                grList
+                grList,
+
                 );
             indexer++;
         }

@@ -1,5 +1,5 @@
-using UnityEngine;
 
+// Definiition for pop strata
 public class GoodNeedMax
 {
         public int goodId;

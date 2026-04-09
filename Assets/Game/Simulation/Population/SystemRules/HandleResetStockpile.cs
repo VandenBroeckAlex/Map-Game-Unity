@@ -9,7 +9,7 @@ public static class HandlePopulationResetStockpile
         {
             for (int j = 0; j < popList[i].GoodList.Count; j++)
             {
-                popList[i].GoodList[j].Stockpile = 0;
+                popList[i].GoodList[j].stockpile = 0;
             }
         }
         return popList;

@@ -1,9 +1,13 @@
 {
-    "name": "DTO",
+    "name": "PopBuilder",
     "rootNamespace": "",
     "references": [
+        "GUID:e2b7932a83406e44cafbe715a628ce58",
+        "GUID:fce2619a8ca22704ba1cddaf25aaff17",
+        "GUID:6bdb26e8e76d1564eaaeb937fd20c593",
         "GUID:e9a602c551904cb45afc7710f130d840",
-        "GUID:e2b7932a83406e44cafbe715a628ce58"
+        "GUID:2d186d4a64bbcdf438f7d2b0ff8d5ff6",
+        "GUID:5d3fa135af8ee4c49b50aa09af7f7983"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

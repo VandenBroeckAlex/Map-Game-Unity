@@ -62,14 +62,14 @@ public class PopSystemTests
     
         Assert.IsNotNull(poplist);
         Assert.AreEqual(0,poplist[0].cashAmount);
-        Assert.AreEqual(poplist[0].GoodList[0].Stockpile, 500);
+        Assert.AreEqual(poplist[0].GoodList[0].stockpile, 500);
     }
 
     [Test]
     public void PopSystem_HandlePopResetStockpile()
     {
         Pop pop = CreatePop();
-        pop.GoodList[0].Stockpile = 500;
+        pop.GoodList[0].stockpile = 500;
 
         List<Pop> popList = new List<Pop>();
         popList.Add(pop);
@@ -78,6 +78,6 @@ public class PopSystemTests
 
         Assert.IsNotNull(popList);
         Assert.AreEqual(2, popList.Count);
-        Assert.AreEqual(0, popList[0].GoodList[0].Stockpile);
+        Assert.AreEqual(0, popList[0].GoodList[0].stockpile);
     }
 }
