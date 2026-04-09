@@ -115,7 +115,7 @@ public class LoaderBootstrap
         registery.tiles = tiles;
         string popFilePath = Path.Combine(runtimePath, "Population");
         string runTimePopJson = GetJsonStringFromFile(popFilePath,"population");
-        List<Pop> listPop = popLoader.Deserialize_Pop(runTimePopJson, popJobs, cultureDef, religionsDef, goodsTypes, provinceData.provincesList,registery, errorHandler);
+        List<Pop> listPop = popLoader.Deserialize_Pop(runTimePopJson,registery, errorHandler);
 
         string workplaceDefFilePath = Path.Combine(runtimePath, "Workplaces");
         string workplacesDefJson = GetJsonStringFromFile(workplaceDefFilePath, "workplacesDef");

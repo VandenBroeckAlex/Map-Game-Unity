@@ -9,7 +9,7 @@ public class PopSystemTests
         GoodRequirement gr = new GoodRequirement(1, 0, 500);
         List<GoodRequirement> goodReq = new List<GoodRequirement>();
         goodReq.Add(gr);
-        Pop pop = new Pop(0, 1000, 1, 1, 1, 1, 100, goodReq);
+        Pop pop = new Pop(0, 1000, 1, 1, 1, 1, 100, goodReq, new List<IdNum>());
         pop.countryID = 1;
         return pop;
     }

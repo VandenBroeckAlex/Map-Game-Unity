@@ -14,10 +14,18 @@ public class WorkplaceDefTest
         good.tag = "grain";
         goodArray[0] = good;
 
-        PopJob[] popJobs = new PopJob[2];
+        PopJob[] popJobs = new PopJob[5];
         PopJob popJob = new PopJob("miners", 0, "miners");
-       
+        PopJob popJob1 = new PopJob("machinists", 0, "machinists");
+        PopJob popJob2 = new PopJob("clerks", 0, "clerks");
+        PopJob popJob3 = new PopJob("engineer", 0, "engineer");
+        PopJob popJob4 = new PopJob("peasants", 0, "peasants");
+
         popJobs[0] = popJob;
+        popJobs[1] = popJob1;
+        popJobs[2] = popJob2;
+        popJobs[3] = popJob3;
+        popJobs[4] = popJob4;
 
         registery.goodList = goodArray;
         registery.popJobs = popJobs;

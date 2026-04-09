@@ -123,8 +123,7 @@ public class PopBuilderTag
 
     public PopBuilderTag WithWorkplaces(List<IdNum> workplaces)
     {
-        IdNum idNum = new IdNum(workplaceID, ammount);
-        workplaces.Add(idNum);
+        this.workplaces = workplaces;
         return this;
     }
 
