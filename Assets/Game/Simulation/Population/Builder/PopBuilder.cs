@@ -121,7 +121,7 @@ public class PopBuilderTag
         this.size = size; return this;
     }
 
-    public PopBuilderTag WithWorkplace(int workplaceID, int ammount)
+    public PopBuilderTag WithWorkplaces(List<IdNum> workplaces)
     {
         IdNum idNum = new IdNum(workplaceID, ammount);
         workplaces.Add(idNum);

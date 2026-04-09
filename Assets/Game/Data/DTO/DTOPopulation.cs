@@ -11,7 +11,7 @@ using System.Collections.Generic;
         public string job;
         public string culture;
         public string religion;
-        public int _cashAmount;
-        public int _savings;
+        public int cashAmount;
+        public int savings;
     }
 
