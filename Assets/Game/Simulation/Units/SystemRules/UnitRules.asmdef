@@ -1,12 +1,8 @@
 {
-    "name": "DataRegistery",
+    "name": "UnitRules",
     "rootNamespace": "",
     "references": [
-        "GUID:5d3fa135af8ee4c49b50aa09af7f7983",
-        "GUID:b929e3ee8bbd08644a08bb8304461126",
-        "GUID:e2b7932a83406e44cafbe715a628ce58",
-        "GUID:93089f7ec67c224499ce0b08c7862c67",
-        "GUID:b9d5da40c26de014ca1b107238f49d92",
+        "GUID:fce2619a8ca22704ba1cddaf25aaff17",
         "GUID:679a7849adb093546bf9067097a5ff61"
     ],
     "includePlatforms": [],

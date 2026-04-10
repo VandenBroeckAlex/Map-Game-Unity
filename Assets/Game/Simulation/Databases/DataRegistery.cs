@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using static UnityEngine.UI.CanvasScaler;
 
 
 
@@ -23,7 +24,10 @@ public class DataRegistery
     public Dictionary<string, GoodNeedMax[]> strataNeeds;
     public string[] provinceTag = new string[] { "Default" };
     public Dictionary<int, Tile> tiles = new Dictionary<int,Tile>();
+   
     public List<MapGraphNode> mapGraphNodes;
+    public Dictionary<int, List<MapUnit>> mapUnitState; //province unit
+    public Dictionary<int, MapUnit> mapUnitDict = new Dictionary<int, MapUnit>();
 
     public int GetPopStrataTagId(string popStrataTag)
     {
