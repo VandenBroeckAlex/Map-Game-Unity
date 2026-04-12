@@ -1,4 +1,3 @@
-using UnityEngine;
 
 public class MapUnitSystemRules
 {
@@ -8,6 +7,21 @@ public class MapUnitSystemRules
     //if ennemy/hostile unit initialize battle
 
     //unit halte
+
+    public DataRegistery InitializeMovement(int unitId, int destination, DataRegistery _registery)
+    {
+        //call pathFinder
+        //
+        return _registery;
+    }
+    public DataRegistery Move(int unitId,DataRegistery _registery)
+    {
+        //resolve movement
+        MapUnit unit = _registery.mapUnitDict[unitId];
+        
+        //if hostile in targeted tile and not in battle initialize battle
+        return _registery;
+    }
     public DataRegistery Halt(int unitId,DataRegistery _registery)
     {
         MapUnit unit =_registery.mapUnitDict[unitId];
@@ -29,6 +43,7 @@ public class MapUnitSystemRules
         if (unit.queue.Count > 0) 
         { 
             unit.targetTileId = unit.queue.Dequeue();
+            //call move
         }
         else
         {
@@ -51,6 +66,7 @@ public class MapUnitSystemRules
         _registery.mapUnitState[unit.currentTileID].Remove(unit);
         return _registery;
     }
+
 
     //unit move out of battle
 

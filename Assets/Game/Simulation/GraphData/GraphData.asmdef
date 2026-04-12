@@ -1,3 +1,16 @@
 {
-	"name": "GraphData"
+    "name": "GraphData",
+    "rootNamespace": "",
+    "references": [
+        "GUID:6b5a45b289eff8c4885872da2d295618"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
 }

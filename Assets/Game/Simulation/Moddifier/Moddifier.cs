@@ -31,3 +31,10 @@ public enum ModifierType
     Multiplicative,  // ×1.05 ×1.10
     Override         // direct replace (rare)
 }
+
+public class UnitTerrainSpeedModdifier
+{
+    public int id;
+    public int value;
+    public ModifierType type;
+}

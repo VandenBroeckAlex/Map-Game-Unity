@@ -17,15 +17,16 @@ public class MapGraphNode
 
     private int _tileId;
     private int _terrainTypeId;
+    private bool isLand;
     public Vector2 position;
     private List<Neighbor> _neighbors = new List<Neighbor>();
 
-    public MapGraphNode(int id, int terrainType, Vector2 postion)
+    public MapGraphNode(int id, int terrainType, Vector2 postion, bool isLand)
     {
         _tileId = id;
         _terrainTypeId = terrainType;
         this.position = postion;
-
+        this.isLand = isLand;
     }
 
     public int GetProvinceId()

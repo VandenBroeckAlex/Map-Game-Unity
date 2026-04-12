@@ -8,7 +8,7 @@ public class Pathfinding
     float _mapWidth;
     public Pathfinding(float mapWidth) {  this._mapWidth = mapWidth; }
 
-    public List<MapGraphNode> FindPath(MapGraphNode start, MapGraphNode target)
+    public List<MapGraphNode> FindPath(MapGraphNode start, MapGraphNode target,List<UnitTerrainSpeedModdifier> unitModifiers, DataRegistery _registery )
     {
         // Nodes to be evaluated
         List<MapGraphNode> openSet = new List<MapGraphNode> { start };
@@ -37,9 +37,17 @@ public class Pathfinding
             {
                 MapGraphNode neighbor = neighborEntry.node;
                 if (closedSet.Contains(neighbor)) continue;
-
+                if(!neighbor.IsLand()) continue;
                 // distance between current and neighbor
-                float tentativeGScore = gScore[current] + neighborEntry.distance;
+                //float tentativeGScore = gScore[current] + neighborEntry.distance;
+
+                int distance = neighborEntry.distance;
+
+                //TODO
+                int terrainTypeId = neighbor.GetTerrainId();
+                TerrainType terrain = _registery.GetTerrainTypeById(terrainTypeId);
+                float terrainCost = (terrain.movementCost / 100) + 1;
+                float tentativeGScore = gScore[current] + distance + (distance * terrainCost); //unit modif + infra
 
                 if (!openSet.Contains(neighbor))
                     openSet.Add(neighbor);
@@ -94,5 +102,17 @@ public class Pathfinding
             path.Insert(0, current);
         }
         return path;
+    }
+
+    private int GetUnitModdifier(List<UnitTerrainSpeedModdifier> list, int terrainId)
+    {
+        foreach (UnitTerrainSpeedModdifier modif in list)
+        {
+            if (modif.id == terrainId)
+            {
+                return modif.value;
+            }
+        }
+        return 0;
     }
 }

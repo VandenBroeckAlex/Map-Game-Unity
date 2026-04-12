@@ -9,6 +9,7 @@ public class MapUnit
     public bool isMoving;
     public bool isInBattle;
     public Queue<int> queue = new Queue<int>();
+    List<>
 
     public void Halt()
     {

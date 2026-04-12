@@ -35,9 +35,11 @@ public class GraphDataLoder
             {
                 int id = HexToInt(nodeData.id);
                 int terrainType = 0;
+                bool isLand = true;
                 if (_registery.tiles.TryGetValue(id, out Tile tile))
                 {
                     terrainType = tile.type;
+                    isLand = tile.isLand;
                 }
                 else
                 {
@@ -48,7 +50,9 @@ public class GraphDataLoder
                 MapGraphNode mpg = new MapGraphNode(
                     id,
                     terrainType,
-                    new System.Numerics.Vector2(nodeData.pivot[0], nodeData.pivot[1])
+                    new System.Numerics.Vector2(nodeData.pivot[0], nodeData.pivot[1]),
+                    isLand
+
                     );
                 mapGraph.Add(mpg);
             }

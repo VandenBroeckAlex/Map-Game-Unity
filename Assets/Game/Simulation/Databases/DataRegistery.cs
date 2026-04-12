@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using static UnityEngine.UI.CanvasScaler;
 
 
@@ -13,6 +14,7 @@ public class DataRegistery
     public string[] countriesTag { get; set; } = new string[] { "Default" };
     public string[] provincesTag { get; set; } = new string[] { "Default" };
     public string[] terrainTypesTags { get; set; } = new string[] { "Default" };
+    public TerrainType[] terrainTypes { get; set; }
     public string[] climateTypesTags { get; set; } = new string[] { "Default" };
     public Dictionary<string, int> RgoTag = new Dictionary<string, int> 
     {
@@ -72,6 +74,11 @@ public class DataRegistery
     {
         return GetIdByString(tag, terrainTypesTags);
     }
+    public TerrainType GetTerrainTypeById(int id)
+    {
+        return terrainTypes.ElementAtOrDefault(id);
+    }
+    
     public int GetClimateTagId(string tag)
     {
         return GetIdByString(tag, climateTypesTags);
@@ -153,6 +160,19 @@ public class DataRegistery
         return result;
 
     }
+
+    public Tile GetTileById(int Id)
+    {
+        if (tiles.TryGetValue(Id, out Tile tile))
+        {
+            return tile;
+        }
+        else
+        {
+            throw new Exception($"Tried to get un-present tile : ID({Id})");
+        }
+    }
+    
     /*------------------------------*/
     private int GetIdByString(string tag, string[] list)
     {

@@ -3,13 +3,7 @@ using Newtonsoft.Json;
 
 public class TerrainTypeLoader
 {
-    public class TerrainType
-    {
-        public string name;
-        public string tag;
-        public bool isLandType;
-        //moddifier
-    }
+  
     public class TerrainTypesData
     {
         public TerrainType[] terrainTypes;

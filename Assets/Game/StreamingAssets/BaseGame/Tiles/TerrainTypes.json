@@ -5,5 +5,5 @@
 },{
     "tag" : "MER",
     "name" : "la mer",
-    "isLandType" : true
+    "isLandType" : false
 }]
