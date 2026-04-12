@@ -1,0 +1,17 @@
+{
+    "name": "Land_battle",
+    "rootNamespace": "",
+    "references": [
+        "GUID:f504fee85c24fc3448e7a946e7219cc1",
+        "GUID:e9a602c551904cb45afc7710f130d840"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

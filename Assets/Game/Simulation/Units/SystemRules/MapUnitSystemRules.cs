@@ -17,14 +17,14 @@ public class MapUnitSystemRules
     public DataRegistery Move(int unitId,DataRegistery _registery)
     {
         //resolve movement
-        MapUnit unit = _registery.mapUnitDict[unitId];
+        UnitNavigation unit = _registery.mapUnitDict[unitId];
         
         //if hostile in targeted tile and not in battle initialize battle
         return _registery;
     }
     public DataRegistery Halt(int unitId,DataRegistery _registery)
     {
-        MapUnit unit =_registery.mapUnitDict[unitId];
+        UnitNavigation unit =_registery.mapUnitDict[unitId];
 
         unit.Halt();
         return _registery;
@@ -32,7 +32,7 @@ public class MapUnitSystemRules
 
     public DataRegistery DestinationReached(int unitId,DataRegistery _registery)
     {
-        MapUnit unit = _registery.mapUnitDict[unitId];
+        UnitNavigation unit = _registery.mapUnitDict[unitId];
 
 
         _registery.mapUnitState[unit.currentTileID].Remove(unit);
@@ -53,14 +53,14 @@ public class MapUnitSystemRules
         return _registery;
     }
 
-    public DataRegistery CreateUnit(MapUnit unit,DataRegistery _registery)
+    public DataRegistery CreateUnit(UnitNavigation unit,DataRegistery _registery)
     {
         _registery.mapUnitDict.Add(unit.Id, unit);
         _registery.mapUnitState[unit.currentTileID].Add(unit);
         return _registery;
     }
 
-    public DataRegistery DeleteUnit(MapUnit unit, DataRegistery _registery)
+    public DataRegistery DeleteUnit(UnitNavigation unit, DataRegistery _registery)
     {
         _registery.mapUnitDict.Remove(unit.Id);
         _registery.mapUnitState[unit.currentTileID].Remove(unit);

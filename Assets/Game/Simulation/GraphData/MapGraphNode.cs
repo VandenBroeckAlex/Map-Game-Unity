@@ -54,4 +54,8 @@ public class MapGraphNode
         _neighbors.Add(neighbore);
     }
 
+    public bool IsLand()
+    {
+        return isLand;
+    }
   }

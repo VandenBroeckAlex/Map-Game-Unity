@@ -1,15 +1,33 @@
 using System.Collections.Generic;
 
-public class MapUnit
+public class UnitNavigation
 {
-    public int Id;
+    public int id;
     public int currentTileID;
     public int targetTileId;
     public int distanceLeft;
     public bool isMoving;
     public bool isInBattle;
+    public bool land;
+    public bool sea;
+    public bool air;
     public Queue<int> queue = new Queue<int>();
-    List<>
+
+    public UnitNavigation(int id,int currentTileId, bool land, bool sea, bool air)
+    {
+        this.id = id;
+        this.currentTileID = currentTileId;
+        this.targetTileId = -1;
+        this.distanceLeft = 0;
+        this.isMoving = false;
+        this.isInBattle = false;
+        this.land = land;
+        this.sea = sea;
+        this.air = air;
+        
+        
+ 
+    }
 
     public void Halt()
     {

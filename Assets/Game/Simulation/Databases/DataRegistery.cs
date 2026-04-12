@@ -28,8 +28,8 @@ public class DataRegistery
     public Dictionary<int, Tile> tiles = new Dictionary<int,Tile>();
    
     public List<MapGraphNode> mapGraphNodes;
-    public Dictionary<int, List<MapUnit>> mapUnitState; //province unit
-    public Dictionary<int, MapUnit> mapUnitDict = new Dictionary<int, MapUnit>();
+    public Dictionary<int, List<UnitNavigation>> mapUnitState; //province unit
+    public Dictionary<int, UnitNavigation> mapUnitDict = new Dictionary<int, UnitNavigation>();
 
     public int GetPopStrataTagId(string popStrataTag)
     {

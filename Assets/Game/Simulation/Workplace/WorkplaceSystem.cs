@@ -27,7 +27,7 @@ public class WorkplaceSystem
     }
      
 
-    public void WorkplaceProduce()
+    public void WorkplacesProduce()
     {
         
         foreach (var workplace in workplacesList)
@@ -43,7 +43,7 @@ public class WorkplaceSystem
 
    
  
-    public void WorkplaceBuyInputGoods()
+    public void WorkplacesBuyInputGoods()
     {
         foreach (var workplace in workplacesList)
         {
@@ -89,7 +89,7 @@ public class WorkplaceSystem
 
         if (workplace == null)
         {
-            throw new Exception("Population manager outputed a non existant workplace Id : BuildingManager.WorkplaceHire()");
+            throw new Exception($"Population manager outputed a non existant workplace Id : {workplaceId}");
         }
         workplace.OnWorkerHired(popId,nummberOfHired,type);
     }
@@ -112,7 +112,7 @@ public class WorkplaceSystem
 
     public void OnDaily()
     {
-        WorkplaceProduce();
+        WorkplacesProduce();
         WorkplacePayEmployee();
     }
 

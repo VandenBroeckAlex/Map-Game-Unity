@@ -5,12 +5,14 @@ using UnityEngine;
 [System.Serializable]
 public class Brigade 
 {
-    public string name;
+    public UnitNavigation navigation;
     public int id;
+    public string name;
     [SerializeField]
     public List<Bataillon> bataillons;
     public List<GoodRequirement> supply;
     public IntCurentMax Manpower;
+    
     
 
     public IntCurentMax GetManPower()

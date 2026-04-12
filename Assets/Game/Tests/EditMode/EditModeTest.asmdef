@@ -19,7 +19,8 @@
         "PopLoader",
         "TileBuilder",
         "LoaderHelpers",
-        "Tiles"
+        "Tiles",
+        "PathFinding"
     ],
     "includePlatforms": [
         "Editor"
