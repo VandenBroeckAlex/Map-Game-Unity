@@ -18,15 +18,17 @@ public class MapGraphNode
     private int _tileId;
     private int _terrainTypeId;
     private bool isLand;
+    private bool isPassable;
     public Vector2 position;
     private List<Neighbor> _neighbors = new List<Neighbor>();
 
-    public MapGraphNode(int id, int terrainType, Vector2 postion, bool isLand)
+    public MapGraphNode(int id, int terrainType, Vector2 postion, bool isLand,bool isPassable)
     {
         _tileId = id;
         _terrainTypeId = terrainType;
         this.position = postion;
         this.isLand = isLand;
+        this.isPassable = isPassable;
     }
 
     public int GetProvinceId()
@@ -53,7 +55,10 @@ public class MapGraphNode
         neighbore.node = node;
         _neighbors.Add(neighbore);
     }
-
+    public bool IsPassble()
+    {
+        return isPassable;
+    } 
     public bool IsLand()
     {
         return isLand;

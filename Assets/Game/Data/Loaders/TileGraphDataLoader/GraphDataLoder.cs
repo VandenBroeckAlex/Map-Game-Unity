@@ -36,23 +36,25 @@ public class GraphDataLoder
                 int id = HexToInt(nodeData.id);
                 int terrainType = 0;
                 bool isLand = true;
+                bool isPassable = true;
                 if (_registery.tiles.TryGetValue(id, out Tile tile))
                 {
                     terrainType = tile.type;
                     isLand = tile.isLand;
+                    isPassable = tile.isPassable;
                 }
                 else
                 {
                     throw new InvalidDataException($"Cound not find a tile with color : {nodeData.id} while creating Tile graph");
                 }
-
+                 
 
                 MapGraphNode mpg = new MapGraphNode(
                     id,
                     terrainType,
                     new System.Numerics.Vector2(nodeData.pivot[0], nodeData.pivot[1]),
-                    isLand
-
+                    isLand,
+                    isPassable
                     );
                 mapGraph.Add(mpg);
             }

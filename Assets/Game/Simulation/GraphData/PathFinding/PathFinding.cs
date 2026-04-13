@@ -38,6 +38,7 @@ public class Pathfinding
                 MapGraphNode neighbor = neighborEntry.node;
                 if (closedSet.Contains(neighbor)) continue;
                 if(!neighbor.IsLand()) continue;
+                if(!neighbor.IsPassble()) continue;
                 // distance between current and neighbor
                 //float tentativeGScore = gScore[current] + neighborEntry.distance;
 

@@ -55,14 +55,14 @@ public class MapUnitSystemRules
 
     public DataRegistery CreateUnit(UnitNavigation unit,DataRegistery _registery)
     {
-        _registery.mapUnitDict.Add(unit.Id, unit);
+        _registery.mapUnitDict.Add(unit.id, unit);
         _registery.mapUnitState[unit.currentTileID].Add(unit);
         return _registery;
     }
 
     public DataRegistery DeleteUnit(UnitNavigation unit, DataRegistery _registery)
     {
-        _registery.mapUnitDict.Remove(unit.Id);
+        _registery.mapUnitDict.Remove(unit.id);
         _registery.mapUnitState[unit.currentTileID].Remove(unit);
         return _registery;
     }
