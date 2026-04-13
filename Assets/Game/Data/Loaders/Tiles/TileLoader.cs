@@ -35,14 +35,14 @@ public class TileLoader
                     .WithTag(lTD.tag)
                     .WithSpriteColor(lTD.spriteColor)
                     .WithSuperficy(lTD.superficy)
-                    .WithIsPassble(lTD.isLand)
+                    .WithIsPassble(lTD.isPassable)
                     .WithCoast(lTD.isCoast)
                     .WithType(lTD.typeTag)
                     .WithOwner(lTD.ownerTag)
                     .WithRGO(lTD.rgoTag)
                     .WithClimateId(lTD.climatTag)
                     .WithProvince(lTD.provinceTag);
-                
+                 
 
                 if(lTD.ownerTag != "")
                 {

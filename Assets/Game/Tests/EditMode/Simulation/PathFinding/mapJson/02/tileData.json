@@ -81,7 +81,7 @@
     "spriteColor": "#D000FF",
     "superficy": 1,
     "isLand": true,
-    "isPassable": true,
+    "isPassable": false,
     "ownerTag": "Default",
     "occupierTag": "",
     "rgoTag": "Default",

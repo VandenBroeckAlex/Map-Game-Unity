@@ -101,7 +101,7 @@ public class LandTileBuilder
         else
         {
             _errorHandler.HandleMissingId(
-            $"Unknown terrain tag '{this.type}' while creating tile '{this.name}'.");
+            $"Unknown terrain tag : '{this.type}' while creating tile : '{this.name}'.");
         }
 
         int ownerId = _regi.GetCountryTagId(this.ownerId);
