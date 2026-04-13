@@ -1,3 +1,4 @@
+using log4net.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ public class DataRegistery
     public string[] countriesTag { get; set; } = new string[] { "Default" };
     public string[] provincesTag { get; set; } = new string[] { "Default" };
     public string[] terrainTypesTags { get; set; } = new string[] { "Default" };
-    public TerrainType[] terrainTypes { get; set; }
+    public TerrainType[] terrainTypes { get; set; } = new TerrainType[] { };
     public string[] climateTypesTags { get; set; } = new string[] { "Default" };
     public Dictionary<string, int> RgoTag = new Dictionary<string, int> 
     {
@@ -171,6 +172,19 @@ public class DataRegistery
         {
             throw new Exception($"Tried to get un-present tile : ID({Id})");
         }
+    }
+    
+    public MapGraphNode GetMapGraphNode(int id)
+    {
+        foreach(MapGraphNode node in mapGraphNodes)
+        {
+            if(node.GetProvinceId() == id)
+            {
+                return node;
+            }
+        }
+            throw new Exception($"Try to get an un-existing graph node | id:{id}");
+        
     }
     
     /*------------------------------*/

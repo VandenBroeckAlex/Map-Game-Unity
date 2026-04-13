@@ -20,7 +20,10 @@
         "TileBuilder",
         "LoaderHelpers",
         "Tiles",
-        "PathFinding"
+        "PathFinding",
+        "TileLoader",
+        "TerrainTypes",
+        "Moddifiers"
     ],
     "includePlatforms": [
         "Editor"

@@ -132,16 +132,18 @@ public class LandTileBuilder
             }
         }
 
-
-        if (_regi.RgoTag.TryGetValue(this.rgo, out int rgoTag))
+        if (!string.IsNullOrWhiteSpace(this.rgo))
         {
-            landTile.rgo = rgoTag;
-        }
-        else
-        {
-            _errorHandler.HandleMissingId(
-                $"Unknown RGO tag '{this.rgo}' while creating tile '{this.name}'('tile name')."
-                );
+            if (_regi.RgoTag.TryGetValue(this.rgo, out int rgoTag))
+            {
+                landTile.rgo = rgoTag;
+            }
+            else
+            {
+                _errorHandler.HandleMissingId(
+                    $"Unknown RGO tag '{this.rgo}' while creating tile '{this.name}'('tile name')."
+                    );
+            }
         }
 
         int climateId = _regi.GetClimateTagId(this.climateId);
