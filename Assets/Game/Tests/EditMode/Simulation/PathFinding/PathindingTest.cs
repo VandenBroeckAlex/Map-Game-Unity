@@ -25,7 +25,7 @@ public class PathindingTest {
     }
     public DataRegistery GetGraph01()
     {
-
+        
         IResolutionErrorHandler _errorHandler = new ThrowErrorHandler();
         string jsontest01Path = Path.Combine(graphTestJsonPath, "01");
 
@@ -111,12 +111,12 @@ public class PathindingTest {
     [Test]
     public void Pathfinder_outputRightAmmountOfNode()
     {
-        
+       
        DataRegistery _registery = GetGraph01();
        Pathfinding pathfinder = new Pathfinding(3);
        MapGraphNode start = _registery.GetMapGraphNode(HexToInt("#0BB235"));
        MapGraphNode end = _registery.GetMapGraphNode(HexToInt("#77D290"));
-       List<MapGraphNode> result = pathfinder.FindPath(start, end, new List<UnitTerrainSpeedModdifier>(),_registery);
+       List<MapGraphNode> result = pathfinder.FindPath(start, end, new List<UnitTerrainSpeedModdifier>(),true,false,false,_registery);
         
         foreach (MapGraphNode node in result)
         {
@@ -129,12 +129,12 @@ public class PathindingTest {
     [Test]
     public void Pathfinder_ignore_waterAndUnpassable()
     {
-
+        
         DataRegistery _registery = GetGraph01();
         Pathfinding pathfinder = new Pathfinding(3);
         MapGraphNode start = _registery.GetMapGraphNode(HexToInt("#0BB235"));
         MapGraphNode end = _registery.GetMapGraphNode(HexToInt("#716cd6"));
-        List<MapGraphNode> result = pathfinder.FindPath(start, end, new List<UnitTerrainSpeedModdifier>(), _registery);
+        List<MapGraphNode> result = pathfinder.FindPath(start, end, new List<UnitTerrainSpeedModdifier>(), true, false, false, _registery);
 
         Assert.IsNotNull(result);
         //foreach (MapGraphNode node in result)
@@ -150,12 +150,12 @@ public class PathindingTest {
     [Test]
     public void PathFinder_BlokedPath_returnNull()
     {
-
+        
         DataRegistery _registery = GetGraph02();
         Pathfinding pathfinder = new Pathfinding(3);
         MapGraphNode start = _registery.GetMapGraphNode(HexToInt("#0BB235"));
         MapGraphNode end = _registery.GetMapGraphNode(HexToInt("#716cd6"));
-        List<MapGraphNode> result = pathfinder.FindPath(start, end, new List<UnitTerrainSpeedModdifier>(), _registery);
+        List<MapGraphNode> result = pathfinder.FindPath(start, end, new List<UnitTerrainSpeedModdifier>(), true, false, false, _registery);
 
         Assert.IsNull(result);
         //foreach (MapGraphNode node in result)
@@ -166,12 +166,12 @@ public class PathindingTest {
     [Test]
     public void PathFinder_MovementCost_return7()
     {
-
+        
         DataRegistery _registery = GetGraph03();
         Pathfinding pathfinder = new Pathfinding(3);
         MapGraphNode start = _registery.GetMapGraphNode(HexToInt("#0BB235"));
         MapGraphNode end = _registery.GetMapGraphNode(HexToInt("#716cd6"));
-        List<MapGraphNode> result = pathfinder.FindPath(start, end, new List<UnitTerrainSpeedModdifier>(), _registery);
+        List<MapGraphNode> result = pathfinder.FindPath(start, end, new List<UnitTerrainSpeedModdifier>(), true, false, false, _registery);
 
         foreach (MapGraphNode node in result)
         {

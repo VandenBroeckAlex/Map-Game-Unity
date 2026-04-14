@@ -23,7 +23,8 @@
         "PathFinding",
         "TileLoader",
         "TerrainTypes",
-        "Moddifiers"
+        "Moddifiers",
+        "MapUnits"
     ],
     "includePlatforms": [
         "Editor"

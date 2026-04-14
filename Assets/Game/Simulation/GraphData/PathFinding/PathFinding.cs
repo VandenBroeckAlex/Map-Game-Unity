@@ -8,7 +8,7 @@ public class Pathfinding
     float _mapWidth;
     public Pathfinding(float mapWidth) {  this._mapWidth = mapWidth; }
 
-    public List<MapGraphNode> FindPath(MapGraphNode start, MapGraphNode target,List<UnitTerrainSpeedModdifier> unitModifiers, DataRegistery _registery )
+    public List<MapGraphNode> FindPath(MapGraphNode start, MapGraphNode target,List<UnitTerrainSpeedModdifier> unitModifiers, bool CanGoOnLand, bool CanGoOnSea, bool CanGoInAir, DataRegistery _registery )
     {
         // Nodes to be evaluated
         List<MapGraphNode> openSet = new List<MapGraphNode> { start };
@@ -37,8 +37,9 @@ public class Pathfinding
             {
                 MapGraphNode neighbor = neighborEntry.node;
                 if (closedSet.Contains(neighbor)) continue;
-                if(!neighbor.IsLand()) continue;
-                if(!neighbor.IsPassble()) continue;
+                if(neighbor.IsLand() && CanGoOnLand is false) continue;
+                if (!neighbor.IsLand() && CanGoOnSea is false) continue;
+                if (!neighbor.IsPassble()) continue;
                 // distance between current and neighbor
                 //float tentativeGScore = gScore[current] + neighborEntry.distance;
 
