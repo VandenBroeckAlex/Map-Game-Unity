@@ -1,0 +1,9 @@
+[{
+    "tag" : "pla",
+    "name" : "plane",
+    "isLandType" : true
+},{
+    "tag" : "MER",
+    "name" : "la mer",
+    "isLandType" : false
+}]

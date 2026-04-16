@@ -17,7 +17,7 @@ public class DataRegistery
     public string[] terrainTypesTags { get; set; } = new string[] { "Default" };
     public TerrainType[] terrainTypes { get; set; } = new TerrainType[] { };
     public string[] climateTypesTags { get; set; } = new string[] { "Default" };
-    public Dictionary<string, int> RgoTag = new Dictionary<string, int> 
+    public Dictionary<string, int> rgoTag = new Dictionary<string, int> 
     {
         { "Default", 0 },
     };
@@ -53,9 +53,9 @@ public class DataRegistery
     }
     public int GetRgoTagId(string tag)
     {
-        if (RgoTag.ContainsKey(tag))
+        if (rgoTag.ContainsKey(tag))
         {
-            return RgoTag[tag];
+            return rgoTag[tag];
         }
         else
         {

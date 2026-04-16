@@ -134,7 +134,7 @@ public class LandTileBuilder
 
         if (!string.IsNullOrWhiteSpace(this.rgo))
         {
-            if (_regi.RgoTag.TryGetValue(this.rgo, out int rgoTag))
+            if (_regi.rgoTag.TryGetValue(this.rgo, out int rgoTag))
             {
                 landTile.rgo = rgoTag;
             }
