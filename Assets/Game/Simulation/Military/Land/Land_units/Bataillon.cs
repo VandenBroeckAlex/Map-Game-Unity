@@ -17,7 +17,7 @@ public class Bataillon
     public bool isSupport;
     //public List<> supply;
     //public Weight weight;
-    // public float speed
+    public float speed;
     //public float coalConsumption;
     //public float armor;
     //public float softness; (%)
@@ -52,6 +52,11 @@ public class Bataillon
             return 0;
 
         return Convert.ToInt32((manPower.current / manPower.max) * 100f);
+    }
+
+    public float GetSpeed()
+    {
+        return speed;
     }
 
   

@@ -6,6 +6,7 @@ public class Pathfinding
 {
 
     float _mapWidth;
+    float _airMovementCost = 1.1f;
     public Pathfinding(float mapWidth) {  this._mapWidth = mapWidth; }
 
     public List<MapGraphNode> FindPath(MapGraphNode start, MapGraphNode target,List<UnitTerrainSpeedModdifier> unitModifiers, bool CanGoOnLand, bool CanGoOnSea, bool CanGoInAir, DataRegistery _registery )
@@ -43,12 +44,16 @@ public class Pathfinding
                 // distance between current and neighbor
                 //float tentativeGScore = gScore[current] + neighborEntry.distance;
 
-                int distance = neighborEntry.distance;
+               
 
-                //TODO
+                int distance = neighborEntry.distance;
                 int terrainTypeId = neighbor.GetTerrainId();
                 TerrainType terrain = _registery.GetTerrainTypeById(terrainTypeId);
                 float terrainCost = (terrain.movementCost / 100) + 1;
+                if (CanGoInAir)
+                {
+                    terrainCost = _airMovementCost;
+                }
                 float tentativeGScore = gScore[current] + distance + (distance * terrainCost); //unit modif + infra
 
                 if (!openSet.Contains(neighbor))
