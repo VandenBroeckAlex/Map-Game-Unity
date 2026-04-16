@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using UnityEngine;
 using static ClimateTypeLoader;
 using static CountryLoader;
@@ -64,16 +65,16 @@ public class LoaderBootstrap
 
         string goodDefJson = GetJsonStringFromFile(definitionPath,"GoodType");
         string[] goodsTypes = goodTypeLoader.Deserialize_goodsType(goodDefJson, errorHandler);
-        registery.goodTypes = goodsTypes;
+        registery.goodTypes = registery.goodTypes.Concat(goodsTypes).ToArray();
 
         string cultureDefJson = GetJsonStringFromFile(definitionPath,"cultureDef");
         Culture[] cultureDef = cultureLoader.DeserializeCultures(cultureDefJson, errorHandler);
-        registery.cultures = cultureDef;
+        registery.cultures = registery.cultures.Concat(cultureDef).ToArray();
 
         //Todo deserialize strata
         string stratadefJson = GetJsonStringFromFile(definitionPath, "PopStrataDef");
         string[] strata = strataLoder.DeserializeStrata(stratadefJson);
-        registery.popStrata = strata;
+        registery.popStrata = registery.popStrata.Concat(strata).ToArray();
 
         string PopJobDefJson = GetJsonStringFromFile(definitionPath,"PopJobDef");
         PopJob[] popJobs = popJobLoader.Deserialize_PopJob(PopJobDefJson, strata);
@@ -86,7 +87,7 @@ public class LoaderBootstrap
         string goodJson = GetJsonStringFromFile(definitionPath, "GoodDef");
         GoodLoader.GoodLoadedData goodData = goodLoader.Load_goods(goodJson);
         registery.goodList = goodData.goodList;
-
+        registery.rgoTag = goodData.rgoTag;
         string strataNeedsJson = GetJsonStringFromFile(definitionPath, "StrataNeedDef");
         Dictionary<string, GoodNeedMax[]> strataNeeds = strataNeedLoader.DeserializeStrataNeeds(strataNeedsJson, strata, goodData.goodList);
         registery.strataNeeds = strataNeeds;

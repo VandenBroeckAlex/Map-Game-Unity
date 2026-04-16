@@ -21,7 +21,10 @@ public class DataRegistery
     {
         { "Default", 0 },
     };
-    public Culture[] cultures;
+    //TODO To change initialisation of default
+    private static readonly Culture _default = new Culture("default", "default");
+
+    public Culture[] cultures = new Culture[] { _default };
     public PopJob[] popJobs;
     public Religion[] religionsDef;
     public Dictionary<string, GoodNeedMax[]> strataNeeds;

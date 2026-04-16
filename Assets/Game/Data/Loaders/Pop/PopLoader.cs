@@ -18,7 +18,7 @@ public class PopLoader
 
         if(data is null || data.Length == 0)
         {
-            throw new InvalidDataException("Population.json is empty");
+            throw new InvalidDataException("population.json is empty");
         }
 
         // check for pop that share religion culture type and living place
