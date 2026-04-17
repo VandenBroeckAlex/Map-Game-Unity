@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -45,7 +46,6 @@ public class DataRegistery_Builder
         this.goodList = goods;
         return this;
     }
-
     public DataRegistery_Builder WithProvinceTag(string[] provinceTags)
     {
         this.provinceTag = provinceTags;
@@ -61,58 +61,54 @@ public class DataRegistery_Builder
         this.terrainTypes = terrainTypes;
         return this;
     }
-
     public DataRegistery_Builder WithClimateTypes(string[] climateTypes)
     {
         this.climateTypesTags = climateTypes;
         return this;
     }
-
     public DataRegistery_Builder WithRgoTag(Dictionary<string,int> rgo)
     {
         this.rgoTag = rgo;
         return this;
     }
-
     public DataRegistery_Builder WithCultures(Culture[] cultures)
     {
         this.cultures = cultures;
         return this;
     }
-
     public DataRegistery_Builder WithPopJobs(PopJob[] popJobs)
     {
         this.popJobs = popJobs;
         return this;
     }
-
     public DataRegistery_Builder WithReligions(Religion[] religions)
     {
         this.religionsDef = religions;
         return this;
     }
-
     public DataRegistery_Builder WithStrataNeeds(Dictionary<string, GoodNeedMax[]> strataNeeds)
     {
         this.strataNeeds = strataNeeds;
         return this;
     }
-
     public DataRegistery_Builder WithMapGraphNodes(List<MapGraphNode> nodes)
     {
         this.mapGraphNodes = nodes;
         return this;
     }
-
     public DataRegistery_Builder WithMapUnitsStat(Dictionary<int, List<UnitNavigation>> state)
     {
         this.mapUnitState = state;
         return this;
     }
-
     public DataRegistery_Builder WithMapUnitDict(Dictionary<int,UnitNavigation> dict)
     {
         this.mapUnitDict = dict;
         return this;
+    }
+
+    public DataRegistery Build()
+    {
+        throw new NotImplementedException();
     }
 }
