@@ -1,9 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
-using static Good;
-using static Pop;
+
+
 
 
 public enum WorkplaceType
@@ -24,6 +23,7 @@ public class Workplace
     private int provinceId;
     public string name;
     public WorkplaceType type;
+    public int definitionId;
     //list of pop type that can work here
     public int constructionCost; // IC cost / Time
     // currentmax construction cost ?
@@ -55,19 +55,21 @@ public class Workplace
         List<GoodRequirement> _goodConstructionCost, 
         List<GoodRequirement> _maintenanceCost,
         List<IdNum> _owner,
-        float wageMultiplier)
-            {
-                countryId = _countryId;
-                provinceId = _provinceId;
-                id = _workplaceId;
-                goodConstructionCost = _goodConstructionCost;
-                maintenanceCost = _maintenanceCost;
-                owner = _owner;
-                workersRequirement = new List<WorkerTypeCurrentMax>();
-                poorStrataWage = (int)(poorStrataWage * wageMultiplier);
-                middleStrataWage = (int)(middleStrataWage * wageMultiplier);
-                cashBuffer = 1000;
-            }
+        float wageMultiplier,
+        int definitionId)
+        {
+            countryId = _countryId;
+            provinceId = _provinceId;
+            id = _workplaceId;
+            goodConstructionCost = _goodConstructionCost;
+            maintenanceCost = _maintenanceCost;
+            owner = _owner;
+            workersRequirement = new List<WorkerTypeCurrentMax>();
+            poorStrataWage = (int)(poorStrataWage * wageMultiplier);
+            middleStrataWage = (int)(middleStrataWage * wageMultiplier);
+            cashBuffer = 1000;
+            this.definitionId = definitionId;
+        }
 
 
     public int GetProvinceId()
@@ -243,7 +245,6 @@ public class Workplace
 
     
 
-
     public class WorkerTypeCurrentMax
     {
         public PopJob workerType;
@@ -276,15 +277,4 @@ public class Workplace
     }
 
 
-    public class IdNum
-    {
-        public int id;
-        public int num;
-
-        public IdNum(int id, int num) 
-        { 
-            this.id = id;
-            this.num = num;
-        }
-    }
 }

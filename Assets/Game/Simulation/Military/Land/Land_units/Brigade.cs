@@ -49,4 +49,19 @@ public class Brigade
         }
         return true;
     }
+
+    //Brigade go as fast as it's slowest bataillon
+    public float GetSpeed()
+    {
+        float brigadeSpeed = float.MaxValue;
+
+        foreach (Bataillon bataillon in bataillons)
+        {
+            if(bataillon.speed < brigadeSpeed)
+            {
+                brigadeSpeed = bataillon.speed;
+            }
+        }
+        return brigadeSpeed;
+    }
 }

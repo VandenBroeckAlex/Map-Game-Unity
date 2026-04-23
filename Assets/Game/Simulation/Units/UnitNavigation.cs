@@ -6,6 +6,7 @@ public class UnitNavigation
     public int currentTileID;
     public int targetTileId;
     public int distanceLeft;
+    public float speed;
     public bool isMoving;
     public bool isInBattle;
     public bool land;

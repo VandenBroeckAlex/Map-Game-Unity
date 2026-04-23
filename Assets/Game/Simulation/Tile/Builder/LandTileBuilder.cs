@@ -159,7 +159,7 @@ public class LandTileBuilder
                 );
         }
             
-        int provinceId = _regi.GetProvinceID(this.provinceId);
+        int provinceId = _regi.GetProvinceIDByTag(this.provinceId);
         if (provinceId != -1)
         {
             landTile.provinceId = provinceId;

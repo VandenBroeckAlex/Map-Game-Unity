@@ -1,7 +1,8 @@
+using NUnit.Framework;
+using System.Collections.Generic;
+
 public class Country
 {
-    // Start is called before the first frame update
-
 
     public int id;
     public int playerId;
@@ -9,6 +10,7 @@ public class Country
     public int[] color;
     public int treasury;
     public int income; // the sum of all income last month
+    public List<int> incomeHistory = new List<int>();
     public string tag;
 
     public float Income_tax = 0.1f;
@@ -38,6 +40,7 @@ public class Country
     }
     public void ResetIncome()
     {
+        incomeHistory.Add(income);
         income = 0;
     }
 

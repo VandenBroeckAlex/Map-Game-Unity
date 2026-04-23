@@ -14,6 +14,7 @@ using System.Collections.Generic;
         public bool isLand { get; set; }
         public bool isPassable { get; set; }
 
+        public int province;
         
         public Tile(int GivenID)
         {

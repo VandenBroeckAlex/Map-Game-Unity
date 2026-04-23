@@ -167,7 +167,7 @@ public class PopBuilderTag
 
     public Pop Build(DataRegistery _registery, IResolutionErrorHandler _errorHandler)
     {
-        int provinceId = _registery.GetProvinceID(this.provinceTag);
+        int provinceId = _registery.GetProvinceIDByTag(this.provinceTag);
         if (provinceId < 0) _errorHandler.HandleMissingId(
             $"Unknown province tag '{this.provinceTag}' while creating population (province : ${this.provinceTag}, job : ${this.jobTag} , culture : ${this.cultureTag},religion : ${this.religionTag}).");
         int jobId = _registery.GetPopJobId(this.jobTag);

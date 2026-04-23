@@ -30,7 +30,7 @@ public class DataRegistery
     public Dictionary<string, GoodNeedMax[]> strataNeeds;
     public string[] provinceTag = new string[] { "Default" };
     public Dictionary<int, Tile> tiles = new Dictionary<int,Tile>();
-   
+    public Dictionary<int,Province> provinces = new Dictionary<int,Province>();
     public List<MapGraphNode> mapGraphNodes;
     public Dictionary<int, List<UnitNavigation>> mapUnitState; //province unit
     public Dictionary<int, UnitNavigation> mapUnitDict = new Dictionary<int, UnitNavigation>();
@@ -70,7 +70,7 @@ public class DataRegistery
     {
         return GetIdByString(tag, countriesTag);
     }
-    public int GetProvinceID(string tag)
+    public int GetProvinceIDByTag(string tag)
     {
         return GetIdByString(tag, provincesTag);
     }
@@ -176,7 +176,19 @@ public class DataRegistery
             throw new Exception($"Tried to get un-present tile : ID({Id})");
         }
     }
-    
+    public int GetProvinceIdByTile(int Id)
+    {
+        Tile tile = GetTileById(Id);
+        return tile.province;
+    }
+
+
+    public int GetCountryIdByTile(int tileId)
+    {
+        Tile tile = GetTileById(tileId);
+        Province province = provinces[tile.province];
+        return province.ownerId;
+    }
     public MapGraphNode GetMapGraphNode(int id)
     {
         foreach(MapGraphNode node in mapGraphNodes)

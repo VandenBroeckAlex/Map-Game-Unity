@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using static Pop;
 using static Workplace;
+using static WorkplacesDefinitions;
 
 public class WorkplaceSystem 
 {
@@ -98,9 +99,32 @@ public class WorkplaceSystem
          
     }
     
-    public void BuildWorkplace(string type)
+    public Workplace BuildWorkplace(DefinitionWorkplace type,int tileId,List<IdNum>_owner, DataRegistery _registry)
     {
+        int tile = tileId;
+        int provinceId = _registry.GetProvinceIdByTile(tile);
+        int countryId = _registry.GetCountryIdByTile(tile);
+        int id = IdIncrement++;
+        Dictionary<int, int> constructionCost = type.constructionCost;
+        Dictionary<int, int> maintenanceCost = type.maintenanceCost;
+        Dictionary<int, int> workers = type.workers;
 
+        List<GoodRequirement> _goodConstructionCost = new List<GoodRequirement>();
+        List< GoodRequirement > _maintenanceCost = new List<GoodRequirement>();
+
+
+        foreach (KeyValuePair<int, int> kvp in constructionCost) {
+            GoodRequirement gr = new GoodRequirement (kvp.Key,0,kvp.Value);
+            _goodConstructionCost.Add(gr);
+        }
+        foreach (KeyValuePair<int, int> kvp in maintenanceCost)
+        {
+            GoodRequirement gr = new GoodRequirement(kvp.Key, 0, kvp.Value);
+            _maintenanceCost.Add(gr);
+        }
+
+        Workplace workplace = new Workplace(provinceId, id, countryId, _goodConstructionCost, _maintenanceCost,_owner,1,type.GetId());
+        return workplace;
     }
 
     

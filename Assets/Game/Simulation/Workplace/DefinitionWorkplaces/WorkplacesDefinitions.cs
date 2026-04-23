@@ -4,12 +4,13 @@ public class WorkplacesDefinitions
 {
     public class DefinitionWorkplace
     {
+        int id;
         string name;
         string type;
         int constructionIC;
-        Dictionary<int, int> constructionCost; // good id num
-        Dictionary<int, int> maintenanceCost; // good id num
-        Dictionary<int, int> workers; //popjob id - num
+        public Dictionary<int, int> constructionCost; // good id num
+        public Dictionary<int, int> maintenanceCost; // good id num
+        public Dictionary<int, int> workers; //popjob id - num
         //conditions
         protected DefinitionWorkplace(string name, string type, int ic, Dictionary<int, int> workers)
         {
@@ -18,6 +19,8 @@ public class WorkplacesDefinitions
             this.constructionIC = ic;
             this.workers = workers;
         }
+    
+        public int GetId() { return id; }
     }
 
     public class DefinitionCropWorkplace : DefinitionWorkplace
