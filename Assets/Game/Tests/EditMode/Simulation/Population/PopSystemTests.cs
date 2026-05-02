@@ -23,9 +23,9 @@ public class PopSystemTests
         List<MarketTransactionsObj.MarketBuyRequest> result = HandlePopBuy.PopulationBuyRequest(poplist);
         Assert.IsNotNull(result);
         Assert.AreEqual(1, result.Count);
-        Assert.AreEqual(result[0].GoodRequest.Count, 1);
-        Assert.AreEqual(result[0].GoodRequest[0].goodId , 1);
-        Assert.AreEqual(result[0].GoodRequest[0].amount, 500);
+        Assert.AreEqual(result[0].GoodRequests.Count, 1);
+        Assert.AreEqual(result[0].GoodRequests[0].goodId , 1);
+        Assert.AreEqual(result[0].GoodRequests[0].amount, 500);
         Assert.AreEqual(result[0].cashAmount, 100);
         Assert.AreEqual(result[0].marketId, 1);
     }

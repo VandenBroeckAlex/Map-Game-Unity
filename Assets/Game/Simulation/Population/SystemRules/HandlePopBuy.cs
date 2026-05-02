@@ -24,7 +24,7 @@ public static class HandlePopBuy
                     goodRequestsList.Add(goodRequest);
                 }
             }
-            request.GoodRequest = goodRequestsList;
+            request.GoodRequests = goodRequestsList;
             result.Add(request);
         }
         return result;

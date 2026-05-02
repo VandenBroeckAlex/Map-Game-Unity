@@ -9,7 +9,8 @@ public class Production
     public int cashBuffer;
     public int cashBufferMax;
     public int efficiency;
-    
+    public int baseOutput;
+    public int profit;
 
     public Production(
         int _cashBufferMax,

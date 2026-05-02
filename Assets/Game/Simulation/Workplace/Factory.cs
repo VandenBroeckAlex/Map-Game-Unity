@@ -1,17 +1,15 @@
 using System.Collections.Generic;
 using static WorkplacesDefinitions;
-
-public class Factory //: IWorkspace, IProductionBuilding, ITransformationBuilding
+using static MarketTransactionsObj;
+public class Factory : IWorkplace,IProductionBuilding, ITransformationBuilding
 {
     public Workplace workplace;
-    public Production productionWorkplace;
-    public Dictionary<string, int> inputGoods;
+    public Production production;
+    List<GoodRequirement> inputGoods;
     public Dictionary<string, int> outputGoods;
 
     //Type of production
     //Type of remuneration 
-
-
 
     public Factory(
         Production _productionWorkplace,
@@ -19,77 +17,44 @@ public class Factory //: IWorkspace, IProductionBuilding, ITransformationBuildin
         Dictionary<string, int> _outputGoods
         )
     {
-        productionWorkplace = _productionWorkplace;
+        production = _productionWorkplace;
         inputGoods = _inputGoods;
         outputGoods = _outputGoods;
     }
 
-
-
-    public virtual void Produce(Dictionary<string, int> goodsStockpile, int workerCount)
+    public void AddCash(int cash)
     {
-        // Check Input
-        if (workplace.type == WorkplaceType.Factory)
-        {
-            if (CanProduce(goodsStockpile, workerCount))
-            {
-                foreach (var input in inputGoods)
-                    goodsStockpile[input.Key] -= input.Value;
+        production.cashBuffer += cash;
+        // if cashBuffer + cash > bufferMax => put money in bank
+    }
 
-                foreach (var output in outputGoods)
-                    goodsStockpile[output.Key] += output.Value;
-            }
+    public void AddGood(int id, int amount)
+    {
+        // Try to fill maintenance goods first
+        amount = UpdateStockpileInList(workplace.maintenanceGoods, id, amount);
+
+        // If there is still amount left, try to fill input goods
+        if (amount > 0)
+        {
+            UpdateStockpileInList(inputGoods, id, amount);
         }
     }
 
-    private bool CanProduce(Dictionary<string, int> goodsStockpile, int workerCount)
+    public MarketBuyRequest BuyMaintenanceGood()
     {
-
-        foreach (var input in inputGoods)
-            if (!goodsStockpile.ContainsKey(input.Key) || goodsStockpile[input.Key] < input.Value)
-                return false;
-        return true;
-    }
-
-    public void OnWorkerHired(int popId, int numberOfHired)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void LayOffWorker()
-    {
-        //if can not get good for effective production fire proportionnaly
-        throw new System.NotImplementedException();
-    }
-
-    public void OutputGoods()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void BuyInputGoods()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void SellGood(int goodId, int ammount)
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void PayEmployees()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void SetWages()
-    {
-        throw new System.NotImplementedException();
-    }
-
-    public void Upgrade()
-    {
-        throw new System.NotImplementedException();
+        MarketBuyRequest request = new MarketBuyRequest();
+        request.id = workplace.id;
+        request.marketId = workplace.marketId;
+        request.cashAmount = production.cashBuffer;
+        request.GoodRequests = new List<GoodRequest>();
+        foreach (GoodRequirement good in workplace.maintenanceGoods)
+        {
+            int goodId = good.good_id;
+            int ammount = good.maxNeed - good.stockpile;
+            GoodRequest gr = new GoodRequest(goodId,ammount);
+            request.GoodRequests.Add(gr);
+        } 
+        return request;
     }
 
     public void Degrade()
@@ -97,7 +62,56 @@ public class Factory //: IWorkspace, IProductionBuilding, ITransformationBuildin
         throw new System.NotImplementedException();
     }
 
-    public void DestroyBuiding()
+    public int GetProvinceId()
+    {
+        return workplace.GetProvinceId();
+    }
+
+    public int GetWorkAvailableByJobType(PopJob popJob)
+    {
+        return workplace.GetWorkAvailableByJobType(popJob);
+    }
+
+    public int GetWorkplaceId()
+    {
+        return workplace.id;
+    }
+
+    public List<IdNum> LayOffWorker()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void OnWorkerHired(int popId, int numberOfHired, PopJob job)
+    {
+        workplace.HireWorker(popId, numberOfHired, job);
+    }
+
+    public void OnWorkerLeave(int popId, int numberOfLeaving)
+    {
+        workplace.LayOffWorkerByID(popId, numberOfLeaving);
+    }
+
+    public List<IdNum> PayEmployees()
+    {
+        return workplace.PayEmployees();
+    }
+
+    public List<IdNum> PayOwners()
+    {
+        throw new System.NotImplementedException();
+    }
+
+
+
+ 
+
+    public void SetCashTo(int ammount)
+    {
+        production.cashBuffer = ammount;
+    }
+
+    public void SetWages()
     {
         throw new System.NotImplementedException();
     }
@@ -107,22 +121,60 @@ public class Factory //: IWorkspace, IProductionBuilding, ITransformationBuildin
         throw new System.NotImplementedException();
     }
 
-    public void BuyMaintenanceGood()
+    public void Upgrade()
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public MarketSellRequest Produce()
+    {
+        int baseOutput = production.baseOutput;
+        int workerRatio = workplace.SmallestProducerWorkerRatio();
+        //input good ratio
+        //Min output - min workforce
+        int ouput = 0;
+    }
+
+    //---- Private ------
+
+    //TODO
+    private bool CanProduce(Dictionary<string, int> goodsStockpile, int workerCount)
+    {
+
+        //foreach (var input in inputGoods)
+        //    if (!goodsStockpile.ContainsKey(input.Key) || goodsStockpile[input.Key] < input.Value)
+        //        return false;
+        return true;
+    }
+
+
+    private int UpdateStockpileInList(IEnumerable<GoodRequirement> list, int id, int amount)
+    {
+        foreach (var gr in list)
+        {
+            if (gr.good_id == id)
+            {
+                int total = gr.stockpile + amount;
+
+                if (total <= gr.maxNeed)
+                {
+                    gr.stockpile = total;
+                    return 0; // Everything fits, nothing left to carry over
+                }
+                else
+                {
+                    gr.stockpile = gr.maxNeed;
+                    return total - gr.maxNeed; // Return the overflow amount
+                }
+            }
+        }
+        return amount; // ID wasn't found in this list, return original amount
+    }
+
+    public MarketBuyRequest BuyInputGoods()
     {
         throw new System.NotImplementedException();
     }
 }
 
 
-public class FactoryV2 : DefinitionFactoryWorkplace
-{
-    private int id;
-    private int provinceId;
-
-    public Dictionary<int, int> workersEmployed;
-    public int cash;
-    public Dictionary<int, int> inputStokpile;
-    public FactoryV2(string name, string type, int icCost, int efficiency, int ouputId, Dictionary<int, int> workers, Dictionary<int, int> input) : base(name, type, icCost, efficiency, ouputId, workers, input)
-    {
-    }
-} 

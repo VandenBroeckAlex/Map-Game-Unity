@@ -22,7 +22,7 @@ public class MarketSystemTest
         request.id = 0;
         request.marketId = 0;
         request.cashAmount = 1000;
-        request.GoodRequest = gr;
+        request.GoodRequests = gr;
 
         return request;
     }

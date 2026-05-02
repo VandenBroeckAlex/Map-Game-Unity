@@ -21,11 +21,11 @@ public class HandleMarketBuy
             Market _market = marketList[market_id];
             int cashAmount = request.cashAmount;
 
-            for(int j = 0; j < request.GoodRequest.Count; j++)
+            for(int j = 0; j < request.GoodRequests.Count; j++)
             {
                 GoodRequest goodResponse = new GoodRequest();
 
-                int goodId = request.GoodRequest[j].goodId;
+                int goodId = request.GoodRequests[j].goodId;
 
                 goodResponse.goodId = goodId;
 
@@ -33,7 +33,7 @@ public class HandleMarketBuy
                 .Where(good => good.good.id == goodId).FirstOrDefault();
 
 
-                int amountWanted = request.GoodRequest[j].amount;
+                int amountWanted = request.GoodRequests[j].amount;
                 //TODO Debug.Log($"price : {Marketgood.price}, ammount wanted : {amountWanted} ");
                 int totalCost = Marketgood.price * amountWanted;
                 if (cashAmount == 0)

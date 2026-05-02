@@ -8,7 +8,7 @@ public class MarketTransactionsObj
     {
         public int marketId;
         public int id;
-        public List<GoodRequest> GoodRequest;
+        public List<GoodRequest> GoodRequests;
         public int cashAmount;
     }
 

@@ -18,18 +18,16 @@ public interface IWorkplace
     void SetWages();
     void Upgrade();
     void Degrade();
-    void DestroyBuiding();
     void TakeLoan();
     void AddCash(int cash);
     MarketBuyRequest BuyMaintenanceGood();
-    void ReciveCash(int ammount);
     void SetCashTo(int ammount);
     void AddGood(int id, int amount);
 }
 
 public interface IProductionBuilding
 {
-   MarketSellRequest SellRequest();
+   MarketSellRequest Produce();
 }
 
 public interface ITransformationBuilding

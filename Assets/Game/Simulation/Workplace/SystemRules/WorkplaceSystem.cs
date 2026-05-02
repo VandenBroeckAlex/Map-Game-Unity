@@ -35,22 +35,25 @@ public class WorkplaceSystem
         {
             if (workplace is IProductionBuilding production)
             {
-                requests.Add(production.SellRequest());
+                requests.Add(production.Produce());
             }
         }
         return requests;
     }
+    
     public void WorkplacesBuyGoods()
     {
         List<MarketBuyRequest> requests = new List<MarketBuyRequest>();
         foreach (var workplace in workplacesList)
         {
-
-            requests.Add(workplace.BuyMaintenanceGood());
+            MarketBuyRequest request = workplace.BuyMaintenanceGood();
             if (workplace is ITransformationBuilding transfoBuilding)
             {
-                requests.Add(transfoBuilding.BuyInputGoods());
+                MarketBuyRequest input = transfoBuilding.BuyInputGoods();
+
+                request.GoodRequests.Concat(input.GoodRequests);
             }
+            requests.Add(request);
         }
     }
     public List<IdNum> WorkplacePayEmployee(DataRegistery _registery)

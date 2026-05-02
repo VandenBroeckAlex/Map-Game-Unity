@@ -21,6 +21,7 @@ public class Workplace
     public int id;
     public int countryId;
     private int provinceId;
+    public int marketId;
     public string name;
     public WorkplaceType type;
     public int definitionId;
@@ -30,7 +31,7 @@ public class Workplace
     //beeing buid every tick?
 
     public List<GoodRequirement> goodConstructionCost = new List<GoodRequirement>();
-    public List<GoodRequirement> maintenanceCost = new List<GoodRequirement>();
+    public List<GoodRequirement> maintenanceGoods = new List<GoodRequirement>();
 
     private Dictionary<int, PopJobAssignment> popAmmount = new Dictionary<int, PopJobAssignment>();  // track wich popId own how many worker + type of pop
 
@@ -39,8 +40,8 @@ public class Workplace
     public int level;
 
     public int profit;
-    public int cashBuffer;
-    public int cashBufferMax;
+    private int cashBuffer;
+    private int cashBufferMax;
     public int efficiency;
 
     public int poorStrataWage = 100;
@@ -62,7 +63,7 @@ public class Workplace
             provinceId = _provinceId;
             id = _workplaceId;
             goodConstructionCost = _goodConstructionCost;
-            maintenanceCost = _maintenanceCost;
+            maintenanceGoods = _maintenanceCost;
             owner = _owner;
             workersRequirement = new List<WorkerTypeCurrentMax>();
             poorStrataWage = (int)(poorStrataWage * wageMultiplier);
@@ -243,7 +244,29 @@ public class Workplace
         return 0;
     }
 
-    
+    public float SmallestProducerWorkerRatio()
+    {
+        float workerRatio = 1;
+
+        foreach (WorkerTypeCurrentMax workerType in workersRequirement) 
+        {
+            if((workerType.curentMax.current/ workerType.curentMax.max) < workerRatio)
+            {
+
+            }
+        }
+
+    public int GetWorkAvailableByJobType(PopJob popJob)
+    {
+        foreach(WorkerTypeCurrentMax workers in workersRequirement)
+        {
+            if(workers.workerType == popJob)
+            {
+                return workers.curentMax.max - workers.curentMax.current;
+            }
+        }
+        return 0;
+    }
 
     public class WorkerTypeCurrentMax
     {
