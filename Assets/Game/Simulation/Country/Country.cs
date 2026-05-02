@@ -8,16 +8,16 @@ public class Country
     public int playerId;
     public string name;
     public int[] color;
-    public int treasury;
-    public int income; // the sum of all income last month
-    public List<int> incomeHistory = new List<int>();
+    public long treasury;
+    public long income; // the sum of all income last month
+    public List<long> incomeHistory = new List<long>();
     public string tag;
 
     public float Income_tax = 0.1f;
 
     public CountryModdifiers stats;
 
-    public Country(int ID, string NAME, int[] COLOR, int TREASURY, string TAG)
+    public Country(int ID, string NAME, int[] COLOR, long TREASURY, string TAG)
     {
         id = ID;
         name = NAME;

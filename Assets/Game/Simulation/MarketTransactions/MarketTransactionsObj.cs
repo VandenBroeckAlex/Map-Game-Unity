@@ -47,7 +47,7 @@ public class MarketTransactionsObj
         }
     }
 
-    public struct MarketSellResponseEvent : IEvent
+    public struct MarketSellResponse : IEvent
     {
         public int id;
         public int cashRecived;

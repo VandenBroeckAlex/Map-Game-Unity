@@ -28,6 +28,8 @@ public class DataRegistery
     public PopJob[] popJobs;
     public Religion[] religionsDef;
     public Dictionary<string, GoodNeedMax[]> strataNeeds;
+    public Dictionary<int, Pop> PopulationDict;
+
     public string[] provinceTag = new string[] { "Default" };
     public Dictionary<int, Tile> tiles = new Dictionary<int,Tile>();
     public Dictionary<int,Province> provinces = new Dictionary<int,Province>();

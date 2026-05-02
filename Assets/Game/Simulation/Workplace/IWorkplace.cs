@@ -20,9 +20,11 @@ public interface IWorkplace
     void Degrade();
     void DestroyBuiding();
     void TakeLoan();
-    void BuyMaintenanceGood();
-
+    void AddCash(int cash);
+    MarketBuyRequest BuyMaintenanceGood();
     void ReciveCash(int ammount);
+    void SetCashTo(int ammount);
+    void AddGood(int id, int amount);
 }
 
 public interface IProductionBuilding
@@ -32,7 +34,7 @@ public interface IProductionBuilding
 
 public interface ITransformationBuilding
 {
-    void BuyInputGoods();
+    MarketBuyRequest BuyInputGoods();
 }
 
 public interface IMilitaryBuilding

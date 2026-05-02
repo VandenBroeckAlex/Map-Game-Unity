@@ -24,7 +24,8 @@
         "TileLoader",
         "TerrainTypes",
         "Moddifiers",
-        "MapUnits"
+        "MapUnits",
+        "SimPopulationsSystem"
     ],
     "includePlatforms": [
         "Editor"
