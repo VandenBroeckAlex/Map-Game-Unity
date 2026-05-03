@@ -18,7 +18,7 @@ public class ProductionSystem
                         GoodSellRequest gsr = new GoodSellRequest();
                         gsr.amountsell = ammount;
                         gsr.goodId = building.production.producedGoodId;
-
+                        gsr.domain = RequestDomain.Building;
                         MarketSellRequest request = new MarketSellRequest();
                         request.Id = building.GetWorkplaceId();
                         request.marketId = building.GetMarketId();

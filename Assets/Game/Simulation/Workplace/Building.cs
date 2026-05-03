@@ -72,6 +72,7 @@ public class Building
             request.id = id;
             request.marketId = marketId;
             request.cashAmount = production.cashBuffer;
+            request.domain = RequestDomain.Building;
             request.GoodRequests = new List<GoodRequest>();
             foreach (GoodRequirement good in workplace.maintenanceGoods)
             {
