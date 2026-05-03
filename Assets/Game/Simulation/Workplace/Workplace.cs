@@ -18,13 +18,9 @@ public enum WorkplaceType
 [System.Serializable]
 public class Workplace 
 {
-    public int id;
-    public int countryId;
-    private int provinceId;
-    public int marketId;
-    public string name;
     public WorkplaceType type;
     public int definitionId;
+    public int size;
     //list of pop type that can work here
     public int constructionCost; // IC cost / Time
     // currentmax construction cost ?
@@ -51,17 +47,12 @@ public class Workplace
     public bool isUnderConstruction;
 
     public Workplace(
-        int _provinceId, int _workplaceId, 
-        int _countryId,
         List<GoodRequirement> _goodConstructionCost, 
         List<GoodRequirement> _maintenanceCost,
         List<IdNum> _owner,
         float wageMultiplier,
         int definitionId)
         {
-            countryId = _countryId;
-            provinceId = _provinceId;
-            id = _workplaceId;
             goodConstructionCost = _goodConstructionCost;
             maintenanceGoods = _maintenanceCost;
             owner = _owner;
@@ -73,15 +64,7 @@ public class Workplace
         }
 
 
-    public int GetProvinceId()
-    {
-        return provinceId;
-    }
 
-    public int GetWorkplaceId()
-    {
-        return id;
-    }
 
     public Dictionary<int, PopJobAssignment> GetPopAmmount()
     {
@@ -244,17 +227,19 @@ public class Workplace
         return 0;
     }
 
-    public float SmallestProducerWorkerRatio()
+    public int SmallestProducerWorkerRatio()
     {
-        float workerRatio = 1;
-
-        foreach (WorkerTypeCurrentMax workerType in workersRequirement) 
+        int workerRatio = 100;
+        foreach (WorkerTypeCurrentMax workerType in workersRequirement)
         {
-            if((workerType.curentMax.current/ workerType.curentMax.max) < workerRatio)
+            int ratio = workerType.GetEmploymentPercent();
+            if (ratio < workerRatio)
             {
-
+                workerRatio = ratio;
             }
         }
+        return workerRatio;
+    }
 
     public int GetWorkAvailableByJobType(PopJob popJob)
     {
@@ -268,13 +253,25 @@ public class Workplace
         return 0;
     }
 
+    public bool HaveAllMaintenanceGoods()
+    {
+        foreach(GoodRequirement req in maintenanceGoods)
+        {
+            if(req.maxNeed > req.stockpile)
+            {
+                return false;
+            }
+        }
+        return true;
+    }
+
     public class WorkerTypeCurrentMax
     {
         public PopJob workerType;
         public IntCurentMax curentMax;
-        public float GetEmploymentPercent()
+        public int GetEmploymentPercent()
         {
-            return ((curentMax.max / curentMax.current) / curentMax.max) * 100;
+            return (curentMax.current/curentMax.max) * 100;
         }
 
         public WorkerTypeCurrentMax(PopJob _workerType)

@@ -2,9 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using static MarketTransactionsObj;
-using static Pop;
-using static Workplace;
 using static WorkplacesDefinitions;
+
 public class WorkplaceSystem
 {
     private readonly IIntentBuffer _intents;
@@ -143,11 +142,9 @@ public class WorkplaceSystem
             _maintenanceCost.Add(gr);
         }
 
-        Workplace workplace = new Workplace(provinceId, id, countryId, _goodConstructionCost, _maintenanceCost, _owner, 1, type.GetId());
+        Workplace workplace = new Workplace(_goodConstructionCost, _maintenanceCost, _owner, 1, type.GetId());
         return workplace;
     }
-
-
 
     public List<IWorkplace> GetWorkplaceByProvinceId(int id)
     {

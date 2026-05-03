@@ -60,7 +60,7 @@ public class MarketSystemTest
         marketList.Add(market);
 
         //test returned value
-        List<MarketBuyResponse> response = HandleMarketBuy.ProcessMarketRequest(requestsList, marketList);
+        List<MarketBuyResponse> response = HandleMarketBuy.ProcessMarketBuyRequest(requestsList, marketList);
         Assert.IsNotNull(response);
         Assert.AreEqual(1, response.Count);
         Assert.AreEqual(0, response[0].cashLeft);
@@ -100,7 +100,7 @@ public class MarketSystemTest
 
         marketList.Add(market);
 
-        List<MarketBuyResponse> response = HandleMarketBuy.ProcessMarketRequest(requestsList, marketList);
+        List<MarketBuyResponse> response = HandleMarketBuy.ProcessMarketBuyRequest(requestsList, marketList);
 
         Assert.IsNotNull(response);
         Assert.AreEqual(2, response.Count);

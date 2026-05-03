@@ -5,7 +5,7 @@ using static MarketTransactionsObj;
 
 public class HandleMarketBuy
 {
-    public static List<MarketBuyResponse> ProcessMarketRequest(List<MarketBuyRequest> requestList, List<Market> marketList)
+    public static List<MarketBuyResponse> ProcessMarketBuyRequest(List<MarketBuyRequest> requestList, List<Market> marketList)
     {
         List<MarketBuyResponse> marketResponses = new List<MarketBuyResponse>();
 

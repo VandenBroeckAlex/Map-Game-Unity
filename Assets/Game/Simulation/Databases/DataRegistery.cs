@@ -1,8 +1,7 @@
-using log4net.Core;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using static UnityEngine.UI.CanvasScaler;
+using static MarketTransactionsObj;
 
 
 
@@ -36,7 +35,11 @@ public class DataRegistery
     public List<MapGraphNode> mapGraphNodes;
     public Dictionary<int, List<UnitNavigation>> mapUnitState; //province unit
     public Dictionary<int, UnitNavigation> mapUnitDict = new Dictionary<int, UnitNavigation>();
+    public List<Building> buildings = new List<Building>();
 
+    //--- buffers ---
+    public List<MarketBuyResponse> marketResponseBuffer = new List<MarketBuyResponse>();
+    public List<MarketSellRequest> marketSellRequestBuffer = new List<MarketSellRequest>();
     public int GetPopStrataTagId(string popStrataTag)
     {
         return GetIdByString(popStrataTag, popStrata);
