@@ -1,8 +1,8 @@
 using static MarketTransactionsObj;
 
-public class ProductionSystem
+public static class ProductionSystem
 {
-    public void ProcessProduction(DataRegistery registry)
+    public static void ProcessProduction(DataRegistery registry)
     {
         foreach (var building in registry.buildings)
         {
@@ -11,7 +11,7 @@ public class ProductionSystem
                 int ammount = building.Produce();
 
                 // Route the output to the correct "Sink"
-                switch (building.outputDomain)
+                switch (building.production.outputDomain)
                 {
                     case OutputDomain.Market:
                         // Push to the Market's "Supply" buffer for this tick
@@ -20,7 +20,7 @@ public class ProductionSystem
                         gsr.goodId = building.production.producedGoodId;
                         gsr.domain = RequestDomain.Building;
                         MarketSellRequest request = new MarketSellRequest();
-                        request.Id = building.GetWorkplaceId();
+                        request.id = building.GetWorkplaceId();
                         request.marketId = building.GetMarketId();
                         request.goodSell = gsr;
                         //TODO add in buffer

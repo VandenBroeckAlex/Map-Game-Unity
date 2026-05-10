@@ -13,7 +13,7 @@ public class Building
     public Workplace workplace;
     public Production production;
     public Dictionary<string, int> outputGoods;
-    public OutputDomain outputDomain; 
+    
     public bool canProduce => production != null;
     public bool isRGO;
     public bool isCrop;

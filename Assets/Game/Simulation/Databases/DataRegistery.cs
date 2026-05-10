@@ -36,10 +36,11 @@ public class DataRegistery
     public Dictionary<int, List<UnitNavigation>> mapUnitState; //province unit
     public Dictionary<int, UnitNavigation> mapUnitDict = new Dictionary<int, UnitNavigation>();
     public List<Building> buildings = new List<Building>();
-
+    public Country country
     //--- buffers ---
     public List<MarketBuyResponse> marketResponseBuffer = new List<MarketBuyResponse>();
     public List<MarketSellRequest> marketSellRequestBuffer = new List<MarketSellRequest>();
+    public List<MarketSellResponse> marketSellResponseBuffer = new List<MarketSellResponse>();
     public int GetPopStrataTagId(string popStrataTag)
     {
         return GetIdByString(popStrataTag, popStrata);

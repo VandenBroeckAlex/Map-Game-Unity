@@ -16,7 +16,7 @@ public class HandleMarketBuy
 
             response.id = request.id;
             response.goodsBought = new List<GoodRequest>();
-
+            response.domain = request.domain;
             int market_id = request.marketId;
             Market _market = marketList[market_id];
             int cashAmount = request.cashAmount;

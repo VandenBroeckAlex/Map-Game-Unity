@@ -14,6 +14,7 @@ public class Production
     public int profit;
     public int producedGoodId;
     public List<GoodRequirement> inputGoods;
+    public OutputDomain outputDomain;
     public Production(
         int _cashBufferMax,
         int _efficiency

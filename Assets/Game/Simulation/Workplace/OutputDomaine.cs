@@ -2,10 +2,10 @@
 public enum OutputDomain
 {
         Market,         // Goes to the trade system
-        Tile,
+        Tile,           //Goes to the tile               
         Province,       // Infrastructure, local buffs
         Country,        // Research points, Admin points, Prestige
-        Internal ,       // Goods stored inside the building (Work-in-progress)
+        Internal ,      // Goods stored inside the building (Work-in-progress)
 }
 
 public struct ProductionOutput

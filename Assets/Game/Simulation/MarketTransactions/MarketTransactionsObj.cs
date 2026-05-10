@@ -21,13 +21,13 @@ public class MarketTransactionsObj
 
     public struct MarketSellRequest : IEvent
     {
-        public int Id;
+        public int id;
         public int marketId;
         public RequestDomain domain;
         public GoodSellRequest goodSell;
         public MarketSellRequest(int id, int marketId, GoodSellRequest goodSell, RequestDomain domain)
         {
-            Id = id;
+            this.id = id;
             this.marketId = marketId;
             this.goodSell = goodSell;
             this.domain = domain;

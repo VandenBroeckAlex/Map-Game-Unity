@@ -119,6 +119,10 @@ public class Pop
         }
     }
     
+    public void AddCash(int cash)
+    {
+        _cashAmount += cash;
+    }
 }
 
 
