@@ -38,6 +38,7 @@ public class Country
         treasury += cash;
         income += cash;
     }
+ 
     public void ResetIncome()
     {
         incomeHistory.Add(income);

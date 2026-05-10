@@ -43,7 +43,7 @@ public class Building
             //TODO if cashBuffer + cash > bufferMax => put money in bank
         }
     }
-    public void SetCashTo(int ammount)
+    public void SetCash(int ammount)
     {
         if (production != null)
         {

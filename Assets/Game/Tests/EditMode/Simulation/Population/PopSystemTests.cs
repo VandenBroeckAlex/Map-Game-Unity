@@ -50,7 +50,7 @@ public class PopSystemTests
         List<MarketBuyResponse> marketResponses = new List<MarketTransactionsObj.MarketBuyResponse>();
 
         MarketBuyResponse marketResponse = new MarketBuyResponse();
-        marketResponse.cashLeft = 0;
+        marketResponse.cost = 0;
         marketResponse.id = 0;
         marketResponse.goodsBought =  new List<GoodRequest>();
         GoodRequest goodrequest = new GoodRequest();

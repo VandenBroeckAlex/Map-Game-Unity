@@ -36,9 +36,13 @@ public class DataRegistery
     public Dictionary<int, List<UnitNavigation>> mapUnitState; //province unit
     public Dictionary<int, UnitNavigation> mapUnitDict = new Dictionary<int, UnitNavigation>();
     public List<Building> buildings = new List<Building>();
-    public Country country
+    public Dictionary<int,Country> countryDict = new Dictionary<int, Country>();
+    public List<Market> marketList = new List<Market>();
+
     //--- buffers ---
-    public List<MarketBuyResponse> marketResponseBuffer = new List<MarketBuyResponse>();
+    //Response should be dispatch by response process, no need of buffer ? 
+    public List<MarketBuyRequest> marketBuyRequests = new List<MarketBuyRequest>();
+    public List<MarketBuyResponse> marketBuyResponseBuffer = new List<MarketBuyResponse>();
     public List<MarketSellRequest> marketSellRequestBuffer = new List<MarketSellRequest>();
     public List<MarketSellResponse> marketSellResponseBuffer = new List<MarketSellResponse>();
     public int GetPopStrataTagId(string popStrataTag)

@@ -25,7 +25,8 @@
         "TerrainTypes",
         "Moddifiers",
         "MapUnits",
-        "SimPopulationsSystem"
+        "SimPopulationsSystem",
+        "SystemMarket"
     ],
     "includePlatforms": [
         "Editor"

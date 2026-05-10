@@ -1,12 +1,15 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
 using static MarketTransactionsObj;
 
 public class HandleMarketBuy
 {
-    public static List<MarketBuyResponse> ProcessMarketBuyRequest(List<MarketBuyRequest> requestList, List<Market> marketList)
+    public static List<MarketBuyResponse> ProcessMarketBuyRequest(DataRegistery registery)
     {
+        List<MarketBuyRequest> requestList = registery.marketBuyRequests;
+        List<Market> marketList = registery.marketList;
         List<MarketBuyResponse> marketResponses = new List<MarketBuyResponse>();
 
         foreach (MarketBuyRequest request in requestList) 
@@ -19,38 +22,35 @@ public class HandleMarketBuy
             response.domain = request.domain;
             int market_id = request.marketId;
             Market _market = marketList[market_id];
-            int cashAmount = request.cashAmount;
-
-            for(int j = 0; j < request.GoodRequests.Count; j++)
+            int availableCashAmount = request.cashAmount;
+            int totalCost = 0;
+            for (int j = 0; j < request.GoodRequests.Count; j++)
             {
+                if (availableCashAmount == 0)
+                {
+                    break;
+                }
+
                 GoodRequest goodResponse = new GoodRequest();
-
                 int goodId = request.GoodRequests[j].goodId;
-
                 goodResponse.goodId = goodId;
 
                 MarketGood Marketgood = _market.goods_list
                 .Where(good => good.good.id == goodId).FirstOrDefault();
 
-
                 int amountWanted = request.GoodRequests[j].amount;
-                //TODO Debug.Log($"price : {Marketgood.price}, ammount wanted : {amountWanted} ");
-                int totalCost = Marketgood.price * amountWanted;
-                if (cashAmount == 0)
-                {
-                    break;
-                   
-                }
+                int maxcost = Marketgood.price * amountWanted;
 
 
-                if (totalCost <= cashAmount)
+                if (maxcost  <= availableCashAmount)
                 {
                     // Can afford the full amount
                     goodResponse.amount = amountWanted;
-                    cashAmount -= totalCost;
+                    availableCashAmount -=  maxcost;
+                    totalCost -= maxcost;
                     response.goodsBought.Add(goodResponse);
                     Debug.Log("full amount");
-                    Debug.Log("cash left :" + response.cashLeft);
+                    Debug.Log("cash left :" + response.cost);
 
                     Marketgood.demand += amountWanted;
                     Marketgood.stockpile -= amountWanted;
@@ -59,9 +59,10 @@ public class HandleMarketBuy
                 else
                 {
                     // Can only afford partial amount
-                    int amountAffordable = cashAmount / Marketgood.price;
+                    int amountAffordable = (availableCashAmount ) / Marketgood.price;
                     goodResponse.amount = amountAffordable;
-                    cashAmount = 0;
+                    availableCashAmount = -request.cashAmount;
+                    totalCost -= -request.cashAmount;
                     response.goodsBought.Add(goodResponse);
                     Debug.Log("partial amount");
 
@@ -71,10 +72,66 @@ public class HandleMarketBuy
                     break; // Exit loop early, no cash left
                 }
             }
-            response.cashLeft = cashAmount;
+            response.cost = totalCost;
             marketResponses.Add(response);
         }
         return marketResponses;
-    }    
+    }
+
+    public static void ProcessMarketBuyReponse(DataRegistery registery)
+    {
+        foreach (MarketBuyResponse response in registery.marketBuyResponseBuffer)
+        {
+            switch (response.domain)
+            {
+                case RequestDomain.Population:
+
+                    if (registery.PopulationDict.TryGetValue(response.id, out Pop pop))
+                    {
+                        pop.AddGoods(response.goodsBought);
+                        pop.AddCash(response.cost);
+                    }
+                    else
+                    {
+                        //TODO throw invalid popId error
+                    }
+                    break;
+
+                case RequestDomain.Building:
+                    //getbuilding
+                    Building building = registery.buildings.Where(building => building.GetWorkplaceId() == response.id).FirstOrDefault();
+                    if (building != null)
+                    {
+                        building.AddCash(response.cost);
+                        foreach(GoodRequest gr in response.goodsBought)
+                        {
+                            building.AddGood(gr.goodId,gr.amount);
+                        }
+                    }
+                    else
+                    {
+                        //TODO throw invalid building error
+                    }
+
+                    //add cash
+                    break;
+
+                case RequestDomain.Country:
+                    //getcountry
+                    if (registery.countryDict.TryGetValue(response.id, out Country country))
+                    {
+                        country.ReceiveCash(response.cost);
+                        //Add to stockpile
+                    }
+                    else
+                    {
+                        //TODO throw invalid country id error
+                    }
+                    break;
+            }
+
+        }
+    }
+    
  }
 

@@ -59,11 +59,16 @@ public class MarketSystemTest
 
         marketList.Add(market);
 
+        DataRegistery _registery = new DataRegistery();
+        _registery.marketList = marketList;
+        _registery.marketBuyRequests = requestsList;
+
+
         //test returned value
-        List<MarketBuyResponse> response = HandleMarketBuy.ProcessMarketBuyRequest(requestsList, marketList);
+        List<MarketBuyResponse> response = HandleMarketBuy.ProcessMarketBuyRequest(_registery);
         Assert.IsNotNull(response);
         Assert.AreEqual(1, response.Count);
-        Assert.AreEqual(0, response[0].cashLeft);
+        Assert.AreEqual(gr.amount * -mg.price, response[0].cost);
   
         Assert.AreEqual(5, response[0].goodsBought[0].amount);
     }
@@ -100,7 +105,10 @@ public class MarketSystemTest
 
         marketList.Add(market);
 
-        List<MarketBuyResponse> response = HandleMarketBuy.ProcessMarketBuyRequest(requestsList, marketList);
+        DataRegistery _registery = new DataRegistery();
+        _registery.marketList = marketList;
+        _registery.marketBuyRequests = requestsList;
+        List<MarketBuyResponse> response = HandleMarketBuy.ProcessMarketBuyRequest(_registery);
 
         Assert.IsNotNull(response);
         Assert.AreEqual(2, response.Count);

@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using static MarketTransactionsObj;
 
 
 
@@ -122,6 +123,14 @@ public class Pop
     public void AddCash(int cash)
     {
         _cashAmount += cash;
+    }
+    public void SetCash(int cash)
+    {
+        _cashAmount = cash;
+    }
+    public void AddGoods(List<GoodRequest> goodsBought) 
+    {
+        throw new NotImplementedException();
     }
 }
 

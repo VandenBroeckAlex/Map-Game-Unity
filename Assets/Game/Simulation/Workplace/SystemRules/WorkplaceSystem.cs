@@ -106,7 +106,7 @@ public class WorkplaceSystem
             {
                 workplace.AddGood(good.goodId, good.amount);
             }
-            workplace.SetCashTo(response.cashLeft);
+            workplace.SetCashTo(response.cost);
         }
     }
     public void WorkplaceProcessMarketSellResponse(List<MarketSellResponse> responses)

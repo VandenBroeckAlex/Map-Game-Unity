@@ -72,6 +72,6 @@ public class MarketTransactionsObj
         public int id;
         public RequestDomain domain;
         public List<GoodRequest> goodsBought;
-        public int cashLeft;
+        public int cost;
     }
 }

@@ -38,7 +38,7 @@ public static class HandlePopBuy
             
             if(pop != null)
             {
-                pop.cashAmount = marketBuyResponse.cashLeft;
+                pop.cashAmount = marketBuyResponse.cost;
                 foreach(GoodRequest goodBought in marketBuyResponse.goodsBought)
                 {
                    GoodRequirement goodReq = pop.GoodList.Where(g => g.good_id == goodBought.goodId).FirstOrDefault();
