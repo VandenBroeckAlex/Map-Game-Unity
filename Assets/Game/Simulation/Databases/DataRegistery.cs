@@ -35,7 +35,8 @@ public class DataRegistery
     public List<MapGraphNode> mapGraphNodes;
     public Dictionary<int, List<UnitNavigation>> mapUnitState; //province unit
     public Dictionary<int, UnitNavigation> mapUnitDict = new Dictionary<int, UnitNavigation>();
-    public List<Building> buildings = new List<Building>();
+    public Dictionary<int, WorkplaceTemplate> workplaceTemplate = new Dictionary<int, WorkplaceTemplate>();   
+    public List<WorkplaceInstance> buildings = new List<WorkplaceInstance>();
     public Dictionary<int,Country> countryDict = new Dictionary<int, Country>();
     public List<Market> marketList = new List<Market>();
 

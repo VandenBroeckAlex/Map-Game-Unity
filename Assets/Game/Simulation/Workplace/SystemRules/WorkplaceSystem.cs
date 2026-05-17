@@ -4,12 +4,13 @@ using System.Linq;
 using static MarketTransactionsObj;
 using static WorkplacesDefinitions;
 
+//DEPRECIATED
 public class WorkplaceSystem
 {
     private readonly IIntentBuffer _intents;
 
     List<IWorkplace> workplacesList;
-    private int IdIncrement = 0;
+    private int idIncrement = 0;
 
     // list for workplace beeing build ?
 
@@ -122,7 +123,7 @@ public class WorkplaceSystem
         int tile = tileId;
         int provinceId = _registry.GetProvinceIdByTile(tile);
         int countryId = _registry.GetCountryIdByTile(tile);
-        int id = IdIncrement++;
+        int id = idIncrement++;
         Dictionary<int, int> constructionCost = type.constructionCost;
         Dictionary<int, int> maintenanceCost = type.maintenanceCost;
         Dictionary<int, int> workers = type.workers;

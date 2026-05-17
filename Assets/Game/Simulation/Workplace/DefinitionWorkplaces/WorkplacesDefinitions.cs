@@ -12,6 +12,9 @@ public class WorkplacesDefinitions
         public Dictionary<int, int> maintenanceCost; // good id num
         public Dictionary<int, int> workers; //popjob id - num
         //conditions
+        public int[] climat;
+        //ouput
+        //domaine
         protected DefinitionWorkplace(string name, string type, int ic, Dictionary<int, int> workers)
         {
             this.name = name;
@@ -20,31 +23,10 @@ public class WorkplacesDefinitions
             this.workers = workers;
         }
     
-        public int GetId() { return id; }
+        public int GetId () { return id; }
     }
 
-    public class DefinitionCropWorkplace : DefinitionWorkplace
-    {
-        public int efficiency;
-        public int output; //good id
-        public int[] climat; // climate id
-
-        public DefinitionCropWorkplace(
-            string name,
-            string type,
-            int icCost,
-            int efficiency,
-            int ouputId,
-            Dictionary<int, int> workers,
-            int[] climat
-            ) : base(name, type, icCost, workers)
-        {
-
-            this.efficiency = efficiency;
-            this.output = ouputId;
-            this.climat = climat;
-        }
-    }
+   
     public class DefinitionMiningWorkplace : DefinitionWorkplace
     {
 

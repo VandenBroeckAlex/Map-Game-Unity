@@ -1,125 +1,131 @@
 
+using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
 using System.Collections.Generic;
+using System.IO;
 using static DTOWorkplaceDef;
 using static WorkplacesDefinitions;
 
 public class WorkplaceLoader
 {
     DataRegistery _registery;
-    public WorkplaceLoader( DataRegistery registery)
+    public WorkplaceLoader(DataRegistery registery)
     {
         _registery = registery;
     }
-    
-    public List<DefinitionWorkplace> DeserializeWorkplaces(string json)
+
+    public Dictionary<int, WorkplaceTemplate> DeserializeWorkplaceTemplate(string json)
     {
-        JArray listWorkplaces = JArray.Parse(json);
-        List<DefinitionWorkplace> result = new List<DefinitionWorkplace>();
+        Dictionary<int, WorkplaceTemplate> result = new Dictionary<int, WorkplaceTemplate>();
+        Dictionary<string,int> tagToId = new Dictionary<string, int>();
+        DTOWorkplaceTemplate[] data = JsonConvert.DeserializeObject<DTOWorkplaceTemplate[]>(json);
 
-        foreach (JToken token in listWorkplaces)
+        if (data is null || data.Length == 0)
         {
+            throw new InvalidDataException("population.json is empty");
+        }
+        int indexer = 0;
+        foreach (DTOWorkplaceTemplate dataItem in data)
+        {
+            tagToId[dataItem.tag] = indexer;
+            //resolve 
+            WorkplaceTemplate wt = CreateWorkplaceTemplate(dataItem);
+            wt.id = indexer;
 
-            if (token is not JObject item) continue;
+            result[indexer] = wt;
+            indexer++;
+        }
 
+        //resolve update - degrade id
+        //TODO try get
+        foreach (DTOWorkplaceTemplate dataItem in data)
+        {
+            int id = tagToId[dataItem.tag];
 
-            string type = item["type"]?.Value<string>();
+            WorkplaceTemplate template = result[id];
 
-            if (string.IsNullOrEmpty(type))
+            if(dataItem.upgradeTemplateId is not null && tagToId.TryGetValue(dataItem.upgradeTemplateId, out int upgrade))
             {
-                continue;
+                template.upgradeTemplateId = upgrade;
+            }
+            if(dataItem.downgradeTemplateId is not null && tagToId.TryGetValue(dataItem.downgradeTemplateId, out int downgrade))
+            {
+                template.downgradeTemplateId = downgrade;
+            }
+        }
+            
+        return result;
+    }
+
+    private WorkplaceTemplate CreateWorkplaceTemplate(DTOWorkplaceTemplate dto)
+    {
+
+        Dictionary<int, int> workers = _registery.GetWorkersDictionary(dto.workersType);
+        Dictionary<int, int> inputGoods = _registery.GetGoodDictionary(dto.input);
+        List<ProductionEffect> output = ProdEffectDtoToRuntime(dto.output);
+        Dictionary<int, int> construGoods = _registery.GetGoodDictionary(dto.goodConstructionCost);
+        Dictionary<int, int> maintenanceGoods = _registery.GetGoodDictionary(dto.goodmaintenanceCost);
+
+
+
+        WorkplaceTemplate wt = new WorkplaceTemplate();
+        wt.tag = dto.tag;
+        wt.name = dto.name;
+        wt.ICConstructionCost = dto.constructionCost;
+        wt.workerRequirements = workers;
+        wt.constructionInput = DictToRequirement(construGoods);
+        wt.maintenanceGoods = DictToRequirement(maintenanceGoods);
+        wt.inputs = DictToRequirement(inputGoods);
+        wt.outputs = output;
+
+        return wt;
+    }
+
+    private List<ResourceRequirement> DictToRequirement(Dictionary<int, int> dict)
+    {
+        List<ResourceRequirement> result = new List<ResourceRequirement>();
+
+        foreach(KeyValuePair<int, int> kvp in dict)
+        {
+            ResourceRequirement req = new ResourceRequirement();
+
+            req.goodId = kvp.Key;
+            req.baseAmount = kvp.Value;
+            result.Add(req);
+        }
+
+        return result;
+    }
+
+    private List<ProductionEffect> ProdEffectDtoToRuntime(List<DTOProduction> data)
+    {
+        List<ProductionEffect> result = new List<ProductionEffect>();
+
+        foreach (DTOProduction prod in data) 
+        {
+            ProductionEffect pe = new ProductionEffect();
+            Enum.TryParse("Active", out OutputDomain domain);
+
+            if(domain == null)
+            {
+                //Raise Error
             }
 
-            type = type.ToLower();
+            pe.type = domain;
 
-            switch (type)
+            switch (domain)
             {
-                case "mining":
-                    result.Add(CreateMinigWorkplaceDef(item));
+                case OutputDomain.Market:
+                    // id of good
+                    pe.targetId = _registery.GetGoodIdByTagId(prod.id);
                     break;
-                case "crops": 
-                    result.Add(CreateCropWorkplaceDef(item));
-                    break;
-                case "factory":
-                    result.Add(CreateFactoryWorkplace(item));
-                    break;
-                default:
-                    throw new Exception($"Couldn't find type: {type}");
             }
+            pe.baseAmount = prod.baseAmount;
+            result.Add(pe);
         }
         return result;
     }
 
-
-    private DefinitionMiningWorkplace CreateMinigWorkplaceDef(JObject workplace)
-    {
-        MineralRgoDtoDef dto = workplace.ToObject<MineralRgoDtoDef>();
-        
-        // check string to id
-        int outputId = _registery.GetGoodIdByTagId(dto.outputGood);
-
-        Dictionary<int, int> workers = _registery.GetWorkersDictionary(dto.workersType);
-
-        DefinitionMiningWorkplace mWorkplace = new DefinitionMiningWorkplace(
-            dto.name,
-            dto.type,
-            dto.constructionCost,
-            dto.efficiency,
-            outputId,
-            workers
-            );
-        return mWorkplace;
-    }
-
-    private DefinitionCropWorkplace CreateCropWorkplaceDef(JObject workplace)
-    {
-        CropRgoDtoDef dto = workplace.ToObject<CropRgoDtoDef>();
-
-        int outputId = _registery.GetGoodIdByTagId(dto.outputGood);
-
-        Dictionary<int, int> workers = _registery.GetWorkersDictionary(dto.workersType);
-
-        int[] climat = new int[dto.climate.Length];
-
-        for (int i = 0; i< climat.Length; i++)
-        {
-            climat[i] = _registery.GetClimateTagId(dto.climate[i]);
-        }
-
-        DefinitionCropWorkplace mWorkplace = new DefinitionCropWorkplace(
-            dto.name,
-            dto.type,
-            dto.constructionCost,
-            dto.efficiency,
-            outputId,
-            workers,
-            climat
-            );
-        return mWorkplace;
-    }
-
-    private DefinitionFactoryWorkplace CreateFactoryWorkplace(JObject workplace) 
-    {
-        FactoryBuildingDTODef dto = workplace.ToObject<FactoryBuildingDTODef>();
-
-        int outputId = _registery.GetGoodIdByTagId(dto.outputGood);
-
-        Dictionary<int, int> workers = _registery.GetWorkersDictionary(dto.workersType);
-
-        Dictionary<int,int> inputGoods = _registery.GetGoodDictionary(dto.inputGood);
-
-        DefinitionFactoryWorkplace mWorkplace = new DefinitionFactoryWorkplace(
-            dto.name,
-            dto.type,
-            dto.constructionCost,
-            dto.efficiency,
-            outputId,
-            workers,
-            inputGoods
-            );
-        return mWorkplace;
-    }
-
-  
+   
 }

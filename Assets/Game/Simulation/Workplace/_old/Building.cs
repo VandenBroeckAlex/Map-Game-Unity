@@ -12,6 +12,7 @@ public class Building
     int size;
     public Workplace workplace;
     public Production production;
+ 
     public Dictionary<string, int> outputGoods;
     
     public bool canProduce => production != null;

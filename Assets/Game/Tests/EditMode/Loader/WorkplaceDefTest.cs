@@ -34,40 +34,94 @@ public class WorkplaceDefTest
 
         WorkplaceLoader workplaceLoader = new WorkplaceLoader(registery);
 
-       string json = @"
+        string json = @"
 [
     {
-        ""name"": ""coal mine"",
-        ""type"": ""mining"",
-        ""constructionIC"": 400,
-        ""maintenanceCost"": 10,
+        ""tag"": ""grain_farm_1"",
+        ""name"": ""Grain Fields"",
+        ""constructionCost"": 100,
+        ""upgradeTemplateId"": ""grain_farm_2"",
+        ""downgradeTemplateId"": null,
+        ""goodConstructionCost"": {
+            ""grain"": 10
+        },
+        ""goodmaintenanceCost"": {
+            ""grain"": 2
+        },
+        ""input"": {},
+        ""output"": [
+            {
+                ""type"": ""Market"",
+                ""id"": ""grain"",
+                ""baseAmount"": 50.0
+            }
+        ],
+        ""workersType"": {
+            ""peasants"": 1000
+        }
+    },
+    {
+        ""tag"": ""coal_mine_1"",
+        ""name"": ""Basic Coal Mine"",
+        ""constructionCost"": 400,
+        ""upgradeTemplateId"": ""coal_mine_2"",
+        ""downgradeTemplateId"": null,
+        ""goodConstructionCost"": {
+            ""grain"": 25
+        },
+        ""goodmaintenanceCost"": {
+            ""grain"": 5
+        },
+        ""input"": {},
+        ""output"": [
+            {
+                ""type"": ""Market"",
+                ""id"": ""coal"",
+                ""baseAmount"": 100.0
+            }
+        ],
         ""workersType"": {
             ""miners"": 900,
             ""machinists"": 50,
             ""clerks"": 20,
             ""engineer"": 20
-        },
-        ""efficiency"": 100,
-        ""output"": ""coal""
+        }
     },
     {
-        ""name"": ""grain fields"",
-        ""type"": ""crops"",
-        ""constructionIC"": 100,
-        ""maintenanceCost"": 5,
-        ""workersType"": {
-            ""peasants"": 1000
+        ""tag"": ""coal_mine_2"",
+        ""name"": ""Advanced Coal Mine"",
+        ""constructionCost"": 800,
+        ""upgradeTemplateId"": null,
+        ""downgradeTemplateId"": ""coal_mine_1"",
+        ""goodConstructionCost"": {
+            ""grain"": 50
         },
-        ""efficiency"": 100,
-        ""output"": ""grain"",
-        ""climate"": [""temperate"", ""continental""]
+        ""goodmaintenanceCost"": {
+            ""grain"": 12
+        },
+        ""input"": {
+            ""grain"": 5 
+        },
+        ""output"": [
+            {
+                ""type"": ""Market"",
+                ""id"": ""coal"",
+                ""baseAmount"": 250.0
+            }
+        ],
+        ""workersType"": {
+            ""miners"": 800,
+            ""machinists"": 150,
+            ""clerks"": 30,
+            ""engineer"": 50
+        }
     }
 ]";
-    
-        List<WorkplacesDefinitions.DefinitionWorkplace> result = workplaceLoader.DeserializeWorkplaces(json);
+
+        Dictionary<int, WorkplaceTemplate> result = workplaceLoader.DeserializeWorkplaceTemplate(json);
 
         Assert.IsNotNull(result);
-        Assert.AreEqual(2, result.Count);
+        Assert.AreEqual(3, result.Count);
 
     }
 
@@ -95,34 +149,88 @@ public class WorkplaceDefTest
         string json = @"
 [
     {
-        ""name"": ""coal mine"",
-        ""type"": ""mining"",
-        ""constructionIC"": 400,
-        ""maintenanceCost"": 10,
+        ""tag"": ""grain_farm_1"",
+        ""name"": ""Grain Fields"",
+        ""constructionCost"": 100,
+        ""upgradeTemplateId"": ""grain_farm_2"",
+        ""downgradeTemplateId"": null,
+        ""goodConstructionCost"": {
+            ""grain"": 10
+        },
+        ""goodmaintenanceCost"": {
+            ""grain"": 2
+        },
+        ""input"": {},
+        ""output"": [
+            {
+                ""type"": ""Market"",
+                ""id"": ""grain"",
+                ""baseAmount"": 50.0
+            }
+        ],
+        ""workersType"": {
+            ""peasants"": 1000
+        }
+    },
+    {
+        ""tag"": ""coal_mine_1"",
+        ""name"": ""Basic Coal Mine"",
+        ""constructionCost"": 400,
+        ""upgradeTemplateId"": ""coal_mine_2"",
+        ""downgradeTemplateId"": null,
+        ""goodConstructionCost"": {
+            ""grain"": 25
+        },
+        ""goodmaintenanceCost"": {
+            ""grain"": 5
+        },
+        ""input"": {},
+        ""output"": [
+            {
+                ""type"": ""Market"",
+                ""id"": ""coal"",
+                ""baseAmount"": 100.0
+            }
+        ],
         ""workersType"": {
             ""miners"": 900,
             ""machinists"": 50,
             ""clerks"": 20,
             ""engineer"": 20
-        },
-        ""efficiency"": 100,
-        ""output"": ""coal""
+        }
     },
     {
-        ""name"": ""grain fields"",
-        ""type"": ""crops"",
-        ""constructionIC"": 100,
-        ""maintenanceCost"": 5,
-        ""workersType"": {
-            ""peasants"": 1000
+        ""tag"": ""coal_mine_2"",
+        ""name"": ""Advanced Coal Mine"",
+        ""constructionCost"": 800,
+        ""upgradeTemplateId"": null,
+        ""downgradeTemplateId"": ""coal_mine_1"",
+        ""goodConstructionCost"": {
+            ""grain"": 50
         },
-        ""efficiency"": 100,
-        ""output"": ""grain"",
-        ""valid_climate"": [""temperate"", ""continental""]
+        ""goodmaintenanceCost"": {
+            ""grain"": 12
+        },
+        ""input"": {
+            ""grain"": 5 
+        },
+        ""output"": [
+            {
+                ""type"": ""Market"",
+                ""id"": ""coal"",
+                ""baseAmount"": 250.0
+            }
+        ],
+        ""workersType"": {
+            ""miners"": 800,
+            ""machinists"": 150,
+            ""clerks"": 30,
+            ""engineer"": 50
+        }
     }
 ]";
 
-        List<WorkplacesDefinitions.DefinitionWorkplace> result = workplaceLoader.DeserializeWorkplaces(json);
+        Dictionary<int, WorkplaceTemplate> result = workplaceLoader.DeserializeWorkplaceTemplate(json);
 
         Assert.IsNotNull(result);
         Assert.AreEqual(2, result.Count);

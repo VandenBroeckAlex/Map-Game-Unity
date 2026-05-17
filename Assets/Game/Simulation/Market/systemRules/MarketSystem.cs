@@ -26,7 +26,7 @@ public static class MarketSystem
 
                     case RequestDomain.Building:
                         //getbuilding
-                        Building building = registery.buildings.Where(building => building.GetWorkplaceId() == request.id).FirstOrDefault();
+                        WorkplaceInstance building = registery.buildings.Where(building => building.GetWorkplaceId() == request.id).FirstOrDefault();
                         if(building != null)
                         {
                             building.AddCash(request.cashRecived);

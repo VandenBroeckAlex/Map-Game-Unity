@@ -78,15 +78,15 @@ public class HandleMarketBuy
         return marketResponses;
     }
 
-    public static void ProcessMarketBuyReponse(DataRegistery registery)
+    public static void ProcessMarketBuyReponse(DataRegistery _registery)
     {
-        foreach (MarketBuyResponse response in registery.marketBuyResponseBuffer)
+        foreach (MarketBuyResponse response in _registery.marketBuyResponseBuffer)
         {
             switch (response.domain)
             {
                 case RequestDomain.Population:
 
-                    if (registery.PopulationDict.TryGetValue(response.id, out Pop pop))
+                    if (_registery.PopulationDict.TryGetValue(response.id, out Pop pop))
                     {
                         pop.AddGoods(response.goodsBought);
                         pop.AddCash(response.cost);
@@ -99,13 +99,14 @@ public class HandleMarketBuy
 
                 case RequestDomain.Building:
                     //getbuilding
-                    Building building = registery.buildings.Where(building => building.GetWorkplaceId() == response.id).FirstOrDefault();
+                    WorkplaceInstance building = _registery.buildings.Where(building => building.GetWorkplaceId() == response.id).FirstOrDefault();
                     if (building != null)
                     {
                         building.AddCash(response.cost);
                         foreach(GoodRequest gr in response.goodsBought)
                         {
-                            building.AddGood(gr.goodId,gr.amount);
+                            WorkplaceTemplate template = _registery.workplaceTemplate[building.TemplateId];
+                            building.AddGood(gr.goodId,gr.amount,template);
                         }
                     }
                     else
@@ -118,7 +119,7 @@ public class HandleMarketBuy
 
                 case RequestDomain.Country:
                     //getcountry
-                    if (registery.countryDict.TryGetValue(response.id, out Country country))
+                    if (_registery.countryDict.TryGetValue(response.id, out Country country))
                     {
                         country.ReceiveCash(response.cost);
                         //Add to stockpile
