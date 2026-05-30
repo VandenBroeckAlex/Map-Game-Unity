@@ -12,7 +12,7 @@ public class Market
 
     private List<int> monthMoneyCreationHistory;
     private int monthMoneyCreation;
-    private int weekMoneyCreation;
+
 
     public void SetOwnerIncomeTax(float _owner_Income_tax)
     {
@@ -30,15 +30,17 @@ public class Market
         Marketgood.supply += ammount;
         Marketgood.stockpile += ammount;
     }
+    public void RetrieveGood(int goodId, int ammount)
+    {
+        MarketGood Marketgood = goods_list
+        .Where(good => good.good.id == goodId).FirstOrDefault();
 
+        Marketgood.demand += ammount;
+        Marketgood.stockpile -= ammount;
+    }
     public void TrackMoneyCreation(int ammount)
     {
-        tickMoneyCreation += ammount;
-    }
-    public void StoreMonthMoneyCreation()
-    {
-        monthMoneyCreationHistory.Add(monthMoneyCreation);
-        monthMoneyCreation = 0;
+        monthMoneyCreation += ammount;
     }
     public int GetTotalMoneyCreation()
     {
@@ -48,5 +50,22 @@ public class Market
             response += value;
         }
         return response;
+    }
+    public void RecordMonthData()
+    {
+        RecordMonthMoneyCreation();
+        RecordGoodTrends();
+    }
+    private void RecordMonthMoneyCreation()
+    {
+        monthMoneyCreationHistory.Add(monthMoneyCreation);
+        monthMoneyCreation = 0;
+    }
+    private void RecordGoodTrends()
+    {
+        foreach (MarketGood good in goods_list) 
+        {
+            good.RecordGoodHistory();
+        }
     }
 }
