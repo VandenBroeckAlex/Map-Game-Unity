@@ -9,6 +9,11 @@ public class Market
     public float CashAmount = 0;
     public List<MarketGood> goods_list = new();
     private float owner_Income_tax = 0.05f;
+
+    private List<int> monthMoneyCreationHistory;
+    private int monthMoneyCreation;
+    private int weekMoneyCreation;
+
     public void SetOwnerIncomeTax(float _owner_Income_tax)
     {
         owner_Income_tax = _owner_Income_tax;
@@ -17,7 +22,6 @@ public class Market
     {
         return owner_Income_tax;
     }
-
     public void AddGoodStockpile(int goodId, int ammount)
     {
         MarketGood Marketgood = goods_list
@@ -27,4 +31,22 @@ public class Market
         Marketgood.stockpile += ammount;
     }
 
+    public void TrackMoneyCreation(int ammount)
+    {
+        tickMoneyCreation += ammount;
+    }
+    public void StoreMonthMoneyCreation()
+    {
+        monthMoneyCreationHistory.Add(monthMoneyCreation);
+        monthMoneyCreation = 0;
+    }
+    public int GetTotalMoneyCreation()
+    {
+        int response = monthMoneyCreation;
+        foreach (int value in monthMoneyCreationHistory)
+        {
+            response += value;
+        }
+        return response;
+    }
 }

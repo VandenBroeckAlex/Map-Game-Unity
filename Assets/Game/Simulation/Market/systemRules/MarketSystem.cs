@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using UnityEngine;
 using static MarketTransactionsObj;
 
 public static class MarketSystem
@@ -75,6 +74,9 @@ public static class MarketSystem
                 {
                     int ammount = request.goodSell.amountsell;
                     int cash = ammount * good.price;
+
+                    //Market creat the cash / keep track of how much was created
+                    market.TrackMoneyCreation(cash);
 
                     good.supply += ammount;
                     good.stockpile += ammount;
