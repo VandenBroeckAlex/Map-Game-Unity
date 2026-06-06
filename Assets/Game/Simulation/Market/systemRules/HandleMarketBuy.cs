@@ -102,7 +102,7 @@ public class HandleMarketBuy
                     WorkplaceInstance building = _registery.buildings.Where(building => building.GetWorkplaceId() == response.id).FirstOrDefault();
                     if (building != null)
                     {
-                        building.AddCash(response.cost);
+                        building.UpdateCash(response.cost);
                         foreach(GoodRequest gr in response.goodsBought)
                         {
                             WorkplaceTemplate template = _registery.workplaceTemplate[building.TemplateId];

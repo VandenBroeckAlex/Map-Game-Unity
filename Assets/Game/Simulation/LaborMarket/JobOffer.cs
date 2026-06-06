@@ -1,8 +1,8 @@
 public class JobOffer
 {
-    int workplaceId;
-    int provinceId;
-    int popType;
-    int openPositions;
-    int wage;
+    public int workplaceId;
+    public int provinceId;
+    public int popType;
+    public int openPositions;
+    public int wage;
 }

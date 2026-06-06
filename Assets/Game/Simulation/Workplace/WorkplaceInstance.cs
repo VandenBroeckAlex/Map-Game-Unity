@@ -8,22 +8,27 @@ public class WorkplaceInstance
     public int TemplateId { get; private set; }
     public int tileId { get; private set; }
     public int provinceId { get; private set; }
+    public int countryId { get; private set; }
     public int marketId { get; private set; }
 
 
     // Dynamic State
     public bool canProduce;
     public bool isDamaged;
+    public bool isOpen;
     public int size { get; set; } = 1;
     public float efficiency { get; private set; } = 1.0f;
     public int cashPool;
     public int companyId;
+    public int wages;
+
     //Stockpile (input and output)?
-    public Dictionary<int, int> inputGoods;
-    public Dictionary<int, int> maintenanceGoods;
+    public List<GoodRequirement> inputGoodsStockpile;
+    public List<GoodRequirement> maintenanceGoodsStockpile;
     // Tracks current employment: JobType -> Current Count
-    public Dictionary<int, int> currentWorkers { get; set; } = new();
-    public Dictionary<int, int> owners; //idnum - num
+    // id current
+    public List<IdNum> currentWorkers { get; set; } = new();
+    public List<IdNum> owners; 
 
    
     public WorkplaceInstance(int id,int templateId, int tileId, int provinceId)
@@ -46,6 +51,42 @@ public class WorkplaceInstance
 
     //intent
     
+    public List<JobOffer> JobOffers(WorkplaceTemplate template)
+    {
+        List <JobOffer> jobs = new List <JobOffer>();
+        foreach (var req in template.workerRequirements)
+        {
+            int maxAllowed = req.Value * size;
+            IdNum worker = GetIdNumInList(req.Key, currentWorkers);
+            int openPosition = maxAllowed - worker.num;
+            if (openPosition > 0)
+            {
+                JobOffer offer = new JobOffer();
+                offer.workplaceId = id;
+                offer.provinceId = provinceId;
+                offer.wage = wages;
+                offer.popType = worker.id;
+                offer.openPositions = openPosition;
+                jobs.Add(offer);
+            }
+        }
+        return jobs;
+    }
+
+    public List<IdNum> FirePop(int percentage)
+    {
+        List<IdNum> result = new List<IdNum>();
+        foreach (IdNum idNum in currentWorkers)
+        {
+            int amount = (int)((idNum.num / 100) * percentage);
+
+            idNum.num -= amount;//remove amount from workplace
+
+            IdNum _idnum = new IdNum(idNum.id,amount);
+            result.Add(_idnum);
+        }
+        return result;
+    }
 
     public float CalculateEmploymentRatio(WorkplaceTemplate template)
     {
@@ -55,16 +96,16 @@ public class WorkplaceInstance
         foreach (var req in template.workerRequirements)
         {
             int maxAllowed = req.Value * size;
-            currentWorkers.TryGetValue(req.Key, out int hired);
-
+            IdNum worker = GetIdNumInList(req.Key, currentWorkers);
+            
             totalNeeded += maxAllowed;
-            totalHired += hired;
+            totalHired += worker.num;
         }
 
         return totalNeeded > 0 ? totalHired / totalNeeded : 0;
     }
 
-    public void AddCash(int cash)
+    public void UpdateCash(int cash)
     {
         this.cashPool += cash;
     }
@@ -79,27 +120,29 @@ public class WorkplaceInstance
         if (templateMG is not null)
         {
             int maxNeed = (int)(templateMG.Value.baseAmount * size);
-            if (maintenanceGoods[id] < maxNeed)
+            GoodRequirement maintenanceGoodrequirement = GetGoodRequirementInList(id, maintenanceGoodsStockpile);
+
+            if (maintenanceGoodrequirement.stockpile < maxNeed)
             {
-                int total = maintenanceGoods[id] + amount;
+                int total = maintenanceGoodrequirement.stockpile + amount;
 
                 if (total <= maxNeed )
                 {
-                    maintenanceGoods[id] = total;
+                    maintenanceGoodrequirement.stockpile = total;
                     amount = 0;
                 }
                 else
                 {
-                    maintenanceGoods[id] = maxNeed;
+                    maintenanceGoodrequirement.stockpile = maxNeed;
                     amount = total - maxNeed; // Return the overflow amount
                 }
             }
         }
 
-
-        if(inputGoods.TryGetValue(id, out int _ammont) && amount > 0)
+        GoodRequirement inputGoodrequirement = GetGoodRequirementInList(id, inputGoodsStockpile);
+        if (inputGoodrequirement is not null && amount > 0)
         {
-            inputGoods[id] += amount;
+            inputGoodrequirement.stockpile += amount;
         }
         
     }
@@ -116,18 +159,18 @@ public class WorkplaceInstance
 
     public bool HaveAllMaintenanceGoods(WorkplaceTemplate template)
     {
-        foreach (KeyValuePair<int,int> kvp in maintenanceGoods)
+        foreach (GoodRequirement gr in maintenanceGoodsStockpile)
         {
             ResourceRequirement? good  = template.maintenanceGoods
                 .Cast<ResourceRequirement?>()
-                .Where(mg => mg.Value.goodId == kvp.Key).First();
+                .Where(mg => mg.Value.goodId == gr.good_id).First();
 
             if (good is null) { 
                 continue;
             }
             int maxNeed = (int)(good.Value.baseAmount * size);
 
-            if (maxNeed > kvp.Value)
+            if (maxNeed > gr.stockpile)
             {
                 return false;
             }
@@ -135,7 +178,19 @@ public class WorkplaceInstance
         return true;
     }
    
-    
+    public Dictionary<int,int> CreateStockpileRequirement(List<ResourceRequirement> requirements)
+    {
+        Dictionary<int,int> stockpile = new Dictionary<int,int>();
+
+        foreach(ResourceRequirement requirement in requirements)
+        {
+            int amount = requirement.baseAmount;
+            int id = requirement.goodId;
+
+            stockpile[id] = amount;
+        }
+        return stockpile;
+    }
     private int UpdateStockpileInList(IEnumerable<GoodRequirement> list, int id, int amount)
     {
         foreach (var gr in list)
@@ -157,6 +212,36 @@ public class WorkplaceInstance
             }
         }
         return amount; // ID wasn't found in this list, return original amount
+    }
+
+    private IdNum? GetIdNumInList(int id,List<IdNum> list)
+    {
+        foreach(IdNum idnum in list)
+        {
+            if(idnum.id == id)
+            {
+                return idnum;
+            }
+        }
+        return null;
+    }
+
+    private GoodRequirement? GetGoodRequirementInList(int id,List<GoodRequirement> list)
+    {
+        foreach(GoodRequirement gr  in list)
+        {
+            if(gr.good_id == id)
+            {
+                return gr;
+            }
+        }
+        return null;
+    }
+
+    public int GetCash()
+    {
+        //Get cash in bank
+        return cashPool;
     }
 } 
 

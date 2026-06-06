@@ -9,7 +9,7 @@ public struct ProductionEffect
 public struct ResourceRequirement
 {
     public int goodId { get; set; }
-    public float baseAmount { get; set; } // Consumed per Size level at 100% throughput
+    public int baseAmount { get; set; } // Consumed per Size level at 100% throughput
 }
 
 public struct ProductionIntent

@@ -1,15 +1,21 @@
 using static MarketTransactionsObj;
+/*
+Compute workplace production
 
-public static class ProductionSystem
+Create Request buffer
+
+Apply it to SellRequestbuffer  in registery
+ */
+public static class HandleWorkplaceProduce
 {
-    public static void ProcessProduction(DataRegistery registry)
+    public static void ProcessProduction(DataRegistery registery)
     {
-        foreach (WorkplaceInstance building in registry.buildings)
+        foreach (WorkplaceInstance building in registery.buildings)
         {
             if (building.canProduce)
             {
                 //get template
-                registry.workplaceTemplate.TryGetValue(building.TemplateId, out WorkplaceTemplate definition);
+                registery.workplaceTemplate.TryGetValue(building.TemplateId, out WorkplaceTemplate definition);
                 foreach (ProductionEffect output in definition.outputs)
                 {
                     int ammount = (int)(output.baseAmount * (building.CalculateEmploymentRatio(definition)));// input + effi input
@@ -30,7 +36,7 @@ public static class ProductionSystem
                             request.marketId = building.GetMarketId();
                             request.goodSell = gsr;
                             //TODO add in buffer
-                            registry.marketSellRequestBuffer.Add(request);
+                            registery.marketSellRequestBuffer.Add(request);
                             break;
 
                         case OutputDomain.Country:

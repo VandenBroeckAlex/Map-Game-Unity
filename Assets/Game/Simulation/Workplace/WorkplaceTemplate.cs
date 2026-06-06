@@ -25,4 +25,27 @@ public class WorkplaceTemplate
     public List<ProductionEffect> outputs { get; set; } = new();
     public List<ResourceRequirement> efficiencyInput { get; set; } = new();
 
+    public int GetMaxGoodAmountById(int id)
+    {
+        int result = 0;
+
+        foreach(ResourceRequirement req in maintenanceGoods)
+        {
+            if(req.goodId == id)
+            {
+                result += req.baseAmount;
+            }
+        }
+        if(inputs != null)
+        {
+            foreach (ResourceRequirement req in inputs)
+            {
+                if (req.goodId == id)
+                {
+                    result += req.baseAmount;
+                }
+            }
+        }
+        return result;
+    }
 }

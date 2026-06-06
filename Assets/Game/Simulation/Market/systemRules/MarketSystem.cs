@@ -28,7 +28,7 @@ public static class MarketSystem
                         WorkplaceInstance building = registery.buildings.Where(building => building.GetWorkplaceId() == request.id).FirstOrDefault();
                         if(building != null)
                         {
-                            building.AddCash(request.cashRecived);
+                            building.UpdateCash(request.cashRecived);
                         }
                         else
                         {

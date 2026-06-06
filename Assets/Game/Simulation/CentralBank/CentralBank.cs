@@ -5,43 +5,31 @@ Can loan to bank in last resort (panic) if is solvent
 Can loan to country with interest
  */
 
+using System.Collections.Generic;
+
 public class CentralBank
 {
     private int countryId;
 
     public string name;
     
-    private int goldReserve;
+    private int goldReserve = 0;
 
     byte localMoneyParity;
     byte reserveRate;
 
     public int localCurencyVolume; // country pop workplace bank
 
-    /*
-     variable for traking confidance in the market
-     */
+    List<Account> accounts;
 
-    /*
-    classic Bank :
-    
-    localMoneyReserve
-    issuedDebtAmmount
-    List<account>
 
-    account :
-    ownerType : pop,country,workplace
-    ownerId
-    reserve
-    list<Debt>
-    getDebtAmount
+    public void AddGoldReserve(int ammount)
+    {
+        this.goldReserve += ammount;
+    }
 
-    Debt:
-    ownerType
-    ownerId
-    debtorId
-    ammountToRepay
-    CurrencyType (gold for foreign entity, localCurency)
-
-    */
+    public int GetGoldReserve()
+    {
+        return this.goldReserve;
+    }
 }
