@@ -99,7 +99,7 @@ public class HandleMarketBuy
 
                 case RequestDomain.Building:
                     //getbuilding
-                    WorkplaceInstance building = _registery.buildings.Where(building => building.GetWorkplaceId() == response.id).FirstOrDefault();
+                    WorkplaceInstance building = _registery.workplacesInstances.Where(building => building.GetWorkplaceId() == response.id).FirstOrDefault();
                     if (building != null)
                     {
                         building.UpdateCash(response.cost);

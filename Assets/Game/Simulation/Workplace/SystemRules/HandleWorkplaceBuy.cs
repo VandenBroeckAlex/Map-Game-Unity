@@ -15,7 +15,7 @@ public class HandleWorkplaceBuy
     {
         List<MarketBuyRequest> result = new List<MarketBuyRequest> ();
         
-        foreach (WorkplaceInstance building in registery.buildings)
+        foreach (WorkplaceInstance building in registery.workplacesInstances)
         {
             registery.workplaceTemplate.TryGetValue(building.TemplateId, out WorkplaceTemplate template);
             List<GoodRequest> requestList = new List<GoodRequest> ();

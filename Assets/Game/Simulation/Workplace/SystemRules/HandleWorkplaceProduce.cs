@@ -10,7 +10,7 @@ public static class HandleWorkplaceProduce
 {
     public static void ProcessProduction(DataRegistery registery)
     {
-        foreach (WorkplaceInstance building in registery.buildings)
+        foreach (WorkplaceInstance building in registery.workplacesInstances)
         {
             if (building.canProduce)
             {

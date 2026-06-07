@@ -6,6 +6,16 @@ using UnityEngine;
 public class HandleWorkplaceRecruitement
 {
     //hire
+    public void WorkplaceHire(List<JobApplication> jobOffer, List<WorkplaceInstance> workplaceInstanceList)
+    {
+        foreach (JobApplication job in jobOffer) 
+        {
+            WorkplaceInstance workplaceInstance = GetWorkplaceInstanceById(job.workplaceId, workplaceInstanceList);
+
+            workplaceInstance.HirePop(job.popId, job.popType, job.amount);
+        }
+    }
+
     public List<JobOffer> WorkplaceJobOffers(List<WorkplaceInstance> list, Dictionary<int,WorkplaceTemplate>templates)
     {
         List <JobOffer> jobOffer = new List <JobOffer>();
@@ -49,5 +59,10 @@ public class HandleWorkplaceRecruitement
             }
         }
         return result;
+    }
+
+    private WorkplaceInstance GetWorkplaceInstanceById(int id, List<WorkplaceInstance> instanceList)
+    {
+        return instanceList.Where(instance => instance.GetWorkplaceId() == id).FirstOrDefault();
     }
 }

@@ -29,6 +29,7 @@ public class DataRegistery
     public Dictionary<string, GoodNeedMax[]> strataNeeds;
     public Dictionary<int, Pop> PopulationDict;
 
+
     public string[] provinceTag = new string[] { "Default" };
     public Dictionary<int, Tile> tiles = new Dictionary<int,Tile>();
     public Dictionary<int,Province> provinces = new Dictionary<int,Province>();
@@ -36,16 +37,19 @@ public class DataRegistery
     public Dictionary<int, List<UnitNavigation>> mapUnitState; //province unit
     public Dictionary<int, UnitNavigation> mapUnitDict = new Dictionary<int, UnitNavigation>();
     public Dictionary<int, WorkplaceTemplate> workplaceTemplate = new Dictionary<int, WorkplaceTemplate>();   
-    public List<WorkplaceInstance> buildings = new List<WorkplaceInstance>();
+    public List<WorkplaceInstance> workplacesInstances = new List<WorkplaceInstance>();
     public Dictionary<int,Country> countryDict = new Dictionary<int, Country>();
     public List<Market> marketList = new List<Market>();
 
     //--- buffers ---
-    //Response should be dispatch by response process, no need of buffer ? 
+    //One list for all buffer ? 
     public List<MarketBuyRequest> marketBuyRequests = new List<MarketBuyRequest>();
     public List<MarketBuyResponse> marketBuyResponseBuffer = new List<MarketBuyResponse>();
     public List<MarketSellRequest> marketSellRequestBuffer = new List<MarketSellRequest>();
     public List<MarketSellResponse> marketSellResponseBuffer = new List<MarketSellResponse>();
+
+    public List<JobOffer> jobOffersBuffer = new List<JobOffer>();
+    public List<JobApplication> jobApplicationBuffer = new List<JobApplication>();
     public int GetPopStrataTagId(string popStrataTag)
     {
         return GetIdByString(popStrataTag, popStrata);
@@ -212,7 +216,10 @@ public class DataRegistery
             throw new Exception($"Try to get an un-existing graph node | id:{id}");
         
     }
-    
+    public Dictionary<int, Pop> GetPopNeedingJob()
+    {
+        return PopulationDict.Where(p => p.Value.GetUnemployedNumber() > 0).ToDictionary(p => p.Key, p => p.Value);
+    }
     /*------------------------------*/
     private int GetIdByString(string tag, string[] list)
     {

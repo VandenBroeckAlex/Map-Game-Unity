@@ -10,17 +10,20 @@ public class WorkplaceInstance
     public int provinceId { get; private set; }
     public int countryId { get; private set; }
     public int marketId { get; private set; }
-
+    //keep trak of profit
 
     // Dynamic State
     public bool canProduce;
     public bool isDamaged;
     public bool isOpen;
+
     public int size { get; set; } = 1;
     public float efficiency { get; private set; } = 1.0f;
     public int cashPool;
     public int companyId;
     public int wages;
+    //public int poorStrataWage = 100;
+    //public int middleStrataWage = 200;
 
     //Stockpile (input and output)?
     public List<GoodRequirement> inputGoodsStockpile;
@@ -73,17 +76,62 @@ public class WorkplaceInstance
         return jobs;
     }
 
-    public List<IdNum> FirePop(int percentage)
+    public List<PopFired> FirePop(int percentage)
     {
-        List<IdNum> result = new List<IdNum>();
+        List<PopFired> result = new List<PopFired>();
         foreach (IdNum idNum in currentWorkers)
         {
             int amount = (int)((idNum.num / 100) * percentage);
 
             idNum.num -= amount;//remove amount from workplace
 
-            IdNum _idnum = new IdNum(idNum.id,amount);
-            result.Add(_idnum);
+            PopFired popFired = new PopFired();
+            popFired.amount = amount;
+            popFired.popId = idNum.id;
+            popFired.workplaceId = id;
+            result.Add(popFired);
+        }
+        return result;
+    }
+
+    public void HirePop(int popId, int PopType, int ammount)
+    {
+        IdNum idNum = currentWorkers.Where(i => i.id == popId).FirstOrDefault();
+
+        if (idNum != null) 
+        {
+            idNum.num += ammount;
+        }
+        else
+        {
+           idNum = new IdNum(popId,ammount);
+        }
+    }
+
+    public List<IdNum> PayWorkers()
+    {
+        List <IdNum> result = new List<IdNum >();
+        foreach (IdNum idWorker in currentWorkers) 
+        {
+            int cashLeft = GetCash();
+            if(cashLeft <= 0)
+            {
+                break;
+            }
+
+            int amount = ((idWorker.num / 1000) * wages);
+            if (cashLeft > amount)
+            {
+                IdNum popPay = new IdNum(idWorker.id, amount);
+                result.Add(popPay);
+                UpdateCash(-amount);
+            }
+            else
+            {
+                IdNum popPay = new IdNum(idWorker.id, cashLeft);
+                result.Add(popPay);
+                UpdateCash(-cashLeft);
+            }
         }
         return result;
     }
