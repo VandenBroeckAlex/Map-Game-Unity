@@ -1,5 +1,5 @@
 
-// Definiition for pop strata
+// Definition for pop strata
 public class GoodNeedMax
 {
         public int goodId;
