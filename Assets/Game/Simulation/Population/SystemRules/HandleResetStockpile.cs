@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 
-public static class HandlePopulationResetStockpile
+public  class HandlePopulationResetStockpile
 {
-    public static List<Pop> ResetStockpile(List<Pop> popList)
+    public  List<Pop> ResetStockpile(List<Pop> popList)
     {
         for (int i = 0; i < popList.Count; i++)
         {

@@ -3,12 +3,11 @@ Recive data from workplace
 pass info into pop
  */
 
-using NUnit.Framework;
 using System.Collections.Generic;
 
-public class PopFiredFromWorkplace
+public  class PopFiredFromWorkplace
 {
-    public void FiredFromWorkplace(List<PopFired> data, DataRegistery _registery)
+    public  void FiredFromWorkplace(List<PopFired> data, DataRegistery _registery)
     {
         foreach(PopFired pf in data)
         {

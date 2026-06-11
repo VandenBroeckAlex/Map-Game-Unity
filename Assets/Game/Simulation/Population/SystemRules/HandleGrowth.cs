@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 
-public class HandleGrowth
+public  class HandleGrowth
 {
-    public List<Pop> PopGrowth(List<Pop> populationList, float base_growth_rate, float countryGrowthModdifier, float provinceGrowthModdifier)
+    public  List<Pop> PopGrowth(List<Pop> populationList, float base_growth_rate, float countryGrowthModdifier, float provinceGrowthModdifier)
     {
         for (int i = 0; i < populationList.Count; i++)
         {

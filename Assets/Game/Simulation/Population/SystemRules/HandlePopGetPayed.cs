@@ -1,8 +1,8 @@
 
 using System.Collections.Generic;
-public static class HandlePopGetPayed
+public  class HandlePopGetPayed
 {
-    public static DataRegistery PopGetPayed(DataRegistery _registery, List<IdNum> order)
+    public  DataRegistery PopGetPayed(DataRegistery _registery, List<IdNum> order)
     {
         foreach (IdNum iN in order) 
         {

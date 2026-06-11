@@ -6,9 +6,9 @@
 using System.Collections.Generic;
 using System.Linq;
 
-public class HandleWorkSearch
+public  class HandleWorkSearch
 {
-    public List<JobApplication> SearchWork(DataRegistery _registery)
+    public  List<JobApplication> SearchWork(DataRegistery _registery)
     {
         List<JobApplication> result = new List<JobApplication>();
 

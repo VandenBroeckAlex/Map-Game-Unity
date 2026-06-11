@@ -13,6 +13,10 @@ public class Simulation
     //EventBus
     //public static event Action<int, int> OnPopulationChanged;
 
+    
+     // --- individual systems ---
+     
+    // ---
     public Simulation( CountriesManager countriesManager, ProvincesSystem provincesSystem)
     {
         //_populationSystem = new PopulationSystem(_intentBuffer);
