@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 public  class HandlePopulationResetStockpile
 {
-    public  List<Pop> ResetStockpile(List<Pop> popList)
+    public Dictionary<int, Pop> ResetStockpile(Dictionary<int,Pop> popList)
     {
         for (int i = 0; i < popList.Count; i++)
         {

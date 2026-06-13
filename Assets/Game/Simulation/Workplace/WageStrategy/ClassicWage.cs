@@ -1,6 +1,3 @@
-
-
-using Codice.CM.SEIDInfo;
 using System.Collections.Generic;
 using static Dime;
 public class ClassicWage : IPayoutStrategy

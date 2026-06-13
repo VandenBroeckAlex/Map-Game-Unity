@@ -11,7 +11,7 @@ public class Pop
     public int id { get; }
     public int size;
     public List<IdNum> workplace;
-    public int provinceId { get; set; }
+    public int provinceId { get;  }
     public int countryID { get; set; }
     public int jobId { get; }
     public int cultureId { get; }

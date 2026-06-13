@@ -2,9 +2,9 @@ using static MarketTransactionsObj;
 using System.Collections.Generic;
 using System.Linq;
 
-public  class HandlePopBuy
+public class HandlePopBuy
 {
-     public  List<MarketBuyRequest> PopulationBuyRequest(Dictionary<int,Pop> _popList)
+     public List<MarketBuyRequest> PopulationBuyRequest(Dictionary<int,Pop> _popList)
     {
         List <MarketBuyRequest> result = new List<MarketBuyRequest> ();
         foreach (KeyValuePair<int,Pop> Entrypop in _popList)

@@ -17,10 +17,11 @@ public class PopSystemTests
     [Test]
     public void PopSystem_HandlePopBuy_returnTrue()
     {
-        List<Pop> poplist = new List<Pop>();
-        poplist.Add(CreatePop());
+        HandlePopBuy popBuySystem = new HandlePopBuy();
+        Dictionary<int,Pop> poplist = new Dictionary<int, Pop>();
+        poplist.Add(1,CreatePop());
 
-        List<MarketTransactionsObj.MarketBuyRequest> result = HandlePopBuy.PopulationBuyRequest(poplist);
+        List<MarketTransactionsObj.MarketBuyRequest> result = popBuySystem.PopulationBuyRequest(poplist);
         Assert.IsNotNull(result);
         Assert.AreEqual(1, result.Count);
         Assert.AreEqual(result[0].GoodRequests.Count, 1);
@@ -32,13 +33,15 @@ public class PopSystemTests
     [Test]
     public void PopSystem_HandlePopBuy_02_returnTrue()
     {
-        List<Pop> poplist = new List<Pop>();
-        poplist.Add(CreatePop());
-        poplist.Add(CreatePop());
-        poplist.Add(CreatePop());
-        poplist.Add(CreatePop());
+        HandlePopBuy popBuySystem = new HandlePopBuy();
+        Dictionary<int, Pop> poplist = new Dictionary<int, Pop>();
+        poplist.Add(0, CreatePop());
+        poplist.Add(1,CreatePop());
+        poplist.Add(2,CreatePop());
+        poplist.Add(3,CreatePop());
+  
 
-        List<MarketBuyRequest> result = HandlePopBuy.PopulationBuyRequest(poplist);
+        List<MarketBuyRequest> result = popBuySystem.PopulationBuyRequest(poplist);
         Assert.IsNotNull(result);
         Assert.AreEqual(4, result.Count);
     }
@@ -69,13 +72,15 @@ public class PopSystemTests
     [Test]
     public void PopSystem_HandlePopResetStockpile()
     {
+        HandlePopBuy popBuySystem = new HandlePopBuy();
+        HandlePopulationResetStockpile resetStockpileSystem = new HandlePopulationResetStockpile();
+        Dictionary<int, Pop> popList = new Dictionary<int, Pop>();
         Pop pop = CreatePop();
         pop.GoodList[0].stockpile = 500;
 
-        List<Pop> popList = new List<Pop>();
-        popList.Add(pop);
-        popList.Add(CreatePop());
-        popList = HandlePopulationResetStockpile.ResetStockpile(popList);
+        popList.Add(0,pop);
+        popList.Add(1,CreatePop());
+        popList = resetStockpileSystem.ResetStockpile(popList);
 
         Assert.IsNotNull(popList);
         Assert.AreEqual(2, popList.Count);
