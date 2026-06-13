@@ -3,17 +3,14 @@ using System.Collections.Generic;
 
 public class PopRegistery
 {
-    private Dictionary<int, string> strata;
     private Dictionary<int, PopJob> popJob;
 
-
     private List<Pop> allPops = new List<Pop>();
-
-    // in a pop registery
     private Dictionary<int, List<Pop>> popsByProvince = new Dictionary<int, List<Pop>>();
     private Dictionary<int, List<Pop>> popsByReligion = new Dictionary<int, List<Pop>>();
     private Dictionary<int, List<Pop>> popsByCountry = new Dictionary<int, List<Pop>>();
 
+    /*--- Pop handling ---*/
     public void AddPop(Pop pop)
     {
         allPops.Add(pop);
@@ -21,7 +18,6 @@ public class PopRegistery
         AddToBucket(popsByReligion, pop.religionId, pop);
         AddToBucket(popsByCountry, pop.countryID, pop);
     }
-
     public void RemovePop(Pop pop)
     {
         allPops.Remove(pop);
@@ -29,7 +25,6 @@ public class PopRegistery
         RemoveFromBucket(popsByReligion, pop.religionId, pop);
         RemoveFromBucket(popsByCountry, pop.countryID, pop);
     }
-
     public List<Pop> GetPopsInProvince(int provinceId)
     {
         return popsByProvince.TryGetValue(provinceId, out var list) ? list : new List<Pop>();
@@ -43,6 +38,7 @@ public class PopRegistery
         return allPops;
     }
 
+   
     // ---  ---
 
     private void AddToBucket(Dictionary<int, List<Pop>> dict, int key, Pop pop)

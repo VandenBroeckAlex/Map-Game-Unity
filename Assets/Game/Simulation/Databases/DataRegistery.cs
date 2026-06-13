@@ -7,7 +7,14 @@ using static MarketTransactionsObj;
 
 public class DataRegistery
 {
-    public string[] popStrata { get; set; } = new string[] { "Default"};
+    public PopRegistery popRgistery = new PopRegistery();
+    public string[] popStrata { get; set; } = new string[] { "Default" };
+    private static readonly Culture _default = new Culture("default", "default");
+    public Culture[] cultures = new Culture[] { _default };
+    public PopJob[] popJobs;
+    public Religion[] religionsDef;
+    public Dictionary<string, GoodNeedMax[]> strataNeeds;
+
     public string[] goodTypes { get; set; } = new string[] { "Default" };
     public Good[] goodList { get; set; }
   
@@ -21,12 +28,6 @@ public class DataRegistery
         { "Default", 0 },
     };
     //TODO To change initialisation of default
-    private static readonly Culture _default = new Culture("default", "default");
-
-    public Culture[] cultures = new Culture[] { _default };
-    public PopJob[] popJobs;
-    public Religion[] religionsDef;
-    public Dictionary<string, GoodNeedMax[]> strataNeeds;
     public Dictionary<int, Pop> PopulationDict;
 
 

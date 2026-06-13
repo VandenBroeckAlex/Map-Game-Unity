@@ -1,0 +1,17 @@
+{
+    "name": "TaxStrategy",
+    "rootNamespace": "",
+    "references": [
+        "GUID:fce2619a8ca22704ba1cddaf25aaff17",
+        "GUID:e2b7932a83406e44cafbe715a628ce58"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -2,7 +2,6 @@ using System.Collections.Generic;
 
 public class HandleGet
 {
-
     public int GetProvinceIdByColor(int[] givenColor, Dictionary<int, Tile> allProvinces, Dictionary<int, int[]> colorIDList)
     {
         foreach (var kvp in colorIDList)

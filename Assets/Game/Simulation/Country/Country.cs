@@ -8,7 +8,8 @@ public class Country
     public int playerId;
     public string name;
     public int[] color;
-    public long treasury;
+    public long treasury; // Central monney
+    public long GoldReserve;
     public long income; // the sum of all income last month
     public List<long> incomeHistory = new List<long>();
     public string tag;

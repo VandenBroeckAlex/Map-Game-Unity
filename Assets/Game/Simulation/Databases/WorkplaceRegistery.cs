@@ -1,7 +1,6 @@
-using NUnit.Framework;
 using System.Collections.Generic;
 
-public class BuildingRegistery
+public class WorkplaceRegistery
 {
     private List<WorkplaceInstance> allWorkplace = new List<WorkplaceInstance>();
     private Dictionary<int, List<WorkplaceInstance>> workplaceByCountry = new Dictionary<int, List<WorkplaceInstance>>();
@@ -25,7 +24,7 @@ public class BuildingRegistery
         RemoveFromBucket(workplaceByTile, workplace.tileId, workplace);
     }
 
-    public List<WorkplaceInstance> GetAllPop()
+    public List<WorkplaceInstance> GetAllWorkplace()
     {
         return allWorkplace;
     }
